@@ -1,0 +1,483 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Kind: DefaultBehavior</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../.././dokgen-style.css" type="text/css" media="screen" />
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=480,width=750" ).focus();
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+    <table border='0' cellpadding='0' cellspacing='0' width="100%" class='banner'>
+      <tr>
+        <td>
+          <table width="100%" border='0' cellpadding='0' cellspacing='0'>
+            <tr>
+              <td class="file-title" colspan="2">
+                <span class="file-title-prefix">Kind</span>
+                <br />
+                IokeGround Struct
+              </td>
+              <td align="right">
+                <table cellspacing="0" cellpadding="2">
+                  <tr>
+                    <td>Main mimic:</td>
+                    <td>
+                      <a href="../../kinds/LexicalBlock.html">LexicalBlock</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <div id="bodyContent">
+      <div id="content">
+        <div class="description">
+          <p>
+
+          </p>
+        </div>
+
+        <div class="sectiontitle">Mimics</div>
+        <ul>
+          <li><a href="../../kinds/LexicalBlock.html">LexicalBlock</a></li><li><a href="../../kinds/Mixins/Sequenced.html">Mixins Sequenced</a></li>
+        </ul>
+
+        <div class="sectiontitle">Inactive cells</div>
+        <ul>
+          <li><a href="#C001160">attributeNames</a></li>
+<li><a href="#C001159">kind</a></li>
+<li><a href="#C001161">structInstance?</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Active cells</div>
+        <ul>
+          <li><a href="#C001171">==(other)</a></li>
+<li><a href="#C001170">===(other)</a></li>
+<li><a href="#C001168">[](index)</a></li>
+<li><a href="#C001169">[]=(index, value)</a></li>
+<li><a href="#C001173">asText()</a></li>
+<li><a href="#C001166">attributes()</a></li>
+<li><a href="#C001164">create(+values, +:keywordValues)</a></li>
+<li><a href="#C001172">hash()</a></li>
+<li><a href="#C001175">inspect()</a></li>
+<li><a href="#C001163">internal:createDerived(orig, attributeNames, newValues, newKeywordValues)</a></li>
+<li><a href="#C001162">internal:createInitial(val, attributeNames, attributes, attributesWithDefaultValues, values, keywordValues)</a></li>
+<li><a href="#C001174">notice()</a></li>
+<li><a href="#C001165">seq()</a></li>
+<li><a href="#C001167">valuesAt(+indices)</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Specs</div>
+        <div class="specs">
+          
+        </div>
+
+        <div class="sectiontitle">Inactive cells (details)</div>
+                <div class="cell">
+          <a name="C001160"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">attributeNames</td>
+              <td>=</td>
+              <td class="cell-value">[]</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C001159"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">kind</td>
+              <td>=</td>
+              <td class="cell-value">"IokeGround Struct"</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C001161"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">structInstance?</td>
+              <td>=</td>
+              <td class="cell-value">false</td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="sectiontitle">Active cells (details)</div>
+                <div class="cell">
+          <div class="title">
+          <a name="C001171"></a><b>==</b>(other)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C001171_source')" id="l_C001171_source">show source</a> ]</p>
+            <div id="C001171_source" class="dyn-source">
+<pre>
+method(other, 
+  (Struct ===(cell(:other)) &&(
+      
+      attributes ==(other attributes))))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001170"></a><b>===</b>(other)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C001170_source')" id="l_C001170_source">show source</a> ]</p>
+            <div id="C001170_source" class="dyn-source">
+<pre>
+method(other, 
+  if(self same?(
+      #&lt;IokeGround Struct:0&gt;), 
+    Reflector other:mimics?(cell(:other), 
+      #&lt;IokeGround Struct:0&gt;), 
+    bind(rescue(Condition Error, fn(c, false)), 
+      self ==(
+        other))))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001168"></a><b>[]</b>(index)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C001168_source')" id="l_C001168_source">show source</a> ]</p>
+            <div id="C001168_source" class="dyn-source">
+<pre>
+method(index, 
+  ix = if(index mimics?(Number), 
+      attributeNames [](index), 
+      index) 
+  @ cell(ix))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001169"></a><b>[]=</b>(index, value)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C001169_source')" id="l_C001169_source">show source</a> ]</p>
+            <div id="C001169_source" class="dyn-source">
+<pre>
+method(index, value, 
+  ix = if(index mimics?(Number), 
+      attributeNames [](index), 
+      index) 
+  @ cell(ix) = value)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001173"></a><b>asText</b>()
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C001173_source')" id="l_C001173_source">show source</a> ]</p>
+            <div id="C001173_source" class="dyn-source">
+<pre>
+method(
+  if(structInstance?, 
+    "(#{attributeNames map(name, "#{name}: #{@ cell(name)}") join(", ")})", 
+    "Struct(#{attributeNames join(", ")})"))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001166"></a><b>attributes</b>()
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C001166_source')" id="l_C001166_source">show source</a> ]</p>
+            <div id="C001166_source" class="dyn-source">
+<pre>
+method(
+  attributeNames fold({}, d, x, d [](x) = @ cell(x) 
+    d) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001164"></a><b>create</b>(+values, +:keywordValues)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C001164_source')" id="l_C001164_source">show source</a> ]</p>
+            <div id="C001164_source" class="dyn-source">
+<pre>
+method(+values, +:keywordValues, 
+  @ call(*(values), *(keywordValues)) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001172"></a><b>hash</b>()
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C001172_source')" id="l_C001172_source">show source</a> ]</p>
+            <div id="C001172_source" class="dyn-source">
+<pre>
+method(
+  attributes hash)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001175"></a><b>inspect</b>()
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C001175_source')" id="l_C001175_source">show source</a> ]</p>
+            <div id="C001175_source" class="dyn-source">
+<pre>
+method(
+  if(structInstance?, 
+    "(#{attributeNames map(name, "#{name}: #{@ cell(name) inspect}") join(", ")})", 
+    "Struct(#{attributeNames join(", ")})"))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001163"></a><b>internal:createDerived</b>(orig, attributeNames, newValues, newKeywordValues)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C001163_source')" id="l_C001163_source">show source</a> ]</p>
+            <div id="C001163_source" class="dyn-source">
+<pre>
+method(orig, attributeNames, newValues, newKeywordValues, 
+  res = orig mimic 
+  (newValues zipped(attributeNames) mapped(reverse) +(
+      
+      newKeywordValues seq)) each(vv, 
+    res cell(vv first) = vv second) 
+  res 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001162"></a><b>internal:createInitial</b>(val, attributeNames, attributes, attributesWithDefaultValues, values, keywordValues)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C001162_source')" id="l_C001162_source">show source</a> ]</p>
+            <div id="C001162_source" class="dyn-source">
+<pre>
+method(val, attributeNames, attributes, attributesWithDefaultValues, values, keywordValues, 
+  result = fn(+(newVals), +:(newKeywordVals), 
+      Struct internal:createDerived(result, attributeNames, newVals, newKeywordVals)) 
+  result prependMimic!(val) 
+  result structInstance? = true 
+  (attributesWithDefaultValues seq +(
+      
+      attributes zipped(values)) +(
+      
+      keywordValues seq)) each(vv, 
+    result cell(vv first) = vv second) 
+  result)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001174"></a><b>notice</b>()
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C001174_source')" id="l_C001174_source">show source</a> ]</p>
+            <div id="C001174_source" class="dyn-source">
+<pre>
+method(
+  if(structInstance?, 
+    "(#{attributeNames map(name, "#{name}: #{@ cell(name) notice}") join(", ")})", 
+    "Struct(#{attributeNames join(", ")})"))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001165"></a><b>seq</b>()
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C001165_source')" id="l_C001165_source">show source</a> ]</p>
+            <div id="C001165_source" class="dyn-source">
+<pre>
+method(
+  attributeNames mapped(name, name =&gt;(@ cell(name))) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001167"></a><b>valuesAt</b>(+indices)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C001167_source')" id="l_C001167_source">show source</a> ]</p>
+            <div id="C001167_source" class="dyn-source">
+<pre>
+method(+indices, 
+  indices map(ix, 
+    self [](ix)))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </body>
+</html>

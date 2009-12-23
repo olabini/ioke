@@ -1,0 +1,706 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Kind: DefaultBehavior</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href=".././dokgen-style.css" type="text/css" media="screen" />
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=480,width=750" ).focus();
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+    <table border='0' cellpadding='0' cellspacing='0' width="100%" class='banner'>
+      <tr>
+        <td>
+          <table width="100%" border='0' cellpadding='0' cellspacing='0'>
+            <tr>
+              <td class="file-title" colspan="2">
+                <span class="file-title-prefix">Kind</span>
+                <br />
+                Tuple
+              </td>
+              <td align="right">
+                <table cellspacing="0" cellpadding="2">
+                  <tr>
+                    <td>Main mimic:</td>
+                    <td>
+                      <a href="../kinds/Origin.html">Origin</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <div id="bodyContent">
+      <div id="content">
+        <div class="description">
+          <p>
+A tuple is a collection of objects of any kind. It is immutable and supports destructuring.
+          </p>
+        </div>
+
+        <div class="sectiontitle">Mimics</div>
+        <ul>
+          <li><a href="../kinds/Origin.html">Origin</a></li><li><a href="../kinds/Mixins/Comparing.html">Mixins Comparing</a></li>
+        </ul>
+
+        <div class="sectiontitle">Inactive cells</div>
+        <ul>
+          <li><a href="#C001079">kind</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Active cells</div>
+        <ul>
+          <li><a href="#C001083">&lt;=&gt;(other)</a></li>
+<li><a href="#C001082">==(other)</a></li>
+<li><a href="#C001086">arity()</a></li>
+<li><a href="#C001087">asList()</a></li>
+<li><a href="#C001089">asTuple()</a></li>
+<li><a href="#C001088">createFrom(args)</a></li>
+<li><a href="#C001084">inspect()</a></li>
+<li><a href="#C001085">notice()</a></li>
+<li><a href="#C001081">private:accessor(index)</a></li>
+<li><a href="#C001080">private:initializeWith(+values)</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Specs</div>
+        <div class="specs">
+          
+<b> Tuple !=</b><br/>
+<ul style="list-style-type: none;">
+<li>- should check inequality <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S0_source')" id="l_C00K01S0_source">show source</a> ]</span>
+            <div id="C00K01S0_source" class="dyn-source">
+<pre>
+(tuple !=(tuple)) should be false 
+(tuple !=(tuple(1, 2))) should be true 
+(tuple(1, 2) !=(tuple)) should be true 
+(tuple(1, 2) !=(tuple(1, 2))) should be false 
+(tuple(1, 2, 3) !=(tuple(1, 2))) should be true 
+(tuple(1, 2) !=(tuple(1, 2, 3))) should be true 
+(tuple(1, 2, 3) !=(tuple(1, 3, 3))) should be true 
+(tuple(1, 3, 3) !=(tuple(1, 2, 3))) should be true 
+(tuple(1, tuple(1, 2), 3) !=(tuple(1, tuple(1, 2), 3))) should be false 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> Tuple Eight</b><br/>
+<ul style="list-style-type: none;">
+<li>- should mimic Tuple Seven <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K02S0_source')" id="l_C00K02S0_source">show source</a> ]</span>
+            <div id="C00K02S0_source" class="dyn-source">
+<pre>
+Tuple Eight should mimic(Tuple Seven) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should have the correct kind <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K02S1_source')" id="l_C00K02S1_source">show source</a> ]</span>
+            <div id="C00K02S1_source" class="dyn-source">
+<pre>
+Tuple Eight should have kind("Tuple Eight") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should have accessor for the eighth element <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K02S2_source')" id="l_C00K02S2_source">show source</a> ]</span>
+            <div id="C00K02S2_source" class="dyn-source">
+<pre>
+Tuple Eight cell?(:eighth) should be true 
+Tuple Eight cell?(:("_8")) should be true 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> Tuple Five</b><br/>
+<ul style="list-style-type: none;">
+<li>- should mimic Tuple Four <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K03S0_source')" id="l_C00K03S0_source">show source</a> ]</span>
+            <div id="C00K03S0_source" class="dyn-source">
+<pre>
+Tuple Five should mimic(Tuple Four) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should have the correct kind <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K03S1_source')" id="l_C00K03S1_source">show source</a> ]</span>
+            <div id="C00K03S1_source" class="dyn-source">
+<pre>
+Tuple Five should have kind("Tuple Five") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should have accessor for the fifth element <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K03S2_source')" id="l_C00K03S2_source">show source</a> ]</span>
+            <div id="C00K03S2_source" class="dyn-source">
+<pre>
+Tuple Five cell?(:fifth) should be true 
+Tuple Five cell?(:("_5")) should be true 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> Tuple Four</b><br/>
+<ul style="list-style-type: none;">
+<li>- should mimic Tuple Three <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K04S0_source')" id="l_C00K04S0_source">show source</a> ]</span>
+            <div id="C00K04S0_source" class="dyn-source">
+<pre>
+Tuple Four should mimic(Tuple Three) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should have the correct kind <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K04S1_source')" id="l_C00K04S1_source">show source</a> ]</span>
+            <div id="C00K04S1_source" class="dyn-source">
+<pre>
+Tuple Four should have kind("Tuple Four") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should have accessor for the fourth element <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K04S2_source')" id="l_C00K04S2_source">show source</a> ]</span>
+            <div id="C00K04S2_source" class="dyn-source">
+<pre>
+Tuple Four cell?(:fourth) should be true 
+Tuple Four cell?(:("_4")) should be true 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> Tuple Many</b><br/>
+<ul style="list-style-type: none;">
+<li>- should mimic Tuple Nine <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K05S0_source')" id="l_C00K05S0_source">show source</a> ]</span>
+            <div id="C00K05S0_source" class="dyn-source">
+<pre>
+Tuple Many should mimic(Tuple Nine) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should have the correct kind <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K05S1_source')" id="l_C00K05S1_source">show source</a> ]</span>
+            <div id="C00K05S1_source" class="dyn-source">
+<pre>
+Tuple Many should have kind("Tuple Many") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> Tuple Nine</b><br/>
+<ul style="list-style-type: none;">
+<li>- should mimic Tuple Eight <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K06S0_source')" id="l_C00K06S0_source">show source</a> ]</span>
+            <div id="C00K06S0_source" class="dyn-source">
+<pre>
+Tuple Nine should mimic(Tuple Eight) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should have the correct kind <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K06S1_source')" id="l_C00K06S1_source">show source</a> ]</span>
+            <div id="C00K06S1_source" class="dyn-source">
+<pre>
+Tuple Nine should have kind("Tuple Nine") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should have accessor for the ninth element <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K06S2_source')" id="l_C00K06S2_source">show source</a> ]</span>
+            <div id="C00K06S2_source" class="dyn-source">
+<pre>
+Tuple Nine cell?(:ninth) should be true 
+Tuple Nine cell?(:("_9")) should be true 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> Tuple Seven</b><br/>
+<ul style="list-style-type: none;">
+<li>- should mimic Tuple Six <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K07S0_source')" id="l_C00K07S0_source">show source</a> ]</span>
+            <div id="C00K07S0_source" class="dyn-source">
+<pre>
+Tuple Seven should mimic(Tuple Six) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should have the correct kind <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K07S1_source')" id="l_C00K07S1_source">show source</a> ]</span>
+            <div id="C00K07S1_source" class="dyn-source">
+<pre>
+Tuple Seven should have kind("Tuple Seven") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should have accessor for the seventh element <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K07S2_source')" id="l_C00K07S2_source">show source</a> ]</span>
+            <div id="C00K07S2_source" class="dyn-source">
+<pre>
+Tuple Seven cell?(:seventh) should be true 
+Tuple Seven cell?(:("_7")) should be true 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> Tuple Six</b><br/>
+<ul style="list-style-type: none;">
+<li>- should mimic Tuple Five <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K08S0_source')" id="l_C00K08S0_source">show source</a> ]</span>
+            <div id="C00K08S0_source" class="dyn-source">
+<pre>
+Tuple Six should mimic(Tuple Five) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should have the correct kind <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K08S1_source')" id="l_C00K08S1_source">show source</a> ]</span>
+            <div id="C00K08S1_source" class="dyn-source">
+<pre>
+Tuple Six should have kind("Tuple Six") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should have accessor for the sixth element <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K08S2_source')" id="l_C00K08S2_source">show source</a> ]</span>
+            <div id="C00K08S2_source" class="dyn-source">
+<pre>
+Tuple Six cell?(:sixth) should be true 
+Tuple Six cell?(:("_6")) should be true 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> Tuple Three</b><br/>
+<ul style="list-style-type: none;">
+<li>- should mimic Tuple Two <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K09S0_source')" id="l_C00K09S0_source">show source</a> ]</span>
+            <div id="C00K09S0_source" class="dyn-source">
+<pre>
+Tuple Three should mimic(Tuple Two) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should have the correct kind <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K09S1_source')" id="l_C00K09S1_source">show source</a> ]</span>
+            <div id="C00K09S1_source" class="dyn-source">
+<pre>
+Tuple Three should have kind("Tuple Three") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should have accessor for the third element <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K09S2_source')" id="l_C00K09S2_source">show source</a> ]</span>
+            <div id="C00K09S2_source" class="dyn-source">
+<pre>
+Tuple Three cell?(:third) should be true 
+Tuple Three cell?(:("_3")) should be true 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> Tuple Two</b><br/>
+<ul style="list-style-type: none;">
+<li>- should mimic Tuple <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K010S0_source')" id="l_C00K010S0_source">show source</a> ]</span>
+            <div id="C00K010S0_source" class="dyn-source">
+<pre>
+Tuple Two should mimic(Tuple) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should have the correct kind <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K010S1_source')" id="l_C00K010S1_source">show source</a> ]</span>
+            <div id="C00K010S1_source" class="dyn-source">
+<pre>
+Tuple Two should have kind("Tuple Two") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should have accessors for the first two elements <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K010S2_source')" id="l_C00K010S2_source">show source</a> ]</span>
+            <div id="C00K010S2_source" class="dyn-source">
+<pre>
+Tuple Two cell?(:first) should be true 
+Tuple Two cell?(:("_1")) should be true 
+Tuple Two cell?(:second) should be true 
+Tuple Two cell?(:("_2")) should be true 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+        </div>
+
+        <div class="sectiontitle">Inactive cells (details)</div>
+                <div class="cell">
+          <a name="C001079"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">kind</td>
+              <td>=</td>
+              <td class="cell-value">"Tuple"</td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="sectiontitle">Active cells (details)</div>
+                <div class="cell">
+          <div class="title">
+          <a name="C001083"></a><b>&lt;=&gt;</b>(other)
+          </div>
+          <div class="description">
+            <p>Compares this object against the argument. The comparison is only based on the elements inside the tuple, which are in turn compared using <=>.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Tuple <=></b><br/>
+<ul style="list-style-type: none;">
+<li>- should sort based on the elements inside <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010831S0_source')" id="l_C0010831S0_source">show source</a> ]</span>
+            <div id="C0010831S0_source" class="dyn-source">
+<pre>
+(tuple &lt;=&gt;(tuple)) should ==(0) 
+(tuple &lt;=&gt;(tuple(1, 2))) should ==(-(1)) 
+(tuple(1, 2) &lt;=&gt;(tuple)) should ==(1) 
+(tuple(1, 2) &lt;=&gt;(tuple(1, 2))) should ==(0) 
+(tuple(1, 2, 3) &lt;=&gt;(tuple(1, 2))) should ==(1) 
+(tuple(1, 2) &lt;=&gt;(tuple(1, 2, 3))) should ==(-(1)) 
+(tuple(1, 2, 3) &lt;=&gt;(tuple(1, 3, 3))) should ==(-(1)) 
+(tuple(1, 3, 3) &lt;=&gt;(tuple(1, 2, 3))) should ==(1) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001082"></a><b>==</b>(other)
+          </div>
+          <div class="description">
+            <p>returns true if the left hand side tuple is equal to the right hand side tuple.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Tuple ==</b><br/>
+<ul style="list-style-type: none;">
+<li>- should check equality <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010821S0_source')" id="l_C0010821S0_source">show source</a> ]</span>
+            <div id="C0010821S0_source" class="dyn-source">
+<pre>
+(tuple ==(tuple)) should be true 
+(tuple ==(tuple(1, 2))) should be false 
+(tuple(1, 2) ==(tuple)) should be false 
+(tuple(1, 2) ==(tuple(1, 2))) should be true 
+(tuple(1, 2, 3) ==(tuple(1, 2))) should be false 
+(tuple(1, 2) ==(tuple(1, 2, 3))) should be false 
+(tuple(1, 2, 3) ==(tuple(1, 3, 3))) should be false 
+(tuple(1, 3, 3) ==(tuple(1, 2, 3))) should be false 
+(tuple(1, tuple(1, 2), 3) ==(tuple(1, tuple(1, 2), 3))) should be true 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001086"></a><b>arity</b>()
+          </div>
+          <div class="description">
+            <p>Returns the arity of this tuple</p>
+          </div>
+          
+          <div class="specs">
+            <b> Tuple arity</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return the arity of the tuple <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010861S0_source')" id="l_C0010861S0_source">show source</a> ]</span>
+            <div id="C0010861S0_source" class="dyn-source">
+<pre>
+tuple arity should ==(0) 
+tuple(1, 3) arity should ==(2) 
+tuple(tuple(1, 3), 42, 5) arity should ==(3) 
+tuple(1, 3, 5, 7, 9, 2, 4, 6, 8, 111) arity should ==(10) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001087"></a><b>asList</b>()
+          </div>
+          <div class="description">
+            <p>Returns the a list representation of this tuple</p>
+          </div>
+          
+          <div class="specs">
+            <b> Tuple asList</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return the elements in the tuple as a list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010871S0_source')" id="l_C0010871S0_source">show source</a> ]</span>
+            <div id="C0010871S0_source" class="dyn-source">
+<pre>
+tuple asList should ==([]) 
+tuple(1, 2, 3) asList should ==([](1, 2, 3)) 
+tuple(3, 3) asList should ==([](3, 3)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001089"></a><b>asTuple</b>()
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C001089_source')" id="l_C001089_source">show source</a> ]</p>
+            <div id="C001089_source" class="dyn-source">
+<pre>
+method(
+  self)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Tuple asTuple</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return itself <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010891S0_source')" id="l_C0010891S0_source">show source</a> ]</span>
+            <div id="C0010891S0_source" class="dyn-source">
+<pre>
+x = tuple 
+x asTuple should be(x) 
+x = tuple(1, 2, 3, 555) 
+x asTuple should be(x) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001088"></a><b>createFrom</b>(args)
+          </div>
+          <div class="description">
+            <p>Returns a tuple, assuming the arguments are the right length for it</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C001088_source')" id="l_C001088_source">show source</a> ]</p>
+            <div id="C001088_source" class="dyn-source">
+<pre>
+method(args, 
+  Tuple)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001084"></a><b>inspect</b>()
+          </div>
+          <div class="description">
+            <p>Returns a text inspection of the object</p>
+          </div>
+          
+          <div class="specs">
+            <b> Tuple inspect</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return something within parenthesis <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010841S0_source')" id="l_C0010841S0_source">show source</a> ]</span>
+            <div id="C0010841S0_source" class="dyn-source">
+<pre>
+tuple inspect should ==("()") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the inspect format of things inside <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010841S1_source')" id="l_C0010841S1_source">show source</a> ]</span>
+            <div id="C0010841S1_source" class="dyn-source">
+<pre>
+tuple(method(nil), method(f, f b), fn(a b)) inspect should ==("(method(nil), method(f, f b), fn(a b))") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the list of elements separated with ,  <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010841S2_source')" id="l_C0010841S2_source">show source</a> ]</span>
+            <div id="C0010841S2_source" class="dyn-source">
+<pre>
+tuple(1, 2, :foo, "bar") inspect should ==("(1, 2, :foo, \"bar\")") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001085"></a><b>notice</b>()
+          </div>
+          <div class="description">
+            <p>Returns a brief text inspection of the object</p>
+          </div>
+          
+          <div class="specs">
+            <b> Tuple notice</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return something within parenthesis <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010851S0_source')" id="l_C0010851S0_source">show source</a> ]</span>
+            <div id="C0010851S0_source" class="dyn-source">
+<pre>
+tuple notice should ==("()") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the notice format of things inside <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010851S1_source')" id="l_C0010851S1_source">show source</a> ]</span>
+            <div id="C0010851S1_source" class="dyn-source">
+<pre>
+tuple(method, method, fn) notice should ==("(method(...), method(...), fn(...))") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the list of elements separated with ,  <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010851S2_source')" id="l_C0010851S2_source">show source</a> ]</span>
+            <div id="C0010851S2_source" class="dyn-source">
+<pre>
+tuple(1, 2, :foo, "bar") notice should ==("(1, 2, :foo, \"bar\")") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001081"></a><b>private:accessor</b>(index)
+          </div>
+          <div class="description">
+            <p>returns a new method that can be used to access an element of a tuple based on the index</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001080"></a><b>private:initializeWith</b>(+values)
+          </div>
+          <div class="description">
+            <p>will modify the tuple, initializing it to contain the specified arguments</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </body>
+</html>

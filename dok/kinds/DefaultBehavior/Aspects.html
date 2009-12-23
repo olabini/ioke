@@ -1,0 +1,2502 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Kind: DefaultBehavior</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../.././dokgen-style.css" type="text/css" media="screen" />
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=480,width=750" ).focus();
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+    <table border='0' cellpadding='0' cellspacing='0' width="100%" class='banner'>
+      <tr>
+        <td>
+          <table width="100%" border='0' cellpadding='0' cellspacing='0'>
+            <tr>
+              <td class="file-title" colspan="2">
+                <span class="file-title-prefix">Kind</span>
+                <br />
+                DefaultBehavior Aspects
+              </td>
+              <td align="right">
+                <table cellspacing="0" cellpadding="2">
+                  <tr>
+                    <td>Main mimic:</td>
+                    <td>
+                      none
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <div id="bodyContent">
+      <div id="content">
+        <div class="description">
+          <p>
+contains behavior related to aspects
+          </p>
+        </div>
+
+        <div class="sectiontitle">Mimics</div>
+        <ul>
+          none
+        </ul>
+
+        <div class="sectiontitle">Inactive cells</div>
+        <ul>
+          <li><a href="#C00215">inspect</a></li>
+<li><a href="#C00213">kind</a></li>
+<li><a href="#C00214">notice</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Active cells</div>
+        <ul>
+          <li><a href="#C00217">after(matching: nil, except: nil, +joinPoints)</a></li>
+<li><a href="#C00218">around(matching: nil, except: nil, +joinPoints)</a></li>
+<li><a href="#C00216">before(matching: nil, except: nil, +joinPoints)</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Specs</div>
+        <div class="specs">
+          
+<b> DefaultBehavior Aspects removing all named advice</b><br/>
+<ul style="list-style-type: none;">
+<li>- should remove all advice with the name <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S0_source')" id="l_C00K01S0_source">show source</a> ]</span>
+            <div id="C00K01S0_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo = 14) 
+accesses = [] 
+x before(:foo) add(:someone, fn(accesses &lt;&lt;(:one))) 
+x before(:foo) add(:someone, fn(accesses &lt;&lt;(:two))) 
+x before(:foo) add(:someone, fn(accesses &lt;&lt;(:three))) 
+x before(:foo) removeAll(:someone) 
+x foo should ==(14) 
+accesses should ==([]) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should signal a condition if no such advice could be found <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S1_source')" id="l_C00K01S1_source">show source</a> ]</span>
+            <div id="C00K01S1_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo = 14) 
+x before(:foo) removeAll(:someone) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not touch unnamed advice <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S2_source')" id="l_C00K01S2_source">show source</a> ]</span>
+            <div id="C00K01S2_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo = 14) 
+accesses = [] 
+x before(:foo) &lt;&lt;(fn(accesses &lt;&lt;(:one))) 
+x before(:foo) add(:someone, fn(accesses &lt;&lt;(:two))) 
+x before(:foo) &lt;&lt;(fn(accesses &lt;&lt;(:three))) 
+x before(:foo) removeAll(:someone) 
+x foo 
+accesses should ==([](:three, :one)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not touch advice with other names <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S3_source')" id="l_C00K01S3_source">show source</a> ]</span>
+            <div id="C00K01S3_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo = 14) 
+accesses = [] 
+x before(:foo) add(:buck, fn(accesses &lt;&lt;(:one))) 
+x before(:foo) add(:someone, fn(accesses &lt;&lt;(:two))) 
+x before(:foo) add(:blarg, fn(accesses &lt;&lt;(:three))) 
+x before(:foo) removeAll(:someone) 
+x foo 
+accesses should ==([](:three, :one)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should only remove the named advice from the specific point cut <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S4_source')" id="l_C00K01S4_source">show source</a> ]</span>
+            <div id="C00K01S4_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo = 14 
+    bar = 13) 
+accesses = [] 
+x before(:foo, :bar) add(:someone, lecro(accesses &lt;&lt;([](:one, call message name)))) 
+x before(:foo, :bar) add(:someone, lecro(accesses &lt;&lt;([](:two, call message name)))) 
+x before(:foo, :bar) add(:someone, lecro(accesses &lt;&lt;([](:three, call message name)))) 
+x before(:foo) removeAll(:someone) 
+x foo 
+x bar 
+accesses should ==([]([](:three, :bar), [](:two, :bar), [](:one, :bar))) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+        </div>
+
+        <div class="sectiontitle">Inactive cells (details)</div>
+                <div class="cell">
+          <a name="C00215"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">inspect</td>
+              <td>=</td>
+              <td class="cell-value">"DefaultBehavior Aspects"</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C00213"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">kind</td>
+              <td>=</td>
+              <td class="cell-value">"DefaultBehavior Aspects"</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C00214"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">notice</td>
+              <td>=</td>
+              <td class="cell-value">"DefaultBehavior Aspects"</td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="sectiontitle">Active cells (details)</div>
+                <div class="cell">
+          <div class="title">
+          <a name="C00217"></a><b>after</b>(matching: nil, except: nil, +joinPoints)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00217_source')" id="l_C00217_source">show source</a> ]</p>
+            <div id="C00217_source" class="dyn-source">
+<pre>
+method(matching: nil, except: nil, +joinPoints, 
+  Pointcut with(receiver: self, joinPoints: joinPoints, matching: cell(:matching), except: except, type: :after))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> DefaultBehavior Aspects after</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return an Aspect Pointcut <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002171S0_source')" id="l_C002171S0_source">show source</a> ]</span>
+            <div id="C002171S0_source" class="dyn-source">
+<pre>
+Origin mimic after(:foo) should have kind("DefaultBehavior Aspects Pointcut") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should provide the result of the result of the original call inside a method <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002171S1_source')" id="l_C002171S1_source">show source</a> ]</span>
+            <div id="C002171S1_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo = method(14 *(14))) 
+Ground accesses = [] 
+x after(:foo) &lt;&lt;(method(accesses &lt;&lt;(aspectResult))) 
+x foo 
+accesses should ==([](196)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should provide the result of the result of the original call inside a lecro <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002171S2_source')" id="l_C002171S2_source">show source</a> ]</span>
+            <div id="C002171S2_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo = method(14 *(14))) 
+Ground accesses = [] 
+x after(:foo) &lt;&lt;(lecro(accesses &lt;&lt;(aspectResult))) 
+x foo 
+accesses should ==([](196)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should provide the result of the result of the original call inside a macro <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002171S3_source')" id="l_C002171S3_source">show source</a> ]</span>
+            <div id="C002171S3_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo = method(14 *(14))) 
+Ground accesses = [] 
+x after(:foo) &lt;&lt;(macro(accesses &lt;&lt;(aspectResult))) 
+x foo 
+accesses should ==([](196)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should provide the result of the result of the original call inside a syntax <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002171S4_source')" id="l_C002171S4_source">show source</a> ]</span>
+            <div id="C002171S4_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo = method(14 *(14))) 
+Ground accesses = [] 
+x after(:foo) &lt;&lt;(syntax(accesses &lt;&lt;(aspectResult))) 
+x foo 
+accesses should ==([](196)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should provide the result of the result of the original call inside a block <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002171S5_source')" id="l_C002171S5_source">show source</a> ]</span>
+            <div id="C002171S5_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo = method(14 *(14))) 
+Ground accesses = [] 
+x after(:foo) &lt;&lt;(fn(accesses &lt;&lt;(aspectResult))) 
+x foo 
+accesses should ==([](196)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should allow several after advices to have access to the result <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002171S6_source')" id="l_C002171S6_source">show source</a> ]</span>
+            <div id="C002171S6_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo = method(14 *(14))) 
+Ground accesses = [] 
+x after(:foo) &lt;&lt;(fn(accesses &lt;&lt;([](:fn, aspectResult)))) 
+x after(:foo) &lt;&lt;(method(accesses &lt;&lt;([](:method, aspectResult)))) 
+x after(:foo) &lt;&lt;(fn(accesses &lt;&lt;([](:fn2, aspectResult)))) 
+x after(:foo) &lt;&lt;(macro(accesses &lt;&lt;([](:macro, aspectResult)))) 
+x foo 
+accesses should ==([]([](:fn, 196), [](:method, 196), [](:fn2, 196), [](:macro, 196))) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior Aspects after adding named advice</b><br/>
+<ul style="list-style-type: none;">
+</ul>
+<b> DefaultBehavior Aspects after adding named advice removing named advice</b><br/>
+<ul style="list-style-type: none;">
+<li>- should only remove the outermost advice with the name <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002173S0_source')" id="l_C002173S0_source">show source</a> ]</span>
+            <div id="C002173S0_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo = 14) 
+accesses = [] 
+x after(:foo) add(:someone, fn(accesses &lt;&lt;(:one))) 
+x after(:foo) add(:someone, fn(accesses &lt;&lt;(:two))) 
+x after(:foo) add(:someone, fn(accesses &lt;&lt;(:three))) 
+x after(:foo) remove(:someone) 
+x foo 
+accesses should ==([](:one, :two)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should signal a condition if no such advice could be found <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002173S1_source')" id="l_C002173S1_source">show source</a> ]</span>
+            <div id="C002173S1_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo = 14) 
+fn(x after(:foo) remove(:someone)) should signal(Condition Error NoSuchAdvice) 
+x after(:foo) &lt;&lt;(fn) 
+fn(x after(:foo) remove(:someone)) should signal(Condition Error NoSuchAdvice) 
+x after(:foo) add(:anotherName, fn) 
+fn(x after(:foo) remove(:someone)) should signal(Condition Error NoSuchAdvice) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not touch unnamed advice <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002173S2_source')" id="l_C002173S2_source">show source</a> ]</span>
+            <div id="C002173S2_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo = 14) 
+accesses = [] 
+x after(:foo) &lt;&lt;(fn(accesses &lt;&lt;(:one))) 
+x after(:foo) add(:someone, fn(accesses &lt;&lt;(:two))) 
+x after(:foo) &lt;&lt;(fn(accesses &lt;&lt;(:three))) 
+x after(:foo) remove(:someone) 
+x foo 
+accesses should ==([](:one, :three)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not touch advice with other names <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002173S3_source')" id="l_C002173S3_source">show source</a> ]</span>
+            <div id="C002173S3_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo = 14) 
+accesses = [] 
+x after(:foo) add(:buck, fn(accesses &lt;&lt;(:one))) 
+x after(:foo) add(:someone, fn(accesses &lt;&lt;(:two))) 
+x after(:foo) add(:blarg, fn(accesses &lt;&lt;(:three))) 
+x after(:foo) remove(:someone) 
+x foo 
+accesses should ==([](:one, :three)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should only remove the named advice from the specific point cut <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002173S4_source')" id="l_C002173S4_source">show source</a> ]</span>
+            <div id="C002173S4_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo = 14 
+    bar = 13) 
+accesses = [] 
+x after(:foo, :bar) add(:someone, lecro(accesses &lt;&lt;([](:one, call message name)))) 
+x after(:foo, :bar) add(:someone, lecro(accesses &lt;&lt;([](:two, call message name)))) 
+x after(:foo, :bar) add(:someone, lecro(accesses &lt;&lt;([](:three, call message name)))) 
+x after(:foo) remove(:someone) 
+x foo 
+x bar 
+accesses should ==([]([](:one, :foo), [](:two, :foo), [](:one, :bar), [](:two, :bar), [](:three, :bar))) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior Aspects after adding named advice with except: keyword</b><br/>
+<ul style="list-style-type: none;">
+<li>- should take a name to not include <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002174S0_source')" id="l_C002174S0_source">show source</a> ]</span>
+            <div id="C002174S0_source" class="dyn-source">
+<pre>
+X = Origin mimic 
+Y = X mimic 
+Y foo16 = 42 
+X bar16 = 13 
+y = Y mimic 
+y quux16 = 555 
+Ground accesses = [] 
+y after(matching: :any, except: :bar16) add(:floxie, macro(accesses &lt;&lt;(call message name))) 
+y foo16 
+y bar16 
+y quux16 
+accesses should ==([](:foo16, :quux16)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take a list of names to not include <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002174S1_source')" id="l_C002174S1_source">show source</a> ]</span>
+            <div id="C002174S1_source" class="dyn-source">
+<pre>
+X = Origin mimic 
+Y = X mimic 
+Y foo17 = 42 
+X bar17 = 13 
+y = Y mimic 
+y quux17 = 555 
+Ground accesses = [] 
+y after(matching: :any, except: [](:bar17, :quux17)) add(:floxie, macro(accesses &lt;&lt;(call message name))) 
+y foo17 
+y bar17 
+y quux17 
+accesses should ==([](:foo17)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take a regular expression <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002174S2_source')" id="l_C002174S2_source">show source</a> ]</span>
+            <div id="C002174S2_source" class="dyn-source">
+<pre>
+X = Origin mimic 
+Y = X mimic 
+Y foo18 = 42 
+X bar18 = 13 
+y = Y mimic 
+y quux18 = 555 
+Ground accesses = [] 
+y after(matching: :any, except: #/bar18/) add(:floxie, macro(accesses &lt;&lt;(call message name))) 
+y foo18 
+y bar18 
+y quux18 
+accesses should ==([](:foo18, :quux18)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take a block <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002174S3_source')" id="l_C002174S3_source">show source</a> ]</span>
+            <div id="C002174S3_source" class="dyn-source">
+<pre>
+X = Origin mimic 
+Y = X mimic 
+Y foo19 = 42 
+X bar19 = 13 
+y = Y mimic 
+y quux19 = 555 
+Ground accesses = [] 
+y after(matching: :any, except: fn(c, #/bar19/ =~(c))) add(:floxie, macro(accesses &lt;&lt;(call message name))) 
+y foo19 
+y bar19 
+y quux19 
+accesses should ==([](:foo19, :quux19)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take a list of specifiers <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002174S4_source')" id="l_C002174S4_source">show source</a> ]</span>
+            <div id="C002174S4_source" class="dyn-source">
+<pre>
+X = Origin mimic 
+Y = X mimic 
+Y foo20 = 42 
+X bar20 = 13 
+y = Y mimic 
+y quux20 = 555 
+Ground accesses = [] 
+y after(matching: :any, except: [](#/bar20/, #/foo20/)) add(:floxie, macro(accesses &lt;&lt;(call message name))) 
+y foo20 
+y bar20 
+y quux20 
+accesses should ==([](:quux20)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior Aspects after adding named advice with matching: keyword</b><br/>
+<ul style="list-style-type: none;">
+<li>- should take :any and add it to all existing cells for that object and mimics, up to Origin <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002175S0_source')" id="l_C002175S0_source">show source</a> ]</span>
+            <div id="C002175S0_source" class="dyn-source">
+<pre>
+X = Origin mimic 
+Y = X mimic 
+Y foo11 = 42 
+X bar11 = 13 
+y = Y mimic 
+Origin mucus11 = 777 
+Ground accesses = [] 
+y after(matching: :any) add(:floxie, macro(accesses &lt;&lt;(call message name))) 
+y foo11 
+y bar11 
+y mucus11 
+accesses should ==([](:foo11, :bar11, :mucus11)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take :anyFromSelf and add it to all existing cells for that object only <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002175S1_source')" id="l_C002175S1_source">show source</a> ]</span>
+            <div id="C002175S1_source" class="dyn-source">
+<pre>
+X = Origin mimic 
+Y = X mimic 
+Y foo12 = 42 
+X bar12 = 13 
+y = Y mimic 
+y quux12 = 555 
+Ground accesses = [] 
+y after(matching: :anyFromSelf) add(:floxie, macro(accesses &lt;&lt;(call message name))) 
+y foo12 
+y bar12 
+y quux12 
+accesses should ==([](:quux12)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take a regular expression and use that to choose which cells to handle <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002175S2_source')" id="l_C002175S2_source">show source</a> ]</span>
+            <div id="C002175S2_source" class="dyn-source">
+<pre>
+X = Origin mimic 
+x = X mimic 
+X match_aspect_abc13 = 555 
+X mutch_aspect_abc13 = 555 
+X match_aspect_aaa13 = 5345 
+x match_aspect_hmm13 = 1111 
+Ground accesses = [] 
+x after(matching: #/match_aspect_/) add(:floxie, macro(accesses &lt;&lt;(call message name))) 
+x match_aspect_abc13 
+x mutch_aspect_abc13 
+x match_aspect_aaa13 
+x match_aspect_hmm13 
+accesses should ==([](:match_aspect_abc13, :match_aspect_aaa13, :match_aspect_hmm13)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take a block and use that to choose which cells to handle <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002175S3_source')" id="l_C002175S3_source">show source</a> ]</span>
+            <div id="C002175S3_source" class="dyn-source">
+<pre>
+X = Origin mimic 
+x = X mimic 
+X match_aspect_abc14 = 555 
+X mutch_aspect_abc14 = 555 
+X match_aspect_aaa14 = 5345 
+x match_aspect_hmm14 = 1111 
+Ground accesses = [] 
+x after(matching: fn(arg, #/match_aspect_/ =~(arg))) add(:floxie, macro(accesses &lt;&lt;(call message name))) 
+x match_aspect_abc14 
+x mutch_aspect_abc14 
+x match_aspect_aaa14 
+x match_aspect_hmm14 
+accesses should ==([](:match_aspect_abc14, :match_aspect_aaa14, :match_aspect_hmm14)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take a list of specifiers to use for matching <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002175S4_source')" id="l_C002175S4_source">show source</a> ]</span>
+            <div id="C002175S4_source" class="dyn-source">
+<pre>
+X = Origin mimic 
+x = X mimic 
+X match_aspect_abc15 = 555 
+X mutch_aspect_abc15 = 555 
+X match_aspect_aaa15 = 5345 
+x match_aspect_hmm15 = 1111 
+x blarg_aspect_hmm15 = 1111 
+Ground accesses = [] 
+x after(matching: [](#/match_aspect_/, #/blarg_/)) add(:floxie, macro(accesses &lt;&lt;(call message name))) 
+x match_aspect_abc15 
+x mutch_aspect_abc15 
+x match_aspect_aaa15 
+x match_aspect_hmm15 
+x blarg_aspect_hmm15 
+accesses should ==([](:match_aspect_abc15, :match_aspect_aaa15, :match_aspect_hmm15, :blarg_aspect_hmm15)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior Aspects after adding named advice with more than one cell name</b><br/>
+<ul style="list-style-type: none;">
+<li>- should add the advice to both the cells <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002176S0_source')" id="l_C002176S0_source">show source</a> ]</span>
+            <div id="C002176S0_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo10 = 42 
+    bar10 = 62 
+    ) 
+Ground accesses = [] 
+x after(:foo10, :bar10) add(:floxie, macro(accesses &lt;&lt;(call message name))) 
+x foo10 
+x bar10 
+x foo10 
+accesses should ==([](:foo10, :bar10, :foo10)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior Aspects after adding named advice with one cell name</b><br/>
+<ul style="list-style-type: none;">
+<li>- should execute a block after a cell is accessed in any way <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002177S0_source')" id="l_C002177S0_source">show source</a> ]</span>
+            <div id="C002177S0_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo1 = 42) 
+accesses = [] 
+x after(:foo1) add(:floxie, fn(accesses &lt;&lt;(:accessed))) 
+x foo1 should ==(42) 
+x foo1 should ==(42) 
+accesses should ==([](:accessed, :accessed)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should execute a method after a cell is accessed in any way <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002177S1_source')" id="l_C002177S1_source">show source</a> ]</span>
+            <div id="C002177S1_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo2 = 42) 
+Ground accesses = [] 
+x after(:foo2) add(:floxie, method(accesses &lt;&lt;(:accessed))) 
+x foo2 should ==(42) 
+x foo2 should ==(42) 
+accesses should ==([](:accessed, :accessed)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should give the same arguments as was given to the original call <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002177S2_source')" id="l_C002177S2_source">show source</a> ]</span>
+            <div id="C002177S2_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo3 = method(+(args), args)) 
+Ground accesses = [] 
+x after(:foo3) add(:floxie, method(+(args), accesses &lt;&lt;([](:method, args)))) 
+x after(:foo3) add(:floxie, fn(a, b, +(args), accesses &lt;&lt;([](:fn, a, b, args)))) 
+x foo3(1, 2) should ==([](1, 2)) 
+x foo3(53, 43, 6613, 4353) should ==([](53, 43, 6613, 4353)) 
+accesses should ==([]([](:method, [](1, 2)), [](:fn, 1, 2, []), [](:method, [](53, 43, 6613, 4353)), [](:fn, 53, 43, [](6613, 4353)))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should supply a 'call' to macros that specify the original call, including name, for a cell get <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002177S3_source')" id="l_C002177S3_source">show source</a> ]</span>
+            <div id="C002177S3_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo4 = 42) 
+Ground accesses = [] 
+x after(:foo4) add(:floxie, macro(accesses &lt;&lt;(call message name))) 
+x foo4 should ==(42) 
+x foo4 should ==(42) 
+accesses should ==([](:foo4, :foo4)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should supply a 'call' to macros that specify the original call, including name, for a method call <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002177S4_source')" id="l_C002177S4_source">show source</a> ]</span>
+            <div id="C002177S4_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foox = method(a, a +(42))) 
+Ground accesses = [] 
+x after(:foox) add(:floxie, macro(accesses &lt;&lt;(call message name))) 
+x foox(32) should ==(74) 
+x foox(1) should ==(43) 
+accesses should ==([](:foox, :foox)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to signal a condition from inside the after method <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002177S5_source')" id="l_C002177S5_source">show source</a> ]</span>
+            <div id="C002177S5_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo5 = method(42)) 
+accesses = [] 
+x after(:foo5) add(:floxie, fn(accesses &lt;&lt;(:one))) 
+x after(:foo5) add(:floxie, fn(accesses &lt;&lt;(:two))) 
+x after(:foo5) add(:floxie, fn(accesses &lt;&lt;(:three))) 
+x after(:foo5) add(:floxie, fn(accesses &lt;&lt;(:four) 
+    error!("this doesn't work..."))) 
+x after(:foo5) add(:floxie, fn(accesses &lt;&lt;(:five))) 
+x after(:foo5) add(:floxie, fn(accesses &lt;&lt;(:six))) 
+fn(x foo5) should signal(Condition Error Default) 
+accesses should ==([](:one, :two, :three, :four)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to specify for a cell that doesn't exist <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002177S6_source')" id="l_C002177S6_source">show source</a> ]</span>
+            <div id="C002177S6_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+accesses = [] 
+x after(:unexisting_aspect_after_cell) add(:floxie, fn(accesses &lt;&lt;(:wow))) 
+bind(rescue(Condition Error NoSuchCell, fn(c, nil)), 
+  x unexisting_aspect_after_cell) 
+accesses should ==([]) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should still raise a nosuchcell after the after advice have run for a non-existing cell <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002177S7_source')" id="l_C002177S7_source">show source</a> ]</span>
+            <div id="C002177S7_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x after(:unexisting_aspect_after_cell) add(:floxie, fn(nil)) 
+fn(x unexisting_aspect_after_cell) should signal(Condition Error NoSuchCell) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should set the self of a method to the same self as the receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002177S8_source')" id="l_C002177S8_source">show source</a> ]</span>
+            <div id="C002177S8_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo6 = method(42)) 
+Ground accesses = [] 
+x after(:foo6) add(:floxie, method(accesses &lt;&lt;(self))) 
+x after(:foo6) add(:floxie, macro(accesses &lt;&lt;(self))) 
+x foo6 
+accesses [](0) should be same(x) 
+accesses [](1) should be same(x) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should only evaluate arguments once <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002177S9_source')" id="l_C002177S9_source">show source</a> ]</span>
+            <div id="C002177S9_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo7 = method(arg, 42)) 
+Ground accesses = [] 
+x after(:foo7) add(:floxie, method(arg, accesses &lt;&lt;([](:method, arg)))) 
+x after(:foo7) add(:floxie, macro(accesses &lt;&lt;([](:macro, call arguments [](0) code)))) 
+x after(:foo7) add(:floxie, fn(arg, accesses &lt;&lt;([](:fn, arg)))) 
+x foo7(accesses &lt;&lt;(:arg_evaled) 
+  42 +(14)) 
+accesses should ==([](:arg_evaled, [](:method, 56), [](:macro, "accesses &lt;&lt;(:arg_evaled) .\n42 +(14)"), [](:fn, 56))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should evaluate advice in inverse order <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002177S10_source')" id="l_C002177S10_source">show source</a> ]</span>
+            <div id="C002177S10_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo8 = method(42)) 
+accesses = [] 
+x after(:foo8) add(:floxie, fn(accesses &lt;&lt;(:one))) 
+x after(:foo8) add(:floxie, fn(accesses &lt;&lt;(:two))) 
+x after(:foo8) add(:floxie, fn(accesses &lt;&lt;(:three))) 
+x foo8 
+accesses should ==([](:one, :two, :three)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should retain the original documentation <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002177S11_source')" id="l_C002177S11_source">show source</a> ]</span>
+            <div id="C002177S11_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo9 = method("Does something very interesting", 42)) 
+x after(:foo9) add(:floxie, fn("blarg", 42)) 
+x cell(:foo9) documentation should ==("Does something very interesting") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior Aspects after removing all named advice</b><br/>
+<ul style="list-style-type: none;">
+<li>- should remove all advice with the name <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002178S0_source')" id="l_C002178S0_source">show source</a> ]</span>
+            <div id="C002178S0_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo = 14) 
+accesses = [] 
+x after(:foo) add(:someone, fn(accesses &lt;&lt;(:one))) 
+x after(:foo) add(:someone, fn(accesses &lt;&lt;(:two))) 
+x after(:foo) add(:someone, fn(accesses &lt;&lt;(:three))) 
+x after(:foo) removeAll(:someone) 
+x foo should ==(14) 
+accesses should ==([]) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should signal a condition if no such advice could be found <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002178S1_source')" id="l_C002178S1_source">show source</a> ]</span>
+            <div id="C002178S1_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo = 14) 
+x after(:foo) removeAll(:someone) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not touch unnamed advice <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002178S2_source')" id="l_C002178S2_source">show source</a> ]</span>
+            <div id="C002178S2_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo = 14) 
+accesses = [] 
+x after(:foo) &lt;&lt;(fn(accesses &lt;&lt;(:one))) 
+x after(:foo) add(:someone, fn(accesses &lt;&lt;(:two))) 
+x after(:foo) &lt;&lt;(fn(accesses &lt;&lt;(:three))) 
+x after(:foo) removeAll(:someone) 
+x foo 
+accesses should ==([](:one, :three)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not touch advice with other names <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002178S3_source')" id="l_C002178S3_source">show source</a> ]</span>
+            <div id="C002178S3_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo = 14) 
+accesses = [] 
+x after(:foo) add(:buck, fn(accesses &lt;&lt;(:one))) 
+x after(:foo) add(:someone, fn(accesses &lt;&lt;(:two))) 
+x after(:foo) add(:blarg, fn(accesses &lt;&lt;(:three))) 
+x after(:foo) removeAll(:someone) 
+x foo 
+accesses should ==([](:one, :three)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should only remove the named advice from the specific point cut <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002178S4_source')" id="l_C002178S4_source">show source</a> ]</span>
+            <div id="C002178S4_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo = 14 
+    bar = 13) 
+accesses = [] 
+x after(:foo, :bar) add(:someone, lecro(accesses &lt;&lt;([](:one, call message name)))) 
+x after(:foo, :bar) add(:someone, lecro(accesses &lt;&lt;([](:two, call message name)))) 
+x after(:foo, :bar) add(:someone, lecro(accesses &lt;&lt;([](:three, call message name)))) 
+x after(:foo) removeAll(:someone) 
+x foo 
+x bar 
+accesses should ==([]([](:one, :bar), [](:two, :bar), [](:three, :bar))) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior Aspects after with except: keyword</b><br/>
+<ul style="list-style-type: none;">
+<li>- should take a name to not include <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002179S0_source')" id="l_C002179S0_source">show source</a> ]</span>
+            <div id="C002179S0_source" class="dyn-source">
+<pre>
+X = Origin mimic 
+Y = X mimic 
+Y foo16 = 42 
+X bar16 = 13 
+y = Y mimic 
+y quux16 = 555 
+Ground accesses = [] 
+y after(matching: :any, except: :bar16) &lt;&lt;(macro(accesses &lt;&lt;(call message name))) 
+y foo16 
+y bar16 
+y quux16 
+accesses should ==([](:foo16, :quux16)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take a list of names to not include <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002179S1_source')" id="l_C002179S1_source">show source</a> ]</span>
+            <div id="C002179S1_source" class="dyn-source">
+<pre>
+X = Origin mimic 
+Y = X mimic 
+Y foo17 = 42 
+X bar17 = 13 
+y = Y mimic 
+y quux17 = 555 
+Ground accesses = [] 
+y after(matching: :any, except: [](:bar17, :quux17)) &lt;&lt;(macro(accesses &lt;&lt;(call message name))) 
+y foo17 
+y bar17 
+y quux17 
+accesses should ==([](:foo17)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take a regular expression <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002179S2_source')" id="l_C002179S2_source">show source</a> ]</span>
+            <div id="C002179S2_source" class="dyn-source">
+<pre>
+X = Origin mimic 
+Y = X mimic 
+Y foo18 = 42 
+X bar18 = 13 
+y = Y mimic 
+y quux18 = 555 
+Ground accesses = [] 
+y after(matching: :any, except: #/bar18/) &lt;&lt;(macro(accesses &lt;&lt;(call message name))) 
+y foo18 
+y bar18 
+y quux18 
+accesses should ==([](:foo18, :quux18)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take a block <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002179S3_source')" id="l_C002179S3_source">show source</a> ]</span>
+            <div id="C002179S3_source" class="dyn-source">
+<pre>
+X = Origin mimic 
+Y = X mimic 
+Y foo19 = 42 
+X bar19 = 13 
+y = Y mimic 
+y quux19 = 555 
+Ground accesses = [] 
+y after(matching: :any, except: fn(c, #/bar19/ =~(c))) &lt;&lt;(macro(accesses &lt;&lt;(call message name))) 
+y foo19 
+y bar19 
+y quux19 
+accesses should ==([](:foo19, :quux19)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take a list of specifiers <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002179S4_source')" id="l_C002179S4_source">show source</a> ]</span>
+            <div id="C002179S4_source" class="dyn-source">
+<pre>
+X = Origin mimic 
+Y = X mimic 
+Y foo20 = 42 
+X bar20 = 13 
+y = Y mimic 
+y quux20 = 555 
+Ground accesses = [] 
+y after(matching: :any, except: [](#/bar20/, #/foo20/)) &lt;&lt;(macro(accesses &lt;&lt;(call message name))) 
+y foo20 
+y bar20 
+y quux20 
+accesses should ==([](:quux20)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior Aspects after with matching: keyword</b><br/>
+<ul style="list-style-type: none;">
+<li>- should take :any and add it to all existing cells for that object and mimics, up to Origin <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0021710S0_source')" id="l_C0021710S0_source">show source</a> ]</span>
+            <div id="C0021710S0_source" class="dyn-source">
+<pre>
+X = Origin mimic 
+Y = X mimic 
+Y foo11 = 42 
+X bar11 = 13 
+y = Y mimic 
+Origin mucus11 = 777 
+Ground accesses = [] 
+y after(matching: :any) &lt;&lt;(macro(accesses &lt;&lt;(call message name))) 
+y foo11 
+y bar11 
+y mucus11 
+accesses should ==([](:foo11, :bar11, :mucus11)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take :anyFromSelf and add it to all existing cells for that object only <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0021710S1_source')" id="l_C0021710S1_source">show source</a> ]</span>
+            <div id="C0021710S1_source" class="dyn-source">
+<pre>
+X = Origin mimic 
+Y = X mimic 
+Y foo12 = 42 
+X bar12 = 13 
+y = Y mimic 
+y quux12 = 555 
+Ground accesses = [] 
+y after(matching: :anyFromSelf) &lt;&lt;(macro(accesses &lt;&lt;(call message name))) 
+y foo12 
+y bar12 
+y quux12 
+accesses should ==([](:quux12)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take a regular expression and use that to choose which cells to handle <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0021710S2_source')" id="l_C0021710S2_source">show source</a> ]</span>
+            <div id="C0021710S2_source" class="dyn-source">
+<pre>
+X = Origin mimic 
+x = X mimic 
+X match_aspect_abc13 = 555 
+X mutch_aspect_abc13 = 555 
+X match_aspect_aaa13 = 5345 
+x match_aspect_hmm13 = 1111 
+Ground accesses = [] 
+x after(matching: #/match_aspect_/) &lt;&lt;(macro(accesses &lt;&lt;(call message name))) 
+x match_aspect_abc13 
+x mutch_aspect_abc13 
+x match_aspect_aaa13 
+x match_aspect_hmm13 
+accesses should ==([](:match_aspect_abc13, :match_aspect_aaa13, :match_aspect_hmm13)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take a block and use that to choose which cells to handle <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0021710S3_source')" id="l_C0021710S3_source">show source</a> ]</span>
+            <div id="C0021710S3_source" class="dyn-source">
+<pre>
+X = Origin mimic 
+x = X mimic 
+X match_aspect_abc14 = 555 
+X mutch_aspect_abc14 = 555 
+X match_aspect_aaa14 = 5345 
+x match_aspect_hmm14 = 1111 
+Ground accesses = [] 
+x after(matching: fn(arg, #/match_aspect_/ =~(arg))) &lt;&lt;(macro(accesses &lt;&lt;(call message name))) 
+x match_aspect_abc14 
+x mutch_aspect_abc14 
+x match_aspect_aaa14 
+x match_aspect_hmm14 
+accesses should ==([](:match_aspect_abc14, :match_aspect_aaa14, :match_aspect_hmm14)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take a list of specifiers to use for matching <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0021710S4_source')" id="l_C0021710S4_source">show source</a> ]</span>
+            <div id="C0021710S4_source" class="dyn-source">
+<pre>
+X = Origin mimic 
+x = X mimic 
+X match_aspect_abc15 = 555 
+X mutch_aspect_abc15 = 555 
+X match_aspect_aaa15 = 5345 
+x match_aspect_hmm15 = 1111 
+x blarg_aspect_hmm15 = 1111 
+Ground accesses = [] 
+x after(matching: [](#/match_aspect_/, #/blarg_/)) &lt;&lt;(macro(accesses &lt;&lt;(call message name))) 
+x match_aspect_abc15 
+x mutch_aspect_abc15 
+x match_aspect_aaa15 
+x match_aspect_hmm15 
+x blarg_aspect_hmm15 
+accesses should ==([](:match_aspect_abc15, :match_aspect_aaa15, :match_aspect_hmm15, :blarg_aspect_hmm15)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior Aspects after with more than one cell name</b><br/>
+<ul style="list-style-type: none;">
+<li>- should add the advice to both the cells <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0021711S0_source')" id="l_C0021711S0_source">show source</a> ]</span>
+            <div id="C0021711S0_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo10 = 42 
+    bar10 = 62 
+    ) 
+Ground accesses = [] 
+x after(:foo10, :bar10) &lt;&lt;(macro(accesses &lt;&lt;(call message name))) 
+x foo10 
+x bar10 
+x foo10 
+accesses should ==([](:foo10, :bar10, :foo10)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior Aspects after with one cell name</b><br/>
+<ul style="list-style-type: none;">
+<li>- should execute a block after a cell is accessed in any way <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0021712S0_source')" id="l_C0021712S0_source">show source</a> ]</span>
+            <div id="C0021712S0_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo1 = 42) 
+accesses = [] 
+x after(:foo1) &lt;&lt;(fn(accesses &lt;&lt;(:accessed))) 
+x foo1 should ==(42) 
+x foo1 should ==(42) 
+accesses should ==([](:accessed, :accessed)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should execute a method after a cell is accessed in any way <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0021712S1_source')" id="l_C0021712S1_source">show source</a> ]</span>
+            <div id="C0021712S1_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo2 = 42) 
+Ground accesses = [] 
+x after(:foo2) &lt;&lt;(method(accesses &lt;&lt;(:accessed))) 
+x foo2 should ==(42) 
+x foo2 should ==(42) 
+accesses should ==([](:accessed, :accessed)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should give the same arguments as was given to the original call <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0021712S2_source')" id="l_C0021712S2_source">show source</a> ]</span>
+            <div id="C0021712S2_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo3 = method(+(args), args)) 
+Ground accesses = [] 
+x after(:foo3) &lt;&lt;(method(+(args), accesses &lt;&lt;([](:method, args)))) 
+x after(:foo3) &lt;&lt;(fn(a, b, +(args), accesses &lt;&lt;([](:fn, a, b, args)))) 
+x foo3(1, 2) should ==([](1, 2)) 
+x foo3(53, 43, 6613, 4353) should ==([](53, 43, 6613, 4353)) 
+accesses should ==([]([](:method, [](1, 2)), [](:fn, 1, 2, []), [](:method, [](53, 43, 6613, 4353)), [](:fn, 53, 43, [](6613, 4353)))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should supply a 'call' to macros that specify the original call, including name, for a cell get <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0021712S3_source')" id="l_C0021712S3_source">show source</a> ]</span>
+            <div id="C0021712S3_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo4 = 42) 
+Ground accesses = [] 
+x after(:foo4) &lt;&lt;(macro(accesses &lt;&lt;(call message name))) 
+x foo4 should ==(42) 
+x foo4 should ==(42) 
+accesses should ==([](:foo4, :foo4)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should supply a 'call' to macros that specify the original call, including name, for a method call <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0021712S4_source')" id="l_C0021712S4_source">show source</a> ]</span>
+            <div id="C0021712S4_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foox = method(a, a +(42))) 
+Ground accesses = [] 
+x after(:foox) &lt;&lt;(macro(accesses &lt;&lt;(call message name))) 
+x foox(32) should ==(74) 
+x foox(1) should ==(43) 
+accesses should ==([](:foox, :foox)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to signal a condition from inside the after method <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0021712S5_source')" id="l_C0021712S5_source">show source</a> ]</span>
+            <div id="C0021712S5_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo5 = method(42)) 
+accesses = [] 
+x after(:foo5) &lt;&lt;(fn(accesses &lt;&lt;(:one))) 
+x after(:foo5) &lt;&lt;(fn(accesses &lt;&lt;(:two))) 
+x after(:foo5) &lt;&lt;(fn(accesses &lt;&lt;(:three))) 
+x after(:foo5) &lt;&lt;(fn(accesses &lt;&lt;(:four) 
+    error!("this doesn't work..."))) 
+x after(:foo5) &lt;&lt;(fn(accesses &lt;&lt;(:five))) 
+x after(:foo5) &lt;&lt;(fn(accesses &lt;&lt;(:six))) 
+fn(x foo5) should signal(Condition Error Default) 
+accesses should ==([](:one, :two, :three, :four)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to specify for a cell that doesn't exist <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0021712S6_source')" id="l_C0021712S6_source">show source</a> ]</span>
+            <div id="C0021712S6_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+accesses = [] 
+x after(:unexisting_aspect_after_cell) &lt;&lt;(fn(accesses &lt;&lt;(:wow))) 
+bind(rescue(Condition Error NoSuchCell, fn(c, nil)), 
+  x unexisting_aspect_after_cell) 
+accesses should ==([]) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should still raise a nosuchcell after the after advice have run for a non-existing cell <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0021712S7_source')" id="l_C0021712S7_source">show source</a> ]</span>
+            <div id="C0021712S7_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x after(:unexisting_aspect_after_cell) &lt;&lt;(fn(nil)) 
+fn(x unexisting_aspect_after_cell) should signal(Condition Error NoSuchCell) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should set the self of a method to the same self as the receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0021712S8_source')" id="l_C0021712S8_source">show source</a> ]</span>
+            <div id="C0021712S8_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo6 = method(42)) 
+Ground accesses = [] 
+x after(:foo6) &lt;&lt;(method(accesses &lt;&lt;(self))) 
+x after(:foo6) &lt;&lt;(macro(accesses &lt;&lt;(self))) 
+x foo6 
+accesses [](0) should be same(x) 
+accesses [](1) should be same(x) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should only evaluate arguments once <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0021712S9_source')" id="l_C0021712S9_source">show source</a> ]</span>
+            <div id="C0021712S9_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo7 = method(arg, 42)) 
+Ground accesses = [] 
+x after(:foo7) &lt;&lt;(method(arg, accesses &lt;&lt;([](:method, arg)))) 
+x after(:foo7) &lt;&lt;(macro(accesses &lt;&lt;([](:macro, call arguments [](0) code)))) 
+x after(:foo7) &lt;&lt;(fn(arg, accesses &lt;&lt;([](:fn, arg)))) 
+x foo7(accesses &lt;&lt;(:arg_evaled) 
+  42 +(14)) 
+accesses should ==([](:arg_evaled, [](:method, 56), [](:macro, "accesses &lt;&lt;(:arg_evaled) .\n42 +(14)"), [](:fn, 56))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should evaluate advice in inverse order <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0021712S10_source')" id="l_C0021712S10_source">show source</a> ]</span>
+            <div id="C0021712S10_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo8 = method(42)) 
+accesses = [] 
+x after(:foo8) &lt;&lt;(fn(accesses &lt;&lt;(:one))) 
+x after(:foo8) &lt;&lt;(fn(accesses &lt;&lt;(:two))) 
+x after(:foo8) &lt;&lt;(fn(accesses &lt;&lt;(:three))) 
+x foo8 
+accesses should ==([](:one, :two, :three)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should retain the original documentation <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0021712S11_source')" id="l_C0021712S11_source">show source</a> ]</span>
+            <div id="C0021712S11_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo9 = method("Does something very interesting", 42)) 
+x after(:foo9) &lt;&lt;(fn("blarg", 42)) 
+x cell(:foo9) documentation should ==("Does something very interesting") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00218"></a><b>around</b>(matching: nil, except: nil, +joinPoints)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00218_source')" id="l_C00218_source">show source</a> ]</p>
+            <div id="C00218_source" class="dyn-source">
+<pre>
+method(matching: nil, except: nil, +joinPoints, 
+  Pointcut with(receiver: self, joinPoints: joinPoints, matching: cell(:matching), except: except, type: :around))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> DefaultBehavior Aspects around</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return an Aspect Pointcut <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002181S0_source')" id="l_C002181S0_source">show source</a> ]</span>
+            <div id="C002181S0_source" class="dyn-source">
+<pre>
+Origin mimic around(:foo) should have kind("DefaultBehavior Aspects Pointcut") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should execute a block instead of a cell access <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002181S1_source')" id="l_C002181S1_source">show source</a> ]</span>
+            <div id="C002181S1_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo = 42) 
+accesses = [] 
+x around(:foo) &lt;&lt;(fn(accesses &lt;&lt;(:called))) 
+x foo 
+x foo 
+accesses should ==([](:called, :called)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should execute a method instead of a cell access <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002181S2_source')" id="l_C002181S2_source">show source</a> ]</span>
+            <div id="C002181S2_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo = 42) 
+Ground accesses = [] 
+x around(:foo) &lt;&lt;(method(accesses &lt;&lt;(:called))) 
+x foo 
+x foo 
+accesses should ==([](:called, :called)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should execute a method instead of a cell access with the current receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002181S3_source')" id="l_C002181S3_source">show source</a> ]</span>
+            <div id="C002181S3_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo = 42) 
+Ground accesses = [] 
+x around(:foo) &lt;&lt;(method(accesses &lt;&lt;(self))) 
+x foo 
+x foo 
+accesses [](0) should be same(x) 
+accesses [](1) should be same(x) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to define an around advice for a non-existing cell <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002181S4_source')" id="l_C002181S4_source">show source</a> ]</span>
+            <div id="C002181S4_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+accesses = [] 
+x around(:foo) &lt;&lt;(fn(accesses &lt;&lt;(:called))) 
+x foo 
+x foo 
+accesses should ==([](:called, :called)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should signal a nosuchcell exception for a non-existing cell, after invoking the around advice <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002181S5_source')" id="l_C002181S5_source">show source</a> ]</span>
+            <div id="C002181S5_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+accesses = [] 
+x around(:method_to_test_advice_around_non_existing_cell) &lt;&lt;(fn(accesses &lt;&lt;(:called) 
+    aspectCall)) 
+fn(x method_to_test_advice_around_non_existing_cell) should signal(Condition Error NoSuchCell) 
+accesses should ==([](:called)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to invoke the next value <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002181S6_source')" id="l_C002181S6_source">show source</a> ]</span>
+            <div id="C002181S6_source" class="dyn-source">
+<pre>
+Ground accesses = [] 
+x = Origin mimic do(
+    foo = method(val, accesses &lt;&lt;([](:realMethodInvoked, val)) 
+        18)) 
+x around(:foo) &lt;&lt;(method(var, 
+    accesses &lt;&lt;([](:aroundBefore, var)) 
+    xx = aspectCall(42) 
+    accesses &lt;&lt;([](:aroundAfter, xx)) 
+    39)) 
+x foo(500) should ==(39) 
+accesses should ==([]([](:aroundBefore, 500), [](:realMethodInvoked, 42), [](:aroundAfter, 18))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to invoke the next value several times <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002181S7_source')" id="l_C002181S7_source">show source</a> ]</span>
+            <div id="C002181S7_source" class="dyn-source">
+<pre>
+Ground accesses = [] 
+x = Origin mimic do(
+    foo = method(val, accesses &lt;&lt;([](:realMethodInvoked, val)) 
+        18)) 
+x around(:foo) &lt;&lt;(method(var, 
+    accesses &lt;&lt;([](:aroundBefore, var)) 
+    xx = aspectCall(42) 
+    accesses &lt;&lt;([](:aroundAfter, xx)) 
+    aspectCall(43) 
+    aspectCall(44) 
+    aspectCall(45) 
+    39)) 
+x foo(500) should ==(39) 
+accesses should ==([]([](:aroundBefore, 500), [](:realMethodInvoked, 42), [](:aroundAfter, 18), [](:realMethodInvoked, 43), [](:realMethodInvoked, 44), [](:realMethodInvoked, 45))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the value of the around advice <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002181S8_source')" id="l_C002181S8_source">show source</a> ]</span>
+            <div id="C002181S8_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x around(:foo) &lt;&lt;(fn(4100)) 
+x foo should ==(4100) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to add a named around advice <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002181S9_source')" id="l_C002181S9_source">show source</a> ]</span>
+            <div id="C002181S9_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x around(:foo) add(:something, fn(4100)) 
+x foo should ==(4100) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to remove a named around advice <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002181S10_source')" id="l_C002181S10_source">show source</a> ]</span>
+            <div id="C002181S10_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo = 42) 
+x around(:foo) add(:something, fn(4100)) 
+x around(:foo) remove(:something) 
+x foo should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00216"></a><b>before</b>(matching: nil, except: nil, +joinPoints)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00216_source')" id="l_C00216_source">show source</a> ]</p>
+            <div id="C00216_source" class="dyn-source">
+<pre>
+method(matching: nil, except: nil, +joinPoints, 
+  Pointcut with(receiver: self, joinPoints: joinPoints, matching: cell(:matching), except: except, type: :before))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> DefaultBehavior Aspects before</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return an Aspect Pointcut <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002161S0_source')" id="l_C002161S0_source">show source</a> ]</span>
+            <div id="C002161S0_source" class="dyn-source">
+<pre>
+Origin mimic before(:foo) should have kind("DefaultBehavior Aspects Pointcut") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior Aspects before adding named advice</b><br/>
+<ul style="list-style-type: none;">
+</ul>
+<b> DefaultBehavior Aspects before adding named advice with except: keyword</b><br/>
+<ul style="list-style-type: none;">
+<li>- should take a name to not include <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002163S0_source')" id="l_C002163S0_source">show source</a> ]</span>
+            <div id="C002163S0_source" class="dyn-source">
+<pre>
+X = Origin mimic 
+Y = X mimic 
+Y foo16 = 42 
+X bar16 = 13 
+y = Y mimic 
+y quux16 = 555 
+Ground accesses = [] 
+y before(matching: :any, except: :bar16) add(:floxie, macro(accesses &lt;&lt;(call message name))) 
+y foo16 
+y bar16 
+y quux16 
+accesses should ==([](:foo16, :quux16)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take a list of names to not include <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002163S1_source')" id="l_C002163S1_source">show source</a> ]</span>
+            <div id="C002163S1_source" class="dyn-source">
+<pre>
+X = Origin mimic 
+Y = X mimic 
+Y foo17 = 42 
+X bar17 = 13 
+y = Y mimic 
+y quux17 = 555 
+Ground accesses = [] 
+y before(matching: :any, except: [](:bar17, :quux17)) add(:floxie, macro(accesses &lt;&lt;(call message name))) 
+y foo17 
+y bar17 
+y quux17 
+accesses should ==([](:foo17)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take a regular expression <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002163S2_source')" id="l_C002163S2_source">show source</a> ]</span>
+            <div id="C002163S2_source" class="dyn-source">
+<pre>
+X = Origin mimic 
+Y = X mimic 
+Y foo18 = 42 
+X bar18 = 13 
+y = Y mimic 
+y quux18 = 555 
+Ground accesses = [] 
+y before(matching: :any, except: #/bar18/) add(:floxie, macro(accesses &lt;&lt;(call message name))) 
+y foo18 
+y bar18 
+y quux18 
+accesses should ==([](:foo18, :quux18)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take a block <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002163S3_source')" id="l_C002163S3_source">show source</a> ]</span>
+            <div id="C002163S3_source" class="dyn-source">
+<pre>
+X = Origin mimic 
+Y = X mimic 
+Y foo19 = 42 
+X bar19 = 13 
+y = Y mimic 
+y quux19 = 555 
+Ground accesses = [] 
+y before(matching: :any, except: fn(c, #/bar19/ =~(c))) add(:floxie, macro(accesses &lt;&lt;(call message name))) 
+y foo19 
+y bar19 
+y quux19 
+accesses should ==([](:foo19, :quux19)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take a list of specifiers <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002163S4_source')" id="l_C002163S4_source">show source</a> ]</span>
+            <div id="C002163S4_source" class="dyn-source">
+<pre>
+X = Origin mimic 
+Y = X mimic 
+Y foo20 = 42 
+X bar20 = 13 
+y = Y mimic 
+y quux20 = 555 
+Ground accesses = [] 
+y before(matching: :any, except: [](#/bar20/, #/foo20/)) add(:floxie, macro(accesses &lt;&lt;(call message name))) 
+y foo20 
+y bar20 
+y quux20 
+accesses should ==([](:quux20)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior Aspects before adding named advice with matching: keyword</b><br/>
+<ul style="list-style-type: none;">
+<li>- should take :any and add it to all existing cells for that object and mimics, up to Origin <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002164S0_source')" id="l_C002164S0_source">show source</a> ]</span>
+            <div id="C002164S0_source" class="dyn-source">
+<pre>
+X = Origin mimic 
+Y = X mimic 
+Y foo11 = 42 
+X bar11 = 13 
+y = Y mimic 
+Origin mucus11 = 777 
+Ground accesses = [] 
+y before(matching: :any) add(:floxie, macro(accesses &lt;&lt;(call message name))) 
+y foo11 
+y bar11 
+y mucus11 
+accesses should ==([](:foo11, :bar11, :mucus11)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take :anyFromSelf and add it to all existing cells for that object only <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002164S1_source')" id="l_C002164S1_source">show source</a> ]</span>
+            <div id="C002164S1_source" class="dyn-source">
+<pre>
+X = Origin mimic 
+Y = X mimic 
+Y foo12 = 42 
+X bar12 = 13 
+y = Y mimic 
+y quux12 = 555 
+Ground accesses = [] 
+y before(matching: :anyFromSelf) add(:floxie, macro(accesses &lt;&lt;(call message name))) 
+y foo12 
+y bar12 
+y quux12 
+accesses should ==([](:quux12)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take a regular expression and use that to choose which cells to handle <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002164S2_source')" id="l_C002164S2_source">show source</a> ]</span>
+            <div id="C002164S2_source" class="dyn-source">
+<pre>
+X = Origin mimic 
+x = X mimic 
+X match_aspect_abc13 = 555 
+X mutch_aspect_abc13 = 555 
+X match_aspect_aaa13 = 5345 
+x match_aspect_hmm13 = 1111 
+Ground accesses = [] 
+x before(matching: #/match_aspect_/) add(:floxie, macro(accesses &lt;&lt;(call message name))) 
+x match_aspect_abc13 
+x mutch_aspect_abc13 
+x match_aspect_aaa13 
+x match_aspect_hmm13 
+accesses should ==([](:match_aspect_abc13, :match_aspect_aaa13, :match_aspect_hmm13)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take a block and use that to choose which cells to handle <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002164S3_source')" id="l_C002164S3_source">show source</a> ]</span>
+            <div id="C002164S3_source" class="dyn-source">
+<pre>
+X = Origin mimic 
+x = X mimic 
+X match_aspect_abc14 = 555 
+X mutch_aspect_abc14 = 555 
+X match_aspect_aaa14 = 5345 
+x match_aspect_hmm14 = 1111 
+Ground accesses = [] 
+x before(matching: fn(arg, #/match_aspect_/ =~(arg))) add(:floxie, macro(accesses &lt;&lt;(call message name))) 
+x match_aspect_abc14 
+x mutch_aspect_abc14 
+x match_aspect_aaa14 
+x match_aspect_hmm14 
+accesses should ==([](:match_aspect_abc14, :match_aspect_aaa14, :match_aspect_hmm14)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take a list of specifiers to use for matching <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002164S4_source')" id="l_C002164S4_source">show source</a> ]</span>
+            <div id="C002164S4_source" class="dyn-source">
+<pre>
+X = Origin mimic 
+x = X mimic 
+X match_aspect_abc15 = 555 
+X mutch_aspect_abc15 = 555 
+X match_aspect_aaa15 = 5345 
+x match_aspect_hmm15 = 1111 
+x blarg_aspect_hmm15 = 1111 
+Ground accesses = [] 
+x before(matching: [](#/match_aspect_/, #/blarg_/)) add(:floxie, macro(accesses &lt;&lt;(call message name))) 
+x match_aspect_abc15 
+x mutch_aspect_abc15 
+x match_aspect_aaa15 
+x match_aspect_hmm15 
+x blarg_aspect_hmm15 
+accesses should ==([](:match_aspect_abc15, :match_aspect_aaa15, :match_aspect_hmm15, :blarg_aspect_hmm15)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior Aspects before adding named advice with more than one cell name</b><br/>
+<ul style="list-style-type: none;">
+<li>- should add the advice to both the cells <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002165S0_source')" id="l_C002165S0_source">show source</a> ]</span>
+            <div id="C002165S0_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo10 = 42 
+    bar10 = 62 
+    ) 
+Ground accesses = [] 
+x before(:foo10, :bar10) add(:floxie, macro(accesses &lt;&lt;(call message name))) 
+x foo10 
+x bar10 
+x foo10 
+accesses should ==([](:foo10, :bar10, :foo10)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior Aspects before adding named advice with one cell name</b><br/>
+<ul style="list-style-type: none;">
+<li>- should execute a block before a cell is accessed in any way <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002166S0_source')" id="l_C002166S0_source">show source</a> ]</span>
+            <div id="C002166S0_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo1 = 42) 
+accesses = [] 
+x before(:foo1) add(:floxie, fn(accesses &lt;&lt;(:accessed))) 
+x foo1 should ==(42) 
+x foo1 should ==(42) 
+accesses should ==([](:accessed, :accessed)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should execute a method before a cell is accessed in any way <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002166S1_source')" id="l_C002166S1_source">show source</a> ]</span>
+            <div id="C002166S1_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo2 = 42) 
+Ground accesses = [] 
+x before(:foo2) add(:floxie, method(accesses &lt;&lt;(:accessed))) 
+x foo2 should ==(42) 
+x foo2 should ==(42) 
+accesses should ==([](:accessed, :accessed)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should give the same arguments as was given to the original call <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002166S2_source')" id="l_C002166S2_source">show source</a> ]</span>
+            <div id="C002166S2_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo3 = method(+(args), args)) 
+Ground accesses = [] 
+x before(:foo3) add(:floxie, method(+(args), accesses &lt;&lt;([](:method, args)))) 
+x before(:foo3) add(:floxie, fn(a, b, +(args), accesses &lt;&lt;([](:fn, a, b, args)))) 
+x foo3(1, 2) should ==([](1, 2)) 
+x foo3(53, 43, 6613, 4353) should ==([](53, 43, 6613, 4353)) 
+accesses should ==([]([](:fn, 1, 2, []), [](:method, [](1, 2)), [](:fn, 53, 43, [](6613, 4353)), [](:method, [](53, 43, 6613, 4353)))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should supply a 'call' to macros that specify the original call, including name, for a cell get <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002166S3_source')" id="l_C002166S3_source">show source</a> ]</span>
+            <div id="C002166S3_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo4 = 42) 
+Ground accesses = [] 
+x before(:foo4) add(:floxie, macro(accesses &lt;&lt;(call message name))) 
+x foo4 should ==(42) 
+x foo4 should ==(42) 
+accesses should ==([](:foo4, :foo4)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should supply a 'call' to macros that specify the original call, including name, for a method call <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002166S4_source')" id="l_C002166S4_source">show source</a> ]</span>
+            <div id="C002166S4_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foox = method(a, a +(42))) 
+Ground accesses = [] 
+x before(:foox) add(:floxie, macro(accesses &lt;&lt;(call message name))) 
+x foox(32) should ==(74) 
+x foox(1) should ==(43) 
+accesses should ==([](:foox, :foox)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to signal a condition from inside the before method <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002166S5_source')" id="l_C002166S5_source">show source</a> ]</span>
+            <div id="C002166S5_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo5 = method(42)) 
+accesses = [] 
+x before(:foo5) add(:floxie, fn(accesses &lt;&lt;(:one))) 
+x before(:foo5) add(:floxie, fn(accesses &lt;&lt;(:two))) 
+x before(:foo5) add(:floxie, fn(accesses &lt;&lt;(:three))) 
+x before(:foo5) add(:floxie, fn(accesses &lt;&lt;(:four) 
+    error!("this doesn't work..."))) 
+x before(:foo5) add(:floxie, fn(accesses &lt;&lt;(:five))) 
+x before(:foo5) add(:floxie, fn(accesses &lt;&lt;(:six))) 
+fn(x foo5) should signal(Condition Error Default) 
+accesses should ==([](:six, :five, :four)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to specify for a cell that doesn't exist <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002166S6_source')" id="l_C002166S6_source">show source</a> ]</span>
+            <div id="C002166S6_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+accesses = [] 
+x before(:unexisting_aspect_before_cell) add(:floxie, fn(accesses &lt;&lt;(:wow))) 
+bind(rescue(Condition Error NoSuchCell, fn(c, nil)), 
+  x unexisting_aspect_before_cell) 
+accesses should ==([](:wow)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should still raise a nosuchcell after the before advice have run for a non-existing cell <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002166S7_source')" id="l_C002166S7_source">show source</a> ]</span>
+            <div id="C002166S7_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x before(:unexisting_aspect_before_cell) add(:floxie, fn(nil)) 
+fn(x unexisting_aspect_before_cell) should signal(Condition Error NoSuchCell) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should set the self of a method to the same self as the receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002166S8_source')" id="l_C002166S8_source">show source</a> ]</span>
+            <div id="C002166S8_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo6 = method(42)) 
+Ground accesses = [] 
+x before(:foo6) add(:floxie, method(accesses &lt;&lt;(self))) 
+x before(:foo6) add(:floxie, macro(accesses &lt;&lt;(self))) 
+x foo6 
+accesses [](0) should be same(x) 
+accesses [](1) should be same(x) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should only evaluate arguments once <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002166S9_source')" id="l_C002166S9_source">show source</a> ]</span>
+            <div id="C002166S9_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo7 = method(arg, 42)) 
+Ground accesses = [] 
+x before(:foo7) add(:floxie, method(arg, accesses &lt;&lt;([](:method, arg)))) 
+x before(:foo7) add(:floxie, macro(accesses &lt;&lt;([](:macro, call arguments [](0) code)))) 
+x before(:foo7) add(:floxie, fn(arg, accesses &lt;&lt;([](:fn, arg)))) 
+x foo7(accesses &lt;&lt;(:arg_evaled) 
+  42 +(14)) 
+accesses should ==([](:arg_evaled, [](:fn, 56), [](:macro, "accesses &lt;&lt;(:arg_evaled) .\n42 +(14)"), [](:method, 56))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should evaluate advice in inverse order <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002166S10_source')" id="l_C002166S10_source">show source</a> ]</span>
+            <div id="C002166S10_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo8 = method(42)) 
+accesses = [] 
+x before(:foo8) add(:floxie, fn(accesses &lt;&lt;(:one))) 
+x before(:foo8) add(:floxie, fn(accesses &lt;&lt;(:two))) 
+x before(:foo8) add(:floxie, fn(accesses &lt;&lt;(:three))) 
+x foo8 
+accesses should ==([](:three, :two, :one)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should retain the original documentation <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002166S11_source')" id="l_C002166S11_source">show source</a> ]</span>
+            <div id="C002166S11_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo9 = method("Does something very interesting", 42)) 
+x before(:foo9) add(:floxie, fn("blarg", 42)) 
+x cell(:foo9) documentation should ==("Does something very interesting") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior Aspects before removing named advice</b><br/>
+<ul style="list-style-type: none;">
+<li>- should only remove the outermost advice with the name <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002167S0_source')" id="l_C002167S0_source">show source</a> ]</span>
+            <div id="C002167S0_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo = 14) 
+accesses = [] 
+x before(:foo) add(:someone, fn(accesses &lt;&lt;(:one))) 
+x before(:foo) add(:someone, fn(accesses &lt;&lt;(:two))) 
+x before(:foo) add(:someone, fn(accesses &lt;&lt;(:three))) 
+x before(:foo) remove(:someone) 
+x foo 
+accesses should ==([](:two, :one)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should signal a condition if no such advice could be found <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002167S1_source')" id="l_C002167S1_source">show source</a> ]</span>
+            <div id="C002167S1_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo = 14) 
+fn(x before(:foo) remove(:someone)) should signal(Condition Error NoSuchAdvice) 
+x before(:foo) &lt;&lt;(fn) 
+fn(x before(:foo) remove(:someone)) should signal(Condition Error NoSuchAdvice) 
+x before(:foo) add(:anotherName, fn) 
+fn(x before(:foo) remove(:someone)) should signal(Condition Error NoSuchAdvice) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not touch unnamed advice <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002167S2_source')" id="l_C002167S2_source">show source</a> ]</span>
+            <div id="C002167S2_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo = 14) 
+accesses = [] 
+x before(:foo) &lt;&lt;(fn(accesses &lt;&lt;(:one))) 
+x before(:foo) add(:someone, fn(accesses &lt;&lt;(:two))) 
+x before(:foo) &lt;&lt;(fn(accesses &lt;&lt;(:three))) 
+x before(:foo) remove(:someone) 
+x foo 
+accesses should ==([](:three, :one)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not touch advice with other names <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002167S3_source')" id="l_C002167S3_source">show source</a> ]</span>
+            <div id="C002167S3_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo = 14) 
+accesses = [] 
+x before(:foo) add(:buck, fn(accesses &lt;&lt;(:one))) 
+x before(:foo) add(:someone, fn(accesses &lt;&lt;(:two))) 
+x before(:foo) add(:blarg, fn(accesses &lt;&lt;(:three))) 
+x before(:foo) remove(:someone) 
+x foo 
+accesses should ==([](:three, :one)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should only remove the named advice from the specific point cut <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002167S4_source')" id="l_C002167S4_source">show source</a> ]</span>
+            <div id="C002167S4_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo = 14 
+    bar = 13) 
+accesses = [] 
+x before(:foo, :bar) add(:someone, lecro(accesses &lt;&lt;([](:one, call message name)))) 
+x before(:foo, :bar) add(:someone, lecro(accesses &lt;&lt;([](:two, call message name)))) 
+x before(:foo, :bar) add(:someone, lecro(accesses &lt;&lt;([](:three, call message name)))) 
+x before(:foo) remove(:someone) 
+x foo 
+x bar 
+accesses should ==([]([](:two, :foo), [](:one, :foo), [](:three, :bar), [](:two, :bar), [](:one, :bar))) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior Aspects before with except: keyword</b><br/>
+<ul style="list-style-type: none;">
+<li>- should take a name to not include <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002168S0_source')" id="l_C002168S0_source">show source</a> ]</span>
+            <div id="C002168S0_source" class="dyn-source">
+<pre>
+X = Origin mimic 
+Y = X mimic 
+Y foo16 = 42 
+X bar16 = 13 
+y = Y mimic 
+y quux16 = 555 
+Ground accesses = [] 
+y before(matching: :any, except: :bar16) &lt;&lt;(macro(accesses &lt;&lt;(call message name))) 
+y foo16 
+y bar16 
+y quux16 
+accesses should ==([](:foo16, :quux16)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take a list of names to not include <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002168S1_source')" id="l_C002168S1_source">show source</a> ]</span>
+            <div id="C002168S1_source" class="dyn-source">
+<pre>
+X = Origin mimic 
+Y = X mimic 
+Y foo17 = 42 
+X bar17 = 13 
+y = Y mimic 
+y quux17 = 555 
+Ground accesses = [] 
+y before(matching: :any, except: [](:bar17, :quux17)) &lt;&lt;(macro(accesses &lt;&lt;(call message name))) 
+y foo17 
+y bar17 
+y quux17 
+accesses should ==([](:foo17)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take a regular expression <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002168S2_source')" id="l_C002168S2_source">show source</a> ]</span>
+            <div id="C002168S2_source" class="dyn-source">
+<pre>
+X = Origin mimic 
+Y = X mimic 
+Y foo18 = 42 
+X bar18 = 13 
+y = Y mimic 
+y quux18 = 555 
+Ground accesses = [] 
+y before(matching: :any, except: #/bar18/) &lt;&lt;(macro(accesses &lt;&lt;(call message name))) 
+y foo18 
+y bar18 
+y quux18 
+accesses should ==([](:foo18, :quux18)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take a block <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002168S3_source')" id="l_C002168S3_source">show source</a> ]</span>
+            <div id="C002168S3_source" class="dyn-source">
+<pre>
+X = Origin mimic 
+Y = X mimic 
+Y foo19 = 42 
+X bar19 = 13 
+y = Y mimic 
+y quux19 = 555 
+Ground accesses = [] 
+y before(matching: :any, except: fn(c, #/bar19/ =~(c))) &lt;&lt;(macro(accesses &lt;&lt;(call message name))) 
+y foo19 
+y bar19 
+y quux19 
+accesses should ==([](:foo19, :quux19)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take a list of specifiers <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002168S4_source')" id="l_C002168S4_source">show source</a> ]</span>
+            <div id="C002168S4_source" class="dyn-source">
+<pre>
+X = Origin mimic 
+Y = X mimic 
+Y foo20 = 42 
+X bar20 = 13 
+y = Y mimic 
+y quux20 = 555 
+Ground accesses = [] 
+y before(matching: :any, except: [](#/bar20/, #/foo20/)) &lt;&lt;(macro(accesses &lt;&lt;(call message name))) 
+y foo20 
+y bar20 
+y quux20 
+accesses should ==([](:quux20)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior Aspects before with matching: keyword</b><br/>
+<ul style="list-style-type: none;">
+<li>- should take :any and add it to all existing cells for that object and mimics, up to Origin <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002169S0_source')" id="l_C002169S0_source">show source</a> ]</span>
+            <div id="C002169S0_source" class="dyn-source">
+<pre>
+X = Origin mimic 
+Y = X mimic 
+Y foo11 = 42 
+X bar11 = 13 
+y = Y mimic 
+Origin mucus11 = 777 
+Ground accesses = [] 
+y before(matching: :any) &lt;&lt;(macro(accesses &lt;&lt;(call message name))) 
+y foo11 
+y bar11 
+y mucus11 
+accesses should ==([](:foo11, :bar11, :mucus11)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take :anyFromSelf and add it to all existing cells for that object only <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002169S1_source')" id="l_C002169S1_source">show source</a> ]</span>
+            <div id="C002169S1_source" class="dyn-source">
+<pre>
+X = Origin mimic 
+Y = X mimic 
+Y foo12 = 42 
+X bar12 = 13 
+y = Y mimic 
+y quux12 = 555 
+Ground accesses = [] 
+y before(matching: :anyFromSelf) &lt;&lt;(macro(accesses &lt;&lt;(call message name))) 
+y foo12 
+y bar12 
+y quux12 
+accesses should ==([](:quux12)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take a regular expression and use that to choose which cells to handle <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002169S2_source')" id="l_C002169S2_source">show source</a> ]</span>
+            <div id="C002169S2_source" class="dyn-source">
+<pre>
+X = Origin mimic 
+x = X mimic 
+X match_aspect_abc13 = 555 
+X mutch_aspect_abc13 = 555 
+X match_aspect_aaa13 = 5345 
+x match_aspect_hmm13 = 1111 
+Ground accesses = [] 
+x before(matching: #/match_aspect_/) &lt;&lt;(macro(accesses &lt;&lt;(call message name))) 
+x match_aspect_abc13 
+x mutch_aspect_abc13 
+x match_aspect_aaa13 
+x match_aspect_hmm13 
+accesses should ==([](:match_aspect_abc13, :match_aspect_aaa13, :match_aspect_hmm13)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take a block and use that to choose which cells to handle <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002169S3_source')" id="l_C002169S3_source">show source</a> ]</span>
+            <div id="C002169S3_source" class="dyn-source">
+<pre>
+X = Origin mimic 
+x = X mimic 
+X match_aspect_abc14 = 555 
+X mutch_aspect_abc14 = 555 
+X match_aspect_aaa14 = 5345 
+x match_aspect_hmm14 = 1111 
+Ground accesses = [] 
+x before(matching: fn(arg, #/match_aspect_/ =~(arg))) &lt;&lt;(macro(accesses &lt;&lt;(call message name))) 
+x match_aspect_abc14 
+x mutch_aspect_abc14 
+x match_aspect_aaa14 
+x match_aspect_hmm14 
+accesses should ==([](:match_aspect_abc14, :match_aspect_aaa14, :match_aspect_hmm14)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take a list of specifiers to use for matching <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002169S4_source')" id="l_C002169S4_source">show source</a> ]</span>
+            <div id="C002169S4_source" class="dyn-source">
+<pre>
+X = Origin mimic 
+x = X mimic 
+X match_aspect_abc15 = 555 
+X mutch_aspect_abc15 = 555 
+X match_aspect_aaa15 = 5345 
+x match_aspect_hmm15 = 1111 
+x blarg_aspect_hmm15 = 1111 
+Ground accesses = [] 
+x before(matching: [](#/match_aspect_/, #/blarg_/)) &lt;&lt;(macro(accesses &lt;&lt;(call message name))) 
+x match_aspect_abc15 
+x mutch_aspect_abc15 
+x match_aspect_aaa15 
+x match_aspect_hmm15 
+x blarg_aspect_hmm15 
+accesses should ==([](:match_aspect_abc15, :match_aspect_aaa15, :match_aspect_hmm15, :blarg_aspect_hmm15)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior Aspects before with more than one cell name</b><br/>
+<ul style="list-style-type: none;">
+<li>- should add the advice to both the cells <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0021610S0_source')" id="l_C0021610S0_source">show source</a> ]</span>
+            <div id="C0021610S0_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo10 = 42 
+    bar10 = 62 
+    ) 
+Ground accesses = [] 
+x before(:foo10, :bar10) &lt;&lt;(macro(accesses &lt;&lt;(call message name))) 
+x foo10 
+x bar10 
+x foo10 
+accesses should ==([](:foo10, :bar10, :foo10)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior Aspects before with one cell name</b><br/>
+<ul style="list-style-type: none;">
+<li>- should execute a block before a cell is accessed in any way <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0021611S0_source')" id="l_C0021611S0_source">show source</a> ]</span>
+            <div id="C0021611S0_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo1 = 42) 
+accesses = [] 
+x before(:foo1) &lt;&lt;(fn(accesses &lt;&lt;(:accessed))) 
+x foo1 should ==(42) 
+x foo1 should ==(42) 
+accesses should ==([](:accessed, :accessed)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should execute a method before a cell is accessed in any way <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0021611S1_source')" id="l_C0021611S1_source">show source</a> ]</span>
+            <div id="C0021611S1_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo2 = 42) 
+Ground accesses = [] 
+x before(:foo2) &lt;&lt;(method(accesses &lt;&lt;(:accessed))) 
+x foo2 should ==(42) 
+x foo2 should ==(42) 
+accesses should ==([](:accessed, :accessed)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should give the same arguments as was given to the original call <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0021611S2_source')" id="l_C0021611S2_source">show source</a> ]</span>
+            <div id="C0021611S2_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo3 = method(+(args), args)) 
+Ground accesses = [] 
+x before(:foo3) &lt;&lt;(method(+(args), accesses &lt;&lt;([](:method, args)))) 
+x before(:foo3) &lt;&lt;(fn(a, b, +(args), accesses &lt;&lt;([](:fn, a, b, args)))) 
+x foo3(1, 2) should ==([](1, 2)) 
+x foo3(53, 43, 6613, 4353) should ==([](53, 43, 6613, 4353)) 
+accesses should ==([]([](:fn, 1, 2, []), [](:method, [](1, 2)), [](:fn, 53, 43, [](6613, 4353)), [](:method, [](53, 43, 6613, 4353)))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should supply a 'call' to macros that specify the original call, including name, for a cell get <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0021611S3_source')" id="l_C0021611S3_source">show source</a> ]</span>
+            <div id="C0021611S3_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo4 = 42) 
+Ground accesses = [] 
+x before(:foo4) &lt;&lt;(macro(accesses &lt;&lt;(call message name))) 
+x foo4 should ==(42) 
+x foo4 should ==(42) 
+accesses should ==([](:foo4, :foo4)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should supply a 'call' to macros that specify the original call, including name, for a method call <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0021611S4_source')" id="l_C0021611S4_source">show source</a> ]</span>
+            <div id="C0021611S4_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foox = method(a, a +(42))) 
+Ground accesses = [] 
+x before(:foox) &lt;&lt;(macro(accesses &lt;&lt;(call message name))) 
+x foox(32) should ==(74) 
+x foox(1) should ==(43) 
+accesses should ==([](:foox, :foox)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to signal a condition from inside the before method <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0021611S5_source')" id="l_C0021611S5_source">show source</a> ]</span>
+            <div id="C0021611S5_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo5 = method(42)) 
+accesses = [] 
+x before(:foo5) &lt;&lt;(fn(accesses &lt;&lt;(:one))) 
+x before(:foo5) &lt;&lt;(fn(accesses &lt;&lt;(:two))) 
+x before(:foo5) &lt;&lt;(fn(accesses &lt;&lt;(:three))) 
+x before(:foo5) &lt;&lt;(fn(accesses &lt;&lt;(:four) 
+    error!("this doesn't work..."))) 
+x before(:foo5) &lt;&lt;(fn(accesses &lt;&lt;(:five))) 
+x before(:foo5) &lt;&lt;(fn(accesses &lt;&lt;(:six))) 
+fn(x foo5) should signal(Condition Error Default) 
+accesses should ==([](:six, :five, :four)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to specify for a cell that doesn't exist <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0021611S6_source')" id="l_C0021611S6_source">show source</a> ]</span>
+            <div id="C0021611S6_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+accesses = [] 
+x before(:unexisting_aspect_before_cell) &lt;&lt;(fn(accesses &lt;&lt;(:wow))) 
+bind(rescue(Condition Error NoSuchCell, fn(c, nil)), 
+  x unexisting_aspect_before_cell) 
+accesses should ==([](:wow)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should still raise a nosuchcell after the before advice have run for a non-existing cell <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0021611S7_source')" id="l_C0021611S7_source">show source</a> ]</span>
+            <div id="C0021611S7_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x before(:unexisting_aspect_before_cell) &lt;&lt;(fn(nil)) 
+fn(x unexisting_aspect_before_cell) should signal(Condition Error NoSuchCell) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should set the self of a method to the same self as the receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0021611S8_source')" id="l_C0021611S8_source">show source</a> ]</span>
+            <div id="C0021611S8_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo6 = method(42)) 
+Ground accesses = [] 
+x before(:foo6) &lt;&lt;(method(accesses &lt;&lt;(self))) 
+x before(:foo6) &lt;&lt;(macro(accesses &lt;&lt;(self))) 
+x foo6 
+accesses [](0) should be same(x) 
+accesses [](1) should be same(x) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should only evaluate arguments once <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0021611S9_source')" id="l_C0021611S9_source">show source</a> ]</span>
+            <div id="C0021611S9_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo7 = method(arg, 42)) 
+Ground accesses = [] 
+x before(:foo7) &lt;&lt;(method(arg, accesses &lt;&lt;([](:method, arg)))) 
+x before(:foo7) &lt;&lt;(macro(accesses &lt;&lt;([](:macro, call arguments [](0) code)))) 
+x before(:foo7) &lt;&lt;(fn(arg, accesses &lt;&lt;([](:fn, arg)))) 
+x foo7(accesses &lt;&lt;(:arg_evaled) 
+  42 +(14)) 
+accesses should ==([](:arg_evaled, [](:fn, 56), [](:macro, "accesses &lt;&lt;(:arg_evaled) .\n42 +(14)"), [](:method, 56))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should evaluate advice in inverse order <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0021611S10_source')" id="l_C0021611S10_source">show source</a> ]</span>
+            <div id="C0021611S10_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo8 = method(42)) 
+accesses = [] 
+x before(:foo8) &lt;&lt;(fn(accesses &lt;&lt;(:one))) 
+x before(:foo8) &lt;&lt;(fn(accesses &lt;&lt;(:two))) 
+x before(:foo8) &lt;&lt;(fn(accesses &lt;&lt;(:three))) 
+x foo8 
+accesses should ==([](:three, :two, :one)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should retain the original documentation <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0021611S11_source')" id="l_C0021611S11_source">show source</a> ]</span>
+            <div id="C0021611S11_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo9 = method("Does something very interesting", 42)) 
+x before(:foo9) &lt;&lt;(fn("blarg", 42)) 
+x cell(:foo9) documentation should ==("Does something very interesting") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </body>
+</html>

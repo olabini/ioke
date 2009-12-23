@@ -1,0 +1,600 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Kind: DefaultBehavior</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../.././dokgen-style.css" type="text/css" media="screen" />
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=480,width=750" ).focus();
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+    <table border='0' cellpadding='0' cellspacing='0' width="100%" class='banner'>
+      <tr>
+        <td>
+          <table width="100%" border='0' cellpadding='0' cellspacing='0'>
+            <tr>
+              <td class="file-title" colspan="2">
+                <span class="file-title-prefix">Kind</span>
+                <br />
+                Arity Arguments
+              </td>
+              <td align="right">
+                <table cellspacing="0" cellpadding="2">
+                  <tr>
+                    <td>Main mimic:</td>
+                    <td>
+                      <a href="../../kinds/Origin.html">Origin</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <div id="bodyContent">
+      <div id="content">
+        <div class="description">
+          <p>
+Arity argument assignment.
+    This object must be populated by using an Arity mimic.
+    The following cells are available:
+
+    positional - list of positional arguments
+    keywords   - dict of keyword arguments
+    rest       - list of rest positional arguments (includes all if this arity takes anything)
+    krest      - dict of rest keyword arguments (includes all if this arity takes anything)
+    extraPositional - list of unexpected positional arguments (includes all if this arity takes nothing)
+    extraKeywords - list of unexpected keyword arguments (includes all if this arity takes nothing)
+    missing    - list of missing positional argument names.
+    order      - zero if satisfied, n < 0 for n missing required arguments, n > 0 for n unexpected args.
+    length     - length of all arguments given (includes splatted count)
+    
+          </p>
+        </div>
+
+        <div class="sectiontitle">Mimics</div>
+        <ul>
+          <li><a href="../../kinds/Origin.html">Origin</a></li>
+        </ul>
+
+        <div class="sectiontitle">Inactive cells</div>
+        <ul>
+          <li><a href="#C00496">kind</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Active cells</div>
+        <ul>
+          <li><a href="#C00494">initialize(arguments)</a></li>
+<li><a href="#C00495">length()</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Specs</div>
+        <div class="specs">
+          
+<b> Arity Arguments extraKeywords</b><br/>
+<ul style="list-style-type: none;">
+<li>- should include values for taking:nothing <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S0_source')" id="l_C00K01S0_source">show source</a> ]</span>
+            <div id="C00K01S0_source" class="dyn-source">
+<pre>
+a = Arity taking:nothing applyOn(Origin mimic, a: 1, b: 2) 
+a extraKeywords size should ==(2) 
+a extraKeywords [](:a) should ==(1) 
+a extraKeywords [](:b) should ==(2) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be empty for taking:everything <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S1_source')" id="l_C00K01S1_source">show source</a> ]</span>
+            <div id="C00K01S1_source" class="dyn-source">
+<pre>
+a = Arity taking:everything applyOn(Origin mimic, a: 1, b: 2) 
+a extraKeywords should be empty 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be empty if krest argument defined <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S2_source')" id="l_C00K01S2_source">show source</a> ]</span>
+            <div id="C00K01S2_source" class="dyn-source">
+<pre>
+a = Arity from(a, +:(k), b: 1) applyOn(Origin mimic, 1, 3, b: 3, c: 9, a: 3) 
+a extraKeywords should be empty 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should contain the extra keyword arguments if given <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S3_source')" id="l_C00K01S3_source">show source</a> ]</span>
+            <div id="C00K01S3_source" class="dyn-source">
+<pre>
+a = Arity from(a:, b: 1, +(c)) applyOn(Origin mimic, a: 1, d: 2, b: 3, 9) 
+a extraKeywords size should ==(1) 
+a extraKeywords [](:d) should ==(2) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be empty if no extra keyword arguments given <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S4_source')" id="l_C00K01S4_source">show source</a> ]</span>
+            <div id="C00K01S4_source" class="dyn-source">
+<pre>
+a = Arity from(a 0, b 1, f: 1, +(c)) applyOn(Origin mimic, 2, 3, f: 22, 9, 9) 
+a extraKeywords should be empty 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> Arity Arguments extraPositional</b><br/>
+<ul style="list-style-type: none;">
+<li>- should include values for taking:nothing <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K02S0_source')" id="l_C00K02S0_source">show source</a> ]</span>
+            <div id="C00K02S0_source" class="dyn-source">
+<pre>
+a = Arity taking:nothing applyOn(Origin mimic, 1, 2) 
+a extraPositional should ==([](1, 2)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be empty for taking:everything <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K02S1_source')" id="l_C00K02S1_source">show source</a> ]</span>
+            <div id="C00K02S1_source" class="dyn-source">
+<pre>
+a = Arity taking:everything applyOn(Origin mimic, 1, 2) 
+a extraPositional should be empty 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be empty if rest argument defined <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K02S2_source')" id="l_C00K02S2_source">show source</a> ]</span>
+            <div id="C00K02S2_source" class="dyn-source">
+<pre>
+a = Arity from(a, +(d), b: 1) applyOn(Origin mimic, 1, 3, b: 3, 9, 3) 
+a extraPositional should be empty 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should contain the extra positional arguments if given <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K02S3_source')" id="l_C00K02S3_source">show source</a> ]</span>
+            <div id="C00K02S3_source" class="dyn-source">
+<pre>
+a = Arity from(a:, b: 1, +:(c)) applyOn(Origin mimic, a: 1, d: 2, b: 3, 9) 
+a extraPositional should ==([](9)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be empty if no extra positional arguments given <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K02S4_source')" id="l_C00K02S4_source">show source</a> ]</span>
+            <div id="C00K02S4_source" class="dyn-source">
+<pre>
+a = Arity from(a 0, b 1, +:(k)) applyOn(Origin mimic, 2, 3, f: 22) 
+a extraPositional should be empty 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> Arity Arguments keywords</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be empty for taking:nothing <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K03S0_source')" id="l_C00K03S0_source">show source</a> ]</span>
+            <div id="C00K03S0_source" class="dyn-source">
+<pre>
+Arity taking:nothing applyOn(Origin mimic, a: 1) keywords should be empty 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be empty for taking:everything <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K03S1_source')" id="l_C00K03S1_source">show source</a> ]</span>
+            <div id="C00K03S1_source" class="dyn-source">
+<pre>
+Arity taking:everything applyOn(Origin mimic, a: 1) keywords should be empty 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should contain the keyword arguments but not krest <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K03S2_source')" id="l_C00K03S2_source">show source</a> ]</span>
+            <div id="C00K03S2_source" class="dyn-source">
+<pre>
+a = Arity from(a:, b: 1, +:(c)) applyOn(Origin mimic, a: 1, d: 2, b: 3) 
+a keywords size should ==(2) 
+a keywords [](:a) should ==(1) 
+a keywords [](:b) should ==(3) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be empty if no keyword arguments given <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K03S3_source')" id="l_C00K03S3_source">show source</a> ]</span>
+            <div id="C00K03S3_source" class="dyn-source">
+<pre>
+a = Arity from(a 0, b 1, +(c), +:(krest)) applyOn(Origin mimic, 2, 3) 
+a keywords should be empty 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> Arity Arguments krest</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be empty for taking:nothing <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K04S0_source')" id="l_C00K04S0_source">show source</a> ]</span>
+            <div id="C00K04S0_source" class="dyn-source">
+<pre>
+Arity taking:nothing applyOn(Origin mimic, 1, 2) krest should be empty 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be include elements for taking:everything <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K04S1_source')" id="l_C00K04S1_source">show source</a> ]</span>
+            <div id="C00K04S1_source" class="dyn-source">
+<pre>
+a = Arity taking:everything applyOn(Origin mimic, a: 1, b: 2) 
+a krest size should ==(2) 
+a krest [](:a) should ==(1) 
+a krest [](:b) should ==(2) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be empty if no krest argument defined <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K04S2_source')" id="l_C00K04S2_source">show source</a> ]</span>
+            <div id="C00K04S2_source" class="dyn-source">
+<pre>
+a = Arity from(a, d 2, b: 1) applyOn(Origin mimic, 1, 3, b: 3) 
+a krest should be empty 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should contain the krest arguments if given <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K04S3_source')" id="l_C00K04S3_source">show source</a> ]</span>
+            <div id="C00K04S3_source" class="dyn-source">
+<pre>
+a = Arity from(a:, b: 1, +(d), +:(c)) applyOn(Origin mimic, a: 1, d: 2, b: 3, 9) 
+a krest size should ==(1) 
+a krest [](:d) should ==(2) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be empty if no krest arguments given <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K04S4_source')" id="l_C00K04S4_source">show source</a> ]</span>
+            <div id="C00K04S4_source" class="dyn-source">
+<pre>
+a = Arity from(a 0, b 1, +(c), +:(k)) applyOn(Origin mimic, 2, 3) 
+a krest should be empty 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> Arity Arguments missing</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be empty for taking:nothing <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K05S0_source')" id="l_C00K05S0_source">show source</a> ]</span>
+            <div id="C00K05S0_source" class="dyn-source">
+<pre>
+a = Arity taking:nothing applyOn(Origin mimic, 1, b: 2) 
+a missing should be empty 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be empty for taking:everything <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K05S1_source')" id="l_C00K05S1_source">show source</a> ]</span>
+            <div id="C00K05S1_source" class="dyn-source">
+<pre>
+a = Arity taking:everything applyOn(Origin mimic, 1, b: 2) 
+a missing should be empty 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be empty if no required arguments are missing <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K05S2_source')" id="l_C00K05S2_source">show source</a> ]</span>
+            <div id="C00K05S2_source" class="dyn-source">
+<pre>
+a = Arity from(a, b) applyOn(Origin mimic, 1, 2) 
+a missing should be empty 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should include the names of required arguments that are missing <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K05S3_source')" id="l_C00K05S3_source">show source</a> ]</span>
+            <div id="C00K05S3_source" class="dyn-source">
+<pre>
+a = Arity from(a, b, c 2) applyOn(Origin mimic) 
+a missing should ==([](:a, :b)) 
+a = Arity from(a, b, c 2) applyOn(Origin mimic, 1) 
+a missing should ==([](:b)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> Arity Arguments order</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be zero for taking:nothing without args <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K06S0_source')" id="l_C00K06S0_source">show source</a> ]</span>
+            <div id="C00K06S0_source" class="dyn-source">
+<pre>
+a = Arity taking:nothing applyOn(Origin mimic) 
+a order should ==(0) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be positive for taking:nothing with args <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K06S1_source')" id="l_C00K06S1_source">show source</a> ]</span>
+            <div id="C00K06S1_source" class="dyn-source">
+<pre>
+a = Arity taking:nothing applyOn(Origin mimic, 1, b: 2) 
+a order should ==(2) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be zero for taking:everything without args <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K06S2_source')" id="l_C00K06S2_source">show source</a> ]</span>
+            <div id="C00K06S2_source" class="dyn-source">
+<pre>
+a = Arity taking:everything applyOn(Origin mimic) 
+a order should ==(0) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be zero for taking:everything with args <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K06S3_source')" id="l_C00K06S3_source">show source</a> ]</span>
+            <div id="C00K06S3_source" class="dyn-source">
+<pre>
+a = Arity taking:everything applyOn(Origin mimic, 1, b: 2) 
+a order should ==(0) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be negative for missing required arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K06S4_source')" id="l_C00K06S4_source">show source</a> ]</span>
+            <div id="C00K06S4_source" class="dyn-source">
+<pre>
+a = Arity from(a, b) applyOn(Origin mimic) 
+a order should ==(-(2)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be positive for unexpected arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K06S5_source')" id="l_C00K06S5_source">show source</a> ]</span>
+            <div id="C00K06S5_source" class="dyn-source">
+<pre>
+a = Arity from(a, b: 2) applyOn(Origin mimic, 1, 2, b: 3, 4, 5) 
+a order should ==(3) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> Arity Arguments positional</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be empty for taking:nothing <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K07S0_source')" id="l_C00K07S0_source">show source</a> ]</span>
+            <div id="C00K07S0_source" class="dyn-source">
+<pre>
+Arity taking:nothing applyOn(Origin mimic, 1) positional should be empty 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be empty for taking:everything <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K07S1_source')" id="l_C00K07S1_source">show source</a> ]</span>
+            <div id="C00K07S1_source" class="dyn-source">
+<pre>
+Arity taking:everything applyOn(Origin mimic, 1) positional should be empty 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should contain the positional arguments but not rest <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K07S2_source')" id="l_C00K07S2_source">show source</a> ]</span>
+            <div id="C00K07S2_source" class="dyn-source">
+<pre>
+a = Arity from(a, b 1, +(c)) applyOn(Origin mimic, 1, 2, 3) 
+a positional should ==([](1, 2)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be empty if no positional arguments given <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K07S3_source')" id="l_C00K07S3_source">show source</a> ]</span>
+            <div id="C00K07S3_source" class="dyn-source">
+<pre>
+a = Arity from(a 0, b 1, +(c), +:(krest)) applyOn(Origin mimic, o: 1, p: 2) 
+a positional should be empty 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> Arity Arguments rest</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be empty for taking:nothing <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K08S0_source')" id="l_C00K08S0_source">show source</a> ]</span>
+            <div id="C00K08S0_source" class="dyn-source">
+<pre>
+Arity taking:nothing applyOn(Origin mimic, 1, 2) rest should be empty 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be include elements for taking:everything <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K08S1_source')" id="l_C00K08S1_source">show source</a> ]</span>
+            <div id="C00K08S1_source" class="dyn-source">
+<pre>
+Arity taking:everything applyOn(Origin mimic, 1, 2) rest should ==([](1, 2)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be empty if no rest argument defined <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K08S2_source')" id="l_C00K08S2_source">show source</a> ]</span>
+            <div id="C00K08S2_source" class="dyn-source">
+<pre>
+a = Arity from(a, d 2, b: 1, +:(c)) applyOn(Origin mimic, 1, 3, d: 2, b: 3) 
+a rest should be empty 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should contain the rest arguments if given <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K08S3_source')" id="l_C00K08S3_source">show source</a> ]</span>
+            <div id="C00K08S3_source" class="dyn-source">
+<pre>
+a = Arity from(a:, b: 1, +(d), +:(c)) applyOn(Origin mimic, a: 1, d: 2, b: 3, 9) 
+a rest should ==([](9)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be empty if no rest arguments given <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K08S4_source')" id="l_C00K08S4_source">show source</a> ]</span>
+            <div id="C00K08S4_source" class="dyn-source">
+<pre>
+a = Arity from(a 0, b 1, +(c)) applyOn(Origin mimic, 2, 3) 
+a rest should be empty 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+        </div>
+
+        <div class="sectiontitle">Inactive cells (details)</div>
+                <div class="cell">
+          <a name="C00496"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">kind</td>
+              <td>=</td>
+              <td class="cell-value">"Arity Arguments"</td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="sectiontitle">Active cells (details)</div>
+                <div class="cell">
+          <div class="title">
+          <a name="C00494"></a><b>initialize</b>(arguments)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00494_source')" id="l_C00494_source">show source</a> ]</p>
+            <div id="C00494_source" class="dyn-source">
+<pre>
+method(arguments, 
+  @ order = nil 
+  @ given = arguments 
+  @ positional = list 
+  @ keywords = dict 
+  @ rest = list 
+  @ krest = dict 
+  @ extraPositional = list 
+  @ extraKeywords = dict 
+  @ missing = list 
+  @ notSpreadable = list)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00495"></a><b>length</b>()
+          </div>
+          <div class="description">
+            <p>Return the length of all arguments given</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00495_source')" id="l_C00495_source">show source</a> ]</p>
+            <div id="C00495_source" class="dyn-source">
+<pre>
+method(
+  positional length +(keywords size) +(rest length) +(krest size) +(
+    
+    extraPositional length) +(extraKeywords size) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </body>
+</html>

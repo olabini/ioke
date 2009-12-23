@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Kind: DefaultBehavior</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../.././dokgen-style.css" type="text/css" media="screen" />
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=480,width=750" ).focus();
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+    <table border='0' cellpadding='0' cellspacing='0' width="100%" class='banner'>
+      <tr>
+        <td>
+          <table width="100%" border='0' cellpadding='0' cellspacing='0'>
+            <tr>
+              <td class="file-title" colspan="2">
+                <span class="file-title-prefix">Kind</span>
+                <br />
+                Mixins Comparing
+              </td>
+              <td align="right">
+                <table cellspacing="0" cellpadding="2">
+                  <tr>
+                    <td>Main mimic:</td>
+                    <td>
+                      <a href="../../kinds/Mixins.html">Mixins</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <div id="bodyContent">
+      <div id="content">
+        <div class="description">
+          <p>
+allows different objects to be compared, based on the spaceship operator being available
+          </p>
+        </div>
+
+        <div class="sectiontitle">Mimics</div>
+        <ul>
+          <li><a href="../../kinds/Mixins.html">Mixins</a></li>
+        </ul>
+
+        <div class="sectiontitle">Inactive cells</div>
+        <ul>
+          <li><a href="#C00578">kind</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Active cells</div>
+        <ul>
+          <li><a href="#C00587">!=(other)</a></li>
+<li><a href="#C00580">&lt;(other)</a></li>
+<li><a href="#C00581">&lt;=(other)</a></li>
+<li><a href="#C00579">&lt;=&gt;(other)</a></li>
+<li><a href="#C00586">==(other)</a></li>
+<li><a href="#C00583">&gt;(other)</a></li>
+<li><a href="#C00584">&gt;=(other)</a></li>
+<li><a href="#C00588">­(other)</a></li>
+<li><a href="#C00582">²(other)</a></li>
+<li><a href="#C00585">³(other)</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Specs</div>
+        <div class="specs">
+          
+        </div>
+
+        <div class="sectiontitle">Inactive cells (details)</div>
+                <div class="cell">
+          <a name="C00578"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">kind</td>
+              <td>=</td>
+              <td class="cell-value">"Mixins Comparing"</td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="sectiontitle">Active cells (details)</div>
+                <div class="cell">
+          <div class="title">
+          <a name="C00587"></a><b>!=</b>(other)
+          </div>
+          <div class="description">
+            <p>return true if the receiver is not equal to the argument, otherwise false</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00587_source')" id="l_C00587_source">show source</a> ]</p>
+            <div id="C00587_source" class="dyn-source">
+<pre>
+method(other, 
+  !((&lt;=&gt;(other)) ==(0)))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00580"></a><b>&lt;</b>(other)
+          </div>
+          <div class="description">
+            <p>return true if the receiver is less than the argument, otherwise false</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00580_source')" id="l_C00580_source">show source</a> ]</p>
+            <div id="C00580_source" class="dyn-source">
+<pre>
+method(other, 
+  (&lt;=&gt;(other)) ==(0 -(1)))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00581"></a><b>&lt;=</b>(other)
+          </div>
+          <div class="description">
+            <p>return true if the receiver is less than or equal to the argument, otherwise false</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00581_source')" id="l_C00581_source">show source</a> ]</p>
+            <div id="C00581_source" class="dyn-source">
+<pre>
+method(other, 
+  result = (&lt;=&gt;(other)) 
+  result &&(result !=(1)))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00579"></a><b>&lt;=&gt;</b>(other)
+          </div>
+          <div class="description">
+            <p>should be overridden - will result in an inconsistent ordering by always returning -1 except when comparing to itself, and then it will return 0</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00579_source')" id="l_C00579_source">show source</a> ]</p>
+            <div id="C00579_source" class="dyn-source">
+<pre>
+method(other, 
+  if(cell(:other) kind ==("Mixins Comparing"), 
+    0, 
+    (0 -(1))))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00586"></a><b>==</b>(other)
+          </div>
+          <div class="description">
+            <p>return true if the receiver is equal to the argument, otherwise false</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00586_source')" id="l_C00586_source">show source</a> ]</p>
+            <div id="C00586_source" class="dyn-source">
+<pre>
+method(other, 
+  (&lt;=&gt;(cell(:other))) ==(0))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00583"></a><b>&gt;</b>(other)
+          </div>
+          <div class="description">
+            <p>return true if the receiver is greater than the argument, otherwise false</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00583_source')" id="l_C00583_source">show source</a> ]</p>
+            <div id="C00583_source" class="dyn-source">
+<pre>
+method(other, 
+  (&lt;=&gt;(other)) ==(1))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00584"></a><b>&gt;=</b>(other)
+          </div>
+          <div class="description">
+            <p>return true if the receiver is greater than or equal to the argument, otherwise false</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00584_source')" id="l_C00584_source">show source</a> ]</p>
+            <div id="C00584_source" class="dyn-source">
+<pre>
+method(other, 
+  result = (&lt;=&gt;(other)) 
+  result &&(result !=(0 -(1))))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00588"></a><b>­</b>(other)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00588_source')" id="l_C00588_source">show source</a> ]</p>
+            <div id="C00588_source" class="dyn-source">
+<pre>
+method(other, 
+  !((&lt;=&gt;(other)) ==(0)))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00582"></a><b>²</b>(other)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00582_source')" id="l_C00582_source">show source</a> ]</p>
+            <div id="C00582_source" class="dyn-source">
+<pre>
+method(other, 
+  result = (&lt;=&gt;(other)) 
+  result &&(result !=(1)))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00585"></a><b>³</b>(other)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00585_source')" id="l_C00585_source">show source</a> ]</p>
+            <div id="C00585_source" class="dyn-source">
+<pre>
+method(other, 
+  result = (&lt;=&gt;(other)) 
+  result &&(result !=(0 -(1))))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </body>
+</html>

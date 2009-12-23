@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Kind: DefaultBehavior</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href=".././dokgen-style.css" type="text/css" media="screen" />
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=480,width=750" ).focus();
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+    <table border='0' cellpadding='0' cellspacing='0' width="100%" class='banner'>
+      <tr>
+        <td>
+          <table width="100%" border='0' cellpadding='0' cellspacing='0'>
+            <tr>
+              <td class="file-title" colspan="2">
+                <span class="file-title-prefix">Kind</span>
+                <br />
+                Mixins
+              </td>
+              <td align="right">
+                <table cellspacing="0" cellpadding="2">
+                  <tr>
+                    <td>Main mimic:</td>
+                    <td>
+                      <a href="../kinds/DefaultBehavior.html">DefaultBehavior</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <div id="bodyContent">
+      <div id="content">
+        <div class="description">
+          <p>
+Mixins is the name space for most mixins in the system. DefaultBehavior is the notable exception.
+          </p>
+        </div>
+
+        <div class="sectiontitle">Mimics</div>
+        <ul>
+          <li><a href="../kinds/DefaultBehavior.html">DefaultBehavior</a></li>
+        </ul>
+
+        <div class="sectiontitle">Inactive cells</div>
+        <ul>
+          <li><a href="#C00569">kind</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Active cells</div>
+        <ul>
+          <li><a href="#C00570">=([place], value, +[morePlacesForDestructuring])</a></li>
+<li><a href="#C00571">==(other)</a></li>
+<li><a href="#C00572">cell(cellName)</a></li>
+<li><a href="#C00573">cell=(cellName, value)</a></li>
+<li><a href="#C00574">cell?(cellName)</a></li>
+<li><a href="#C00576">cellNames(includeMimics false, cutoff nil)</a></li>
+<li><a href="#C00575">cells(includeMimics false)</a></li>
+<li><a href="#C00577">mimic()</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Specs</div>
+        <div class="specs">
+          
+<b> Mixins Comparing</b><br/>
+<ul style="list-style-type: none;">
+<li>- should have the correct kind <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S0_source')" id="l_C00K01S0_source">show source</a> ]</span>
+            <div id="C00K01S0_source" class="dyn-source">
+<pre>
+Mixins Comparing kind should ==("Mixins Comparing") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> Mixins Enumerable</b><br/>
+<ul style="list-style-type: none;">
+<li>- should have the correct kind <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K02S0_source')" id="l_C00K02S0_source">show source</a> ]</span>
+            <div id="C00K02S0_source" class="dyn-source">
+<pre>
+Mixins Enumerable kind should ==("Mixins Enumerable") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> Mixins Sequenced</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be Enumerable <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K03S0_source')" id="l_C00K03S0_source">show source</a> ]</span>
+            <div id="C00K03S0_source" class="dyn-source">
+<pre>
+(Reflector other:mimics(Mixins Sequenced) [](1) ==(Mixins Enumerable)) should be true 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+        </div>
+
+        <div class="sectiontitle">Inactive cells (details)</div>
+                <div class="cell">
+          <a name="C00569"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">kind</td>
+              <td>=</td>
+              <td class="cell-value">"Mixins"</td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="sectiontitle">Active cells (details)</div>
+                <div class="cell">
+          <div class="title">
+          <a name="C00570"></a><b>=</b>([place], value, +[morePlacesForDestructuring])
+          </div>
+          <div class="description">
+            <p>expects two or more arguments, the first arguments unevaluated, the last evaluated. assigns the result of evaluating the last argument in the context of the caller, and assigns this result to the name/s provided by the first arguments. the first arguments remains unevaluated. the result of the assignment is the value assigned to the name. if the last argument is a method-like object and it's name is not set, that name will be set to the name of the cell.</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00571"></a><b>==</b>(other)
+          </div>
+          <div class="description">
+            <p>returns true if the left hand side is equal to the right hand side. exactly what this means depend on the object. the default behavior of Ioke objects is to only be equal if they are the same instance.</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00572"></a><b>cell</b>(cellName)
+          </div>
+          <div class="description">
+            <p>expects one evaluated text or symbol argument and returns the cell that matches that name, without activating even if it's activatable.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Mixins cell</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be possible to get a cell using a Text argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005721S0_source')" id="l_C005721S0_source">show source</a> ]</span>
+            <div id="C005721S0_source" class="dyn-source">
+<pre>
+Mixins x = 42 
+Mixins cell("x") should ==(Mixins x) 
+Mixins Comparing x = 43 
+Mixins Comparing cell("x") should ==(Mixins Comparing x) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to get a cell using a Symbol argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005721S1_source')" id="l_C005721S1_source">show source</a> ]</span>
+            <div id="C005721S1_source" class="dyn-source">
+<pre>
+Mixins x = 42 
+Mixins cell(:x) should ==(Mixins x) 
+Mixins Comparing x = 43 
+Mixins Comparing cell(:x) should ==(Mixins Comparing x) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should report an error if trying to get a cell that doesn't exist in that object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005721S2_source')" id="l_C005721S2_source">show source</a> ]</span>
+            <div id="C005721S2_source" class="dyn-source">
+<pre>
+fn(Mixins cell(:mixins_spec_non_existing)) should signal(Condition Error NoSuchCell) 
+fn(Mixins cell("mixins_spec_non_existing")) should signal(Condition Error NoSuchCell) 
+fn(Mixins Comparing cell(:mixins_spec_non_existing)) should signal(Condition Error NoSuchCell) 
+fn(Mixins Comparing cell("mixins_spec_non_existing")) should signal(Condition Error NoSuchCell) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00573"></a><b>cell=</b>(cellName, value)
+          </div>
+          <div class="description">
+            <p>expects one evaluated text or symbol argument that names the cell to set, sets this cell to the result of evaluating the second argument, and returns the value set.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Mixins cell=</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be possible to set a cell using a Text argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005731S0_source')" id="l_C005731S0_source">show source</a> ]</span>
+            <div id="C005731S0_source" class="dyn-source">
+<pre>
+Mixins cell("blurg") = 42 
+Mixins blurg should ==(42) 
+Mixins Comparing cell("murg") = 43 
+Mixins Comparing murg should ==(43) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to set a cell using a Symbol argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005731S1_source')" id="l_C005731S1_source">show source</a> ]</span>
+            <div id="C005731S1_source" class="dyn-source">
+<pre>
+Mixins cell(:blurg) = 42 
+Mixins blurg should ==(42) 
+Mixins Comparing cell(:murg) = 43 
+Mixins Comparing murg should ==(43) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to set a cell with an empty name <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005731S2_source')" id="l_C005731S2_source">show source</a> ]</span>
+            <div id="C005731S2_source" class="dyn-source">
+<pre>
+oldEmpty = cell("") 
+Mixins Comparing cell("") = 42 
+Mixins Comparing cell("") should ==(42) 
+Mixins Comparing cell("") = cell(:oldEmpty) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to set a cell with complicated expressions <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005731S3_source')" id="l_C005731S3_source">show source</a> ]</span>
+            <div id="C005731S3_source" class="dyn-source">
+<pre>
+f = Origin mimic 
+f b = "foobar" 
+Mixins cell(f b) = 42 +(24) -(3) 
+Mixins cell(:foobar) should ==(63) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to set a cell that doesn't exist <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005731S4_source')" id="l_C005731S4_source">show source</a> ]</span>
+            <div id="C005731S4_source" class="dyn-source">
+<pre>
+Mixins cell(:blurg) = 42 
+Mixins blurg should ==(42) 
+Mixins Comparing cell(:murg) = 43 
+Mixins Comparing murg should ==(43) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to set a cell that does exist <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005731S5_source')" id="l_C005731S5_source">show source</a> ]</span>
+            <div id="C005731S5_source" class="dyn-source">
+<pre>
+Mixins x = 42 
+Mixins cell(:x) = 43 
+Mixins x should ==(43) 
+Mixins Comparing x = 42 
+Mixins Comparing cell(:x) = 44 
+Mixins Comparing x should ==(44) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to set a cell that does exist in a mimic. this should not change the mimic value <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005731S6_source')" id="l_C005731S6_source">show source</a> ]</span>
+            <div id="C005731S6_source" class="dyn-source">
+<pre>
+one = Mixins mimic 
+one x = 42 
+two = one mimic 
+two cell(:x) = 43 
+one x should ==(42) 
+one = Mixins mimic 
+one x = 42 
+two = one mimic 
+two cell(:x) = 43 
+two x should ==(43) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00574"></a><b>cell?</b>(cellName)
+          </div>
+          <div class="description">
+            <p>expects one evaluated text or symbol argument and returns a boolean indicating whether such a cell is reachable from this point.</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00576"></a><b>cellNames</b>(includeMimics false, cutoff nil)
+          </div>
+          <div class="description">
+            <p>takes one optional evaluated boolean argument, which defaults to false. if false, this method returns a list of the cell names of the receiver. if true, it returns the cell names of this object and all it's mimics recursively.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Mixins cellNames</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return the cell names of this object by default <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005761S0_source')" id="l_C005761S0_source">show source</a> ]</span>
+            <div id="C005761S0_source" class="dyn-source">
+<pre>
+x = Mixins mimic 
+x cellNames should ==([]) 
+x = Mixins mimic 
+x f = 13 
+x cellNames should ==([](:f)) 
+x = Mixins mimic 
+x f = 13 
+x Why = 1 
+x cellNames should ==([](:f, :Why)) 
+x = Mixins mimic 
+x Why = 1 
+x f = 13 
+x cellNames should ==([](:Why, :f)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00575"></a><b>cells</b>(includeMimics false)
+          </div>
+          <div class="description">
+            <p>takes one optional evaluated boolean argument, which defaults to false. if false, this method returns a dict of the cell names and values of the receiver. if true, it returns the cell names and values of this object and all it's mimics recursively.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Mixins cells</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return the cells of this object by default <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005751S0_source')" id="l_C005751S0_source">show source</a> ]</span>
+            <div id="C005751S0_source" class="dyn-source">
+<pre>
+x = Mixins mimic 
+x cells should ==({}) 
+x = Mixins mimic 
+x f = 13 
+x cells should ==({}(f: 13)) 
+x = Mixins mimic 
+x f = 13 
+x Why = 1 
+x cells should ==({}(f: 13, Why: 1)) 
+x = Mixins mimic 
+x Why = 1 
+x f = 13 
+x cells should ==({}(f: 13, Why: 1)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00577"></a><b>mimic</b>()
+          </div>
+          <div class="description">
+            <p>will return a new derivation of the receiving object. Might throw exceptions if the object is an oddball object.</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </body>
+</html>

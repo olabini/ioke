@@ -1,0 +1,949 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Kind: DefaultBehavior</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../.././dokgen-style.css" type="text/css" media="screen" />
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=480,width=750" ).focus();
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+    <table border='0' cellpadding='0' cellspacing='0' width="100%" class='banner'>
+      <tr>
+        <td>
+          <table width="100%" border='0' cellpadding='0' cellspacing='0'>
+            <tr>
+              <td class="file-title" colspan="2">
+                <span class="file-title-prefix">Kind</span>
+                <br />
+                DefaultBehavior FlowControl
+              </td>
+              <td align="right">
+                <table cellspacing="0" cellpadding="2">
+                  <tr>
+                    <td>Main mimic:</td>
+                    <td>
+                      none
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <div id="bodyContent">
+      <div id="content">
+        <div class="description">
+          <p>
+contains behavior related to flow control
+          </p>
+        </div>
+
+        <div class="sectiontitle">Mimics</div>
+        <ul>
+          none
+        </ul>
+
+        <div class="sectiontitle">Inactive cells</div>
+        <ul>
+          <li><a href="#C0080">inspect</a></li>
+<li><a href="#C0065">kind</a></li>
+<li><a href="#C0079">notice</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Active cells</div>
+        <ul>
+          <li><a href="#C0076">(+args)</a></li>
+<li><a href="#C0067">break(value nil)</a></li>
+<li><a href="#C0087">cond(...)</a></li>
+<li><a href="#C0069">continue()</a></li>
+<li><a href="#C0077">do(...)</a></li>
+<li><a href="#C0075">ensure([code], +[ensureBlocks])</a></li>
+<li><a href="#C0081">for(...)</a></li>
+<li><a href="#C0083">for:dict(...)</a></li>
+<li><a href="#C0082">for:set(...)</a></li>
+<li><a href="#C0073">if(condition, [then] nil, [else] nil)</a></li>
+<li><a href="#C0066">let([code], +[placesAndValues])</a></li>
+<li><a href="#C0072">loop(+[body])</a></li>
+<li><a href="#C0084">p:for(...)</a></li>
+<li><a href="#C0086">p:for:dict(...)</a></li>
+<li><a href="#C0085">p:for:set(...)</a></li>
+<li><a href="#C0068">return(value nil)</a></li>
+<li><a href="#C0074">unless(condition, [then] nil, [else] nil)</a></li>
+<li><a href="#C0070">until([condition] nil, +[body])</a></li>
+<li><a href="#C0071">while([condition] nil, +[body])</a></li>
+<li><a href="#C0078">with(...)</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Specs</div>
+        <div class="specs">
+          
+        </div>
+
+        <div class="sectiontitle">Inactive cells (details)</div>
+                <div class="cell">
+          <a name="C0080"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">inspect</td>
+              <td>=</td>
+              <td class="cell-value">"DefaultBehavior FlowControl"</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C0065"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">kind</td>
+              <td>=</td>
+              <td class="cell-value">"DefaultBehavior FlowControl"</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C0079"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">notice</td>
+              <td>=</td>
+              <td class="cell-value">"DefaultBehavior FlowControl"</td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="sectiontitle">Active cells (details)</div>
+                <div class="cell">
+          <div class="title">
+          <a name="C0076"></a><b></b>(+args)
+          </div>
+          <div class="description">
+            <p>returns result of evaluating first argument</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C0076_source')" id="l_C0076_source">show source</a> ]</p>
+            <div id="C0076_source" class="dyn-source">
+<pre>
+method(+args, 
+  if(args length ==(1), 
+    args [](0), 
+    tuple(*(args))))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C0067"></a><b>break</b>(value nil)
+          </div>
+          <div class="description">
+            <p>breaks out of the enclosing context. if an argument is supplied, this will be returned as the result of the object breaking out of</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C0087"></a><b>cond</b>(...)
+          </div>
+          <div class="description">
+            <p>takes zero or more arguments. each two arguments are paired, where the first one is the condition part, and the second is the then-part. if there's an uneven number of arguments, that part is the else-part. if no arguments are provided, or no conditions match and there is no else part, cond returns nil.</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C0087_source')" id="l_C0087_source">show source</a> ]</p>
+            <div id="C0087_source" class="dyn-source">
+<pre>
+syntax(
+  DefaultBehavior FlowControl cell(:cond) createNestedIfStatements(call arguments))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> DefaultBehavior FlowControl cond</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return nil for an empty statement <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00871S0_source')" id="l_C00871S0_source">show source</a> ]</span>
+            <div id="C00871S0_source" class="dyn-source">
+<pre>
+cond should be nil 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should evaluate and return the result of one statement <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00871S1_source')" id="l_C00871S1_source">show source</a> ]</span>
+            <div id="C00871S1_source" class="dyn-source">
+<pre>
+cond(42 +(2)) should ==(44) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should evaluate a condition and not do it's then part if it's false <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00871S2_source')" id="l_C00871S2_source">show source</a> ]</span>
+            <div id="C00871S2_source" class="dyn-source">
+<pre>
+Ground condTests = [] 
+cond(false, condTests &lt;&lt;(:ran)) should be nil 
+condTests should ==([]) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should do the then part for a true statement <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00871S3_source')" id="l_C00871S3_source">show source</a> ]</span>
+            <div id="C00871S3_source" class="dyn-source">
+<pre>
+Ground condTests = [] 
+cond(true, condTests &lt;&lt;(:ran) 
+  42) should ==(42) 
+condTests should ==([](:ran)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the then part for a true statement <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00871S4_source')" id="l_C00871S4_source">show source</a> ]</span>
+            <div id="C00871S4_source" class="dyn-source">
+<pre>
+cond(true, 42 +(4)) should ==(46) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not execute conditions after the first true one <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00871S5_source')" id="l_C00871S5_source">show source</a> ]</span>
+            <div id="C00871S5_source" class="dyn-source">
+<pre>
+Ground condTests = [] 
+cond(
+  true, nil, 
+  condTests &lt;&lt;(:cond) 
+  false, nil 
+  ) 
+condTests should ==([]) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not execute more than one true condition <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00871S6_source')" id="l_C00871S6_source">show source</a> ]</span>
+            <div id="C00871S6_source" class="dyn-source">
+<pre>
+Ground condTests = [] 
+cond(
+  condTests &lt;&lt;(:one) 
+  true, nil, 
+  condTests &lt;&lt;(:two) 
+  true, nil, 
+  condTests &lt;&lt;(:three) 
+  true, nil 
+  ) 
+condTests should ==([](:one)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should evaluate all conditions and return the else part if they are false <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00871S7_source')" id="l_C00871S7_source">show source</a> ]</span>
+            <div id="C00871S7_source" class="dyn-source">
+<pre>
+cond(false, false, false, false, 42) should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C0069"></a><b>continue</b>()
+          </div>
+          <div class="description">
+            <p>breaks out of the enclosing context and continues from that point again.</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C0077"></a><b>do</b>(...)
+          </div>
+          <div class="description">
+            <p>executes the arguments with the receiver as context and ground, and then returns the receiver.</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C0077_source')" id="l_C0077_source">show source</a> ]</p>
+            <div id="C0077_source" class="dyn-source">
+<pre>
+macro(
+  call arguments each(evaluateOn(cell("@"))) 
+  cell("@"))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C0075"></a><b>ensure</b>([code], +[ensureBlocks])
+          </div>
+          <div class="description">
+            <p>will execute and return the value of the first argument. after the code has run, all the remaining blocks of code are guaranteed to run in order even if a non-local flow control happens inside the main code. if any code in the ensure blocks generate a new non-local flow control, the rest of the ensure blocks in that specific ensure invocation are not guaranteed to run.</p>
+          </div>
+          
+          <div class="specs">
+            <b> DefaultBehavior FlowControl ensure</b><br/>
+<ul style="list-style-type: none;">
+<li>- should work with just main code <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00751S0_source')" id="l_C00751S0_source">show source</a> ]</span>
+            <div id="C00751S0_source" class="dyn-source">
+<pre>
+ensure(10 +(10)) should ==(20) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should execute all the ensure code after the main code <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00751S1_source')" id="l_C00751S1_source">show source</a> ]</span>
+            <div id="C00751S1_source" class="dyn-source">
+<pre>
+Ground ensureResults = [] 
+ensure(
+  ensureResults &lt;&lt;(:mainCode), 
+  ensureResults &lt;&lt;(:ensureBlock1), 
+  ensureResults &lt;&lt;(:ensureBlock2)) 
+ensureResults should ==([](:mainCode, :ensureBlock1, :ensureBlock2)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should execute nested ensure blocks <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00751S2_source')" id="l_C00751S2_source">show source</a> ]</span>
+            <div id="C00751S2_source" class="dyn-source">
+<pre>
+Ground ensureResults = [] 
+ensure(
+  ensure(
+    ensure(
+      ensureResults &lt;&lt;(:mainCode), 
+      ensureResults &lt;&lt;(:ensureBlockInner)), 
+    ensureResults &lt;&lt;(:ensureBlockOuter)), 
+  ensureResults &lt;&lt;(:ensureBlockOutmost)) 
+ensureResults should ==([](:mainCode, :ensureBlockInner, :ensureBlockOuter, :ensureBlockOutmost)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the result of the main code even though there are ensure blocks <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00751S3_source')" id="l_C00751S3_source">show source</a> ]</span>
+            <div id="C00751S3_source" class="dyn-source">
+<pre>
+ensure(
+  42, 
+  43) should ==(42) 
+ensure(
+  ensure(
+    42, 
+    44, 
+    45), 
+  43) should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should execute the ensure code if a restart is invoked outside <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00751S4_source')" id="l_C00751S4_source">show source</a> ]</span>
+            <div id="C00751S4_source" class="dyn-source">
+<pre>
+Ground ensureResults = [] 
+bind(restart(outside, fn), 
+  ensure(
+    invokeRestart(:outside), 
+    ensureResults &lt;&lt;(:invoked))) 
+ensureResults should ==([](:invoked)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should execute the ensure code if a condition is rescued outside <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00751S5_source')" id="l_C00751S5_source">show source</a> ]</span>
+            <div id="C00751S5_source" class="dyn-source">
+<pre>
+Ground ensureResults = [] 
+bind(rescue(Condition, fn(c, nil)), 
+  ensure(
+    signal!(Condition), 
+    ensureResults &lt;&lt;(:invoked))) 
+ensureResults should ==([](:invoked)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C0081"></a><b>for</b>(...)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C0081_source')" id="l_C0081_source">show source</a> ]</p>
+            <div id="C0081_source" class="dyn-source">
+<pre>
+syntax(
+  DefaultBehavior FlowControl cell(:for) transform(call arguments, "map", "flatMap") 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> DefaultBehavior FlowControl for</b><br/>
+<ul style="list-style-type: none;">
+<li>- should handle a simple iteration <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00811S0_source')" id="l_C00811S0_source">show source</a> ]</span>
+            <div id="C00811S0_source" class="dyn-source">
+<pre>
+for(x &lt;-([](1, 2, 3)), x) should ==([](1, 2, 3)) 
+for(x &lt;-(1 ..(10)), x) should ==([](1, 2, 3, 4, 5, 6, 7, 8, 9, 10)) 
+for(x &lt;-(set(:a, :b, :c)), x) sort should ==([](:a, :b, :c)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to do something advanced in the output part <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00811S1_source')" id="l_C00811S1_source">show source</a> ]</span>
+            <div id="C00811S1_source" class="dyn-source">
+<pre>
+for(x &lt;-(1 ..(10)), x *(2)) should ==([](2, 4, 6, 8, 10, 12, 14, 16, 18, 20)) 
+mex = method(f, f +(f) +(f)) 
+for(x &lt;-(1 ...(5)), mex(x)) should ==([](3, 6, 9, 12)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to combine two or more iterations <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00811S2_source')" id="l_C00811S2_source">show source</a> ]</span>
+            <div id="C00811S2_source" class="dyn-source">
+<pre>
+for(x &lt;-([](1, 2, 3)), y &lt;-([](15, 16, 17)), [](x, y)) should ==([]([](1, 15), [](1, 16), [](1, 17), [](2, 15), [](2, 16), [](2, 17), [](3, 15), [](3, 16), [](3, 17))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to filter output <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00811S3_source')" id="l_C00811S3_source">show source</a> ]</span>
+            <div id="C00811S3_source" class="dyn-source">
+<pre>
+for(x &lt;-(1 ..(100)), x &lt;(5), x) should ==([](1, 2, 3, 4)) 
+for(x &lt;-(1 ..(10)), (x %(2)) ==(0), x) should ==([](2, 4, 6, 8, 10)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to do midlevel assignment <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00811S4_source')" id="l_C00811S4_source">show source</a> ]</span>
+            <div id="C00811S4_source" class="dyn-source">
+<pre>
+for(x &lt;-(1 ..(20)), y = x *(2), y &lt;(10), [](x, y)) should ==([]([](1, 2), [](2, 4), [](3, 6), [](4, 8))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to combine these parts into a larger comprehension <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00811S5_source')" id="l_C00811S5_source">show source</a> ]</span>
+            <div id="C00811S5_source" class="dyn-source">
+<pre>
+for(x &lt;-(0 ..(10)), x *(x) &gt;(3), 2 *(x)) should ==([](4, 6, 8, 10, 12, 14, 16, 18, 20)) 
+for(x &lt;-(1 ..(6)), y &lt;-(x ..(6)), z &lt;-(y ..(6)), (x **(2) +(y **(2))) ==(z **(2)), [](x, y, z)) should ==([]([](3, 4, 5))) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C0083"></a><b>for:dict</b>(...)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C0083_source')" id="l_C0083_source">show source</a> ]</p>
+            <div id="C0083_source" class="dyn-source">
+<pre>
+syntax(
+  DefaultBehavior FlowControl cell(:for) transform(call arguments, "map:dict", "flatMap:dict") 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> DefaultBehavior FlowControl for:dict</b><br/>
+<ul style="list-style-type: none;">
+<li>- should handle a simple iteration <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00831S0_source')" id="l_C00831S0_source">show source</a> ]</span>
+            <div id="C00831S0_source" class="dyn-source">
+<pre>
+for:dict(x &lt;-([](1, 2, 3)), x =&gt;(x *(x))) should ==(dict(1 =&gt;(1), 2 =&gt;(4), 3 =&gt;(9))) 
+for:dict(x &lt;-([](1, 2, 3, 1, 2, 3)), x =&gt;(x *(x))) should ==(dict(1 =&gt;(1), 2 =&gt;(4), 3 =&gt;(9))) 
+for:dict(x &lt;-(1 ..(10)), x) should ==(dict(1 =&gt;(nil), 2 =&gt;(nil), 3 =&gt;(nil), 4 =&gt;(nil), 5 =&gt;(nil), 6 =&gt;(nil), 7 =&gt;(nil), 8 =&gt;(nil), 9 =&gt;(nil), 10 =&gt;(nil))) 
+for:dict(x &lt;-(set(:a, :b, :c)), x =&gt;(x asText)) should ==(dict(a: "a", b: "b", c: "c")) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should handle more than one generator <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00831S1_source')" id="l_C00831S1_source">show source</a> ]</span>
+            <div id="C00831S1_source" class="dyn-source">
+<pre>
+for:dict(x &lt;-([](1, 2, 3)), y &lt;-([](10, 11, 12)), x *(y) =&gt;([](x, y))) should ==({}(10 =&gt;([](1, 10)), 11 =&gt;([](1, 11)), 12 =&gt;([](1, 12)), 20 =&gt;([](2, 10)), 22 =&gt;([](2, 11)), 24 =&gt;([](2, 12)), 30 =&gt;([](3, 10)), 33 =&gt;([](3, 11)), 36 =&gt;([](3, 12)))) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C0082"></a><b>for:set</b>(...)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C0082_source')" id="l_C0082_source">show source</a> ]</p>
+            <div id="C0082_source" class="dyn-source">
+<pre>
+syntax(
+  DefaultBehavior FlowControl cell(:for) transform(call arguments, "map:set", "flatMap:set") 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> DefaultBehavior FlowControl for:set</b><br/>
+<ul style="list-style-type: none;">
+<li>- should handle a simple iteration <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00821S0_source')" id="l_C00821S0_source">show source</a> ]</span>
+            <div id="C00821S0_source" class="dyn-source">
+<pre>
+for:set(x &lt;-([](1, 2, 3)), x) should ==(set(1, 2, 3)) 
+for:set(x &lt;-([](1, 2, 3, 1, 2, 3)), x) should ==(set(1, 2, 3)) 
+for:set(x &lt;-(1 ..(10)), x) should ==(set(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)) 
+for:set(x &lt;-(set(:a, :b, :c)), x) should ==(set(:a, :b, :c)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to do something advanced in the output part <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00821S1_source')" id="l_C00821S1_source">show source</a> ]</span>
+            <div id="C00821S1_source" class="dyn-source">
+<pre>
+for:set(x &lt;-(1 ..(10)), x *(2)) should ==(set(2, 4, 6, 8, 10, 12, 14, 16, 18, 20)) 
+mex = method(f, f +(f) +(f)) 
+for:set(x &lt;-(1 ...(5)), mex(x)) should ==(set(3, 6, 9, 12)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to combine two or more iterations <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00821S2_source')" id="l_C00821S2_source">show source</a> ]</span>
+            <div id="C00821S2_source" class="dyn-source">
+<pre>
+for:set(x &lt;-([](1, 2, 3)), y &lt;-([](15, 16, 17)), [](x, y)) should ==(set([](1, 15), [](1, 16), [](1, 17), [](2, 15), [](2, 16), [](2, 17), [](3, 15), [](3, 16), [](3, 17))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to filter output <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00821S3_source')" id="l_C00821S3_source">show source</a> ]</span>
+            <div id="C00821S3_source" class="dyn-source">
+<pre>
+for:set(x &lt;-(1 ..(100)), x &lt;(5), x) should ==(set(1, 2, 3, 4)) 
+for:set(x &lt;-(1 ..(10)), (x %(2)) ==(0), x) should ==(set(2, 4, 6, 8, 10)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to do midlevel assignment <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00821S4_source')" id="l_C00821S4_source">show source</a> ]</span>
+            <div id="C00821S4_source" class="dyn-source">
+<pre>
+for:set(x &lt;-(1 ..(20)), y = x *(2), y &lt;(10), [](x, y)) should ==(set([](1, 2), [](2, 4), [](3, 6), [](4, 8))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to combine these parts into a larger comprehension <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00821S5_source')" id="l_C00821S5_source">show source</a> ]</span>
+            <div id="C00821S5_source" class="dyn-source">
+<pre>
+for:set(x &lt;-(0 ..(10)), x *(x) &gt;(3), 2 *(x)) should ==(set(4, 6, 8, 10, 12, 14, 16, 18, 20)) 
+for:set(x &lt;-(1 ..(6)), y &lt;-(x ..(6)), z &lt;-(y ..(6)), (x **(2) +(y **(2))) ==(z **(2)), [](x, y, z)) should ==(set([](3, 4, 5))) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C0073"></a><b>if</b>(condition, [then] nil, [else] nil)
+          </div>
+          <div class="description">
+            <p>evaluates the first arguments, and then evaluates the second argument if the result was true, otherwise the last argument. returns the result of the call, or the result if it's not true.</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C0066"></a><b>let</b>([code], +[placesAndValues])
+          </div>
+          <div class="description">
+            <p>takes zero or more place and value pairs and one code argument, establishes a new lexical scope and binds the places to the values given. if the place is a simple name, it will just be created as a new binding in the lexical scope. if it is a place specification, that place will be temporarily changed - but guaranteed to be changed back after the lexical scope is finished. the let-form returns the final result of the code argument.</p>
+          </div>
+          
+          <div class="specs">
+            <b> DefaultBehavior FlowControl let</b><br/>
+<ul style="list-style-type: none;">
+<li>- should take a code argument, apply that on the current ground and return the result <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00661S0_source')" id="l_C00661S0_source">show source</a> ]</span>
+            <div id="C00661S0_source" class="dyn-source">
+<pre>
+let(40 +(2)) should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should establish a new lexical scope inside <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00661S1_source')" id="l_C00661S1_source">show source</a> ]</span>
+            <div id="C00661S1_source" class="dyn-source">
+<pre>
+let(non_existing_let_binding = 42) 
+cell?(:non_existing_let_binding) should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take zero or more name-value pairs <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00661S2_source')" id="l_C00661S2_source">show source</a> ]</span>
+            <div id="C00661S2_source" class="dyn-source">
+<pre>
+let(42) 
+let(x, 42, x) 
+let(
+  x, 42, 
+  y, 43, 
+  x +(y)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should bind a simple name to a value <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00661S3_source')" id="l_C00661S3_source">show source</a> ]</span>
+            <div id="C00661S3_source" class="dyn-source">
+<pre>
+let(probably_not_existing_name, 42, 
+  probably_not_existing_name *(2)) should ==(84) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should shadow an existing name <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00661S4_source')" id="l_C00661S4_source">show source</a> ]</span>
+            <div id="C00661S4_source" class="dyn-source">
+<pre>
+wow_this_is_a_test = 42 
+let(wow_this_is_a_test, 43, wow_this_is_a_test) should ==(43) 
+wow_this_is_a_test should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should rebind a place specification during the time of the code running <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00661S5_source')" id="l_C00661S5_source">show source</a> ]</span>
+            <div id="C00661S5_source" class="dyn-source">
+<pre>
+Text fluxie = Origin mimic 
+Text fluxie wowsie = 13 
+let(
+  Text fluxie wowsie, 14, 
+  "foo" fluxie wowsie) should ==(14) 
+Text fluxie wowsie should ==(13) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should unbind places even if a non-local transfer happens <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00661S6_source')" id="l_C00661S6_source">show source</a> ]</span>
+            <div id="C00661S6_source" class="dyn-source">
+<pre>
+Text fluxie2 = Origin mimic 
+Text fluxie2 wowsie = 13 
+bind(rescue(Condition Error, fn(c, nil)), 
+  let(
+    Text fluxie2 wowsie, 14, 
+    "foo" fluxie2 wowsie should ==(14) 
+    error!("non-local yay!"))) 
+Text fluxie2 wowsie should ==(13) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should bind a new place temporarily, and then remove it <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00661S7_source')" id="l_C00661S7_source">show source</a> ]</span>
+            <div id="C00661S7_source" class="dyn-source">
+<pre>
+X = Origin mimic 
+let(X testOfLetMethod, method(42), 
+  X testOfLetMethod should ==(42) 
+  ) 
+X cellNames should not include(:testOfLetMethod) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should bind a new place with cell temporarily, and then remove it <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00661S8_source')" id="l_C00661S8_source">show source</a> ]</span>
+            <div id="C00661S8_source" class="dyn-source">
+<pre>
+X = Origin mimic 
+let(X cell(:testOfLetMethod2), method(42), 
+  X testOfLetMethod2 should ==(42) 
+  ) 
+X cellNames should not include(:testOfLetMethod2) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C0072"></a><b>loop</b>(+[body])
+          </div>
+          <div class="description">
+            <p>loops forever - executing it's argument over and over until interrupted in some way.</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C0084"></a><b>p:for</b>(...)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C0084_source')" id="l_C0084_source">show source</a> ]</p>
+            <div id="C0084_source" class="dyn-source">
+<pre>
+syntax(
+  DefaultBehavior FlowControl cell(:for) transform(call arguments, "p:map", "p:flatMap") 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C0086"></a><b>p:for:dict</b>(...)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C0086_source')" id="l_C0086_source">show source</a> ]</p>
+            <div id="C0086_source" class="dyn-source">
+<pre>
+syntax(
+  DefaultBehavior FlowControl cell(:for) transform(call arguments, "p:map:dict", "p:flatMap:dict") 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C0085"></a><b>p:for:set</b>(...)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C0085_source')" id="l_C0085_source">show source</a> ]</p>
+            <div id="C0085_source" class="dyn-source">
+<pre>
+syntax(
+  DefaultBehavior FlowControl cell(:for) transform(call arguments, "p:map:set", "p:flatMap:set") 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C0068"></a><b>return</b>(value nil)
+          </div>
+          <div class="description">
+            <p>returns from the enclosing method/macro. if an argument is supplied, this will be returned as the result of the method/macro breaking out of.</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C0074"></a><b>unless</b>(condition, [then] nil, [else] nil)
+          </div>
+          <div class="description">
+            <p>evaluates the first arguments, and then evaluates the second argument if the result was false, otherwise the last argument. returns the result of the call, or the result if it's true.</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C0070"></a><b>until</b>([condition] nil, +[body])
+          </div>
+          <div class="description">
+            <p>until the first argument evaluates to something true, loops and evaluates the next argument</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C0071"></a><b>while</b>([condition] nil, +[body])
+          </div>
+          <div class="description">
+            <p>while the first argument evaluates to something true, loops and evaluates the next argument</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C0078"></a><b>with</b>(...)
+          </div>
+          <div class="description">
+            <p>takes any number of keyword arguments, followed by an optional code argument. will first create a new mimic of the receiver, then evaluate all the keyword arguments in order and set cells corresponding to the names of these keyword arguments to the evaluated arguments. if a code argument is supplied, it will be evaluated in the context of the newly created object, using something similar to 'do'. returns the created object.</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C0078_source')" id="l_C0078_source">show source</a> ]</p>
+            <div id="C0078_source" class="dyn-source">
+<pre>
+macro(
+  newObject = mimic 
+  call arguments each(arg, 
+    if(arg keyword?, 
+      Reflector other:cell(newObject, arg name asText [](0 ..(0 -(2)))) = arg next evaluateOn(call ground), 
+      newObject doMessage(arg))) 
+  newObject)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </body>
+</html>

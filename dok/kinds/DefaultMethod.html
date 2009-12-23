@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Kind: DefaultBehavior</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href=".././dokgen-style.css" type="text/css" media="screen" />
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=480,width=750" ).focus();
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+    <table border='0' cellpadding='0' cellspacing='0' width="100%" class='banner'>
+      <tr>
+        <td>
+          <table width="100%" border='0' cellpadding='0' cellspacing='0'>
+            <tr>
+              <td class="file-title" colspan="2">
+                <span class="file-title-prefix">Kind</span>
+                <br />
+                DefaultMethod
+              </td>
+              <td align="right">
+                <table cellspacing="0" cellpadding="2">
+                  <tr>
+                    <td>Main mimic:</td>
+                    <td>
+                      <a href="../kinds/Method.html">Method</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <div id="bodyContent">
+      <div id="content">
+        <div class="description">
+          <p>
+DefaultMethod is the instance all methods in the system are derived from.
+          </p>
+        </div>
+
+        <div class="sectiontitle">Mimics</div>
+        <ul>
+          <li><a href="../kinds/Method.html">Method</a></li>
+        </ul>
+
+        <div class="sectiontitle">Inactive cells</div>
+        <ul>
+          <li><a href="#C00504">kind</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Active cells</div>
+        <ul>
+          <li><a href="#C00507">argumentsCode()</a></li>
+<li><a href="#C00509">arity()</a></li>
+<li><a href="#C00508">formattedCode()</a></li>
+<li><a href="#C00505">keywords()</a></li>
+<li><a href="#C00506">message()</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Specs</div>
+        <div class="specs">
+          
+<b> DefaultMethod inspect</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return the code inside the method <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S0_source')" id="l_C00K01S0_source">show source</a> ]</span>
+            <div id="C00K01S0_source" class="dyn-source">
+<pre>
+method(foo bar) inspect should ==("method(foo bar)") 
+method(123 +(444)) inspect should ==("method(123 +(444))") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should prep) a name if there is any <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S1_source')" id="l_C00K01S1_source">show source</a> ]</span>
+            <div id="C00K01S1_source" class="dyn-source">
+<pre>
+x = method(foo bar) 
+cell(:x) inspect should ==("x:method(foo bar)") 
+x = method(123 +(444)) 
+cell(:x) inspect should ==("x:method(123 +(444))") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should include any argument names provided <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S2_source')" id="l_C00K01S2_source">show source</a> ]</span>
+            <div id="C00K01S2_source" class="dyn-source">
+<pre>
+method(x, foo bar) inspect should ==("method(x, foo bar)") 
+method(y, foo 123, 123 +(444)) inspect should ==("method(y, foo 123, 123 +(444))") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultMethod keyword rest (+:)</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be possible to give any keyword argument to something with a keyword rest <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K02S0_source')" id="l_C00K02S0_source">show source</a> ]</span>
+            <div id="C00K02S0_source" class="dyn-source">
+<pre>
+krest = method(+:(rest), rest) 
+krest should ==({}) 
+krest(foo: 1) should ==({}(foo: 1)) 
+krest(foo: nil, bar: nil, quux: nil) should ==({}(foo:, bar:, quux:)) 
+krest(one: 12 +(1), two: 13 +(2), three: 14 +(5)) should ==({}(one: 13, two: 15, three: 19)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to combine with regular argument, rest arguments and optional arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K02S1_source')" id="l_C00K02S1_source">show source</a> ]</span>
+            <div id="C00K02S1_source" class="dyn-source">
+<pre>
+oneeach = method(a, b, c 12, d 15, +(rest), +:(krest), [](a, b, c, d, rest, krest)) 
+oneeach(1, 2) should ==([](1, 2, 12, 15, [], {})) 
+oneeach(1, 2, 3) should ==([](1, 2, 3, 15, [], {})) 
+oneeach(f: 111, 1, 2) should ==([](1, 2, 12, 15, [], {}(f: 111))) 
+oneeach(1, f: 111, 2) should ==([](1, 2, 12, 15, [], {}(f: 111))) 
+oneeach(1, 2, f: 111) should ==([](1, 2, 12, 15, [], {}(f: 111))) 
+oneeach(1, 2, 44, f: 111) should ==([](1, 2, 44, 15, [], {}(f: 111))) 
+oneeach(1, 2, 44, 10, f: 111) should ==([](1, 2, 44, 10, [], {}(f: 111))) 
+oneeach(1, 2, 44, 10, 12, 13, f: 111) should ==([](1, 2, 44, 10, [](12, 13), {}(f: 111))) 
+oneeach(1, x: 1111111, 2, 44, 10, 12, 13, f: 111) should ==([](1, 2, 44, 10, [](12, 13), {}(f: 111, x: 1111111))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to splat out keyword arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K02S2_source')" id="l_C00K02S2_source">show source</a> ]</span>
+            <div id="C00K02S2_source" class="dyn-source">
+<pre>
+oneeach = method(a, b, c 12, d 15, +(rest), +:(krest), [](a, b, c, d, rest, krest)) 
+oneeach(1, 2, *({}(foo: 123, bar: 333))) should ==([](1, 2, 12, 15, [], {}(foo: 123, bar: 333))) 
+x = {}(foo: 123, bar: 333) 
+oneeach(1, 2, *(x)) should ==([](1, 2, 12, 15, [], {}(foo: 123, bar: 333))) 
+oneeach(1, 2, *([](18, 19, 20, 21, 22)), *({}(foo: 123, bar: 333))) should ==([](1, 2, 18, 19, [](20, 21, 22), {}(foo: 123, bar: 333))) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultMethod notice</b><br/>
+<ul style="list-style-type: none;">
+<li>- should just return a simple description without code <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K03S0_source')" id="l_C00K03S0_source">show source</a> ]</span>
+            <div id="C00K03S0_source" class="dyn-source">
+<pre>
+method notice should ==("method(...)") 
+method(nil) notice should ==("method(...)") 
+method(foo bar xxxxxx) notice should ==("method(...)") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should prep) the name if there is a name available <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K03S1_source')" id="l_C00K03S1_source">show source</a> ]</span>
+            <div id="C00K03S1_source" class="dyn-source">
+<pre>
+x = method 
+cell(:x) notice should ==("x:method(...)") 
+x = method(nil) 
+cell(:x) notice should ==("x:method(...)") 
+x = method(foo bar xxxxxx) 
+cell(:x) notice should ==("x:method(...)") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultMethod rest (+)</b><br/>
+<ul style="list-style-type: none;">
+<li>- should to give any length of arguments to a rest-only argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K04S0_source')" id="l_C00K04S0_source">show source</a> ]</span>
+            <div id="C00K04S0_source" class="dyn-source">
+<pre>
+restm = method(+(rest), rest) 
+restm should ==([]) 
+restm(1) should ==([](1)) 
+restm(nil, nil, nil) should ==([](nil, nil, nil)) 
+restm(12 +(1), 13 +(2), 14 +(5)) should ==([](13, 15, 19)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should to give both rest and regular arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K04S1_source')" id="l_C00K04S1_source">show source</a> ]</span>
+            <div id="C00K04S1_source" class="dyn-source">
+<pre>
+rest2 = method(a, b, +(rest), [](a, b, rest)) 
+rest2(1, 2) should ==([](1, 2, [])) 
+rest2(1, 2, 3) should ==([](1, 2, [](3))) 
+rest2(1, 2, 3, 4, 5 +(2)) should ==([](1, 2, [](3, 4, 7))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should to give both rest, optional and regular arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K04S2_source')" id="l_C00K04S2_source">show source</a> ]</span>
+            <div id="C00K04S2_source" class="dyn-source">
+<pre>
+rest3 = method(a, b, c 13, d 14, +(rest), [](a, b, c, d, rest)) 
+rest3(1, 2) should ==([](1, 2, 13, 14, [])) 
+rest3(1, 2, 33) should ==([](1, 2, 33, 14, [])) 
+rest3(1, 2, 33, 15) should ==([](1, 2, 33, 15, [])) 
+rest3(1, 2, 33, 15, 2 +(2), 2 +(3), 2 +(5)) should ==([](1, 2, 33, 15, [](4, 5, 7))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should to be possible to give keyword arguments to a method with a rest argument too <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K04S3_source')" id="l_C00K04S3_source">show source</a> ]</span>
+            <div id="C00K04S3_source" class="dyn-source">
+<pre>
+rest4 = method(a, b, boo: 12, +(rest), [](a, b, boo, rest)) 
+rest4(1, 2) should ==([](1, 2, 12, [])) 
+rest4(1, 2, 3, 4) should ==([](1, 2, 12, [](3, 4))) 
+rest4(1, 2, 3 +(4)) should ==([](1, 2, 12, [](7))) 
+rest4(boo: 444, 1, 2, 3 +(4)) should ==([](1, 2, 444, [](3 +(4)))) 
+rest4(1, boo: 444, 2, 3 +(4)) should ==([](1, 2, 444, [](3 +(4)))) 
+rest4(1, 2, boo: 444, 3 +(4)) should ==([](1, 2, 444, [](3 +(4)))) 
+rest4(1, 2, 3 +(4), boo: 444) should ==([](1, 2, 444, [](3 +(4)))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to splat out arguments from a list into a method with regular, optional and rest arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K04S4_source')" id="l_C00K04S4_source">show source</a> ]</span>
+            <div id="C00K04S4_source" class="dyn-source">
+<pre>
+norest = method(a, b, [](a, b)) 
+rests = method(+(rest), rest) 
+rests2 = method(a, b, +(rest), [](a, b, rest)) 
+rests([](1, 2, 3, 4)) should ==([]([](1, 2, 3, 4))) 
+rests(*([](1, 2, 3, 4))) should ==([](1, 2, 3, 4)) 
+x = [](1, 2, 3, 4) 
+rests(*(x)) should ==([](1, 2, 3, 4)) 
+rests2(*([](1, 2, 3, 4))) should ==([](1, 2, [](3, 4))) 
+rests2(*([](1, 2))) should ==([](1, 2, [])) 
+norest(*([](1, 2))) should ==([](1, 2)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultMethod rest (+) argumentsCode</b><br/>
+<ul style="list-style-type: none;">
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K05S0_source')" id="l_C00K05S0_source">show source</a> ]</span>
+            <div id="C00K05S0_source" class="dyn-source">
+<pre>
+method should checkReceiverTypeOn(:argumentsCode) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultMethod rest (+) formattedCode</b><br/>
+<ul style="list-style-type: none;">
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K06S0_source')" id="l_C00K06S0_source">show source</a> ]</span>
+            <div id="C00K06S0_source" class="dyn-source">
+<pre>
+method should checkReceiverTypeOn(:formattedCode) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultMethod rest (+) message</b><br/>
+<ul style="list-style-type: none;">
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K07S0_source')" id="l_C00K07S0_source">show source</a> ]</span>
+            <div id="C00K07S0_source" class="dyn-source">
+<pre>
+method should checkReceiverTypeOn(:message) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+        </div>
+
+        <div class="sectiontitle">Inactive cells (details)</div>
+                <div class="cell">
+          <a name="C00504"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">kind</td>
+              <td>=</td>
+              <td class="cell-value">"DefaultMethod"</td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="sectiontitle">Active cells (details)</div>
+                <div class="cell">
+          <div class="title">
+          <a name="C00507"></a><b>argumentsCode</b>()
+          </div>
+          <div class="description">
+            <p>returns the code for the argument definition</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00509"></a><b>arity</b>()
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00509_source')" id="l_C00509_source">show source</a> ]</p>
+            <div id="C00509_source" class="dyn-source">
+<pre>
+method(
+  Arity fromArgumentsCode(argumentsCode))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00508"></a><b>formattedCode</b>()
+          </div>
+          <div class="description">
+            <p>returns idiomatically formatted code for this method</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00505"></a><b>keywords</b>()
+          </div>
+          <div class="description">
+            <p>returns a list of the keywords this method takes</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00506"></a><b>message</b>()
+          </div>
+          <div class="description">
+            <p>returns the message chain for this method</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </body>
+</html>

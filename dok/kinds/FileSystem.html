@@ -1,0 +1,850 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Kind: DefaultBehavior</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href=".././dokgen-style.css" type="text/css" media="screen" />
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=480,width=750" ).focus();
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+    <table border='0' cellpadding='0' cellspacing='0' width="100%" class='banner'>
+      <tr>
+        <td>
+          <table width="100%" border='0' cellpadding='0' cellspacing='0'>
+            <tr>
+              <td class="file-title" colspan="2">
+                <span class="file-title-prefix">Kind</span>
+                <br />
+                FileSystem
+              </td>
+              <td align="right">
+                <table cellspacing="0" cellpadding="2">
+                  <tr>
+                    <td>Main mimic:</td>
+                    <td>
+                      <a href="../kinds/Origin.html">Origin</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <div id="bodyContent">
+      <div id="content">
+        <div class="description">
+          <p>
+Gives access to things related to the file system.
+          </p>
+        </div>
+
+        <div class="sectiontitle">Mimics</div>
+        <ul>
+          <li><a href="../kinds/Origin.html">Origin</a></li>
+        </ul>
+
+        <div class="sectiontitle">Inactive cells</div>
+        <ul>
+          <li><a href="#C00963">kind</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Active cells</div>
+        <ul>
+          <li><a href="#C00966">[](+globTexts)</a></li>
+<li><a href="#C00973">copyFile(fileName, destination)</a></li>
+<li><a href="#C00974">createDirectory!(directoryName, createPath false)</a></li>
+<li><a href="#C00967">directory?(directoryName)</a></li>
+<li><a href="#C00977">ensureDirectory(dir)</a></li>
+<li><a href="#C00970">exists?(entryName)</a></li>
+<li><a href="#C00969">file?(fileName)</a></li>
+<li><a href="#C00971">parentOf(entryName)</a></li>
+<li><a href="#C00968">readFully(fileName)</a></li>
+<li><a href="#C00978">readLines(filename)</a></li>
+<li><a href="#C00975">removeDirectory!(directoryName)</a></li>
+<li><a href="#C00976">removeFile!(fileName)</a></li>
+<li><a href="#C00972">withOpenFile(fileName, code)</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Specs</div>
+        <div class="specs">
+          
+<b> FileSystem File</b><br/>
+<ul style="list-style-type: none;">
+<li>- should have the right kind <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S0_source')" id="l_C00K01S0_source">show source</a> ]</span>
+            <div id="C00K01S0_source" class="dyn-source">
+<pre>
+FileSystem File should have kind("FileSystem File")
+</pre>
+            </div>
+            </span></li>
+</ul>
+        </div>
+
+        <div class="sectiontitle">Inactive cells (details)</div>
+                <div class="cell">
+          <a name="C00963"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">kind</td>
+              <td>=</td>
+              <td class="cell-value">"FileSystem"</td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="sectiontitle">Active cells (details)</div>
+                <div class="cell">
+          <div class="title">
+          <a name="C00966"></a><b>[]</b>(+globTexts)
+          </div>
+          <div class="description">
+            <p>Tries to interpret the given arguments as strings describing file globs, and returns an array containing the result of applying these globs.</p>
+          </div>
+          
+          <div class="specs">
+            <b> FileSystem []</b><br/>
+<ul style="list-style-type: none;">
+<li>- should glob correctly <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C009661S0_source')" id="l_C009661S0_source">show source</a> ]</span>
+            <div id="C009661S0_source" class="dyn-source">
+<pre>
+[](
+  []([]("test/_test"), "test/_test"), 
+  []([]("test/_test/"), "test/_test/"), 
+  []([]("test/_test/_file1", "test/_test/_file2"), "test/_test/*"), 
+  []([]("test/_test/_file1", "test/_test/_file2"), "test/_test/_file*"), 
+  []([], "test/_test/frog*"), 
+  []([]("test/_test/_file1", "test/_test/_file2"), "test/**/_file*"), 
+  []([]("test/_test/_file1", "test/_test/_file2"), "test/_test/_file[0-9]*"), 
+  []([], "test/_test/_file[a-z]*"), 
+  []([]("test/_test/_file1", "test/_test/_file2"), "test/_test/_file{0,1,2,3}"), 
+  []([], "test/_test/_file{4,5,6,7}"), 
+  []([]("test/_test/_file1", "test/_test/_file2"), "test/**/_f*[il]l*"), 
+  []([]("test/_test/_file1", "test/_test/_file2"), "test/**/_f*[il]e[0-9]"), 
+  []([]("test/_test/_file1"), "test/**/_f*[il]e[01]"), 
+  []([]("test/_test/_file1"), "test/**/_f*[il]e[01]*"), 
+  []([]("test/_test/_file1"), "test/**/_f*[^ie]e[01]*")) each(theList, 
+  FileSystem [](theList second) sort should ==(theList first sort) 
+  ) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should expand tilde for the home directory <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C009661S1_source')" id="l_C009661S1_source">show source</a> ]</span>
+            <div id="C009661S1_source" class="dyn-source">
+<pre>
+realname = "#{FileSystemTestConfig homeDirectory}/.__something_that_should_only_exist_for_file_system_ioke_tests" 
+realname2 = "#{FileSystemTestConfig homeDirectory}/.__something_that_should_only_exist_for_file_system2_ioke_tests" 
+fname = "~/.__*_ioke_tests" 
+FileSystem exists?(realname) should be false 
+FileSystem exists?(realname2) should be false 
+ensure(
+  FileSystem withOpenFile(realname, fn(f, f print("hello"))) 
+  FileSystem withOpenFile(realname2, fn(f, f print("hello"))) 
+  FileSystem [](fname) sort should ==([](realname, realname2) sort) 
+  , 
+  bind(rescue(Condition Error, fn(ignored, nil)), 
+    FileSystem removeFile!(realname)) 
+  bind(rescue(Condition Error, fn(ignored, nil)), 
+    FileSystem removeFile!(realname2)) 
+  ) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00973"></a><b>copyFile</b>(fileName, destination)
+          </div>
+          <div class="description">
+            <p>Copies a file. Takes two text arguments, where the first is the name of the file to copy and the second is the name of the destination. If the destination is a directory, the file will be copied with the same name, and if it's a filename, the file will get a new name</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00974"></a><b>createDirectory!</b>(directoryName, createPath false)
+          </div>
+          <div class="description">
+            <p>Takes one string argument and creates a directory with that name. It also takes an optional second argument. If it's true, will try to create all necessary directories inbetween. Default is false. Will signal a condition if the directory already exists, or if there's a file with that name.</p>
+          </div>
+          
+          <div class="specs">
+            <b> FileSystem createDirectory!</b><br/>
+<ul style="list-style-type: none;">
+<li>- should signal an error if the directory already exists <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C009741S0_source')" id="l_C009741S0_source">show source</a> ]</span>
+            <div id="C009741S0_source" class="dyn-source">
+<pre>
+fn(FileSystem createDirectory!("src")) should signal(Condition Error IO) 
+bind(rescue(Condition, fn(c, nil)), 
+  FileSystem removeDirectory!("test/newly_created_dir")) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should signal an error if a file with the same name already exists <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C009741S1_source')" id="l_C009741S1_source">show source</a> ]</span>
+            <div id="C009741S1_source" class="dyn-source">
+<pre>
+fn(FileSystem createDirectory!("build.xml")) should signal(Condition Error IO) 
+bind(rescue(Condition, fn(c, nil)), 
+  FileSystem removeDirectory!("test/newly_created_dir")) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should create the directory <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C009741S2_source')" id="l_C009741S2_source">show source</a> ]</span>
+            <div id="C009741S2_source" class="dyn-source">
+<pre>
+FileSystem createDirectory!("test/newly_created_dir") 
+FileSystem should have directory("test/newly_created_dir") 
+bind(rescue(Condition, fn(c, nil)), 
+  FileSystem removeDirectory!("test/newly_created_dir")) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should expand tilde for the home directory <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C009741S3_source')" id="l_C009741S3_source">show source</a> ]</span>
+            <div id="C009741S3_source" class="dyn-source">
+<pre>
+realname = "#{FileSystemTestConfig homeDirectory}/.__something_that_should_only_exist_for_file_system_ioke_tests" 
+fname = "~/.__something_that_should_only_exist_for_file_system_ioke_tests" 
+FileSystem directory?(realname) should be false 
+ensure(
+  FileSystem createDirectory!(fname) 
+  FileSystem directory?(realname) should be true 
+  , 
+  bind(rescue(Condition Error, fn(ignored, nil)), 
+    FileSystem removeDirectory!(realname)) 
+  ) 
+FileSystem directory?(realname) should be false 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00967"></a><b>directory?</b>(directoryName)
+          </div>
+          <div class="description">
+            <p>Takes one string argument and returns true if it's the relative or absolute name of a directory, and false otherwise.</p>
+          </div>
+          
+          <div class="specs">
+            <b> FileSystem directory?</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return false for something that doesn't exit <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C009671S0_source')" id="l_C009671S0_source">show source</a> ]</span>
+            <div id="C009671S0_source" class="dyn-source">
+<pre>
+FileSystem directory?("flux_flog") should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return false for a file <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C009671S1_source')" id="l_C009671S1_source">show source</a> ]</span>
+            <div id="C009671S1_source" class="dyn-source">
+<pre>
+FileSystem directory?("build.xml") should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return false for a file inside of a directory <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C009671S2_source')" id="l_C009671S2_source">show source</a> ]</span>
+            <div id="C009671S2_source" class="dyn-source">
+<pre>
+FileSystem directory?("src/builtin/A10_defaultBehavior.ik") should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return true for a directory <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C009671S3_source')" id="l_C009671S3_source">show source</a> ]</span>
+            <div id="C009671S3_source" class="dyn-source">
+<pre>
+FileSystem directory?("src") should be true 
+FileSystem directory?("src/") should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return true for a directory inside another directory <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C009671S4_source')" id="l_C009671S4_source">show source</a> ]</span>
+            <div id="C009671S4_source" class="dyn-source">
+<pre>
+FileSystem directory?("src/builtin") should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should expand tilde for the home directory <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C009671S5_source')" id="l_C009671S5_source">show source</a> ]</span>
+            <div id="C009671S5_source" class="dyn-source">
+<pre>
+realname = "#{FileSystemTestConfig homeDirectory}/.__something_that_should_only_exist_for_file_system_ioke_tests" 
+fname = "~/.__something_that_should_only_exist_for_file_system_ioke_tests" 
+FileSystem directory?(fname) should be false 
+ensure(
+  FileSystem createDirectory!(realname) 
+  FileSystem directory?(fname) should be true 
+  , 
+  bind(rescue(Condition Error, fn(ignored, nil)), 
+    FileSystem removeDirectory!(realname)) 
+  ) 
+FileSystem directory?(fname) should be false 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00977"></a><b>ensureDirectory</b>(dir)
+          </div>
+          <div class="description">
+            <p>takes one argument that is the relative or absolute path to something that should be a directory. if it exists but isn't a directory, a condition will be signalled. if it exists, and is a directory, nothing is done, and if it doesn't exist it will be created.</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00977_source')" id="l_C00977_source">show source</a> ]</p>
+            <div id="C00977_source" class="dyn-source">
+<pre>
+method(dir, 
+  if(exists?(dir), 
+    if(file?(dir), 
+      bind(restart(ignore, fn), 
+        error!(Condition Error IO, text: "Can't create directory #{dir}, since it already exists and is a file"))), 
+    createDirectory!(dir, true) 
+    ) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00970"></a><b>exists?</b>(entryName)
+          </div>
+          <div class="description">
+            <p>Takes one string argument and returns true if it's the relative or absolute name of something that exists.</p>
+          </div>
+          
+          <div class="specs">
+            <b> FileSystem exists?</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return false for something that doesn't exit <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C009701S0_source')" id="l_C009701S0_source">show source</a> ]</span>
+            <div id="C009701S0_source" class="dyn-source">
+<pre>
+FileSystem exists?("flux_flog") should be false 
+FileSystem exists?("src/flux_flog") should be false 
+FileSystem exists?("flux_flog/builtin") should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return true for a file <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C009701S1_source')" id="l_C009701S1_source">show source</a> ]</span>
+            <div id="C009701S1_source" class="dyn-source">
+<pre>
+FileSystem exists?("build.xml") should be true 
+FileSystem exists?("src/builtin/A10_defaultBehavior.ik") should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return true for a directory <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C009701S2_source')" id="l_C009701S2_source">show source</a> ]</span>
+            <div id="C009701S2_source" class="dyn-source">
+<pre>
+FileSystem exists?("src") should be true 
+FileSystem exists?("src/") should be true 
+FileSystem exists?("src/builtin") should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should expand tilde for the home directory <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C009701S3_source')" id="l_C009701S3_source">show source</a> ]</span>
+            <div id="C009701S3_source" class="dyn-source">
+<pre>
+realname = "#{FileSystemTestConfig homeDirectory}/.__something_that_should_only_exist_for_file_system_ioke_tests" 
+fname = "~/.__something_that_should_only_exist_for_file_system_ioke_tests" 
+FileSystem exists?(fname) should be false 
+ensure(
+  FileSystem withOpenFile(realname, fn(f, f println("hello"))) 
+  FileSystem exists?(fname) should be true 
+  , 
+  bind(rescue(Condition Error, fn(ignored, nil)), 
+    FileSystem removeFile!(realname)) 
+  ) 
+FileSystem exists?(fname) should be false 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00969"></a><b>file?</b>(fileName)
+          </div>
+          <div class="description">
+            <p>Takes one string argument and returns true if it's the relative or absolute name of a file, and false otherwise.</p>
+          </div>
+          
+          <div class="specs">
+            <b> FileSystem file?</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return false for something that doesn't exit <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C009691S0_source')" id="l_C009691S0_source">show source</a> ]</span>
+            <div id="C009691S0_source" class="dyn-source">
+<pre>
+FileSystem file?("flux_flog") should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return true for a file <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C009691S1_source')" id="l_C009691S1_source">show source</a> ]</span>
+            <div id="C009691S1_source" class="dyn-source">
+<pre>
+FileSystem file?("build.xml") should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return true for a file inside of a directory <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C009691S2_source')" id="l_C009691S2_source">show source</a> ]</span>
+            <div id="C009691S2_source" class="dyn-source">
+<pre>
+FileSystem file?("src/builtin/A10_defaultBehavior.ik") should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return false for a directory <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C009691S3_source')" id="l_C009691S3_source">show source</a> ]</span>
+            <div id="C009691S3_source" class="dyn-source">
+<pre>
+FileSystem file?("src") should be false 
+FileSystem file?("src/") should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return false for a directory inside another directory <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C009691S4_source')" id="l_C009691S4_source">show source</a> ]</span>
+            <div id="C009691S4_source" class="dyn-source">
+<pre>
+FileSystem file?("src/builtin") should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should expand tilde for the home directory <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C009691S5_source')" id="l_C009691S5_source">show source</a> ]</span>
+            <div id="C009691S5_source" class="dyn-source">
+<pre>
+realname = "#{FileSystemTestConfig homeDirectory}/.__something_that_should_only_exist_for_file_system_ioke_tests" 
+fname = "~/.__something_that_should_only_exist_for_file_system_ioke_tests" 
+FileSystem file?(fname) should be false 
+ensure(
+  FileSystem withOpenFile(realname, fn(f, f println("hello"))) 
+  FileSystem file?(fname) should be true 
+  , 
+  bind(rescue(Condition Error, fn(ignored, nil)), 
+    FileSystem removeFile!(realname)) 
+  ) 
+FileSystem file?(fname) should be false 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00971"></a><b>parentOf</b>(entryName)
+          </div>
+          <div class="description">
+            <p>Takes one string argument that should be the path of a file or directory, and returns the parent of it - or nil if there is no parent.</p>
+          </div>
+          
+          <div class="specs">
+            <b> FileSystem parentOf</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return nil for the parent of something that doesn't have a parent <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C009711S0_source')" id="l_C009711S0_source">show source</a> ]</span>
+            <div id="C009711S0_source" class="dyn-source">
+<pre>
+FileSystem parentOf("/") should be nil 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the parent of a relative directory <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C009711S1_source')" id="l_C009711S1_source">show source</a> ]</span>
+            <div id="C009711S1_source" class="dyn-source">
+<pre>
+FileSystem parentOf("src/builtin") should ==("src") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return nil for a relative directory that doesn't have a parent <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C009711S2_source')" id="l_C009711S2_source">show source</a> ]</span>
+            <div id="C009711S2_source" class="dyn-source">
+<pre>
+FileSystem parentOf("src") should be nil 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the parent of an absolute directory <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C009711S3_source')" id="l_C009711S3_source">show source</a> ]</span>
+            <div id="C009711S3_source" class="dyn-source">
+<pre>
+FileSystem parentOf("/usr/local") should ==("/usr") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00968"></a><b>readFully</b>(fileName)
+          </div>
+          <div class="description">
+            <p>Takes one string argument that should be a file name, and returns a text of the contents of this file.</p>
+          </div>
+          
+          <div class="specs">
+            <b> FileSystem readFully</b><br/>
+<ul style="list-style-type: none;">
+<li>- should correctly read in a blank file <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C009681S0_source')" id="l_C009681S0_source">show source</a> ]</span>
+            <div id="C009681S0_source" class="dyn-source">
+<pre>
+FileSystem readFully("test/fixtures/blank.txt") should ==("") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should correctly read in a list of names <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C009681S1_source')" id="l_C009681S1_source">show source</a> ]</span>
+            <div id="C009681S1_source" class="dyn-source">
+<pre>
+if(System windows?, 
+  FileSystem readFully("test/fixtures/names.txt") should ==("Ola\r\nMartin\r\nSam\r\nCarlos\r\nBrian\r\nFelipe"), 
+  FileSystem readFully("test/fixtures/names.txt") should ==("Ola\nMartin\nSam\nCarlos\nBrian\nFelipe")) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should expand tilde for the home directory <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C009681S2_source')" id="l_C009681S2_source">show source</a> ]</span>
+            <div id="C009681S2_source" class="dyn-source">
+<pre>
+realname = "#{FileSystemTestConfig homeDirectory}/.__something_that_should_only_exist_for_file_system_ioke_tests" 
+fname = "~/.__something_that_should_only_exist_for_file_system_ioke_tests" 
+ensure(
+  FileSystem withOpenFile(realname, fn(f, f print("hello you are a strange man!"))) 
+  FileSystem readFully(fname) should ==("hello you are a strange man!") 
+  , 
+  bind(rescue(Condition Error, fn(ignored, nil)), 
+    FileSystem removeFile!(realname)) 
+  ) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00978"></a><b>readLines</b>(filename)
+          </div>
+          <div class="description">
+            <p>reads the full content of a file and returns a list containing each line of the file as a separate element of the list.</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00978_source')" id="l_C00978_source">show source</a> ]</p>
+            <div id="C00978_source" class="dyn-source">
+<pre>
+method(filename, 
+  if(System windows?, 
+    readFully(filename) split("\r\n"), 
+    readFully(filename) split("\n")) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> FileSystem readLines</b><br/>
+<ul style="list-style-type: none;">
+<li>- should correctly read in a blank file as an empty list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C009781S0_source')" id="l_C009781S0_source">show source</a> ]</span>
+            <div id="C009781S0_source" class="dyn-source">
+<pre>
+FileSystem readLines("test/fixtures/blank.txt") should ==([]) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should correctly read in a list of names <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C009781S1_source')" id="l_C009781S1_source">show source</a> ]</span>
+            <div id="C009781S1_source" class="dyn-source">
+<pre>
+FileSystem readLines("test/fixtures/names.txt") should ==([]("Ola", "Martin", "Sam", "Carlos", "Brian", "Felipe")) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should expand tilde for the home directory <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C009781S2_source')" id="l_C009781S2_source">show source</a> ]</span>
+            <div id="C009781S2_source" class="dyn-source">
+<pre>
+realname = "#{FileSystemTestConfig homeDirectory}/.__something_that_should_only_exist_for_file_system_ioke_tests" 
+fname = "~/.__something_that_should_only_exist_for_file_system_ioke_tests" 
+ensure(
+  FileSystem withOpenFile(realname, fn(f, f print("hello you are a strange man!"))) 
+  FileSystem readLines(fname) should ==([]("hello you are a strange man!")) 
+  , 
+  bind(rescue(Condition Error, fn(ignored, nil)), 
+    FileSystem removeFile!(realname)) 
+  ) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00975"></a><b>removeDirectory!</b>(directoryName)
+          </div>
+          <div class="description">
+            <p>Takes one string argument and removes a directory with that name. Will signal a condition if the directory doesn't exist, or if there's a file with that name.</p>
+          </div>
+          
+          <div class="specs">
+            <b> FileSystem removeDirectory!</b><br/>
+<ul style="list-style-type: none;">
+<li>- should signal an error if the directory doesn't exists <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C009751S0_source')" id="l_C009751S0_source">show source</a> ]</span>
+            <div id="C009751S0_source" class="dyn-source">
+<pre>
+fn(FileSystem removeDirectory!("non_existing_dir")) should signal(Condition Error IO) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should signal an error if a file with the same name exists <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C009751S1_source')" id="l_C009751S1_source">show source</a> ]</span>
+            <div id="C009751S1_source" class="dyn-source">
+<pre>
+fn(FileSystem removeDirectory!("build.xml")) should signal(Condition Error IO) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should remove the directory <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C009751S2_source')" id="l_C009751S2_source">show source</a> ]</span>
+            <div id="C009751S2_source" class="dyn-source">
+<pre>
+FileSystem createDirectory!("test/dir_to_remove") 
+FileSystem removeDirectory!("test/dir_to_remove") 
+FileSystem should not have directory("test/dir_to_remove") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should expand tilde for the home directory <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C009751S3_source')" id="l_C009751S3_source">show source</a> ]</span>
+            <div id="C009751S3_source" class="dyn-source">
+<pre>
+realname = "#{FileSystemTestConfig homeDirectory}/.__something_that_should_only_exist_for_file_system_ioke_tests" 
+fname = "~/.__something_that_should_only_exist_for_file_system_ioke_tests" 
+FileSystem directory?(realname) should be false 
+ensure(
+  FileSystem createDirectory!(realname) 
+  FileSystem removeDirectory!(fname) 
+  FileSystem directory?(realname) should be false 
+  , 
+  bind(rescue(Condition Error, fn(ignored, nil)), 
+    FileSystem removeDirectory!(realname)) 
+  ) 
+FileSystem directory?(realname) should be false 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00976"></a><b>removeFile!</b>(fileName)
+          </div>
+          <div class="description">
+            <p>Takes one string argument and removes a file with that name. Will signal a condition if the file doesn't exist, or if there's a directory with that name.</p>
+          </div>
+          
+          <div class="specs">
+            <b> FileSystem removeFile!</b><br/>
+<ul style="list-style-type: none;">
+<li>- should signal an error if the file doesn't exists <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C009761S0_source')" id="l_C009761S0_source">show source</a> ]</span>
+            <div id="C009761S0_source" class="dyn-source">
+<pre>
+fn(FileSystem removeFile!("non_existing_file")) should signal(Condition Error IO) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should signal an error if a directory with the same name exists <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C009761S1_source')" id="l_C009761S1_source">show source</a> ]</span>
+            <div id="C009761S1_source" class="dyn-source">
+<pre>
+fn(FileSystem removeFile!("build")) should signal(Condition Error IO) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should remove the file <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C009761S2_source')" id="l_C009761S2_source">show source</a> ]</span>
+            <div id="C009761S2_source" class="dyn-source">
+<pre>
+FileSystem withOpenFile("test/file_to_remove", fn(f, f println("hello"))) 
+FileSystem removeFile!("test/file_to_remove") 
+FileSystem should not have file("test/file_to_remove") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should expand tilde for the home directory <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C009761S3_source')" id="l_C009761S3_source">show source</a> ]</span>
+            <div id="C009761S3_source" class="dyn-source">
+<pre>
+realname = "#{FileSystemTestConfig homeDirectory}/.__something_that_should_only_exist_for_file_system_ioke_tests" 
+fname = "~/.__something_that_should_only_exist_for_file_system_ioke_tests" 
+FileSystem exists?(realname) should be false 
+ensure(
+  FileSystem withOpenFile(realname, fn(f, f print("hello"))) 
+  FileSystem removeFile!(fname) 
+  FileSystem exists?(realname) should be false 
+  , 
+  bind(rescue(Condition Error, fn(ignored, nil)), 
+    FileSystem removeFile!(realname)) 
+  ) 
+FileSystem exists?(realname) should be false 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00972"></a><b>withOpenFile</b>(fileName, code)
+          </div>
+          <div class="description">
+            <p>Takes a file name and a lexical block - opens the file, ensures that it exists and then yields the file to the block. Finally it closes the file after the block has finished executing, and then returns the result of the block.</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </body>
+</html>

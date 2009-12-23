@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Kind: DefaultBehavior</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href=".././dokgen-style.css" type="text/css" media="screen" />
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=480,width=750" ).focus();
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+    <table border='0' cellpadding='0' cellspacing='0' width="100%" class='banner'>
+      <tr>
+        <td>
+          <table width="100%" border='0' cellpadding='0' cellspacing='0'>
+            <tr>
+              <td class="file-title" colspan="2">
+                <span class="file-title-prefix">Kind</span>
+                <br />
+                DefaultMacro
+              </td>
+              <td align="right">
+                <table cellspacing="0" cellpadding="2">
+                  <tr>
+                    <td>Main mimic:</td>
+                    <td>
+                      <a href="../kinds/Origin.html">Origin</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <div id="bodyContent">
+      <div id="content">
+        <div class="description">
+          <p>
+DefaultMacro is the instance all non-lexical macros in the system are derived from.
+          </p>
+        </div>
+
+        <div class="sectiontitle">Mimics</div>
+        <ul>
+          <li><a href="../kinds/Origin.html">Origin</a></li>
+        </ul>
+
+        <div class="sectiontitle">Inactive cells</div>
+        <ul>
+          <li><a href="#C00536">activatable</a></li>
+<li><a href="#C00535">kind</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Active cells</div>
+        <ul>
+          <li><a href="#C00540">argumentsCode()</a></li>
+<li><a href="#C00545">arity()</a></li>
+<li><a href="#C00538">call(+[arguments])</a></li>
+<li><a href="#C00543">code()</a></li>
+<li><a href="#C00544">formattedCode()</a></li>
+<li><a href="#C00541">inspect()</a></li>
+<li><a href="#C00539">message()</a></li>
+<li><a href="#C00537">name()</a></li>
+<li><a href="#C00542">notice()</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Specs</div>
+        <div class="specs">
+          
+        </div>
+
+        <div class="sectiontitle">Inactive cells (details)</div>
+                <div class="cell">
+          <a name="C00536"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">activatable</td>
+              <td>=</td>
+              <td class="cell-value">true</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C00535"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">kind</td>
+              <td>=</td>
+              <td class="cell-value">"DefaultMacro"</td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="sectiontitle">Active cells (details)</div>
+                <div class="cell">
+          <div class="title">
+          <a name="C00540"></a><b>argumentsCode</b>()
+          </div>
+          <div class="description">
+            <p>returns the code for the argument definition</p>
+          </div>
+          
+          <div class="specs">
+            <b> DefaultMacro argumentsCode</b><br/>
+<ul style="list-style-type: none;">
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005401S0_source')" id="l_C005401S0_source">show source</a> ]</span>
+            <div id="C005401S0_source" class="dyn-source">
+<pre>
+cell("DefaultMacro") should checkReceiverTypeOn(:argumentsCode) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00545"></a><b>arity</b>()
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00545_source')" id="l_C00545_source">show source</a> ]</p>
+            <div id="C00545_source" class="dyn-source">
+<pre>
+method(
+  Arity fromArgumentsCode(argumentsCode))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00538"></a><b>call</b>(+[arguments])
+          </div>
+          <div class="description">
+            <p>activates this macro with the arguments given to call</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00543"></a><b>code</b>()
+          </div>
+          <div class="description">
+            <p>returns the full code of this macro, as a Text</p>
+          </div>
+          
+          <div class="specs">
+            <b> DefaultMacro code</b><br/>
+<ul style="list-style-type: none;">
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005431S0_source')" id="l_C005431S0_source">show source</a> ]</span>
+            <div id="C005431S0_source" class="dyn-source">
+<pre>
+cell("DefaultMacro") should checkReceiverTypeOn(:code) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00544"></a><b>formattedCode</b>()
+          </div>
+          <div class="description">
+            <p>returns idiomatically formatted code for this macro</p>
+          </div>
+          
+          <div class="specs">
+            <b> DefaultMacro formattedCode</b><br/>
+<ul style="list-style-type: none;">
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005441S0_source')" id="l_C005441S0_source">show source</a> ]</span>
+            <div id="C005441S0_source" class="dyn-source">
+<pre>
+cell("DefaultMacro") should checkReceiverTypeOn(:formattedCode) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00541"></a><b>inspect</b>()
+          </div>
+          <div class="description">
+            <p>Returns a text inspection of the object</p>
+          </div>
+          
+          <div class="specs">
+            <b> DefaultMacro inspect</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return the code inside the macro <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005411S0_source')" id="l_C005411S0_source">show source</a> ]</span>
+            <div id="C005411S0_source" class="dyn-source">
+<pre>
+macro(foo bar) inspect should ==("macro(foo bar)") 
+macro(123 +(444)) inspect should ==("macro(123 +(444))") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should prep) the name if it is available <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005411S1_source')" id="l_C005411S1_source">show source</a> ]</span>
+            <div id="C005411S1_source" class="dyn-source">
+<pre>
+x = macro(foo bar) 
+cell(:x) inspect should ==("x:macro(foo bar)") 
+x = macro(123 +(444)) 
+cell(:x) inspect should ==("x:macro(123 +(444))") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005411S2_source')" id="l_C005411S2_source">show source</a> ]</span>
+            <div id="C005411S2_source" class="dyn-source">
+<pre>
+cell("DefaultMacro") should checkReceiverTypeOn(:inspect) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00539"></a><b>message</b>()
+          </div>
+          <div class="description">
+            <p>returns the message chain for this macro</p>
+          </div>
+          
+          <div class="specs">
+            <b> DefaultMacro message</b><br/>
+<ul style="list-style-type: none;">
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005391S0_source')" id="l_C005391S0_source">show source</a> ]</span>
+            <div id="C005391S0_source" class="dyn-source">
+<pre>
+cell("DefaultMacro") should checkReceiverTypeOn(:message) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00537"></a><b>name</b>()
+          </div>
+          <div class="description">
+            <p>returns the name of the macro</p>
+          </div>
+          
+          <div class="specs">
+            <b> DefaultMacro name</b><br/>
+<ul style="list-style-type: none;">
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005371S0_source')" id="l_C005371S0_source">show source</a> ]</span>
+            <div id="C005371S0_source" class="dyn-source">
+<pre>
+cell("DefaultMacro") should checkReceiverTypeOn(:name) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00542"></a><b>notice</b>()
+          </div>
+          <div class="description">
+            <p>Returns a brief text inspection of the object</p>
+          </div>
+          
+          <div class="specs">
+            <b> DefaultMacro notice</b><br/>
+<ul style="list-style-type: none;">
+<li>- should just return a simple description without code <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005421S0_source')" id="l_C005421S0_source">show source</a> ]</span>
+            <div id="C005421S0_source" class="dyn-source">
+<pre>
+macro notice should ==("macro(...)") 
+macro(nil) notice should ==("macro(...)") 
+macro(foo bar xxxxxx) notice should ==("macro(...)") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should prep) the name if there is a name available <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005421S1_source')" id="l_C005421S1_source">show source</a> ]</span>
+            <div id="C005421S1_source" class="dyn-source">
+<pre>
+x = macro 
+cell(:x) notice should ==("x:macro(...)") 
+x = macro(nil) 
+cell(:x) notice should ==("x:macro(...)") 
+x = macro(foo bar xxxxxx) 
+cell(:x) notice should ==("x:macro(...)") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005421S2_source')" id="l_C005421S2_source">show source</a> ]</span>
+            <div id="C005421S2_source" class="dyn-source">
+<pre>
+cell("DefaultMacro") should checkReceiverTypeOn(:notice) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </body>
+</html>

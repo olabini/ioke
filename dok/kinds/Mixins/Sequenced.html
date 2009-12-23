@@ -1,0 +1,782 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Kind: DefaultBehavior</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../.././dokgen-style.css" type="text/css" media="screen" />
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=480,width=750" ).focus();
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+    <table border='0' cellpadding='0' cellspacing='0' width="100%" class='banner'>
+      <tr>
+        <td>
+          <table width="100%" border='0' cellpadding='0' cellspacing='0'>
+            <tr>
+              <td class="file-title" colspan="2">
+                <span class="file-title-prefix">Kind</span>
+                <br />
+                Mixins Sequenced
+              </td>
+              <td align="right">
+                <table cellspacing="0" cellpadding="2">
+                  <tr>
+                    <td>Main mimic:</td>
+                    <td>
+                      <a href="../../kinds/Mixins.html">Mixins</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <div id="bodyContent">
+      <div id="content">
+        <div class="description">
+          <p>
+something that is sequenced can return a Sequence over itself. it also allows several other methods to be defined in terms of that sequence. A Sequenced object is Enumerable, since all Enumerable operations can be defined in terms of sequencing.
+          </p>
+        </div>
+
+        <div class="sectiontitle">Mimics</div>
+        <ul>
+          <li><a href="../../kinds/Mixins.html">Mixins</a></li><li><a href="../../kinds/Mixins/Enumerable.html">Mixins Enumerable</a></li>
+        </ul>
+
+        <div class="sectiontitle">Inactive cells</div>
+        <ul>
+          <li><a href="#C00667">kind</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Active cells</div>
+        <ul>
+          <li><a href="#C00670">collected(...)</a></li>
+<li><a href="#C00675">dropped(...)</a></li>
+<li><a href="#C00676">droppedWhile(...)</a></li>
+<li><a href="#C00668">each(...)</a></li>
+<li><a href="#C00671">filtered(...)</a></li>
+<li><a href="#C00673">grepped(...)</a></li>
+<li><a href="#C00678">indexed(...)</a></li>
+<li><a href="#C00680">interleave(...)</a></li>
+<li><a href="#C00679">interpose(...)</a></li>
+<li><a href="#C00669">mapped(...)</a></li>
+<li><a href="#C00677">rejected(...)</a></li>
+<li><a href="#C00672">selected(...)</a></li>
+<li><a href="#C00674">zipped(...)</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Specs</div>
+        <div class="specs">
+          
+        </div>
+
+        <div class="sectiontitle">Inactive cells (details)</div>
+                <div class="cell">
+          <a name="C00667"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">kind</td>
+              <td>=</td>
+              <td class="cell-value">"Mixins Sequenced"</td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="sectiontitle">Active cells (details)</div>
+                <div class="cell">
+          <div class="title">
+          <a name="C00670"></a><b>collected</b>(...)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00670_source')" id="l_C00670_source">show source</a> ]</p>
+            <div id="C00670_source" class="dyn-source">
+<pre>
+macro(
+  call resendToReceiver(self seq))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Mixins Sequenced collected</b><br/>
+<ul style="list-style-type: none;">
+<li>- should resend the call with all arguments to the result of calling seq <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006701S0_source')" id="l_C006701S0_source">show source</a> ]</span>
+            <div id="C006701S0_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x mimic!(Mixins Sequenced) 
+seqObj = SequenceHelper mimic 
+x mock!(:seq) andReturn(seqObj) 
+x collected(foo, bar x *(43)) should ==(42) 
+seqObj called should be true 
+seqObj callInfo arguments should ==([]('(foo), '(bar x *(43)))) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00675"></a><b>dropped</b>(...)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00675_source')" id="l_C00675_source">show source</a> ]</p>
+            <div id="C00675_source" class="dyn-source">
+<pre>
+macro(
+  call resendToReceiver(self seq))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Mixins Sequenced dropped</b><br/>
+<ul style="list-style-type: none;">
+<li>- should resend the call with all arguments to the result of calling seq <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006751S0_source')" id="l_C006751S0_source">show source</a> ]</span>
+            <div id="C006751S0_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x mimic!(Mixins Sequenced) 
+seqObj = SequenceHelper mimic 
+x mock!(:seq) andReturn(seqObj) 
+x dropped(foo, bar x *(43)) should ==(42) 
+seqObj called should be true 
+seqObj callInfo arguments should ==([]('(foo), '(bar x *(43)))) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00676"></a><b>droppedWhile</b>(...)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00676_source')" id="l_C00676_source">show source</a> ]</p>
+            <div id="C00676_source" class="dyn-source">
+<pre>
+macro(
+  call resendToReceiver(self seq))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Mixins Sequenced droppedWhile</b><br/>
+<ul style="list-style-type: none;">
+<li>- should resend the call with all arguments to the result of calling seq <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006761S0_source')" id="l_C006761S0_source">show source</a> ]</span>
+            <div id="C006761S0_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x mimic!(Mixins Sequenced) 
+seqObj = SequenceHelper mimic 
+x mock!(:seq) andReturn(seqObj) 
+x droppedWhile(foo, bar x *(43)) should ==(42) 
+seqObj called should be true 
+seqObj callInfo arguments should ==([]('(foo), '(bar x *(43)))) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00668"></a><b>each</b>(...)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00668_source')" id="l_C00668_source">show source</a> ]</p>
+            <div id="C00668_source" class="dyn-source">
+<pre>
+macro(
+  argCount = call arguments length 
+  cond(
+    argCount ==(
+      0), 
+    
+    
+    seq, 
+    argCount ==(
+      1), 
+    
+    chain = call arguments [](
+        0) 
+    
+    s = seq 
+    while(s next?, 
+      chain evaluateOn(call ground, s next) 
+      ) 
+    @, 
+    argCount ==(
+      2), 
+    
+    argumentName = call arguments [](
+        0) 
+    code = call arguments [](
+        1) 
+    
+    s = seq 
+    lexicalCode = LexicalBlock createFrom(list(argumentName, code), call ground) 
+    while(s next?, 
+      lexicalCode call(s next) 
+      ) 
+    @, 
+    argCount ==(
+      3), 
+    
+    indexArgumentName = call arguments [](
+        0) 
+    argumentName = call arguments [](
+        1) 
+    code = call arguments [](
+        2) 
+    
+    s = seq 
+    lexicalCode = LexicalBlock createFrom(list(indexArgumentName, argumentName, code), call ground) 
+    index = 0 
+    while(s next?, 
+      lexicalCode call(index, s next) 
+      ++(index) 
+      ) 
+    @ 
+    , 
+    error!(Condition Error Invocation NoMatch, message: call message, context: call currentContext)) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Mixins Sequenced each</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be implemented in terms of 'seq' <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006681S0_source')" id="l_C006681S0_source">show source</a> ]</span>
+            <div id="C006681S0_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x mimic!(Mixins Sequenced) 
+seqObj = SequenceHelper mimic 
+seqObj mock!(:next?) andReturn(false) 
+x mock!(:seq) andReturn(seqObj) 
+x each(42) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to call with one message chain that will be applied to all arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006681S1_source')" id="l_C006681S1_source">show source</a> ]</span>
+            <div id="C006681S1_source" class="dyn-source">
+<pre>
+Ground y = [] 
+Ground xs = method(y &lt;&lt;(self)) 
+SequenceTester each(xs) 
+y should ==([](1, 2, 3, 4, 5, 6, 7, 8)) 
+x = 0 
+SequenceTester each(nil 
+  ++(x)) 
+x should ==(8) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to call with one argument name and code that will be applied to all arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006681S2_source')" id="l_C006681S2_source">show source</a> ]</span>
+            <div id="C006681S2_source" class="dyn-source">
+<pre>
+y = [] 
+SequenceTester each(x, y &lt;&lt;(x)) 
+y should ==([](1, 2, 3, 4, 5, 6, 7, 8)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to call with two argument names and code that will be applied to all arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006681S3_source')" id="l_C006681S3_source">show source</a> ]</span>
+            <div id="C006681S3_source" class="dyn-source">
+<pre>
+y = [] 
+SequenceTester each(i, x, y &lt;&lt;([](i, x))) 
+y should ==([]([](0, 1), [](1, 2), [](2, 3), [](3, 4), [](4, 5), [](5, 6), [](6, 7), [](7, 8))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006681S4_source')" id="l_C006681S4_source">show source</a> ]</span>
+            <div id="C006681S4_source" class="dyn-source">
+<pre>
+(SequenceTester each(x, x)) should be(SequenceTester) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should establish a lexical context when invoking the methods. this context will be the same for all invocations. <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006681S5_source')" id="l_C006681S5_source">show source</a> ]</span>
+            <div id="C006681S5_source" class="dyn-source">
+<pre>
+SequenceTester each(x_list, blarg = 32) 
+cell?(:x_list) should be false 
+cell?(:blarg) should be false 
+x = 14 
+SequenceTester each(x, blarg = 32) 
+x should ==(14) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return a Sequence if called with no arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006681S6_source')" id="l_C006681S6_source">show source</a> ]</span>
+            <div id="C006681S6_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x mimic!(Mixins Sequenced) 
+seqObj = SequenceHelper mimic 
+x mock!(:seq) andReturn(seqObj) 
+x each should be same(seqObj) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00671"></a><b>filtered</b>(...)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00671_source')" id="l_C00671_source">show source</a> ]</p>
+            <div id="C00671_source" class="dyn-source">
+<pre>
+macro(
+  call resendToReceiver(self seq))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Mixins Sequenced filtered</b><br/>
+<ul style="list-style-type: none;">
+<li>- should resend the call with all arguments to the result of calling seq <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006711S0_source')" id="l_C006711S0_source">show source</a> ]</span>
+            <div id="C006711S0_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x mimic!(Mixins Sequenced) 
+seqObj = SequenceHelper mimic 
+x mock!(:seq) andReturn(seqObj) 
+x filtered(foo, bar x *(43)) should ==(42) 
+seqObj called should be true 
+seqObj callInfo arguments should ==([]('(foo), '(bar x *(43)))) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00673"></a><b>grepped</b>(...)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00673_source')" id="l_C00673_source">show source</a> ]</p>
+            <div id="C00673_source" class="dyn-source">
+<pre>
+macro(
+  call resendToReceiver(self seq))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Mixins Sequenced grepped</b><br/>
+<ul style="list-style-type: none;">
+<li>- should resend the call with all arguments to the result of calling seq <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006731S0_source')" id="l_C006731S0_source">show source</a> ]</span>
+            <div id="C006731S0_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x mimic!(Mixins Sequenced) 
+seqObj = SequenceHelper mimic 
+x mock!(:seq) andReturn(seqObj) 
+x grepped(foo, bar x *(43)) should ==(42) 
+seqObj called should be true 
+seqObj callInfo arguments should ==([]('(foo), '(bar x *(43)))) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00678"></a><b>indexed</b>(...)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00678_source')" id="l_C00678_source">show source</a> ]</p>
+            <div id="C00678_source" class="dyn-source">
+<pre>
+macro(
+  call resendToReceiver(self seq))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00680"></a><b>interleave</b>(...)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00680_source')" id="l_C00680_source">show source</a> ]</p>
+            <div id="C00680_source" class="dyn-source">
+<pre>
+macro(
+  call resendToReceiver(self seq))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Mixins Sequenced interleave</b><br/>
+<ul style="list-style-type: none;">
+<li>- should create a new sequence <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006801S0_source')" id="l_C006801S0_source">show source</a> ]</span>
+            <div id="C006801S0_source" class="dyn-source">
+<pre>
+[](1, 2, 3) interleave(1 ..(5)) should mimic(Sequence) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take an enumerable <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006801S1_source')" id="l_C006801S1_source">show source</a> ]</span>
+            <div id="C006801S1_source" class="dyn-source">
+<pre>
+[](1, 2, 3) interleave(5 ..(15)) asList should ==([](1, 5, 2, 6, 3, 7)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take a seq <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006801S2_source')" id="l_C006801S2_source">show source</a> ]</span>
+            <div id="C006801S2_source" class="dyn-source">
+<pre>
+[](1, 2, 3) interleave((5 ..(15)) seq) asList should ==([](1, 5, 2, 6, 3, 7)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should only take as many elements as needed from the self <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006801S3_source')" id="l_C006801S3_source">show source</a> ]</span>
+            <div id="C006801S3_source" class="dyn-source">
+<pre>
+[](1, 2, 3, 4, 5, 6) interleave([](10, 11)) asList should ==([](1, 10, 2, 11)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should only take as many elements as needed from the argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006801S4_source')" id="l_C006801S4_source">show source</a> ]</span>
+            <div id="C006801S4_source" class="dyn-source">
+<pre>
+[](1, 2) interleave([](10, 11, 12, 13, 14, 15)) asList should ==([](1, 10, 2, 11)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should interleave the elements of the argument with the elements of the sequence <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006801S5_source')" id="l_C006801S5_source">show source</a> ]</span>
+            <div id="C006801S5_source" class="dyn-source">
+<pre>
+[]("foo", "bar", "quux") interleave(1 ..(3)) asList should ==([]("foo", 1, "bar", 2, "quux", 3)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00679"></a><b>interpose</b>(...)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00679_source')" id="l_C00679_source">show source</a> ]</p>
+            <div id="C00679_source" class="dyn-source">
+<pre>
+macro(
+  call resendToReceiver(self seq))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Mixins Sequenced interpose</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return a new sequence <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006791S0_source')" id="l_C006791S0_source">show source</a> ]</span>
+            <div id="C006791S0_source" class="dyn-source">
+<pre>
+[](1, 2, 3) interpose(42) should mimic(Sequence) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return a sequence that has the element interposed <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006791S1_source')" id="l_C006791S1_source">show source</a> ]</span>
+            <div id="C006791S1_source" class="dyn-source">
+<pre>
+[](1, 2, 3) interpose(42) asList should ==([](1, 42, 2, 42, 3)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00669"></a><b>mapped</b>(...)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00669_source')" id="l_C00669_source">show source</a> ]</p>
+            <div id="C00669_source" class="dyn-source">
+<pre>
+macro(
+  call resendToReceiver(self seq))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Mixins Sequenced mapped</b><br/>
+<ul style="list-style-type: none;">
+<li>- should resend the call with all arguments to the result of calling seq <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006691S0_source')" id="l_C006691S0_source">show source</a> ]</span>
+            <div id="C006691S0_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x mimic!(Mixins Sequenced) 
+seqObj = SequenceHelper mimic 
+x mock!(:seq) andReturn(seqObj) 
+x mapped(foo, bar x *(43)) should ==(42) 
+seqObj called should be true 
+seqObj callInfo arguments should ==([]('(foo), '(bar x *(43)))) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00677"></a><b>rejected</b>(...)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00677_source')" id="l_C00677_source">show source</a> ]</p>
+            <div id="C00677_source" class="dyn-source">
+<pre>
+macro(
+  call resendToReceiver(self seq))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Mixins Sequenced rejected</b><br/>
+<ul style="list-style-type: none;">
+<li>- should resend the call with all arguments to the result of calling seq <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006771S0_source')" id="l_C006771S0_source">show source</a> ]</span>
+            <div id="C006771S0_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x mimic!(Mixins Sequenced) 
+seqObj = SequenceHelper mimic 
+x mock!(:seq) andReturn(seqObj) 
+x rejected(foo, bar x *(43)) should ==(42) 
+seqObj called should be true 
+seqObj callInfo arguments should ==([]('(foo), '(bar x *(43)))) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00672"></a><b>selected</b>(...)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00672_source')" id="l_C00672_source">show source</a> ]</p>
+            <div id="C00672_source" class="dyn-source">
+<pre>
+macro(
+  call resendToReceiver(self seq))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Mixins Sequenced selected</b><br/>
+<ul style="list-style-type: none;">
+<li>- should resend the call with all arguments to the result of calling seq <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006721S0_source')" id="l_C006721S0_source">show source</a> ]</span>
+            <div id="C006721S0_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x mimic!(Mixins Sequenced) 
+seqObj = SequenceHelper mimic 
+x mock!(:seq) andReturn(seqObj) 
+x selected(foo, bar x *(43)) should ==(42) 
+seqObj called should be true 
+seqObj callInfo arguments should ==([]('(foo), '(bar x *(43)))) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00674"></a><b>zipped</b>(...)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00674_source')" id="l_C00674_source">show source</a> ]</p>
+            <div id="C00674_source" class="dyn-source">
+<pre>
+macro(
+  call resendToReceiver(self seq))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Mixins Sequenced zipped</b><br/>
+<ul style="list-style-type: none;">
+<li>- should resend the call with all arguments to the result of calling seq <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C006741S0_source')" id="l_C006741S0_source">show source</a> ]</span>
+            <div id="C006741S0_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x mimic!(Mixins Sequenced) 
+seqObj = SequenceHelper mimic 
+x mock!(:seq) andReturn(seqObj) 
+x zipped(foo, bar x *(43)) should ==(42) 
+seqObj called should be true 
+seqObj callInfo arguments should ==([]('(foo), '(bar x *(43)))) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </body>
+</html>

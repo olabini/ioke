@@ -1,0 +1,553 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Kind: DefaultBehavior</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../.././dokgen-style.css" type="text/css" media="screen" />
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=480,width=750" ).focus();
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+    <table border='0' cellpadding='0' cellspacing='0' width="100%" class='banner'>
+      <tr>
+        <td>
+          <table width="100%" border='0' cellpadding='0' cellspacing='0'>
+            <tr>
+              <td class="file-title" colspan="2">
+                <span class="file-title-prefix">Kind</span>
+                <br />
+                DefaultBehavior Boolean
+              </td>
+              <td align="right">
+                <table cellspacing="0" cellpadding="2">
+                  <tr>
+                    <td>Main mimic:</td>
+                    <td>
+                      none
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <div id="bodyContent">
+      <div id="content">
+        <div class="description">
+          <p>
+contains behavior related to boolean behavior
+          </p>
+        </div>
+
+        <div class="sectiontitle">Mimics</div>
+        <ul>
+          none
+        </ul>
+
+        <div class="sectiontitle">Inactive cells</div>
+        <ul>
+          <li><a href="#C00198">inspect</a></li>
+<li><a href="#C00195">kind</a></li>
+<li><a href="#C00197">notice</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Active cells</div>
+        <ul>
+          <li><a href="#C00205">!(arg)</a></li>
+<li><a href="#C00203">&&(...)</a></li>
+<li><a href="#C00196">-(obj)</a></li>
+<li><a href="#C00204">?&(...)</a></li>
+<li><a href="#C00201">?|(...)</a></li>
+<li><a href="#C00202">and(...)</a></li>
+<li><a href="#C00207">false?()</a></li>
+<li><a href="#C00212">nand(...)</a></li>
+<li><a href="#C00206">nil?()</a></li>
+<li><a href="#C00211">nor(...)</a></li>
+<li><a href="#C00209">not()</a></li>
+<li><a href="#C00199">or(...)</a></li>
+<li><a href="#C00208">true?()</a></li>
+<li><a href="#C00210">xor(...)</a></li>
+<li><a href="#C00200">||(...)</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Specs</div>
+        <div class="specs">
+          
+        </div>
+
+        <div class="sectiontitle">Inactive cells (details)</div>
+                <div class="cell">
+          <a name="C00198"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">inspect</td>
+              <td>=</td>
+              <td class="cell-value">"DefaultBehavior Boolean"</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C00195"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">kind</td>
+              <td>=</td>
+              <td class="cell-value">"DefaultBehavior Boolean"</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C00197"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">notice</td>
+              <td>=</td>
+              <td class="cell-value">"DefaultBehavior Boolean"</td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="sectiontitle">Active cells (details)</div>
+                <div class="cell">
+          <div class="title">
+          <a name="C00205"></a><b>!</b>(arg)
+          </div>
+          <div class="description">
+            <p>returns true if the argument is false, and false if it's true</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00205_source')" id="l_C00205_source">show source</a> ]</p>
+            <div id="C00205_source" class="dyn-source">
+<pre>
+method(arg, 
+  arg not)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00203"></a><b>&&</b>(...)
+          </div>
+          <div class="description">
+            <p>Evaluates the argument and returns the result</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00203_source')" id="l_C00203_source">show source</a> ]</p>
+            <div id="C00203_source" class="dyn-source">
+<pre>
+macro(
+  argCount = call arguments length 
+  if(
+    argCount ==(
+      1), 
+    
+    then = call argAt(
+        0) 
+    
+    then, 
+    error!(Condition Error Invocation NoMatch, message: call message, context: call currentContext)) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00196"></a><b>-</b>(obj)
+          </div>
+          <div class="description">
+            <p>returns the negation of the argument</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00196_source')" id="l_C00196_source">show source</a> ]</p>
+            <div id="C00196_source" class="dyn-source">
+<pre>
+method(obj, 
+  obj negation)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00204"></a><b>?&</b>(...)
+          </div>
+          <div class="description">
+            <p>Evaluates the argument and returns the result</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00204_source')" id="l_C00204_source">show source</a> ]</p>
+            <div id="C00204_source" class="dyn-source">
+<pre>
+macro(
+  argCount = call arguments length 
+  cond(
+    argCount ==(
+      1), 
+    
+    then = call argAt(
+        0) 
+    
+    then, 
+    error!(Condition Error Invocation NoMatch, message: call message, context: call currentContext)) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00201"></a><b>?|</b>(...)
+          </div>
+          <div class="description">
+            <p>Does not evaluate argument and returns self</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00201_source')" id="l_C00201_source">show source</a> ]</p>
+            <div id="C00201_source" class="dyn-source">
+<pre>
+macro(
+  argCount = call arguments length 
+  cond(
+    argCount ==(
+      1), 
+    
+    then = call arguments [](
+        0) 
+    
+    @, 
+    error!(Condition Error Invocation NoMatch, message: call message, context: call currentContext)) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00202"></a><b>and</b>(...)
+          </div>
+          <div class="description">
+            <p>Evaluates the argument and returns the result</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00202_source')" id="l_C00202_source">show source</a> ]</p>
+            <div id="C00202_source" class="dyn-source">
+<pre>
+macro(
+  argCount = call arguments length 
+  cond(
+    argCount ==(
+      1), 
+    
+    then = call argAt(
+        0) 
+    
+    then, 
+    error!(Condition Error Invocation NoMatch, message: call message, context: call currentContext)) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00207"></a><b>false?</b>()
+          </div>
+          <div class="description">
+            <p>returns false.</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00207_source')" id="l_C00207_source">show source</a> ]</p>
+            <div id="C00207_source" class="dyn-source">
+<pre>
+method(
+  false)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00212"></a><b>nand</b>(...)
+          </div>
+          <div class="description">
+            <p>Evaluates its argument and returns the inverse of it</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00212_source')" id="l_C00212_source">show source</a> ]</p>
+            <div id="C00212_source" class="dyn-source">
+<pre>
+macro(
+  argCount = call arguments length 
+  cond(
+    argCount ==(
+      1), 
+    
+    other = call argAt(
+        0) 
+    
+    if(other, false, true), 
+    error!(Condition Error Invocation NoMatch, message: call message, context: call currentContext)) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00206"></a><b>nil?</b>()
+          </div>
+          <div class="description">
+            <p>returns false.</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00206_source')" id="l_C00206_source">show source</a> ]</p>
+            <div id="C00206_source" class="dyn-source">
+<pre>
+method(
+  false)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00211"></a><b>nor</b>(...)
+          </div>
+          <div class="description">
+            <p>Does not evaluate its argument and returns false</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00211_source')" id="l_C00211_source">show source</a> ]</p>
+            <div id="C00211_source" class="dyn-source">
+<pre>
+macro(
+  argCount = call arguments length 
+  cond(
+    argCount ==(
+      1), 
+    
+    other = call arguments [](
+        0) 
+    
+    false, 
+    error!(Condition Error Invocation NoMatch, message: call message, context: call currentContext)) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00209"></a><b>not</b>()
+          </div>
+          <div class="description">
+            <p>Does not evaluate arguments and returns nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00209_source')" id="l_C00209_source">show source</a> ]</p>
+            <div id="C00209_source" class="dyn-source">
+<pre>
+method(
+  nil)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00199"></a><b>or</b>(...)
+          </div>
+          <div class="description">
+            <p>Does not evaluate argument and returns self</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00199_source')" id="l_C00199_source">show source</a> ]</p>
+            <div id="C00199_source" class="dyn-source">
+<pre>
+macro(
+  argCount = call arguments length 
+  cond(
+    argCount ==(
+      1), 
+    
+    then = call arguments [](
+        0) 
+    
+    @, 
+    error!(Condition Error Invocation NoMatch, message: call message, context: call currentContext)) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00208"></a><b>true?</b>()
+          </div>
+          <div class="description">
+            <p>returns true</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00208_source')" id="l_C00208_source">show source</a> ]</p>
+            <div id="C00208_source" class="dyn-source">
+<pre>
+method(
+  true)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00210"></a><b>xor</b>(...)
+          </div>
+          <div class="description">
+            <p>Evaluates the argument and returns the inverse of the argument</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00210_source')" id="l_C00210_source">show source</a> ]</p>
+            <div id="C00210_source" class="dyn-source">
+<pre>
+macro(
+  argCount = call arguments length 
+  cond(
+    argCount ==(
+      1), 
+    
+    then = call argAt(
+        0) 
+    
+    if(then, false, true), 
+    error!(Condition Error Invocation NoMatch, message: call message, context: call currentContext)) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00200"></a><b>||</b>(...)
+          </div>
+          <div class="description">
+            <p>Does not evaluate argument and returns self</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00200_source')" id="l_C00200_source">show source</a> ]</p>
+            <div id="C00200_source" class="dyn-source">
+<pre>
+macro(
+  argCount = call arguments length 
+  if(
+    argCount ==(
+      1), 
+    
+    then = call arguments [](
+        0) 
+    
+    @, 
+    error!(Condition Error Invocation NoMatch, message: call message, context: call currentContext)) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </body>
+</html>

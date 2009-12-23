@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Kind: DefaultBehavior</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href=".././dokgen-style.css" type="text/css" media="screen" />
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=480,width=750" ).focus();
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+    <table border='0' cellpadding='0' cellspacing='0' width="100%" class='banner'>
+      <tr>
+        <td>
+          <table width="100%" border='0' cellpadding='0' cellspacing='0'>
+            <tr>
+              <td class="file-title" colspan="2">
+                <span class="file-title-prefix">Kind</span>
+                <br />
+                Symbol
+              </td>
+              <td align="right">
+                <table cellspacing="0" cellpadding="2">
+                  <tr>
+                    <td>Main mimic:</td>
+                    <td>
+                      <a href="../kinds/Mixins/Comparing.html">Mixins Comparing</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <div id="bodyContent">
+      <div id="content">
+        <div class="description">
+          <p>
+Represents a symbol - an object that always represents itself.
+          </p>
+        </div>
+
+        <div class="sectiontitle">Mimics</div>
+        <ul>
+          <li><a href="../kinds/Mixins/Comparing.html">Mixins Comparing</a></li><li><a href="../kinds/Origin.html">Origin</a></li>
+        </ul>
+
+        <div class="sectiontitle">Inactive cells</div>
+        <ul>
+          <li><a href="#C00366">kind</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Active cells</div>
+        <ul>
+          <li><a href="#C00371">&lt;=&gt;(other)</a></li>
+<li><a href="#C00367">==(other)</a></li>
+<li><a href="#C00372">===(other)</a></li>
+<li><a href="#C00368">asText()</a></li>
+<li><a href="#C00369">inspect()</a></li>
+<li><a href="#C00370">notice()</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Specs</div>
+        <div class="specs">
+          
+        </div>
+
+        <div class="sectiontitle">Inactive cells (details)</div>
+                <div class="cell">
+          <a name="C00366"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">kind</td>
+              <td>=</td>
+              <td class="cell-value">"Symbol"</td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="sectiontitle">Active cells (details)</div>
+                <div class="cell">
+          <div class="title">
+          <a name="C00371"></a><b>&lt;=&gt;</b>(other)
+          </div>
+          <div class="description">
+            <p>compares this symbol against the argument, returning -1, 0 or 1 based on which one is lexically larger</p>
+          </div>
+          
+          <div class="specs">
+            <b> Symbol <=></b><br/>
+<ul style="list-style-type: none;">
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003711S0_source')" id="l_C003711S0_source">show source</a> ]</span>
+            <div id="C003711S0_source" class="dyn-source">
+<pre>
+Symbol should checkReceiverTypeOn(:("&lt;=&gt;"), :arovane) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00367"></a><b>==</b>(other)
+          </div>
+          <div class="description">
+            <p>returns true if the left hand side symbol is equal to the right hand side symbol.</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00372"></a><b>===</b>(other)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00372_source')" id="l_C00372_source">show source</a> ]</p>
+            <div id="C00372_source" class="dyn-source">
+<pre>
+method(other, 
+  if(self same?(
+      ), 
+    Reflector other:mimics?(cell(:other), 
+      ), 
+    bind(rescue(Condition Error, fn(c, false)), 
+      self ==(
+        other))))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00368"></a><b>asText</b>()
+          </div>
+          <div class="description">
+            <p>Returns a text representation of the object</p>
+          </div>
+          
+          <div class="specs">
+            <b> Symbol asText</b><br/>
+<ul style="list-style-type: none;">
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003681S0_source')" id="l_C003681S0_source">show source</a> ]</span>
+            <div id="C003681S0_source" class="dyn-source">
+<pre>
+Symbol should checkReceiverTypeOn(:asText) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00369"></a><b>inspect</b>()
+          </div>
+          <div class="description">
+            <p>Returns a text inspection of the object</p>
+          </div>
+          
+          <div class="specs">
+            <b> Symbol inspect</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return the symbol with a colon in front of it <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003691S0_source')" id="l_C003691S0_source">show source</a> ]</span>
+            <div id="C003691S0_source" class="dyn-source">
+<pre>
+:foo inspect should ==(":foo") 
+:x inspect should ==(":x") 
+:AAAAAAAAAA inspect should ==(":AAAAAAAAAA") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should quote the symbol if necessary <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003691S1_source')" id="l_C003691S1_source">show source</a> ]</span>
+            <div id="C003691S1_source" class="dyn-source">
+<pre>
+:("=") inspect should ==(":\"=\"") 
+:("") inspect should ==(":\"\"") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003691S2_source')" id="l_C003691S2_source">show source</a> ]</span>
+            <div id="C003691S2_source" class="dyn-source">
+<pre>
+Symbol should checkReceiverTypeOn(:inspect) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00370"></a><b>notice</b>()
+          </div>
+          <div class="description">
+            <p>Returns a brief text inspection of the object</p>
+          </div>
+          
+          <div class="specs">
+            <b> Symbol notice</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return the symbol with a colon in front of it <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003701S0_source')" id="l_C003701S0_source">show source</a> ]</span>
+            <div id="C003701S0_source" class="dyn-source">
+<pre>
+:foo notice should ==(":foo") 
+:x notice should ==(":x") 
+:AAAAAAAAAA notice should ==(":AAAAAAAAAA") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should quote the symbol if necessary <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003701S1_source')" id="l_C003701S1_source">show source</a> ]</span>
+            <div id="C003701S1_source" class="dyn-source">
+<pre>
+:("=") notice should ==(":\"=\"") 
+:("") notice should ==(":\"\"") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003701S2_source')" id="l_C003701S2_source">show source</a> ]</span>
+            <div id="C003701S2_source" class="dyn-source">
+<pre>
+Symbol should checkReceiverTypeOn(:notice) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </body>
+</html>

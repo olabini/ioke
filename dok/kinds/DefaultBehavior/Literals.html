@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Kind: DefaultBehavior</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../.././dokgen-style.css" type="text/css" media="screen" />
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=480,width=750" ).focus();
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+    <table border='0' cellpadding='0' cellspacing='0' width="100%" class='banner'>
+      <tr>
+        <td>
+          <table width="100%" border='0' cellpadding='0' cellspacing='0'>
+            <tr>
+              <td class="file-title" colspan="2">
+                <span class="file-title-prefix">Kind</span>
+                <br />
+                DefaultBehavior Literals
+              </td>
+              <td align="right">
+                <table cellspacing="0" cellpadding="2">
+                  <tr>
+                    <td>Main mimic:</td>
+                    <td>
+                      none
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <div id="bodyContent">
+      <div id="content">
+        <div class="description">
+          <p>
+contains behavior related to literals
+          </p>
+        </div>
+
+        <div class="sectiontitle">Mimics</div>
+        <ul>
+          none
+        </ul>
+
+        <div class="sectiontitle">Inactive cells</div>
+        <ul>
+          <li><a href="#C00132">inspect</a></li>
+<li><a href="#C00120">kind</a></li>
+<li><a href="#C00131">notice</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Active cells</div>
+        <ul>
+          <li><a href="#C00126">'(...)</a></li>
+<li><a href="#C00128">''(...)</a></li>
+<li><a href="#C00133">..(to)</a></li>
+<li><a href="#C00134">...(to)</a></li>
+<li><a href="#C00123">:(symbolText)</a></li>
+<li><a href="#C00122">=&gt;(other)</a></li>
+<li><a href="#C00130">[](...)</a></li>
+<li><a href="#C00127">`(value)</a></li>
+<li><a href="#C00124">dict(+pairs, +:keywordPairs)</a></li>
+<li><a href="#C00129">list(...)</a></li>
+<li><a href="#C00121">message(name)</a></li>
+<li><a href="#C00125">set(+elements)</a></li>
+<li><a href="#C00136">tuple(+args)</a></li>
+<li><a href="#C00135">{}(...)</a></li>
+<li><a href="#C00137">?()</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Specs</div>
+        <div class="specs">
+          
+        </div>
+
+        <div class="sectiontitle">Inactive cells (details)</div>
+                <div class="cell">
+          <a name="C00132"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">inspect</td>
+              <td>=</td>
+              <td class="cell-value">"DefaultBehavior Literals"</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C00120"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">kind</td>
+              <td>=</td>
+              <td class="cell-value">"DefaultBehavior Literals"</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C00131"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">notice</td>
+              <td>=</td>
+              <td class="cell-value">"DefaultBehavior Literals"</td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="sectiontitle">Active cells (details)</div>
+                <div class="cell">
+          <div class="title">
+          <a name="C00126"></a><b>'</b>(...)
+          </div>
+          <div class="description">
+            <p>Takes one code argument and returns the message chain corresponding to this code argument. The code is copied, so it is safe to modify the resulting chain.</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00126_source')" id="l_C00126_source">show source</a> ]</p>
+            <div id="C00126_source" class="dyn-source">
+<pre>
+macro(
+  call arguments [](0) deepCopy)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00128"></a><b>''</b>(...)
+          </div>
+          <div class="description">
+            <p>Takes one code argument and returns the message chain corresponding to this code argument, except that any occurrance of ` and `` will be expanded in some way, based on a set of simple rules:
+the argument to ` will be evaluated and what happens will depend on what the result of this evaluation is
+ - if it returns a message chain, that message chain will be spliced in at the point of the ` message.
+ - if it is not a message chain, the literal value will be cached, exactly like the Message#wrap method does.
+if a ` form is followed by an empty message with arguments, that empty message will be deleted and the arguments to it will be added to the result of the ` form.
+
+if a `` is encountered, a literal ` message will be inserted at that point.
+
+all code evaluations will happen in the ground of the caller.</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00128_source')" id="l_C00128_source">show source</a> ]</p>
+            <div id="C00128_source" class="dyn-source">
+<pre>
+macro(
+  DefaultBehavior Literals cell(:("''")) translate(call arguments [](0) deepCopy, call ground) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00133"></a><b>..</b>(to)
+          </div>
+          <div class="description">
+            <p>will create and return an inclusive Range from the receiver to the 'to' argument.</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00133_source')" id="l_C00133_source">show source</a> ]</p>
+            <div id="C00133_source" class="dyn-source">
+<pre>
+method(to, 
+  Range inclusive(cell(:("@")), cell(:to)))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00134"></a><b>...</b>(to)
+          </div>
+          <div class="description">
+            <p>will create and return an exclusive Range from the receiver to the 'to' argument.</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00134_source')" id="l_C00134_source">show source</a> ]</p>
+            <div id="C00134_source" class="dyn-source">
+<pre>
+method(to, 
+  Range exclusive(cell(:("@")), cell(:to)))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00123"></a><b>:</b>(symbolText)
+          </div>
+          <div class="description">
+            <p>Takes one evaluated argument that is expected to be a Text, and returns the symbol corresponding to that text</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00122"></a><b>=&gt;</b>(other)
+          </div>
+          <div class="description">
+            <p>Takes one evaluated argument and returns a new Pair of the receiver and the argument</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00130"></a><b>[]</b>(...)
+          </div>
+          <div class="description">
+            <p>Takes zero or more arguments and returns a newly created list containing the result of evaluating these arguments</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00130_source')" id="l_C00130_source">show source</a> ]</p>
+            <div id="C00130_source" class="dyn-source">
+<pre>
+macro(
+  call evaluatedArguments)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00127"></a><b>`</b>(value)
+          </div>
+          <div class="description">
+            <p>Takes one argument and returns a message that wraps the value of that argument. The message has no name and will be printed empty. The message is guaranteed to be created from scratch</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00127_source')" id="l_C00127_source">show source</a> ]</p>
+            <div id="C00127_source" class="dyn-source">
+<pre>
+method(value, 
+  Message wrap(value))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00124"></a><b>dict</b>(+pairs, +:keywordPairs)
+          </div>
+          <div class="description">
+            <p>creates a new Dict from the arguments provided. these arguments can be two different things - either a keyword argument, or a pair. if it's a keyword argument, the entry added to the dict for it will be a symbol with the name from the keyword, without the ending colon. if it's not a keyword, it is expected to be an evaluated pair, where the first part of the pair is the key, and the second part is the value.</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00129"></a><b>list</b>(...)
+          </div>
+          <div class="description">
+            <p>Takes zero or more arguments and returns a newly created list containing the result of evaluating these arguments</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00129_source')" id="l_C00129_source">show source</a> ]</p>
+            <div id="C00129_source" class="dyn-source">
+<pre>
+macro(
+  call evaluatedArguments)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00121"></a><b>message</b>(name)
+          </div>
+          <div class="description">
+            <p>returns a new message with the name given as argument to this method.</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00125"></a><b>set</b>(+elements)
+          </div>
+          <div class="description">
+            <p>creates a new Set from the result of evaluating all arguments provided.</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00136"></a><b>tuple</b>(+args)
+          </div>
+          <div class="description">
+            <p>Takes zero or more arguments and return an appropriate tuple from those arguments</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00136_source')" id="l_C00136_source">show source</a> ]</p>
+            <div id="C00136_source" class="dyn-source">
+<pre>
+method(+args, 
+  len = args length 
+  tup = if(len ==(0), 
+      Tuple, 
+      if(len ==(2), 
+        Tuple Two, 
+        if(len ==(3), 
+          Tuple Three, 
+          if(len ==(4), 
+            Tuple Four, 
+            if(len ==(5), 
+              Tuple Five, 
+              if(len ==(6), 
+                Tuple Six, 
+                if(len ==(7), 
+                  Tuple Seven, 
+                  if(len ==(8), 
+                    Tuple Eight, 
+                    if(len ==(9), 
+                      Tuple Nine, 
+                      Tuple Many))))))))) 
+  tup createFrom(args) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00135"></a><b>{}</b>(...)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00135_source')" id="l_C00135_source">show source</a> ]</p>
+            <div id="C00135_source" class="dyn-source">
+<pre>
+macro(
+  call resendToMethod("dict"))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00137"></a><b>?</b>()
+          </div>
+          <div class="description">
+            <p>returns a new empty set</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00137_source')" id="l_C00137_source">show source</a> ]</p>
+            <div id="C00137_source" class="dyn-source">
+<pre>
+method(
+  set)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </body>
+</html>

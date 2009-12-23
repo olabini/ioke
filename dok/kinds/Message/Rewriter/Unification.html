@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Kind: DefaultBehavior</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../../.././dokgen-style.css" type="text/css" media="screen" />
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=480,width=750" ).focus();
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+    <table border='0' cellpadding='0' cellspacing='0' width="100%" class='banner'>
+      <tr>
+        <td>
+          <table width="100%" border='0' cellpadding='0' cellspacing='0'>
+            <tr>
+              <td class="file-title" colspan="2">
+                <span class="file-title-prefix">Kind</span>
+                <br />
+                Message Rewriter Unification
+              </td>
+              <td align="right">
+                <table cellspacing="0" cellpadding="2">
+                  <tr>
+                    <td>Main mimic:</td>
+                    <td>
+                      <a href="../../../kinds/Origin.html">Origin</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <div id="bodyContent">
+      <div id="content">
+        <div class="description">
+          <p>
+
+          </p>
+        </div>
+
+        <div class="sectiontitle">Mimics</div>
+        <ul>
+          <li><a href="../../../kinds/Origin.html">Origin</a></li>
+        </ul>
+
+        <div class="sectiontitle">Inactive cells</div>
+        <ul>
+          <li><a href="#C00879">kind</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Active cells</div>
+        <ul>
+          <li><a href="#C00880">addUnification(name, p, msg)</a></li>
+<li><a href="#C00878">initialize()</a></li>
+<li><a href="#C00882">internal:eitherLiteral?(pattern, msg)</a></li>
+<li><a href="#C00881">internal:literal?(msg)</a></li>
+<li><a href="#C00884">internal:macroSymbol?(p)</a></li>
+<li><a href="#C00885">internal:unify(pattern, msg, countNexts false)</a></li>
+<li><a href="#C00883">internal:unifyLiterals(pattern, msg)</a></li>
+<li><a href="#C00886">tryUnify(pattern, msg)</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Specs</div>
+        <div class="specs">
+          
+        </div>
+
+        <div class="sectiontitle">Inactive cells (details)</div>
+                <div class="cell">
+          <a name="C00879"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">kind</td>
+              <td>=</td>
+              <td class="cell-value">"Message Rewriter Unification"</td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="sectiontitle">Active cells (details)</div>
+                <div class="cell">
+          <div class="title">
+          <a name="C00880"></a><b>addUnification</b>(name, p, msg)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00880_source')" id="l_C00880_source">show source</a> ]</p>
+            <div id="C00880_source" class="dyn-source">
+<pre>
+method(name, p, msg, 
+  case([](name, p arguments length), 
+    [](:(":all"), 2), 
+    count = p arguments [](0) evaluateOn(Ground) 
+    nm = :(p arguments [](1) name) 
+    unifications [](nm) = (msg, count) 
+    count, 
+    [](:(":all"), 1), 
+    nm = :(p arguments [](0) name) 
+    count = 0 
+    curr = msg 
+    until(curr nil? ||(curr terminator?), 
+      curr = curr next 
+      ++(count)) 
+    unifications [](nm) = (msg, count) 
+    count, 
+    [](:(":until"), 2), 
+    stopsym = :(p arguments [](0) name) 
+    nm = :(p arguments [](1) name) 
+    count = 0 
+    curr = msg 
+    until(curr nil? ||(curr name ==(stopsym)), 
+      curr = curr next 
+      ++(count)) 
+    if(curr nil?, 
+      return(-(1))) 
+    ++(count) 
+    unifications [](nm) = (msg, count) 
+    count, 
+    else, 
+    if(name ==(:(":not")) &&(p arguments length &gt;(0)), 
+      capture = nil 
+      avoidNames = p arguments map(name) 
+      if(p arguments last symbol?, 
+        capture = p arguments last 
+        avoidNames removeAt!(avoidNames size -(1))) 
+      if(avoidNames include?(msg name), 
+        -(1), 
+        if(capture, 
+          unifications [](capture name) = (msg, 1)) 
+        1) 
+      , 
+      unifications [](name) = (msg, 1) 
+      1)))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00878"></a><b>initialize</b>()
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00878_source')" id="l_C00878_source">show source</a> ]</p>
+            <div id="C00878_source" class="dyn-source">
+<pre>
+method(
+  @ unifications = {} 
+  @ nexts = 0 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00882"></a><b>internal:eitherLiteral?</b>(pattern, msg)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00882_source')" id="l_C00882_source">show source</a> ]</p>
+            <div id="C00882_source" class="dyn-source">
+<pre>
+method(pattern, msg, 
+  internal:literal?(pattern) ||(internal:literal?(msg)))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00881"></a><b>internal:literal?</b>(msg)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00881_source')" id="l_C00881_source">show source</a> ]</p>
+            <div id="C00881_source" class="dyn-source">
+<pre>
+method(msg, 
+  if(msg name asText =~(#/^internal:/), 
+    true, 
+    false))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00884"></a><b>internal:macroSymbol?</b>(p)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00884_source')" id="l_C00884_source">show source</a> ]</p>
+            <div id="C00884_source" class="dyn-source">
+<pre>
+method(p, 
+  (p name ==(:(":all")) ||(p name ==(:(":until"))) ||(p name ==(:(":not")))) &&(p arguments length &gt;(0)) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00885"></a><b>internal:unify</b>(pattern, msg, countNexts false)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00885_source')" id="l_C00885_source">show source</a> ]</p>
+            <div id="C00885_source" class="dyn-source">
+<pre>
+method(pattern, msg, countNexts false, 
+  p = pattern 
+  m = msg 
+  while(p, 
+    unless(m, 
+      return(false) 
+      ) 
+    amount = 1 
+    if(p symbol?, 
+      amount = addUnification(p name, p, m) 
+      if(amount ==(-(1)), 
+        return(false)), 
+      unless(p name ==(m name), 
+        return(false) 
+        ) 
+      ) 
+    unless(internal:macroSymbol?(p), 
+      if(internal:eitherLiteral?(p, m), 
+        unless(internal:unifyLiterals(p, m), 
+          return(false)), 
+        if(p arguments length !=(m arguments length), 
+          return(false)) 
+        p arguments zip(m arguments) each(pm, 
+          unless(internal:unify(pm first, pm second), 
+            return(false))))) 
+    p = p next 
+    amount times(
+      unless(m, 
+        return(false)) 
+      m = m next) 
+    if(countNexts, 
+      @ nexts = @ nexts +(amount)) 
+    ) 
+  true 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00883"></a><b>internal:unifyLiterals</b>(pattern, msg)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00883_source')" id="l_C00883_source">show source</a> ]</p>
+            <div id="C00883_source" class="dyn-source">
+<pre>
+method(pattern, msg, 
+  patternLiteral = internal:literal?(pattern) 
+  msgLiteral = internal:literal?(msg) 
+  
+  case([](patternLiteral, msgLiteral), 
+    [](false, true), 
+    if(pattern symbol?, 
+      true, 
+      false), 
+    [](true, false), 
+    false, 
+    [](true, true), 
+    pattern name ==(msg name) &&(pattern arguments ==(msg arguments)) 
+    ) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00886"></a><b>tryUnify</b>(pattern, msg)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00886_source')" id="l_C00886_source">show source</a> ]</p>
+            <div id="C00886_source" class="dyn-source">
+<pre>
+method(pattern, msg, 
+  u = mimic 
+  if(u internal:unify(pattern, msg, true), 
+    u, 
+    false) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </body>
+</html>

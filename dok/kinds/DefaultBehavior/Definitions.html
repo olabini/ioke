@@ -1,0 +1,750 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Kind: DefaultBehavior</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../.././dokgen-style.css" type="text/css" media="screen" />
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=480,width=750" ).focus();
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+    <table border='0' cellpadding='0' cellspacing='0' width="100%" class='banner'>
+      <tr>
+        <td>
+          <table width="100%" border='0' cellpadding='0' cellspacing='0'>
+            <tr>
+              <td class="file-title" colspan="2">
+                <span class="file-title-prefix">Kind</span>
+                <br />
+                DefaultBehavior Definitions
+              </td>
+              <td align="right">
+                <table cellspacing="0" cellpadding="2">
+                  <tr>
+                    <td>Main mimic:</td>
+                    <td>
+                      none
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <div id="bodyContent">
+      <div id="content">
+        <div class="description">
+          <p>
+contains behavior related to the definition of different concepts
+          </p>
+        </div>
+
+        <div class="sectiontitle">Mimics</div>
+        <ul>
+          none
+        </ul>
+
+        <div class="sectiontitle">Inactive cells</div>
+        <ul>
+          <li><a href="#C00100">destructuring</a></li>
+<li><a href="#C00106">inspect</a></li>
+<li><a href="#C0088">kind</a></li>
+<li><a href="#C00105">notice</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Active cells</div>
+        <ul>
+          <li><a href="#C0094">aliasMethod(oldName, newName)</a></li>
+<li><a href="#C00102">dlecro(...)</a></li>
+<li><a href="#C00103">dlecrox(...)</a></li>
+<li><a href="#C00101">dmacro(...)</a></li>
+<li><a href="#C00104">dsyntax(...)</a></li>
+<li><a href="#C0093">fn([documentation] nil, +[argumentsAndBody])</a></li>
+<li><a href="#C0097">fnx(...)</a></li>
+<li><a href="#C0099">generateMatchMethod(...)</a></li>
+<li><a href="#C0092">lecro([documentation] nil, [body] nil)</a></li>
+<li><a href="#C0098">lecrox(...)</a></li>
+<li><a href="#C0090">macro([documentation] nil, [body] nil)</a></li>
+<li><a href="#C0089">method([documentation] nil, +[argumentsAndBody])</a></li>
+<li><a href="#C0091">syntax([documentation] nil, [body] nil)</a></li>
+<li><a href="#C0095">?(...)</a></li>
+<li><a href="#C0096">?(...)</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Specs</div>
+        <div class="specs">
+          
+        </div>
+
+        <div class="sectiontitle">Inactive cells (details)</div>
+                <div class="cell">
+          <a name="C00100"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">destructuring</td>
+              <td>=</td>
+              <td class="cell-value">Origin_0x4EABEDF1</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C00106"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">inspect</td>
+              <td>=</td>
+              <td class="cell-value">"DefaultBehavior Definitions"</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C0088"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">kind</td>
+              <td>=</td>
+              <td class="cell-value">"DefaultBehavior Definitions"</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C00105"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">notice</td>
+              <td>=</td>
+              <td class="cell-value">"DefaultBehavior Definitions"</td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="sectiontitle">Active cells (details)</div>
+                <div class="cell">
+          <div class="title">
+          <a name="C0094"></a><b>aliasMethod</b>(oldName, newName)
+          </div>
+          <div class="description">
+            <p>Takes two evaluated text or symbol arguments that name the method to alias, and the new name to give it. returns the receiver.</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00102"></a><b>dlecro</b>(...)
+          </div>
+          <div class="description">
+            <p>works exactly the same as dmacro, but returns an activatable LexicalMacro instead</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00102_source')" id="l_C00102_source">show source</a> ]</p>
+            <div id="C00102_source" class="dyn-source">
+<pre>
+syntax(
+  DefaultBehavior Definitions destructuring doFor('(lecro), call) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> DefaultBehavior Definitions dlecro</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return a LexicalMacro that is activatable <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001021S0_source')" id="l_C001021S0_source">show source</a> ]</span>
+            <div id="C001021S0_source" class="dyn-source">
+<pre>
+foo = dlecro(
+    [] nil) 
+cell(:foo) kind should ==("LexicalMacro") 
+cell(:foo) activatable should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should pass on a possible documentation string <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001021S1_source')" id="l_C001021S1_source">show source</a> ]</span>
+            <div id="C001021S1_source" class="dyn-source">
+<pre>
+foo = dlecro(
+    "docstring42", 
+    [](a) a code) 
+cell(:foo) documentation should ==("docstring42") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should destructure a simple argument list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001021S2_source')" id="l_C001021S2_source">show source</a> ]</span>
+            <div id="C001021S2_source" class="dyn-source">
+<pre>
+foo = dlecro(
+    [](a) a code) 
+foo(abc foo bar) should ==("abc foo bar") 
+foo(10 *(20)) should ==("10 *(20)") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00103"></a><b>dlecrox</b>(...)
+          </div>
+          <div class="description">
+            <p>works exactly the same as dmacro, but returns an inactive LexicalMacro instead</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00103_source')" id="l_C00103_source">show source</a> ]</p>
+            <div id="C00103_source" class="dyn-source">
+<pre>
+syntax(
+  DefaultBehavior Definitions destructuring doFor('(lecrox), call) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> DefaultBehavior Definitions dlecrox</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return a LexicalMacro that is not activatable <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001031S0_source')" id="l_C001031S0_source">show source</a> ]</span>
+            <div id="C001031S0_source" class="dyn-source">
+<pre>
+foo = dlecrox(
+    [] nil) 
+cell(:foo) kind should ==("LexicalMacro") 
+cell(:foo) activatable should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should pass on a possible documentation string <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001031S1_source')" id="l_C001031S1_source">show source</a> ]</span>
+            <div id="C001031S1_source" class="dyn-source">
+<pre>
+foo = dlecrox(
+    "docstring42", 
+    [](a) a code) 
+cell(:foo) documentation should ==("docstring42") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should destructure a simple argument list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001031S2_source')" id="l_C001031S2_source">show source</a> ]</span>
+            <div id="C001031S2_source" class="dyn-source">
+<pre>
+foo = dlecrox(
+    [](a) a code) 
+foo call(abc foo bar) should ==("abc foo bar") 
+foo call(10 *(20)) should ==("10 *(20)") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00101"></a><b>dmacro</b>(...)
+          </div>
+          <div class="description">
+            <p>takes one optional documentation string, and one or more
+arguments. these argument should all begin with a literal array.
+This literal array will be interpreted as a destructuring
+pattern. the syntax macro will expand into a macro that will read
+dispatch based on all the patterns given. the first pattern
+that matches will be used. the code coming after the literal
+array will have access to the variables defined in the pattern.
+the result of this code will be the result of the macro.
+
+if no patterns match, a Condition Error Invocation condition
+will be signalled.
+
+the patterns can take several basic forms. the first form is
+that of a simple name, like this:
+
+  [arg]
+
+this pattern will match exactly one argument, and assign that
+argument message to the name 'arg'. this message will not be
+evaluated.
+
+a pattern can have several arguments like this:
+
+  [one, two, three]
+
+this pattern will match exactly three arguments and assign them
+to the names 'one', 'two' and 'three', unevaluated.
+
+if you wish to evaluate an argument before it gets assigned
+to the variable, you can use a literal > preceding the name,
+like this:
+
+  [one, >two]
+
+this will take exactly two arguments, where the second will be
+assigned the evaluated result of the second argument while the
+first will get the unevaluated message.
+
+the evaluation of evaluated arguments are lazy, which means that
+something like this:
+
+  [>cond, then] ;; do something here
+  [>cond, then, else] ;; do something else
+
+will only evaluate the cond that is relevant to the structure.
+this means that if you give two arguments to the above code, only
+the above cond will be evaluated. and if you give three arguments
+only the second cond will be evaluated.
+
+the final destructuring available at the moment allows the use of a
+rest argument. this should generally be placed last in the patterns
+since a rest argument will most of the time match everything.
+
+a rest argument can be specified with
+
+  [+any]
+
+the plus sign is the magic part. any name can be used. what you will
+get is a list of unevaluated messages matching zero or more of the
+argument list. rest arguments can be combined with other arguments
+but should be placed last in that case.
+
+a list of evaluated arguments can be generated by following the plus
+sign with a greater than arrow:
+
+  [arg, +>moreArgs]
+
+a pattern matching list can also be empty.
+
+finally, a destructuring can also have default arguments. these will
+be evaluated if no matching argument can be found. the default argument
+for an unevaluated argument will be the message chain to unevaluated
+set to the default argument. the default argument for an evaluated
+value will be evaluated at the point, which means it can use earlier
+values:
+
+  [arg1 2+2, >arg2 2+2]
+
+will match an empty argument list, and in that case give arg1 the
+message chain corresponding to 2+2, while arg2 will be set to the
+value 4.</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00101_source')" id="l_C00101_source">show source</a> ]</p>
+            <div id="C00101_source" class="dyn-source">
+<pre>
+syntax(
+  DefaultBehavior Definitions destructuring doFor('(macro), call) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> DefaultBehavior Definitions dmacro</b><br/>
+<ul style="list-style-type: none;">
+<li>- should pass on a possible documentation string <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001011S0_source')" id="l_C001011S0_source">show source</a> ]</span>
+            <div id="C001011S0_source" class="dyn-source">
+<pre>
+foo = dmacro(
+    "docstring42", 
+    [](a) a code) 
+cell(:foo) documentation should ==("docstring42") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should destructure a simple argument list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001011S1_source')" id="l_C001011S1_source">show source</a> ]</span>
+            <div id="C001011S1_source" class="dyn-source">
+<pre>
+foo = dmacro(
+    [](a) a code) 
+foo(abc foo bar) should ==("abc foo bar") 
+foo(10 *(20)) should ==("10 *(20)") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should destructure two argument lists correctly <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001011S2_source')" id="l_C001011S2_source">show source</a> ]</span>
+            <div id="C001011S2_source" class="dyn-source">
+<pre>
+foo = dmacro(
+    [](a) a code, 
+    [](a, b) [](a code, b code)) 
+foo(abc foo) should ==("abc foo") 
+foo(abc foo, bar blux) should ==([]("abc foo", "bar blux")) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should destructure an empty list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001011S3_source')" id="l_C001011S3_source">show source</a> ]</span>
+            <div id="C001011S3_source" class="dyn-source">
+<pre>
+foo = dmacro(
+    [] 42) 
+foo should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should destructure with default value <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001011S4_source')" id="l_C001011S4_source">show source</a> ]</span>
+            <div id="C001011S4_source" class="dyn-source">
+<pre>
+foo = dmacro(
+    [](x 2 +(2)) x) 
+foo code should ==("2 +(2)") 
+foo(blarg foo) code should ==("blarg foo") 
+foo = dmacro(
+    [](x 2 +(2)) x, 
+    [](y 3 +(3), z 4 +(4), q 111) [](y code, z code, q code) 
+    ) 
+foo code should ==("2 +(2)") 
+foo(blarg foo) code should ==("blarg foo") 
+foo(blarg foo, murg fox) should ==([]("blarg foo", "murg fox", "111")) 
+foo(blarg foo, murg fox, 123) should ==([]("blarg foo", "murg fox", "123")) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should destructure an evaluated part with default value <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001011S5_source')" id="l_C001011S5_source">show source</a> ]</span>
+            <div id="C001011S5_source" class="dyn-source">
+<pre>
+foo = dmacro(
+    [](&gt;(x 2 +(2))) x) 
+foo should ==(4) 
+foo(13) should ==(13) 
+foo = dmacro(
+    [](x, y, z) x, 
+    [](&gt;(x 2 +(2)), &gt;(y x +(13))) [](x, y) 
+    ) 
+foo should ==([](4, 17)) 
+foo(12) should ==([](12, 25)) 
+foo(12, 44) should ==([](12, 44)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should destructure and evaluate part of destructuring <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001011S6_source')" id="l_C001011S6_source">show source</a> ]</span>
+            <div id="C001011S6_source" class="dyn-source">
+<pre>
+foo = dmacro(
+    [](x, &gt;(y), z) [](x code, y, z code)) 
+foo(abc foo, 42 +(17), murgicox) should ==([]("abc foo", 59, "murgicox")) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should destructure a rest argument correctly <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001011S7_source')" id="l_C001011S7_source">show source</a> ]</span>
+            <div id="C001011S7_source" class="dyn-source">
+<pre>
+foo = dmacro(
+    [](+(rest)) rest map(code)) 
+foo should ==([]) 
+foo(aha) should ==([]("aha")) 
+foo(abc foo, 42 +(17), murgicox) should ==([]("abc foo", "42 +(17)", "murgicox")) 
+foo = dmacro(
+    [](one, two) nil, 
+    [](one, two, +(rest)) rest map(code) 
+    ) 
+foo(abc foo, 42 +(17), murgicox) should ==([]("murgicox")) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should destructure an evaluated rest argument correctly <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001011S8_source')" id="l_C001011S8_source">show source</a> ]</span>
+            <div id="C001011S8_source" class="dyn-source">
+<pre>
+foo = dmacro(
+    [](+&gt;(rest)) rest) 
+foo should ==([]) 
+foo("str") should ==([]("str")) 
+xx = 42 
+foo(2 **(3), 42 +(17), xx) should ==([](8, 59, 42)) 
+foo = dmacro(
+    [](one, two) nil, 
+    [](one, two, +&gt;(rest)) rest 
+    ) 
+foo(abc foo, murgicox, 42 +(17)) should ==([](59)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should generate an error if not matching could happen <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001011S9_source')" id="l_C001011S9_source">show source</a> ]</span>
+            <div id="C001011S9_source" class="dyn-source">
+<pre>
+foo = dmacro(
+    [] nil) 
+fn(foo(1)) should signal(Condition Error Invocation NoMatch) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should handle some extra newlines <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001011S10_source')" id="l_C001011S10_source">show source</a> ]</span>
+            <div id="C001011S10_source" class="dyn-source">
+<pre>
+foo = dmacro(
+    [](one) 
+    :one, 
+    [](two, three) 
+    :two) 
+foo(1) should ==(:one) 
+foo(1, 2) should ==(:two) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00104"></a><b>dsyntax</b>(...)
+          </div>
+          <div class="description">
+            <p>works exactly the same as dmacro, but returns a DefaultSyntax instead</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00104_source')" id="l_C00104_source">show source</a> ]</p>
+            <div id="C00104_source" class="dyn-source">
+<pre>
+syntax(
+  DefaultBehavior Definitions destructuring doFor('(syntax), call) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C0093"></a><b>fn</b>([documentation] nil, +[argumentsAndBody])
+          </div>
+          <div class="description">
+            <p>creates a new lexical block that can be executed at will, while retaining a reference to the lexical closure it was created in. it will always update variables if they exist. there is currently no way of introducing shadowing variables in the local context. new variables can be created though, just like in a method. a lexical block mimics LexicalBlock, and can take arguments. at the moment these are restricted to required arguments, but support for the same argument types as DefaultMethod will come.</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C0097"></a><b>fnx</b>(...)
+          </div>
+          <div class="description">
+            <p>does the same things as fn, but returns something that is activatable.</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C0097_source')" id="l_C0097_source">show source</a> ]</p>
+            <div id="C0097_source" class="dyn-source">
+<pre>
+macro(
+  call resendToMethod("fn") do(
+    activatable = true))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C0099"></a><b>generateMatchMethod</b>(...)
+          </div>
+          <div class="description">
+            <p>takes one argument that should be the name of the match method to use. need to be called with the kind as direct receiver, either in a do-block or directly.
+if the match method is called 'matchFoo' and the receiver is called Foo, will generate a method that looks like this:
+
+method(other,
+  if(self same?(Foo),
+    Reflector other:mimics?(other, Foo),
+    self matchFoo(other)))
+</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C0099_source')" id="l_C0099_source">show source</a> ]</p>
+            <div id="C0099_source" class="dyn-source">
+<pre>
+syntax(
+  otherMethod = call arguments [](0) 
+  ''(method(other, 
+      if(self same?(`(self)), 
+        Reflector other:mimics?(cell(:other), `(self)), 
+        bind(rescue(Condition Error, fn(c, false)), 
+          self `(otherMethod) (other))))))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C0092"></a><b>lecro</b>([documentation] nil, [body] nil)
+          </div>
+          <div class="description">
+            <p>expects one code argument, optionally preceeded by a documentation string. will create a new LexicalMacro based on the code and return it.</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C0098"></a><b>lecrox</b>(...)
+          </div>
+          <div class="description">
+            <p>does the same things as lecro, but returns something that is not activatable.</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C0098_source')" id="l_C0098_source">show source</a> ]</p>
+            <div id="C0098_source" class="dyn-source">
+<pre>
+macro(
+  call resendToMethod("lecro") do(
+    activatable = false))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C0090"></a><b>macro</b>([documentation] nil, [body] nil)
+          </div>
+          <div class="description">
+            <p>expects one code argument, optionally preceeded by a documentation string. will create a new DefaultMacro based on the code and return it.</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C0089"></a><b>method</b>([documentation] nil, +[argumentsAndBody])
+          </div>
+          <div class="description">
+            <p>expects any number of unevaluated arguments. if no arguments at all are given, will just return nil. creates a new method based on the arguments. this method will be evaluated using the context of the object it's called on, and thus the definition can not refer to the outside scope where the method is defined. (there are other ways of achieving this). all arguments except the last one is expected to be names of arguments that will be used in the method. there will possible be additions to the format of arguments later on - including named parameters and optional arguments. the actual code is the last argument given.</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C0091"></a><b>syntax</b>([documentation] nil, [body] nil)
+          </div>
+          <div class="description">
+            <p>expects one code argument, optionally preceeded by a documentation string. will create a new DefaultSyntax based on the code and return it.</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C0095"></a><b>?</b>(...)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C0096"></a><b>?</b>(...)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </body>
+</html>

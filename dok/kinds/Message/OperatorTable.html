@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Kind: DefaultBehavior</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../.././dokgen-style.css" type="text/css" media="screen" />
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=480,width=750" ).focus();
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+    <table border='0' cellpadding='0' cellspacing='0' width="100%" class='banner'>
+      <tr>
+        <td>
+          <table width="100%" border='0' cellpadding='0' cellspacing='0'>
+            <tr>
+              <td class="file-title" colspan="2">
+                <span class="file-title-prefix">Kind</span>
+                <br />
+                Message OperatorTable
+              </td>
+              <td align="right">
+                <table cellspacing="0" cellpadding="2">
+                  <tr>
+                    <td>Main mimic:</td>
+                    <td>
+                      <a href="../../kinds/Origin.html">Origin</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <div id="bodyContent">
+      <div id="content">
+        <div class="description">
+          <p>
+
+          </p>
+        </div>
+
+        <div class="sectiontitle">Mimics</div>
+        <ul>
+          <li><a href="../../kinds/Origin.html">Origin</a></li>
+        </ul>
+
+        <div class="sectiontitle">Inactive cells</div>
+        <ul>
+          <li><a href="#C00868">invertedOperators</a></li>
+<li><a href="#C00864">kind</a></li>
+<li><a href="#C00866">operators</a></li>
+<li><a href="#C00865">precedenceLevelCount</a></li>
+<li><a href="#C00867">trinaryOperators</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Active cells</div>
+        <ul>
+          <li><a href="#C00871">withInvertedOperator(...)</a></li>
+<li><a href="#C00869">withOperator(...)</a></li>
+<li><a href="#C00870">withTrinaryOperator(...)</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Specs</div>
+        <div class="specs">
+          
+        </div>
+
+        <div class="sectiontitle">Inactive cells (details)</div>
+                <div class="cell">
+          <a name="C00868"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">invertedOperators</td>
+              <td>=</td>
+              <td class="cell-value">{:":::" => 12, ?: 12, ?: 12, :"::" => 12}</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C00864"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">kind</td>
+              <td>=</td>
+              <td class="cell-value">"Message OperatorTable"</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C00866"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">operators</td>
+              <td>=</td>
+              <td class="cell-value">{?: 5, :"&&>>" => 12, :"<->" => 12, <: 5, :"|>>" => 12, :"**=" => 13, :"===" => 6, :"->>" => 12, :"&>" => 12, ?: 12, ^>: 12, :"&&>" => 12, :"<=>" => 5, ?>>: 12, />>: 12, :"%=" => 13, @>>: 12, %>: 12, #>>: 12, :"&>>" => 12, :"|>" => 12, ^: 8, :"=~" => 6, **>: 12, :"&" => 7, :"?|" => 11, **>>: 12, and: 13, or: 13, $: 0, :"&&=" => 13, ?: 5, >>: 4, ?: 0, ?>: 12, *>>: 12, ~: 0, :".." => 12, :"->" => 12, >: 5, :">>=" => 13, ^>>: 12, $>: 12, :"<<=" => 13, ?: 5, return: 14, :"==" => 6, /: 2, :"+=" => 13, <>: 5, **: 1, xor: 13, :"!~" => 6, <>>: 5, :"/=" => 13, :"||>" => 12, :"?&" => 10, />: 12, :"..." => 12, :"^=" => 13, :"*=" => 13, :"|" => 9, nor: 13, :"+" => 3, :"-" => 3, :"!>" => 12, :"<=" => 5, :"||=" => 13, nand: 13, :"|=" => 13, :"=>>" => 12, :"&=" => 13, :"!=" => 6, $>>: 12, :"&&" => 10, :"!" => 0, ?: 3, %: 2, ³: 5, ?: 5, :"=>" => 12, #: 0, :"<-" => 14, #>: 12, :"!>>" => 12, import: 14, <<: 4, *>: 12, :"+>" => 12, ~>>: 12, :"||" => 11, ~>: 12, *: 2, :"-=" => 13, ?: 3, :"||>>" => 12, ²: 5, ­: 6, @>: 12, :"+>>" => 12, :">=" => 5, %>>: 12}</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C00865"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">precedenceLevelCount</td>
+              <td>=</td>
+              <td class="cell-value">32</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C00867"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">trinaryOperators</td>
+              <td>=</td>
+              <td class="cell-value">{:"^=" => 2, :"=" => 2, :"*=" => 2, :">>=" => 2, :"%=" => 2, :"-=" => 2, :"/=" => 2, :"**=" => 2, :"--" => 1, :"++" => 1, :"<<=" => 2, :"||=" => 2, :"|=" => 2, :"&=" => 2, :"+=" => 2, :"&&=" => 2}</td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="sectiontitle">Active cells (details)</div>
+                <div class="cell">
+          <div class="title">
+          <a name="C00871"></a><b>withInvertedOperator</b>(...)
+          </div>
+          <div class="description">
+            <p>temporarily adds a new inverted operator with the specified associativity, and then removes it again. if the operator is already in there, changes the associativity temporarily</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00871_source')" id="l_C00871_source">show source</a> ]</p>
+            <div id="C00871_source" class="dyn-source">
+<pre>
+macro(
+  argCount = call arguments length 
+  cond(
+    argCount ==(
+      3), 
+    
+    name = call argAt(
+        0) 
+    assoc = call argAt(
+        1) 
+    code = call arguments [](
+        2) 
+    
+    if(name mimics?(Text), 
+      name = :(name)) 
+    let(Message OperatorTable invertedOperators, Message OperatorTable invertedOperators merge(name =&gt;(assoc)), 
+      code evaluateOn(call ground, call ground)), 
+    error!(Condition Error Invocation NoMatch, message: call message, context: call currentContext)) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Message OperatorTable withInvertedOperator</b><br/>
+<ul style="list-style-type: none;">
+<li>- should temporarily add a new inverted operator to the table, but then remove it <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008711S0_source')" id="l_C008711S0_source">show source</a> ]</span>
+            <div id="C008711S0_source" class="dyn-source">
+<pre>
+Message OperatorTable withInvertedOperator(":-:", 42, 
+  Message OperatorTable invertedOperators [](:(":-:")) should ==(42) 
+  ) 
+Message OperatorTable invertedOperators [](:(":-:")) should be nil 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should reassign the associativity of an existing operator <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008711S1_source')" id="l_C008711S1_source">show source</a> ]</span>
+            <div id="C008711S1_source" class="dyn-source">
+<pre>
+Message OperatorTable withInvertedOperator("::", 42, 
+  Message OperatorTable invertedOperators [](:("::")) should ==(42) 
+  ) 
+Message OperatorTable invertedOperators [](:("::")) should ==(12) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00869"></a><b>withOperator</b>(...)
+          </div>
+          <div class="description">
+            <p>temporarily adds a new operator with the specified associativity, and then removes it again. if the operator is already in there, changes the associativity temporarily</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00869_source')" id="l_C00869_source">show source</a> ]</p>
+            <div id="C00869_source" class="dyn-source">
+<pre>
+macro(
+  argCount = call arguments length 
+  cond(
+    argCount ==(
+      3), 
+    
+    name = call argAt(
+        0) 
+    assoc = call argAt(
+        1) 
+    code = call arguments [](
+        2) 
+    
+    if(name mimics?(Text), 
+      name = :(name)) 
+    let(Message OperatorTable operators, Message OperatorTable operators merge(name =&gt;(assoc)), 
+      code evaluateOn(call ground, call ground)), 
+    error!(Condition Error Invocation NoMatch, message: call message, context: call currentContext)) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Message OperatorTable withOperator</b><br/>
+<ul style="list-style-type: none;">
+<li>- should temporarily add a new operator to the table, but then remove it <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008691S0_source')" id="l_C008691S0_source">show source</a> ]</span>
+            <div id="C008691S0_source" class="dyn-source">
+<pre>
+Message OperatorTable withOperator("+++++", 42, 
+  Message OperatorTable operators [](:("+++++")) should ==(42) 
+  ) 
+Message OperatorTable operators [](:("+++++")) should be nil 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should reassign the associativity of an existing operator <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008691S1_source')" id="l_C008691S1_source">show source</a> ]</span>
+            <div id="C008691S1_source" class="dyn-source">
+<pre>
+Message OperatorTable withOperator("+", 42, 
+  Message OperatorTable operators [](:("+")) should ==(42) 
+  ) 
+Message OperatorTable operators [](:("+")) should ==(3) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00870"></a><b>withTrinaryOperator</b>(...)
+          </div>
+          <div class="description">
+            <p>temporarily adds a new trinary operator with the specified associativity, and then removes it again. if the operator is already in there, changes the associativity temporarily</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00870_source')" id="l_C00870_source">show source</a> ]</p>
+            <div id="C00870_source" class="dyn-source">
+<pre>
+macro(
+  argCount = call arguments length 
+  cond(
+    argCount ==(
+      3), 
+    
+    name = call argAt(
+        0) 
+    assoc = call argAt(
+        1) 
+    code = call arguments [](
+        2) 
+    
+    if(name mimics?(Text), 
+      name = :(name)) 
+    let(Message OperatorTable trinaryOperators, Message OperatorTable trinaryOperators merge(name =&gt;(assoc)), 
+      code evaluateOn(call ground, call ground)), 
+    error!(Condition Error Invocation NoMatch, message: call message, context: call currentContext)) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Message OperatorTable withTrinaryOperator</b><br/>
+<ul style="list-style-type: none;">
+<li>- should temporarily add a new trinary operator to the table, but then remove it <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008701S0_source')" id="l_C008701S0_source">show source</a> ]</span>
+            <div id="C008701S0_source" class="dyn-source">
+<pre>
+Message OperatorTable withTrinaryOperator("+++++", 42, 
+  Message OperatorTable trinaryOperators [](:("+++++")) should ==(42) 
+  ) 
+Message OperatorTable trinaryOperators [](:("+++++")) should be nil 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should reassign the associativity of an existing operator <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008701S1_source')" id="l_C008701S1_source">show source</a> ]</span>
+            <div id="C008701S1_source" class="dyn-source">
+<pre>
+Message OperatorTable withTrinaryOperator("+=", 42, 
+  Message OperatorTable trinaryOperators [](:("+=")) should ==(42) 
+  ) 
+Message OperatorTable trinaryOperators [](:("+=")) should ==(2) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </body>
+</html>

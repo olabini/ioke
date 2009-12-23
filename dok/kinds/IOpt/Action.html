@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Kind: DefaultBehavior</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../.././dokgen-style.css" type="text/css" media="screen" />
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=480,width=750" ).focus();
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+    <table border='0' cellpadding='0' cellspacing='0' width="100%" class='banner'>
+      <tr>
+        <td>
+          <table width="100%" border='0' cellpadding='0' cellspacing='0'>
+            <tr>
+              <td class="file-title" colspan="2">
+                <span class="file-title-prefix">Kind</span>
+                <br />
+                IOpt Action
+              </td>
+              <td align="right">
+                <table cellspacing="0" cellpadding="2">
+                  <tr>
+                    <td>Main mimic:</td>
+                    <td>
+                      <a href="../../kinds/Origin.html">Origin</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <div id="bodyContent">
+      <div id="content">
+        <div class="description">
+          <p>
+
+          </p>
+        </div>
+
+        <div class="sectiontitle">Mimics</div>
+        <ul>
+          <li><a href="../../kinds/Origin.html">Origin</a></li>
+        </ul>
+
+        <div class="sectiontitle">Inactive cells</div>
+        <ul>
+          <li><a href="#C00285">argumentsCode</a></li>
+<li><a href="#C00281">coerce</a></li>
+<li><a href="#C00262">kind</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Active cells</div>
+        <ul>
+          <li><a href="#C00279">&lt;=&gt;(other)</a></li>
+<li><a href="#C00286">arity()</a></li>
+<li><a href="#C00282">coercing(+types, +:coersions)</a></li>
+<li><a href="#C00283">consume(argv, handler iopt iopt:ion(argv first), untilNextOption: true, coerce: nil)</a></li>
+<li><a href="#C00277">initialize()</a></li>
+<li><a href="#C00284">perform(args, iopt nil)</a></li>
+<li><a href="#C00280">priority=(value)</a></li>
+<li><a href="#C00278">receiver()</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Specs</div>
+        <div class="specs">
+          
+        </div>
+
+        <div class="sectiontitle">Inactive cells (details)</div>
+                <div class="cell">
+          <a name="C00285"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">argumentsCode</td>
+              <td>=</td>
+              <td class="cell-value">nil</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C00281"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">coerce</td>
+              <td>=</td>
+              <td class="cell-value">nil</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C00262"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">kind</td>
+              <td>=</td>
+              <td class="cell-value">"IOpt Action"</td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="sectiontitle">Active cells (details)</div>
+                <div class="cell">
+          <div class="title">
+          <a name="C00279"></a><b>&lt;=&gt;</b>(other)
+          </div>
+          <div class="description">
+            <p>Compare by priority</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00279_source')" id="l_C00279_source">show source</a> ]</p>
+            <div id="C00279_source" class="dyn-source">
+<pre>
+method(other, 
+  priority &lt;=&gt;(other priority))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00286"></a><b>arity</b>()
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00286_source')" id="l_C00286_source">show source</a> ]</p>
+            <div id="C00286_source" class="dyn-source">
+<pre>
+method(
+  Arity fromArgumentsCode(argumentsCode))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00282"></a><b>coercing</b>(+types, +:coersions)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00282_source')" id="l_C00282_source">show source</a> ]</p>
+            <div id="C00282_source" class="dyn-source">
+<pre>
+method(+types, +:coersions, 
+  @ coerce = IOpt CommandLine Coerce mimic(*(types), *(coersions)) 
+  self)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00283"></a><b>consume</b>(argv, handler iopt iopt:ion(argv first), untilNextOption: true, coerce: nil)
+          </div>
+          <div class="description">
+            <p>Take arguments for this action according to its arity.
+
+    The argv list must have its first element be one of the options handled by this action
+    otherwise a NoActionForOption will be signaled.
+
+    This method returns an object with the following cells:
+
+      option: The option that was processed
+      remnant: The elements from argv that were not taken as arguments for this action.
+      positional: A list of positional arguments for this action.
+      keywords: A dict of keyword arguments for this action.
+
+    </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00283_source')" id="l_C00283_source">show source</a> ]</p>
+            <div id="C00283_source" class="dyn-source">
+<pre>
+method(argv, handler iopt iopt:ion(argv first), untilNextOption: true, coerce: nil, 
+  if(handler nil? ||(!(options include?(handler option))), 
+    error!(NoActionForOption, 
+      text: "Cannot handle option %s not in %s" format(
+        if(handler, handler option, argv first), options inspect), 
+      option: if(handler, handler option, argv first))) 
+  remnant = argv rest 
+  currentKey = nil 
+  args = list 
+  klist = list 
+  kmap = dict 
+  arity = @ arity 
+  coerced = fn(txt, 
+      if(coerce ==(false) ||(@ coerce ==(false)), txt, 
+        (coerce ||(@ coerce) ||(IOpt CommandLine Coerce mimic)) coerce(txt))) 
+  shouldContinue = fn(arg, 
+      cond(
+        untilNextOption &&(iopt [](arg)), false, 
+        currentKey, true, 
+        arity rest ||(arity krest), true, 
+        iopt iopt:key(arg), 
+        klist length &lt;(arity keywords length), 
+        args length &lt;(arity positionals length) 
+        ) 
+      ) 
+  if(handler short &&(handler immediate) &&(arity max abs zero?), 
+    opt = iopt iopt:get(handler short +(handler immediate)) 
+    if(opt &&(opt action) &&(opt short), 
+      remnant = [](handler short +(handler immediate)) +(remnant) 
+      handler immediate = nil)) 
+  if(handler immediate &&(arity max abs &gt;(0)), 
+    args &lt;&lt;(coerced(handler immediate))) 
+  idx = remnant findIndex(arg, 
+      cond(
+        !(shouldContinue(arg)), true, 
+        (key = iopt iopt:key(arg)) &&(
+          
+          (arity krest ||(arity keywords include?(:(key name))))), 
+        keyword = :(key name) 
+        if(kmap key?(keyword), 
+          error!(OptionKeywordAlreadyProvided, 
+            text: "Keyword #{keyword} was specified more than once.", 
+            keyword: keyword), 
+          kmap [](keyword) = coerced(key immediate) 
+          if(key immediate, klist &lt;&lt;(keyword), currentKey = keyword)) 
+        false, 
+        currentKey, 
+        klist &lt;&lt;(currentKey) 
+        kmap [](currentKey) = coerced(arg) 
+        currentKey = nil, 
+        args &lt;&lt;(coerced(arg)) 
+        false)) 
+  Origin with(
+    option: handler option, 
+    remnant: remnant []((idx ||(0 -(1))) ..(-(1))), 
+    positional: args, 
+    keywords: kmap) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00277"></a><b>initialize</b>()
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00277_source')" id="l_C00277_source">show source</a> ]</p>
+            <div id="C00277_source" class="dyn-source">
+<pre>
+method(
+  @ options = list 
+  @ priority = 0 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00284"></a><b>perform</b>(args, iopt nil)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00284_source')" id="l_C00284_source">show source</a> ]</p>
+            <div id="C00284_source" class="dyn-source">
+<pre>
+method(args, iopt nil, 
+  messageName = args option 
+  let(@ cell(messageName), @ cell(:call), 
+    @ iopt, if(@ cell?(:iopt), iopt ||(@ iopt), iopt), 
+    send(messageName, *(args positional), *(args keywords))))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00280"></a><b>priority=</b>(value)
+          </div>
+          <div class="description">
+            <p>Set the option priority.
+    Default priority level is 0.
+    Negative values are higher priority for options that
+    must be processed before those having priority(0).
+    Positive ones are executed just after all priority(0)</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00280_source')" id="l_C00280_source">show source</a> ]</p>
+            <div id="C00280_source" class="dyn-source">
+<pre>
+method(value, 
+  @ cell(:priority) = value 
+  self)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00278"></a><b>receiver</b>()
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00278_source')" id="l_C00278_source">show source</a> ]</p>
+            <div id="C00278_source" class="dyn-source">
+<pre>
+method(
+  if(@ cell?(:iopt), iopt iopt:receiver ||(iopt)))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </body>
+</html>

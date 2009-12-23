@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Kind: DefaultBehavior</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href=".././dokgen-style.css" type="text/css" media="screen" />
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=480,width=750" ).focus();
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+    <table border='0' cellpadding='0' cellspacing='0' width="100%" class='banner'>
+      <tr>
+        <td>
+          <table width="100%" border='0' cellpadding='0' cellspacing='0'>
+            <tr>
+              <td class="file-title" colspan="2">
+                <span class="file-title-prefix">Kind</span>
+                <br />
+                Call
+              </td>
+              <td align="right">
+                <table cellspacing="0" cellpadding="2">
+                  <tr>
+                    <td>Main mimic:</td>
+                    <td>
+                      <a href="../kinds/Origin.html">Origin</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <div id="bodyContent">
+      <div id="content">
+        <div class="description">
+          <p>
+A call is the runtime structure that includes the specific information for a call, that is available inside a DefaultMacro.
+          </p>
+        </div>
+
+        <div class="sectiontitle">Mimics</div>
+        <ul>
+          <li><a href="../kinds/Origin.html">Origin</a></li>
+        </ul>
+
+        <div class="sectiontitle">Inactive cells</div>
+        <ul>
+          <li><a href="#C00891">kind</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Active cells</div>
+        <ul>
+          <li><a href="#C00901">activateValue(value, newSelf nil, +:valuesToAdd)</a></li>
+<li><a href="#C00902">activateValueWithCachedArguments(value, newSelf nil, +:valuesToAdd)</a></li>
+<li><a href="#C00903">argAt(n)</a></li>
+<li><a href="#C00892">arguments()</a></li>
+<li><a href="#C00895">currentContext()</a></li>
+<li><a href="#C00897">evaluatedArguments()</a></li>
+<li><a href="#C00893">ground()</a></li>
+<li><a href="#C00896">message()</a></li>
+<li><a href="#C00894">receiver()</a></li>
+<li><a href="#C00898">resendToMethod(cellName)</a></li>
+<li><a href="#C00899">resendToReceiver(newReceiver)</a></li>
+<li><a href="#C00900">resendToValue(value, newSelf nil)</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Specs</div>
+        <div class="specs">
+          
+        </div>
+
+        <div class="sectiontitle">Inactive cells (details)</div>
+                <div class="cell">
+          <a name="C00891"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">kind</td>
+              <td>=</td>
+              <td class="cell-value">"Call"</td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="sectiontitle">Active cells (details)</div>
+                <div class="cell">
+          <div class="title">
+          <a name="C00901"></a><b>activateValue</b>(value, newSelf nil, +:valuesToAdd)
+          </div>
+          <div class="description">
+            <p>uhm. this one isn't too bad.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Call activateValue</b><br/>
+<ul style="list-style-type: none;">
+<li>- should check the receiver type and signal an appropriate condition <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C009011S0_source')" id="l_C009011S0_source">show source</a> ]</span>
+            <div id="C009011S0_source" class="dyn-source">
+<pre>
+Call should checkReceiverTypeOn(:activateValue, method) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00902"></a><b>activateValueWithCachedArguments</b>(value, newSelf nil, +:valuesToAdd)
+          </div>
+          <div class="description">
+            <p>I really ought to write documentation for these methods, but I don't know how to describe what they do.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Call activateValueWithCachedArguments</b><br/>
+<ul style="list-style-type: none;">
+<li>- should check the receiver type and signal an appropriate condition <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C009021S0_source')" id="l_C009021S0_source">show source</a> ]</span>
+            <div id="C009021S0_source" class="dyn-source">
+<pre>
+Call should checkReceiverTypeOn(:activateValueWithCachedArguments, method) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00903"></a><b>argAt</b>(n)
+          </div>
+          <div class="description">
+            <p>evaluates and returns the argument at 'n'. this is just a short hand for 'call message evalArgAt(n, call ground)'</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00903_source')" id="l_C00903_source">show source</a> ]</p>
+            <div id="C00903_source" class="dyn-source">
+<pre>
+method(n, 
+  message evalArgAt(n, ground))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Call argAt</b><br/>
+<ul style="list-style-type: none;">
+<li>- should evaluate and return the argument at the specific place <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C009031S0_source')" id="l_C009031S0_source">show source</a> ]</span>
+            <div id="C009031S0_source" class="dyn-source">
+<pre>
+x = macro(call argAt(0)) 
+x(23 +(44)) should ==(67) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should raise an error if no arg at the index specified was available <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C009031S1_source')" id="l_C009031S1_source">show source</a> ]</span>
+            <div id="C009031S1_source" class="dyn-source">
+<pre>
+x = macro(call argAt(0)) 
+fn(x) should signal(Condition Error Index) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00892"></a><b>arguments</b>()
+          </div>
+          <div class="description">
+            <p>returns a list of all the unevaluated arguments</p>
+          </div>
+          
+          <div class="specs">
+            <b> Call arguments</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return all arguments in a list, unevaluated <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008921S0_source')" id="l_C008921S0_source">show source</a> ]</span>
+            <div id="C008921S0_source" class="dyn-source">
+<pre>
+x = macro(call arguments) 
+x(foo bar, x rrr) [](0) name should ==(:foo) 
+x(foo bar, x rrr) [](1) name should ==(:x) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should check the receiver type and signal an appropriate condition <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008921S1_source')" id="l_C008921S1_source">show source</a> ]</span>
+            <div id="C008921S1_source" class="dyn-source">
+<pre>
+Call should checkReceiverTypeOn(:arguments) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00895"></a><b>currentContext</b>()
+          </div>
+          <div class="description">
+            <p>returns the currently executing context</p>
+          </div>
+          
+          <div class="specs">
+            <b> Call currentContext</b><br/>
+<ul style="list-style-type: none;">
+<li>- should check the receiver type and signal an appropriate condition <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008951S0_source')" id="l_C008951S0_source">show source</a> ]</span>
+            <div id="C008951S0_source" class="dyn-source">
+<pre>
+Call should checkReceiverTypeOn(:currentContext) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00897"></a><b>evaluatedArguments</b>()
+          </div>
+          <div class="description">
+            <p>returns a list of the result of evaluating all the arguments to this call</p>
+          </div>
+          
+          <div class="specs">
+            <b> Call evaluatedArguments</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return a list of all the evaluated arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008971S0_source')" id="l_C008971S0_source">show source</a> ]</span>
+            <div id="C008971S0_source" class="dyn-source">
+<pre>
+x = macro(call evaluatedArguments) 
+x(13 +(55), 18 +(18), 3 -(2)) [](0) should ==(68) 
+x(13 +(55), 18 +(18), 3 -(2)) [](1) should ==(36) 
+x(13 +(55), 18 +(18), 3 -(2)) [](2) should ==(1) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should check the receiver type and signal an appropriate condition <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008971S1_source')" id="l_C008971S1_source">show source</a> ]</span>
+            <div id="C008971S1_source" class="dyn-source">
+<pre>
+Call should checkReceiverTypeOn(:evaluatedArguments) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00893"></a><b>ground</b>()
+          </div>
+          <div class="description">
+            <p>returns the ground of the place this call originated</p>
+          </div>
+          
+          <div class="specs">
+            <b> Call ground</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return the surrounding context of the call <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008931S0_source')" id="l_C008931S0_source">show source</a> ]</span>
+            <div id="C008931S0_source" class="dyn-source">
+<pre>
+x = macro(call ground) 
+should ==(x) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should check the receiver type and signal an appropriate condition <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008931S1_source')" id="l_C008931S1_source">show source</a> ]</span>
+            <div id="C008931S1_source" class="dyn-source">
+<pre>
+Call should checkReceiverTypeOn(:ground) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00896"></a><b>message</b>()
+          </div>
+          <div class="description">
+            <p>returns the message that started this call</p>
+          </div>
+          
+          <div class="specs">
+            <b> Call message</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return the message used to invoke this call <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008961S0_source')" id="l_C008961S0_source">show source</a> ]</span>
+            <div id="C008961S0_source" class="dyn-source">
+<pre>
+x = macro(call message) 
+x name should ==(:x) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should check the receiver type and signal an appropriate condition <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008961S1_source')" id="l_C008961S1_source">show source</a> ]</span>
+            <div id="C008961S1_source" class="dyn-source">
+<pre>
+Call should checkReceiverTypeOn(:message) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00894"></a><b>receiver</b>()
+          </div>
+          <div class="description">
+            <p>returns the receiver of the call</p>
+          </div>
+          
+          <div class="specs">
+            <b> Call receiver</b><br/>
+<ul style="list-style-type: none;">
+<li>- should check the receiver type and signal an appropriate condition <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008941S0_source')" id="l_C008941S0_source">show source</a> ]</span>
+            <div id="C008941S0_source" class="dyn-source">
+<pre>
+Call should checkReceiverTypeOn(:receiver) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00898"></a><b>resendToMethod</b>(cellName)
+          </div>
+          <div class="description">
+            <p>takes one evaluated text or symbol argument and resends the current message to that method/macro on the current receiver.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Call resendToMethod</b><br/>
+<ul style="list-style-type: none;">
+<li>- it should resend the thing with the same arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008981S0_source')" id="l_C008981S0_source">show source</a> ]</span>
+            <div id="C008981S0_source" class="dyn-source">
+<pre>
+x = macro(call resendToMethod(:f)) 
+f = method(a, b, c, [](a, b, c)) 
+w = 13 
+x(1 +(w), w +(w), w +(3) +(w)) [](0) should ==(14) 
+x(1 +(w), w +(w), w +(3) +(w)) [](1) should ==(26) 
+x(1 +(w), w +(w), w +(3) +(w)) [](2) should ==(29) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should check the receiver type and signal an appropriate condition <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008981S1_source')" id="l_C008981S1_source">show source</a> ]</span>
+            <div id="C008981S1_source" class="dyn-source">
+<pre>
+Call should checkReceiverTypeOn(:resendToMethod, :f) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00899"></a><b>resendToReceiver</b>(newReceiver)
+          </div>
+          <div class="description">
+            <p>takes one evaluated object and resends the current message with that object as the new receiver</p>
+          </div>
+          
+          <div class="specs">
+            <b> Call resendToReceiver</b><br/>
+<ul style="list-style-type: none;">
+<li>- it should resend the thing with the same arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008991S0_source')" id="l_C008991S0_source">show source</a> ]</span>
+            <div id="C008991S0_source" class="dyn-source">
+<pre>
+blarg = Origin mimic 
+blarg2 = Origin mimic 
+blarg x = lecro(call resendToReceiver(blarg2)) 
+blarg2 x = method(a, b, c, [](a, b, c)) 
+w = 13 
+blarg x(1 +(w), w +(w), w +(3) +(w)) [](0) should ==(14) 
+blarg x(1 +(w), w +(w), w +(3) +(w)) [](1) should ==(26) 
+blarg x(1 +(w), w +(w), w +(3) +(w)) [](2) should ==(29) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should check the receiver type and signal an appropriate condition <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008991S1_source')" id="l_C008991S1_source">show source</a> ]</span>
+            <div id="C008991S1_source" class="dyn-source">
+<pre>
+Call should checkReceiverTypeOn(:resendToReceiver, :f) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00900"></a><b>resendToValue</b>(value, newSelf nil)
+          </div>
+          <div class="description">
+            <p>uhm. this is a strange one. really.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Call resendToValue</b><br/>
+<ul style="list-style-type: none;">
+<li>- should check the receiver type and signal an appropriate condition <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C009001S0_source')" id="l_C009001S0_source">show source</a> ]</span>
+            <div id="C009001S0_source" class="dyn-source">
+<pre>
+Call should checkReceiverTypeOn(:resendToValue, method) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </body>
+</html>

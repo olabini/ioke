@@ -1,0 +1,1062 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Kind: DefaultBehavior</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../.././dokgen-style.css" type="text/css" media="screen" />
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=480,width=750" ).focus();
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+    <table border='0' cellpadding='0' cellspacing='0' width="100%" class='banner'>
+      <tr>
+        <td>
+          <table width="100%" border='0' cellpadding='0' cellspacing='0'>
+            <tr>
+              <td class="file-title" colspan="2">
+                <span class="file-title-prefix">Kind</span>
+                <br />
+                Number Rational
+              </td>
+              <td align="right">
+                <table cellspacing="0" cellpadding="2">
+                  <tr>
+                    <td>Main mimic:</td>
+                    <td>
+                      <a href="../../kinds/Number/Real.html">Number Real</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <div id="bodyContent">
+      <div id="content">
+        <div class="description">
+          <p>
+A rational number is either an integer or a ratio
+          </p>
+        </div>
+
+        <div class="sectiontitle">Mimics</div>
+        <ul>
+          <li><a href="../../kinds/Number/Real.html">Number Real</a></li>
+        </ul>
+
+        <div class="sectiontitle">Inactive cells</div>
+        <ul>
+          <li><a href="#C00376">kind</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Active cells</div>
+        <ul>
+          <li><a href="#C00381">*(multiplier)</a></li>
+<li><a href="#C00383">**(exponent)</a></li>
+<li><a href="#C00380">+(addend)</a></li>
+<li><a href="#C00379">-(subtrahend)</a></li>
+<li><a href="#C00382">/(dividend)</a></li>
+<li><a href="#C00377">&lt;=&gt;(other)</a></li>
+<li><a href="#C00378">==(other)</a></li>
+<li><a href="#C00387">===(other)</a></li>
+<li><a href="#C00384">asText()</a></li>
+<li><a href="#C00385">inspect()</a></li>
+<li><a href="#C00386">notice()</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Specs</div>
+        <div class="specs">
+          
+        </div>
+
+        <div class="sectiontitle">Inactive cells (details)</div>
+                <div class="cell">
+          <a name="C00376"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">kind</td>
+              <td>=</td>
+              <td class="cell-value">"Number Rational"</td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="sectiontitle">Active cells (details)</div>
+                <div class="cell">
+          <div class="title">
+          <a name="C00381"></a><b>*</b>(multiplier)
+          </div>
+          <div class="description">
+            <p>returns the product of this number and the argument. if the argument is a decimal, the receiver will be converted into a form suitable for multiplying against a decimal, and then multiplied. if the argument is neither a Rational nor a Decimal, it tries to call asRational, and if that fails it signals a condition.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Number Rational *</b><br/>
+<ul style="list-style-type: none;">
+<li>- should multiply with 0 <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003811S0_source')" id="l_C003811S0_source">show source</a> ]</span>
+            <div id="C003811S0_source" class="dyn-source">
+<pre>
+(1 *(0)) should ==(0) 
+(34253453 *(0)) should ==(0) 
+(-(1) *(0)) should ==(0) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the same number when multiplying with 1 <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003811S1_source')" id="l_C003811S1_source">show source</a> ]</span>
+            <div id="C003811S1_source" class="dyn-source">
+<pre>
+(1 *(1)) should ==(1) 
+(34253453 *(1)) should ==(34253453) 
+(-(1) *(1)) should ==(-(1)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return a really large number when multiplying large numbers <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003811S2_source')" id="l_C003811S2_source">show source</a> ]</span>
+            <div id="C003811S2_source" class="dyn-source">
+<pre>
+(2345346456745722 *(12213212323899088545)) should ==(28644214249339912541248622627954490) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return a negative number when multiplying with one negative number <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003811S3_source')" id="l_C003811S3_source">show source</a> ]</span>
+            <div id="C003811S3_source" class="dyn-source">
+<pre>
+(-(21) *(2)) should ==(-(42)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return a positive number when multiplying with two negative numbers <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003811S4_source')" id="l_C003811S4_source">show source</a> ]</span>
+            <div id="C003811S4_source" class="dyn-source">
+<pre>
+(-(21) *(-(2))) should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should convert itself to a decimal if the argument is a decimal <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003811S5_source')" id="l_C003811S5_source">show source</a> ]</span>
+            <div id="C003811S5_source" class="dyn-source">
+<pre>
+(1 *(0.6)) should ==(0.6) 
+(3 *(1.2)) should ==(3.6) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should convert its argument to a rational if its not a number or a decimal <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003811S6_source')" id="l_C003811S6_source">show source</a> ]</span>
+            <div id="C003811S6_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x asRational = method(21) 
+(2 *(x)) should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should signal a condition if it can't be converted and there is no way of multiplying <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003811S7_source')" id="l_C003811S7_source">show source</a> ]</span>
+            <div id="C003811S7_source" class="dyn-source">
+<pre>
+fn(1 *(Origin mimic)) should signal(Condition Error Type IncorrectType) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003811S8_source')" id="l_C003811S8_source">show source</a> ]</span>
+            <div id="C003811S8_source" class="dyn-source">
+<pre>
+Number Rational should checkReceiverTypeOn(:("*"), 4) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00383"></a><b>**</b>(exponent)
+          </div>
+          <div class="description">
+            <p>returns this number to the power of the argument</p>
+          </div>
+          
+          <div class="specs">
+            <b> Number Rational **</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return 1 for raising to 0 <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003831S0_source')" id="l_C003831S0_source">show source</a> ]</span>
+            <div id="C003831S0_source" class="dyn-source">
+<pre>
+(1 **(0)) should ==(1) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the number when raising to 1 <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003831S1_source')" id="l_C003831S1_source">show source</a> ]</span>
+            <div id="C003831S1_source" class="dyn-source">
+<pre>
+(2 **(1)) should ==(2) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should raise a number <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003831S2_source')" id="l_C003831S2_source">show source</a> ]</span>
+            <div id="C003831S2_source" class="dyn-source">
+<pre>
+(2 **(2)) should ==(4) 
+(2 **(3)) should ==(8) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should raise a number to a large number <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003831S3_source')" id="l_C003831S3_source">show source</a> ]</span>
+            <div id="C003831S3_source" class="dyn-source">
+<pre>
+(2 **(40)) should ==(1099511627776) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should convert its argument to a rational if its not a number or a decimal <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003831S4_source')" id="l_C003831S4_source">show source</a> ]</span>
+            <div id="C003831S4_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x asRational = method(3) 
+(2 **(x)) should ==(8) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should signal a condition if it isn't a rational and can't be converted <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003831S5_source')" id="l_C003831S5_source">show source</a> ]</span>
+            <div id="C003831S5_source" class="dyn-source">
+<pre>
+fn(1 **(Origin mimic)) should signal(Condition Error Type IncorrectType) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003831S6_source')" id="l_C003831S6_source">show source</a> ]</span>
+            <div id="C003831S6_source" class="dyn-source">
+<pre>
+Number Rational should checkReceiverTypeOn(:("**"), 4) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00380"></a><b>+</b>(addend)
+          </div>
+          <div class="description">
+            <p>returns the addition of this number and the argument. if the argument is a decimal, the receiver will be converted into a form suitable for addition against a decimal, and then added. if the argument is neither a Rational nor a Decimal, it tries to call asRational, and if that fails it signals a condition.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Number Rational +</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return 0 for the sum of 0 and 0 <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003801S0_source')" id="l_C003801S0_source">show source</a> ]</span>
+            <div id="C003801S0_source" class="dyn-source">
+<pre>
+(0 +(0)) should ==(0) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the sum of really large numbers <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003801S1_source')" id="l_C003801S1_source">show source</a> ]</span>
+            <div id="C003801S1_source" class="dyn-source">
+<pre>
+(234235345636345634567345675467 +(1)) should ==(234235345636345634567345675468) 
+(21342342342345345 +(778626453756754687567865785678)) should ==(778626453756776029910208131023) 
+(234234 +(63456345745676574567571345456345645675674567878567856785678657856568768)) should ==(63456345745676574567571345456345645675674567878567856785678657856803002) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the sum of smaller numbers <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003801S2_source')" id="l_C003801S2_source">show source</a> ]</span>
+            <div id="C003801S2_source" class="dyn-source">
+<pre>
+(1 +(1)) should ==(2) 
+(10 +(1)) should ==(11) 
+(15 +(15)) should ==(30) 
+(16 +(15)) should ==(31) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the sum of negative numbers <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003801S3_source')" id="l_C003801S3_source">show source</a> ]</span>
+            <div id="C003801S3_source" class="dyn-source">
+<pre>
+(1 +(0 -(1))) should ==(0) 
+((0 -(1)) +(2)) should ==(1) 
+((0 -(1)) +(0 -(1))) should ==(-(2)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the number when 0 is the receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003801S4_source')" id="l_C003801S4_source">show source</a> ]</span>
+            <div id="C003801S4_source" class="dyn-source">
+<pre>
+(0 +(1)) should ==(1) 
+(0 +(0 -(1))) should ==(-(1)) 
+(0 +(124423)) should ==(124423) 
+(0 +(34545636745678657856786786785678)) should ==(34545636745678657856786786785678) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the number when 0 is the argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003801S5_source')" id="l_C003801S5_source">show source</a> ]</span>
+            <div id="C003801S5_source" class="dyn-source">
+<pre>
+(1 +(0)) should ==(1) 
+((0 -(1)) +(0)) should ==(-(1)) 
+(124423 +(0)) should ==(124423) 
+(34545636745678657856786786785678 +(0)) should ==(34545636745678657856786786785678) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should convert itself to a decimal if the argument is a decimal <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003801S6_source')" id="l_C003801S6_source">show source</a> ]</span>
+            <div id="C003801S6_source" class="dyn-source">
+<pre>
+(1 +(0.6)) should ==(1.6) 
+(3 +(1.2)) should ==(4.2) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should convert its argument to a rational if its not a number or a decimal <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003801S7_source')" id="l_C003801S7_source">show source</a> ]</span>
+            <div id="C003801S7_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x asRational = method(41) 
+(1 +(x)) should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should signal a condition if it can't be converted and there is no way of adding <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003801S8_source')" id="l_C003801S8_source">show source</a> ]</span>
+            <div id="C003801S8_source" class="dyn-source">
+<pre>
+fn(1 +(Origin mimic)) should signal(Condition Error Type IncorrectType) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003801S9_source')" id="l_C003801S9_source">show source</a> ]</span>
+            <div id="C003801S9_source" class="dyn-source">
+<pre>
+Number Rational should checkReceiverTypeOn(:("+"), 4) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00379"></a><b>-</b>(subtrahend)
+          </div>
+          <div class="description">
+            <p>returns the difference between this number and the argument. if the argument is a decimal, the receiver will be converted into a form suitable for subtracting against a decimal, and then subtracted. if the argument is neither a Rational nor a Decimal, it tries to call asRational, and if that fails it signals a condition.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Number Rational -</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return 0 for the difference between 0 and 0 <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003791S0_source')" id="l_C003791S0_source">show source</a> ]</span>
+            <div id="C003791S0_source" class="dyn-source">
+<pre>
+(0 -(0)) should ==(0) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the difference between really large numbers <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003791S1_source')" id="l_C003791S1_source">show source</a> ]</span>
+            <div id="C003791S1_source" class="dyn-source">
+<pre>
+(123435334645674745675675757 -(123435334645674745675675756)) should ==(1) 
+(123435334645674745675675757 -(1)) should ==(123435334645674745675675756) 
+(123435334645674745675675757 -(24334534544345345345345)) should ==(123411000111130400330330412) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the difference between smaller numbers <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003791S2_source')" id="l_C003791S2_source">show source</a> ]</span>
+            <div id="C003791S2_source" class="dyn-source">
+<pre>
+(1 -(1)) should ==(0) 
+(0 -(1)) should ==(-(1)) 
+(2 -(1)) should ==(1) 
+(10 -(5)) should ==(5) 
+(234 -(30)) should ==(204) 
+(30 -(35)) should ==(-(5)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the difference between negative numbers <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003791S3_source')" id="l_C003791S3_source">show source</a> ]</span>
+            <div id="C003791S3_source" class="dyn-source">
+<pre>
+((0 -(1)) -(1)) should ==(-(2)) 
+((0 -(1)) -(5)) should ==(-(6)) 
+((0 -(1)) -(0 -(5))) should ==(4) 
+((0 -(10)) -(5)) should ==(-(15)) 
+((0 -(10)) -(0 -(5))) should ==(-(5)) 
+((0 -(2545345345346547456756)) -(0 -(2545345345346547456755))) should ==(-(1)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the number when 0 is the argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003791S4_source')" id="l_C003791S4_source">show source</a> ]</span>
+            <div id="C003791S4_source" class="dyn-source">
+<pre>
+(-(1) -(0)) should ==(-(1)) 
+(10 -(0)) should ==(10) 
+(1325234534634564564576367 -(0)) should ==(1325234534634564564576367) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should convert itself to a decimal if the argument is a decimal <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003791S5_source')" id="l_C003791S5_source">show source</a> ]</span>
+            <div id="C003791S5_source" class="dyn-source">
+<pre>
+(1 -(0.6)) should ==(0.4) 
+(3 -(1.2)) should ==(1.8) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should convert its argument to a rational if its not a number or a decimal <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003791S6_source')" id="l_C003791S6_source">show source</a> ]</span>
+            <div id="C003791S6_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x asRational = method(42) 
+(43 -(x)) should ==(1) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should signal a condition if it can't be converted and there is no way of subtracting <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003791S7_source')" id="l_C003791S7_source">show source</a> ]</span>
+            <div id="C003791S7_source" class="dyn-source">
+<pre>
+fn(1 -(Origin mimic)) should signal(Condition Error Type IncorrectType) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003791S8_source')" id="l_C003791S8_source">show source</a> ]</span>
+            <div id="C003791S8_source" class="dyn-source">
+<pre>
+Number Rational should checkReceiverTypeOn(:("-"), 4) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00382"></a><b>/</b>(dividend)
+          </div>
+          <div class="description">
+            <p>returns the quotient of this number and the argument. if the division is not exact, it will return a Ratio.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Number Rational /</b><br/>
+<ul style="list-style-type: none;">
+<li>- should cause a condition when dividing with 0 <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003821S0_source')" id="l_C003821S0_source">show source</a> ]</span>
+            <div id="C003821S0_source" class="dyn-source">
+<pre>
+fn(10 /(0)) should signal(Condition Error Arithmetic DivisionByZero) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should divide simple numbers <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003821S1_source')" id="l_C003821S1_source">show source</a> ]</span>
+            <div id="C003821S1_source" class="dyn-source">
+<pre>
+(2 /(1)) should ==(2) 
+(4 /(2)) should ==(2) 
+(200 /(5)) should ==(40) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return a rational when dividing uneven numbers <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003821S2_source')" id="l_C003821S2_source">show source</a> ]</span>
+            <div id="C003821S2_source" class="dyn-source">
+<pre>
+x = 8192 /(10) 
+x should mimic(Number Ratio) 
+x should ==((4096 /(5))) 
+x = 3 /(2) 
+x should mimic(Number Ratio) 
+x should not ==(1) 
+x should ==((3 /(2))) 
+x = 5 /(2) 
+x should mimic(Number Ratio) 
+x should not ==(2) 
+x should ==((5 /(2))) 
+x = 1 /(2) 
+x should mimic(Number Ratio) 
+x should not ==(0) 
+x should ==((1 /(2))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should divide negative numbers correctly <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003821S3_source')" id="l_C003821S3_source">show source</a> ]</span>
+            <div id="C003821S3_source" class="dyn-source">
+<pre>
+(-(8200) /(10)) should ==(-(820)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should divide with a negative dividend correctly <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003821S4_source')" id="l_C003821S4_source">show source</a> ]</span>
+            <div id="C003821S4_source" class="dyn-source">
+<pre>
+(8200 /(-(10))) ==(-(820)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should divide a negative number with a negative dividend <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003821S5_source')" id="l_C003821S5_source">show source</a> ]</span>
+            <div id="C003821S5_source" class="dyn-source">
+<pre>
+(-(8200) /(-(10))) ==(820) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should convert itself to a decimal if the argument is a decimal <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003821S6_source')" id="l_C003821S6_source">show source</a> ]</span>
+            <div id="C003821S6_source" class="dyn-source">
+<pre>
+(1 /(0.5)) should ==(2.0) 
+(3 /(1.2)) should ==(2.5) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should convert its argument to a number if its not a number or a decimal <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003821S7_source')" id="l_C003821S7_source">show source</a> ]</span>
+            <div id="C003821S7_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x asRational = method(2) 
+(42 /(x)) should ==(21) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should signal a condition if it isn't a number and can't be converted <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003821S8_source')" id="l_C003821S8_source">show source</a> ]</span>
+            <div id="C003821S8_source" class="dyn-source">
+<pre>
+fn(1 /(Origin mimic)) should signal(Condition Error Type IncorrectType) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003821S9_source')" id="l_C003821S9_source">show source</a> ]</span>
+            <div id="C003821S9_source" class="dyn-source">
+<pre>
+Number Rational should checkReceiverTypeOn(:("/"), 4) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00377"></a><b>&lt;=&gt;</b>(other)
+          </div>
+          <div class="description">
+            <p>compares this number against the argument, returning -1, 0 or 1 based on which one is larger. if the argument is a decimal, the receiver will be converted into a form suitable for comparing against a decimal, and then compared - it's not specified whether this will actually call Decimal#<=> or not. if the argument is neither a Rational nor a Decimal, it tries to call asRational, and if that doesn't work it returns nil.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Number Rational <=></b><br/>
+<ul style="list-style-type: none;">
+<li>- should return 0 for the same number <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003771S0_source')" id="l_C003771S0_source">show source</a> ]</span>
+            <div id="C003771S0_source" class="dyn-source">
+<pre>
+(0 &lt;=&gt;(0)) should ==(0) 
+(1 &lt;=&gt;(1)) should ==(0) 
+(10 &lt;=&gt;(10)) should ==(0) 
+(12413423523452345345345 &lt;=&gt;(12413423523452345345345)) should ==(0) 
+(-(1) &lt;=&gt;(-(1))) should ==(0) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return 1 when the left number is larger than the right <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003771S1_source')" id="l_C003771S1_source">show source</a> ]</span>
+            <div id="C003771S1_source" class="dyn-source">
+<pre>
+(1 &lt;=&gt;(0)) should ==(1) 
+(2 &lt;=&gt;(1)) should ==(1) 
+(10 &lt;=&gt;(9)) should ==(1) 
+(12413423523452345345345 &lt;=&gt;(12413423523452345345344)) should ==(1) 
+(0 &lt;=&gt;(-(1))) should ==(1) 
+(1 &lt;=&gt;(-(1))) should ==(1) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return 1 when the left number is smaller than the right <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003771S2_source')" id="l_C003771S2_source">show source</a> ]</span>
+            <div id="C003771S2_source" class="dyn-source">
+<pre>
+(0 &lt;=&gt;(1)) should ==(-(1)) 
+(1 &lt;=&gt;(2)) should ==(-(1)) 
+(9 &lt;=&gt;(10)) should ==(-(1)) 
+(12413423523452345345344 &lt;=&gt;(12413423523452345345345)) should ==(-(1)) 
+(-(1) &lt;=&gt;(0)) should ==(-(1)) 
+(-(1) &lt;=&gt;(1)) should ==(-(1)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should convert itself to a decimal if the argument is a decimal <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003771S3_source')" id="l_C003771S3_source">show source</a> ]</span>
+            <div id="C003771S3_source" class="dyn-source">
+<pre>
+(1 &lt;=&gt;(1.0)) should ==(0) 
+(1 &lt;=&gt;(1.1)) should ==(-(1)) 
+(1 &lt;=&gt;(0.9)) should ==(1) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should convert its argument to a rational if its not a number or a decimal <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003771S4_source')" id="l_C003771S4_source">show source</a> ]</span>
+            <div id="C003771S4_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x asRational = method(42) 
+(42 &lt;=&gt;(x)) should ==(0) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return nil if it can't be converted and there is no way of comparing <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003771S5_source')" id="l_C003771S5_source">show source</a> ]</span>
+            <div id="C003771S5_source" class="dyn-source">
+<pre>
+(1 &lt;=&gt;(Origin mimic)) should be nil 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003771S6_source')" id="l_C003771S6_source">show source</a> ]</span>
+            <div id="C003771S6_source" class="dyn-source">
+<pre>
+Number Rational should checkReceiverTypeOn(:("&lt;=&gt;"), 4) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00378"></a><b>==</b>(other)
+          </div>
+          <div class="description">
+            <p>compares this number against the argument, true if this number is the same, otherwise false</p>
+          </div>
+          
+          <div class="specs">
+            <b> Number Rational ==</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return true for the same number <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003781S0_source')" id="l_C003781S0_source">show source</a> ]</span>
+            <div id="C003781S0_source" class="dyn-source">
+<pre>
+x = 1 
+x should ==(x) 
+x = 10 
+x should ==(x) 
+x = (0 -(20)) 
+x should ==(x) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not return true for unequal numbers <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003781S1_source')" id="l_C003781S1_source">show source</a> ]</span>
+            <div id="C003781S1_source" class="dyn-source">
+<pre>
+1 should not ==(2) 
+1 should not ==(200000) 
+1123223 should not ==(65756756756) 
+(0 -(1)) should not ==(2) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return true for the result of equal number calculations <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003781S2_source')" id="l_C003781S2_source">show source</a> ]</span>
+            <div id="C003781S2_source" class="dyn-source">
+<pre>
+(1 +(1)) should ==(2) 
+(2 +(1)) should ==((1 +(2))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should work correctly when comparing zeroes <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003781S3_source')" id="l_C003781S3_source">show source</a> ]</span>
+            <div id="C003781S3_source" class="dyn-source">
+<pre>
+0 should ==(0) 
+1 should not ==(0) 
+0 should not ==(1) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should work correctly when comparing negative numbers <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003781S4_source')" id="l_C003781S4_source">show source</a> ]</span>
+            <div id="C003781S4_source" class="dyn-source">
+<pre>
+(-(19)) should ==(-(19)) 
+(-(19)) should not ==(-(20)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should work correctly when comparing large positive numbers <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003781S5_source')" id="l_C003781S5_source">show source</a> ]</span>
+            <div id="C003781S5_source" class="dyn-source">
+<pre>
+123234534675676786789678985463456345 should ==(123234534675676786789678985463456345) 
+8888856676776 should ==(8888856676776) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should convert itself to a decimal if the argument is a decimal <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003781S6_source')" id="l_C003781S6_source">show source</a> ]</span>
+            <div id="C003781S6_source" class="dyn-source">
+<pre>
+2 should ==(2.0) 
+2 should not ==(2.1) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return false for unrelated objects <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003781S7_source')" id="l_C003781S7_source">show source</a> ]</span>
+            <div id="C003781S7_source" class="dyn-source">
+<pre>
+2 should not ==("foo") 
+2 should not ==(:blarg) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003781S8_source')" id="l_C003781S8_source">show source</a> ]</span>
+            <div id="C003781S8_source" class="dyn-source">
+<pre>
+Number Rational should checkReceiverTypeOn(:("=="), 4) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00387"></a><b>===</b>(other)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00387_source')" id="l_C00387_source">show source</a> ]</p>
+            <div id="C00387_source" class="dyn-source">
+<pre>
+method(other, 
+  if(self same?(
+      0), 
+    Reflector other:mimics?(cell(:other), 
+      0), 
+    bind(rescue(Condition Error, fn(c, false)), 
+      self ==(
+        other))))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Number Rational ===</b><br/>
+<ul style="list-style-type: none;">
+<li>- should check for mimicness if receiver is Number Rational <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003871S0_source')" id="l_C003871S0_source">show source</a> ]</span>
+            <div id="C003871S0_source" class="dyn-source">
+<pre>
+Number Rational should ===(Number Rational) 
+Number Rational should ===(123) 
+Number Rational should ===((1 /(3))) 
+Number Rational should not ===(Number) 
+Number Rational should not ===(Number Real) 
+Number Rational should not ===(Origin) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should check for equalness if receiver is not Number Rational <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003871S1_source')" id="l_C003871S1_source">show source</a> ]</span>
+            <div id="C003871S1_source" class="dyn-source">
+<pre>
+0 should ===(0) 
+0 should ===(0.0) 
+0 should not ===(1) 
+(-(234)) should ===(-(234)) 
+12434 should not ===(0.0) 
+12434 should ===(12434) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00384"></a><b>asText</b>()
+          </div>
+          <div class="description">
+            <p>Returns a text representation of the object</p>
+          </div>
+          
+          <div class="specs">
+            <b> Number Rational asText</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return a representation of 0 <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003841S0_source')" id="l_C003841S0_source">show source</a> ]</span>
+            <div id="C003841S0_source" class="dyn-source">
+<pre>
+0 asText should ==("0") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return a representation of a Ratio <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003841S1_source')" id="l_C003841S1_source">show source</a> ]</span>
+            <div id="C003841S1_source" class="dyn-source">
+<pre>
+(1 /(3)) asText should ==("1/3") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return a representation of a small positive number <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003841S2_source')" id="l_C003841S2_source">show source</a> ]</span>
+            <div id="C003841S2_source" class="dyn-source">
+<pre>
+1 asText should ==("1") 
+12 asText should ==("12") 
+9232423 asText should ==("9232423") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return a representation of a large positive number <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003841S3_source')" id="l_C003841S3_source">show source</a> ]</span>
+            <div id="C003841S3_source" class="dyn-source">
+<pre>
+65535 asText should ==("65535") 
+65536 asText should ==("65536") 
+1235345341231298989793249879238543956783485384758333478526 asText should ==("1235345341231298989793249879238543956783485384758333478526") 
+99999999999999999999999999 asText should ==("99999999999999999999999999") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return a representation of a negative number <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003841S4_source')" id="l_C003841S4_source">show source</a> ]</span>
+            <div id="C003841S4_source" class="dyn-source">
+<pre>
+(-(65535)) asText should ==("-65535") 
+(-(65536)) asText should ==("-65536") 
+(-(1)) asText should ==("-1") 
+(-(645654)) asText should ==("-645654") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00385"></a><b>inspect</b>()
+          </div>
+          <div class="description">
+            <p>Returns a text inspection of the object</p>
+          </div>
+          
+          <div class="specs">
+            <b> Number Rational inspect</b><br/>
+<ul style="list-style-type: none;">
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003851S0_source')" id="l_C003851S0_source">show source</a> ]</span>
+            <div id="C003851S0_source" class="dyn-source">
+<pre>
+Number Rational should checkReceiverTypeOn(:("inspect")) 
+x = Origin mimic 
+x cell("inspect") = Number Rational cell("inspect") 
+fn(x inspect) should signal(Condition Error Type IncorrectType) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00386"></a><b>notice</b>()
+          </div>
+          <div class="description">
+            <p>Returns a brief text inspection of the object</p>
+          </div>
+          
+          <div class="specs">
+            <b> Number Rational notice</b><br/>
+<ul style="list-style-type: none;">
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003861S0_source')" id="l_C003861S0_source">show source</a> ]</span>
+            <div id="C003861S0_source" class="dyn-source">
+<pre>
+Number Rational should checkReceiverTypeOn(:("notice")) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </body>
+</html>

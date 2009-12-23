@@ -1,0 +1,1282 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Kind: DefaultBehavior</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href=".././dokgen-style.css" type="text/css" media="screen" />
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=480,width=750" ).focus();
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+    <table border='0' cellpadding='0' cellspacing='0' width="100%" class='banner'>
+      <tr>
+        <td>
+          <table width="100%" border='0' cellpadding='0' cellspacing='0'>
+            <tr>
+              <td class="file-title" colspan="2">
+                <span class="file-title-prefix">Kind</span>
+                <br />
+                Arity
+              </td>
+              <td align="right">
+                <table cellspacing="0" cellpadding="2">
+                  <tr>
+                    <td>Main mimic:</td>
+                    <td>
+                      <a href="../kinds/Origin.html">Origin</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <div id="bodyContent">
+      <div id="content">
+        <div class="description">
+          <p>
+Arity provides information about the arguments needed to activate a value.
+          </p>
+        </div>
+
+        <div class="sectiontitle">Mimics</div>
+        <ul>
+          <li><a href="../kinds/Origin.html">Origin</a></li>
+        </ul>
+
+        <div class="sectiontitle">Inactive cells</div>
+        <ul>
+          <li><a href="#C00472">kind</a></li>
+<li><a href="#C00474">taking:everything</a></li>
+<li><a href="#C00473">taking:nothing</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Active cells</div>
+        <ul>
+          <li><a href="#C00491">apply(...)</a></li>
+<li><a href="#C00492">applyOn(...)</a></li>
+<li><a href="#C00493">arguments(message, context: nil, signalErrors: false)</a></li>
+<li><a href="#C00480">asText()</a></li>
+<li><a href="#C00475">from(+[arguments])</a></li>
+<li><a href="#C00481">fromArgumentsCode(argumentsCode)</a></li>
+<li><a href="#C00477">keywords()</a></li>
+<li><a href="#C00478">krest()</a></li>
+<li><a href="#C00485">max()</a></li>
+<li><a href="#C00484">min()</a></li>
+<li><a href="#C00483">optional()</a></li>
+<li><a href="#C00476">positionals(includeOptionals true)</a></li>
+<li><a href="#C00482">required()</a></li>
+<li><a href="#C00479">rest()</a></li>
+<li><a href="#C00489">satisfied?(...)</a></li>
+<li><a href="#C00490">satisfiedOn?(...)</a></li>
+<li><a href="#C00488">takeEverything?()</a></li>
+<li><a href="#C00486">takeKeyword?(keyword)</a></li>
+<li><a href="#C00487">takeNothing?()</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Specs</div>
+        <div class="specs">
+          
+<b> Arity Arguments</b><br/>
+<ul style="list-style-type: none;">
+</ul>
+<b> Arity take:everything</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be the arity for ... argumentsCode <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K02S0_source')" id="l_C00K02S0_source">show source</a> ]</span>
+            <div id="C00K02S0_source" class="dyn-source">
+<pre>
+Arity fromArgumentsCode("...") should ==(Arity taking:everything) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be an Arity <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K02S1_source')" id="l_C00K02S1_source">show source</a> ]</span>
+            <div id="C00K02S1_source" class="dyn-source">
+<pre>
+Arity taking:everything should mimic(Arity) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not equal taking:nothing <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K02S2_source')" id="l_C00K02S2_source">show source</a> ]</span>
+            <div id="C00K02S2_source" class="dyn-source">
+<pre>
+Arity taking:everything should not ==(Arity taking:nothing) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not equal Arity <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K02S3_source')" id="l_C00K02S3_source">show source</a> ]</span>
+            <div id="C00K02S3_source" class="dyn-source">
+<pre>
+Arity taking:nothing should not ==(Arity) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> Arity take:nothing</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be the arity for empty argumentsCode <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K03S0_source')" id="l_C00K03S0_source">show source</a> ]</span>
+            <div id="C00K03S0_source" class="dyn-source">
+<pre>
+Arity fromArgumentsCode("") should ==(Arity taking:nothing) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be an Arity <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K03S1_source')" id="l_C00K03S1_source">show source</a> ]</span>
+            <div id="C00K03S1_source" class="dyn-source">
+<pre>
+Arity taking:nothing should mimic(Arity) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not equal taking:everything <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K03S2_source')" id="l_C00K03S2_source">show source</a> ]</span>
+            <div id="C00K03S2_source" class="dyn-source">
+<pre>
+Arity taking:nothing should not ==(Arity taking:everything) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not equal Arity <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K03S3_source')" id="l_C00K03S3_source">show source</a> ]</span>
+            <div id="C00K03S3_source" class="dyn-source">
+<pre>
+Arity taking:nothing should not ==(Arity) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+        </div>
+
+        <div class="sectiontitle">Inactive cells (details)</div>
+                <div class="cell">
+          <a name="C00472"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">kind</td>
+              <td>=</td>
+              <td class="cell-value">"Arity"</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C00474"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">taking:everything</td>
+              <td>=</td>
+              <td class="cell-value">Arity_0x11B0F38A</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C00473"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">taking:nothing</td>
+              <td>=</td>
+              <td class="cell-value">Arity_0x7844F218</td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="sectiontitle">Active cells (details)</div>
+                <div class="cell">
+          <div class="title">
+          <a name="C00491"></a><b>apply</b>(...)
+          </div>
+          <div class="description">
+            <p>Invoke arguments with this message without evaluating them</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00491_source')" id="l_C00491_source">show source</a> ]</p>
+            <div id="C00491_source" class="dyn-source">
+<pre>
+macro(
+  arguments(call message) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Arity apply</b><br/>
+<ul style="list-style-type: none;">
+<li>- should not evaluate by default <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004911S0_source')" id="l_C004911S0_source">show source</a> ]</span>
+            <div id="C004911S0_source" class="dyn-source">
+<pre>
+o = Origin mimic do(m = method(@ evaled = true)) 
+a = Arity from(n) apply(m) 
+a should mimic(Arity Arguments) 
+o cell?(:evaled) should be false 
+a order should ==(0) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00492"></a><b>applyOn</b>(...)
+          </div>
+          <div class="description">
+            <p>First argument must be an evaluated value, rest is the message arguments. arguments will be evaluated on the first argument.</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00492_source')" id="l_C00492_source">show source</a> ]</p>
+            <div id="C00492_source" class="dyn-source">
+<pre>
+macro(
+  on = call argAt(0) 
+  msg = call arguments rest inject('(apply), m, a, m &lt;&lt;(a)) 
+  arguments(msg, context: on) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Arity applyOn</b><br/>
+<ul style="list-style-type: none;">
+<li>- should evaluate by default <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004921S0_source')" id="l_C004921S0_source">show source</a> ]</span>
+            <div id="C004921S0_source" class="dyn-source">
+<pre>
+o = Origin mimic do(m = method(@ evaled = true)) 
+a = Arity from(n) applyOn(o, m) 
+a should mimic(Arity Arguments) 
+o cell?(:evaled) should be true 
+a order should ==(0) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00493"></a><b>arguments</b>(message, context: nil, signalErrors: false)
+          </div>
+          <div class="description">
+            <p>Obtain arguments from message according to this arity.
+    If a context is given, the arguments will be evaluated on context.
+
+    This method returns an Arguments object, see its documentation for available cells.
+
+    If the message arguments contain an splatted argument and no context is given, an
+    Condition Error Invocation NotSpreadable condition will be signaled.
+    </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00493_source')" id="l_C00493_source">show source</a> ]</p>
+            <div id="C00493_source" class="dyn-source">
+<pre>
+method(message, context: nil, signalErrors: false, 
+  req = required 
+  o = Arguments mimic(message arguments) 
+  o given = message arguments 
+  arg = nil 
+  signalError = fn(+(r), +:(k), 
+      if(signalErrors, 
+        error!(*(r), *(k), message: message, context: context, 
+          receiver: self, given: arg, info: o))) 
+  addKeyword = fn(key, value, 
+      cond(
+        takeNothing?, o extraKeywords [](key) = value, 
+        takeEverything?, o krest [](key) = value, 
+        keywords include?(key), o keywords [](key) = value, 
+        krest, o krest [](key) = value, 
+        o extraKeywords [](key) = value)) 
+  addPositional = fn(value, 
+      cond(
+        takeNothing?, o extraPositional &lt;&lt;(value), 
+        takeEverything?, o rest &lt;&lt;(value), 
+        o positional length &lt;(positionals(true) length), o positional &lt;&lt;(value), 
+        rest, o rest &lt;&lt;(value), 
+        o extraPositional &lt;&lt;(value))) 
+  message arguments each(arg, 
+    cond(
+      arg keyword?, 
+      name = :(arg name asText [](0 ..(-(2)))) 
+      arg = if(context, arg next evaluateOn(context), arg next) 
+      addKeyword(name, arg), 
+      arg name ==(:("*")) &&(arg arguments length ==(1)), 
+      arg = arg arguments first 
+      if(context, 
+        arg = arg evaluateOn(context) 
+        case(arg 
+          List, 
+          arg each(a, addPositional(a)) 
+          Dict, 
+          arg each(p, addKeyword(p key, p value)) 
+          
+          o notSpreadable &lt;&lt;(arg) 
+          signalError(Condition Error Invocation NotSpreadable)), 
+        o notSpreadable &lt;&lt;(arg) 
+        signalError(Condition Error Invocation NotSpreadable)), 
+      arg = if(context, arg evaluateOn(context), arg) 
+      addPositional(arg) 
+      )) 
+  if(o positional length &lt;(min), 
+    o missing = required [](o positional length ..(-(1))) 
+    o order = -(1 *(o missing length)) 
+    signalError(Condition Error Invocation TooFewArguments, howMany: o missing length), 
+    if((o extraPositional length) +((o extraKeywords size)) &gt;(0), 
+      o order = (o extraPositional length) +(o extraKeywords size) 
+      if(o extraPositional empty?, 
+        signalError(Condition Error Invocation MismatchedKeywords, howMany: o extraKeywords size), 
+        signalError(Condition Error Invocation TooManyArguments, howMany: o order)), 
+      o order = 0)) 
+  o 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Arity arguments</b><br/>
+<ul style="list-style-type: none;">
+<li>- should not signal errors by default, but just collect argument info <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004931S0_source')" id="l_C004931S0_source">show source</a> ]</span>
+            <div id="C004931S0_source" class="dyn-source">
+<pre>
+a = Arity from(n) arguments('(foo(*([](1, 2))))) 
+a should mimic(Arity Arguments) 
+a notSpreadable should not be empty 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should signal error when given an splat argument and not evaluating <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004931S1_source')" id="l_C004931S1_source">show source</a> ]</span>
+            <div id="C004931S1_source" class="dyn-source">
+<pre>
+fn(
+  Arity from(n) arguments('(foo(*([](1, 2)))), signalErrors: true) 
+  ) should signal(Condition Error Invocation NotSpreadable) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should evaluate arguments if given a context <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004931S2_source')" id="l_C004931S2_source">show source</a> ]</span>
+            <div id="C004931S2_source" class="dyn-source">
+<pre>
+o = Origin mimic do(m = method(22)) 
+a = Arity from(n) arguments('(foo(m)), context: o) 
+a should mimic(Arity Arguments) 
+a positional should ==([](22)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00480"></a><b>asText</b>()
+          </div>
+          <div class="description">
+            <p>returns the text representation of this arity</p>
+          </div>
+          
+          <div class="specs">
+            <b> Arity asText</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return empty text for taking:nothing <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004801S0_source')" id="l_C004801S0_source">show source</a> ]</span>
+            <div id="C004801S0_source" class="dyn-source">
+<pre>
+Arity taking:nothing asText should ==("")
+</pre>
+            </div>
+            </span></li>
+<li>- should return ... for taking:everything <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004801S1_source')" id="l_C004801S1_source">show source</a> ]</span>
+            <div id="C004801S1_source" class="dyn-source">
+<pre>
+Arity taking:everything asText should ==("...")
+</pre>
+            </div>
+            </span></li>
+<li>- should return the argumentsCode for a simple arg <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004801S2_source')" id="l_C004801S2_source">show source</a> ]</span>
+            <div id="C004801S2_source" class="dyn-source">
+<pre>
+Arity from(one) asText should ==("one") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the argumentsCode for a simple keyword <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004801S3_source')" id="l_C004801S3_source">show source</a> ]</span>
+            <div id="C004801S3_source" class="dyn-source">
+<pre>
+Arity from(two: 2) asText should ==("two: 2") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the argumentsCode having rest arg <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004801S4_source')" id="l_C004801S4_source">show source</a> ]</span>
+            <div id="C004801S4_source" class="dyn-source">
+<pre>
+Arity from(one, two: 2, +(rest)) asText should ==("one, two: 2, +rest") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the argumentsCode having krest arg <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004801S5_source')" id="l_C004801S5_source">show source</a> ]</span>
+            <div id="C004801S5_source" class="dyn-source">
+<pre>
+Arity from(one, two: 2, +(rest), +:(krest)) asText should ==("one, two: 2, +rest, +:krest") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00475"></a><b>from</b>(+[arguments])
+          </div>
+          <div class="description">
+            <p>Create an Arity object from the given messages. The list of unevaluated messages given to this method will be used as if they were the arguments part of a DefaultMethod definition.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Arity from</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return an empty arity if given no arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004751S0_source')" id="l_C004751S0_source">show source</a> ]</span>
+            <div id="C004751S0_source" class="dyn-source">
+<pre>
+Arity from should ==(Arity taking:nothing) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the arity for the given arguments definition <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004751S1_source')" id="l_C004751S1_source">show source</a> ]</span>
+            <div id="C004751S1_source" class="dyn-source">
+<pre>
+a = Arity from(a, b 0, c:, +(rest), +:(krest)) 
+a should mimic(Arity) 
+a should not ==(Arity taking:nothing) 
+a should not ==(Arity taking:everything) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00481"></a><b>fromArgumentsCode</b>(argumentsCode)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00481_source')" id="l_C00481_source">show source</a> ]</p>
+            <div id="C00481_source" class="dyn-source">
+<pre>
+method(argumentsCode, 
+  case(argumentsCode, 
+    or(nil, ""), taking:nothing, 
+    "...", taking:everything, 
+    msg = Message fromText("from(#{argumentsCode})") 
+    if(msg next, error!("Invalid argumentsCode: " +(argumentsCode))) 
+    msg sendTo(self)) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Arity fromArgumentsCode</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return an empty arity if given nil <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004811S0_source')" id="l_C004811S0_source">show source</a> ]</span>
+            <div id="C004811S0_source" class="dyn-source">
+<pre>
+Arity fromArgumentsCode(nil) should ==(Arity taking:nothing) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return an empty arity if given an empty text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004811S1_source')" id="l_C004811S1_source">show source</a> ]</span>
+            <div id="C004811S1_source" class="dyn-source">
+<pre>
+Arity fromArgumentsCode("") should ==(Arity taking:nothing) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return taking:everything for ... <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004811S2_source')" id="l_C004811S2_source">show source</a> ]</span>
+            <div id="C004811S2_source" class="dyn-source">
+<pre>
+Arity fromArgumentsCode("...") should ==(Arity taking:everything) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the arity for the given argumentsCode <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004811S3_source')" id="l_C004811S3_source">show source</a> ]</span>
+            <div id="C004811S3_source" class="dyn-source">
+<pre>
+a = Arity fromArgumentsCode("a, b 0, c:, +rest, +:krest") 
+a should mimic(Arity) 
+a should not ==(Arity) 
+a should not ==(Arity taking:nothing) 
+a should not ==(Arity taking:everything) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should raise an error when given an invalid argumentsCode <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004811S4_source')" id="l_C004811S4_source">show source</a> ]</span>
+            <div id="C004811S4_source" class="dyn-source">
+<pre>
+fn(Arity fromArgumentsCode(")") should signal(Condition Error)) 
+fn(Arity fromArgumentsCode("=&gt;") should signal(Condition Error)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00477"></a><b>keywords</b>()
+          </div>
+          <div class="description">
+            <p>returns the names for keyword arguments</p>
+          </div>
+          
+          <div class="specs">
+            <b> Arity keywords</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return empty for taking:nothing <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004771S0_source')" id="l_C004771S0_source">show source</a> ]</span>
+            <div id="C004771S0_source" class="dyn-source">
+<pre>
+Arity taking:nothing keywords should be empty 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return empty for taking:everything <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004771S1_source')" id="l_C004771S1_source">show source</a> ]</span>
+            <div id="C004771S1_source" class="dyn-source">
+<pre>
+Arity taking:everything keywords should be empty 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return keyword argument names <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004771S2_source')" id="l_C004771S2_source">show source</a> ]</span>
+            <div id="C004771S2_source" class="dyn-source">
+<pre>
+Arity from(a:, b: c, +:(d)) keywords should ==([](:a, :b)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00478"></a><b>krest</b>()
+          </div>
+          <div class="description">
+            <p>returns the symbol name for the krest argument.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Arity krest</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return nil for taking:nothing <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004781S0_source')" id="l_C004781S0_source">show source</a> ]</span>
+            <div id="C004781S0_source" class="dyn-source">
+<pre>
+Arity taking:nothing krest should be nil
+</pre>
+            </div>
+            </span></li>
+<li>- should return nil for taking:everything <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004781S1_source')" id="l_C004781S1_source">show source</a> ]</span>
+            <div id="C004781S1_source" class="dyn-source">
+<pre>
+Arity taking:everything krest should be nil
+</pre>
+            </div>
+            </span></li>
+<li>- should return nil when not krest argument is present <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004781S2_source')" id="l_C004781S2_source">show source</a> ]</span>
+            <div id="C004781S2_source" class="dyn-source">
+<pre>
+Arity from(foo) krest should be nil 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the symbol name for the krest argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004781S3_source')" id="l_C004781S3_source">show source</a> ]</span>
+            <div id="C004781S3_source" class="dyn-source">
+<pre>
+Arity from(foo, +:(bar)) krest should ==(:bar) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00485"></a><b>max</b>()
+          </div>
+          <div class="description">
+            <p>Return the maximum number of positional arguments. A negative value indicates rest positional arguments.</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00485_source')" id="l_C00485_source">show source</a> ]</p>
+            <div id="C00485_source" class="dyn-source">
+<pre>
+method(
+  cond(takeNothing?, 0, 
+    takeEverything?, -(1), 
+    rest, -(1) *(positionals(true) length +(1)), 
+    positionals(true) length) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Arity max</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be 0 for taking:nothing <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004851S0_source')" id="l_C004851S0_source">show source</a> ]</span>
+            <div id="C004851S0_source" class="dyn-source">
+<pre>
+Arity taking:nothing max should ==(0) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be -1 for taking:everything <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004851S1_source')" id="l_C004851S1_source">show source</a> ]</span>
+            <div id="C004851S1_source" class="dyn-source">
+<pre>
+Arity taking:everything max should ==(-(1)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return max number of required arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004851S2_source')" id="l_C004851S2_source">show source</a> ]</span>
+            <div id="C004851S2_source" class="dyn-source">
+<pre>
+Arity from(a, b) max should ==(2) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return max number of required arguments including optionals <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004851S3_source')" id="l_C004851S3_source">show source</a> ]</span>
+            <div id="C004851S3_source" class="dyn-source">
+<pre>
+Arity from(a, b, c 1) max should ==(3) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return max number of required arguments including rest <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004851S4_source')" id="l_C004851S4_source">show source</a> ]</span>
+            <div id="C004851S4_source" class="dyn-source">
+<pre>
+Arity from(a, b, c 1, +(d)) max should ==(-(4)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return negative when rest present <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004851S5_source')" id="l_C004851S5_source">show source</a> ]</span>
+            <div id="C004851S5_source" class="dyn-source">
+<pre>
+Arity from(+(d)) max should ==(-(1)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00484"></a><b>min</b>()
+          </div>
+          <div class="description">
+            <p>Return the minimun number of positional arguments</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00484_source')" id="l_C00484_source">show source</a> ]</p>
+            <div id="C00484_source" class="dyn-source">
+<pre>
+method(
+  positionals(false) length)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Arity min</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be 0 for taking:nothing <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004841S0_source')" id="l_C004841S0_source">show source</a> ]</span>
+            <div id="C004841S0_source" class="dyn-source">
+<pre>
+Arity taking:nothing min should ==(0) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be 0 for taking:everything <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004841S1_source')" id="l_C004841S1_source">show source</a> ]</span>
+            <div id="C004841S1_source" class="dyn-source">
+<pre>
+Arity taking:everything min should ==(0) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return minimum number of required arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004841S2_source')" id="l_C004841S2_source">show source</a> ]</span>
+            <div id="C004841S2_source" class="dyn-source">
+<pre>
+Arity from(a, b, c 1, +(d)) min should ==(2) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00483"></a><b>optional</b>()
+          </div>
+          <div class="description">
+            <p>Return the names of optional positional arguments.</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00483_source')" id="l_C00483_source">show source</a> ]</p>
+            <div id="C00483_source" class="dyn-source">
+<pre>
+method(
+  positionals(true) -(positionals(false)))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00476"></a><b>positionals</b>(includeOptionals true)
+          </div>
+          <div class="description">
+            <p>returns the names for positional arguments</p>
+          </div>
+          
+          <div class="specs">
+            <b> Arity positionals</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return empty for taking:nothing <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004761S0_source')" id="l_C004761S0_source">show source</a> ]</span>
+            <div id="C004761S0_source" class="dyn-source">
+<pre>
+Arity taking:nothing positionals should be empty 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return empty for taking:everything <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004761S1_source')" id="l_C004761S1_source">show source</a> ]</span>
+            <div id="C004761S1_source" class="dyn-source">
+<pre>
+Arity taking:everything positionals should be empty 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return positional argument names including optionals by default <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004761S2_source')" id="l_C004761S2_source">show source</a> ]</span>
+            <div id="C004761S2_source" class="dyn-source">
+<pre>
+Arity from(a, b, c 1, +(d)) positionals should ==([](:a, :b, :c)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return positional argument names including optionals if given true <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004761S3_source')" id="l_C004761S3_source">show source</a> ]</span>
+            <div id="C004761S3_source" class="dyn-source">
+<pre>
+Arity from(a, b, c 1, +(d)) positionals(true) should ==([](:a, :b, :c)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return positional argument names excluding optionals if given false <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004761S4_source')" id="l_C004761S4_source">show source</a> ]</span>
+            <div id="C004761S4_source" class="dyn-source">
+<pre>
+Arity from(a, b, c 1, +(d)) positionals(false) should ==([](:a, :b)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00482"></a><b>required</b>()
+          </div>
+          <div class="description">
+            <p>Return the names of required positional arguments.</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00482_source')" id="l_C00482_source">show source</a> ]</p>
+            <div id="C00482_source" class="dyn-source">
+<pre>
+method(
+  positionals(false))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Arity required</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return empty for taking:nothing <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004821S0_source')" id="l_C004821S0_source">show source</a> ]</span>
+            <div id="C004821S0_source" class="dyn-source">
+<pre>
+Arity taking:nothing required should be empty 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return empty for taking:everything <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004821S1_source')" id="l_C004821S1_source">show source</a> ]</span>
+            <div id="C004821S1_source" class="dyn-source">
+<pre>
+Arity taking:everything required should be empty 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return required positional names <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004821S2_source')" id="l_C004821S2_source">show source</a> ]</span>
+            <div id="C004821S2_source" class="dyn-source">
+<pre>
+Arity from(a, b, c 1, +(d)) required should ==([](:a, :b)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00479"></a><b>rest</b>()
+          </div>
+          <div class="description">
+            <p>returns the symbol name for the rest argument.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Arity rest</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return nil for taking:nothing <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004791S0_source')" id="l_C004791S0_source">show source</a> ]</span>
+            <div id="C004791S0_source" class="dyn-source">
+<pre>
+Arity taking:nothing rest should be nil
+</pre>
+            </div>
+            </span></li>
+<li>- should return nil for taking:everything <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004791S1_source')" id="l_C004791S1_source">show source</a> ]</span>
+            <div id="C004791S1_source" class="dyn-source">
+<pre>
+Arity taking:everything rest should be nil
+</pre>
+            </div>
+            </span></li>
+<li>- should return nil when not rest argument is present <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004791S2_source')" id="l_C004791S2_source">show source</a> ]</span>
+            <div id="C004791S2_source" class="dyn-source">
+<pre>
+Arity from(foo) rest should be nil 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the symbol name for the rest argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004791S3_source')" id="l_C004791S3_source">show source</a> ]</span>
+            <div id="C004791S3_source" class="dyn-source">
+<pre>
+Arity from(foo, +(bar)) rest should ==(:bar) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00489"></a><b>satisfied?</b>(...)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00489_source')" id="l_C00489_source">show source</a> ]</p>
+            <div id="C00489_source" class="dyn-source">
+<pre>
+macro(
+  call resendToMethod(:apply) order ==(0))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Arity satisfied?</b><br/>
+<ul style="list-style-type: none;">
+<li>- should not evaluate by default <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004891S0_source')" id="l_C004891S0_source">show source</a> ]</span>
+            <div id="C004891S0_source" class="dyn-source">
+<pre>
+o = Origin mimic do(m = method(@ evaled = true)) 
+Arity from(n) satisfied?(nono) should be true 
+o cell?(:evaled) should be false 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00490"></a><b>satisfiedOn?</b>(...)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00490_source')" id="l_C00490_source">show source</a> ]</p>
+            <div id="C00490_source" class="dyn-source">
+<pre>
+macro(
+  call resendToMethod(:applyOn) order ==(0))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Arity satisfiedOn?</b><br/>
+<ul style="list-style-type: none;">
+<li>- should evaluate by default <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004901S0_source')" id="l_C004901S0_source">show source</a> ]</span>
+            <div id="C004901S0_source" class="dyn-source">
+<pre>
+o = Origin mimic do(m = method(@ evaled = true)) 
+Arity from(n) satisfiedOn?(o, m) should be true 
+o cell?(:evaled) should be true 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00488"></a><b>takeEverything?</b>()
+          </div>
+          <div class="description">
+            <p>Return true if this arity takes everything. As is the case for macros or created from argumentsCode ... , it's also the arity needed to activate a non-activatable value</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00488_source')" id="l_C00488_source">show source</a> ]</p>
+            <div id="C00488_source" class="dyn-source">
+<pre>
+method(
+  self ==(taking:everything))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Arity takeEverything?</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be false for taking:nothing <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004881S0_source')" id="l_C004881S0_source">show source</a> ]</span>
+            <div id="C004881S0_source" class="dyn-source">
+<pre>
+Arity taking:nothing should not takeEverything 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be true for taking:everything <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004881S1_source')" id="l_C004881S1_source">show source</a> ]</span>
+            <div id="C004881S1_source" class="dyn-source">
+<pre>
+Arity taking:everything should takeEverything 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be false for arity taking arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004881S2_source')" id="l_C004881S2_source">show source</a> ]</span>
+            <div id="C004881S2_source" class="dyn-source">
+<pre>
+Arity from(a) should not takeEverything 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be false for arity taking rest arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004881S3_source')" id="l_C004881S3_source">show source</a> ]</span>
+            <div id="C004881S3_source" class="dyn-source">
+<pre>
+Arity from(+(a), +:(b)) should not takeEverything 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00486"></a><b>takeKeyword?</b>(keyword)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00486_source')" id="l_C00486_source">show source</a> ]</p>
+            <div id="C00486_source" class="dyn-source">
+<pre>
+method(keyword, 
+  if(krest, true, 
+    keywords include?(keyword)))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Arity takeKeyword?</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be false for taking:nothing <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004861S0_source')" id="l_C004861S0_source">show source</a> ]</span>
+            <div id="C004861S0_source" class="dyn-source">
+<pre>
+Arity taking:nothing takeKeyword?(:foo) should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be false for taking:everything <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004861S1_source')" id="l_C004861S1_source">show source</a> ]</span>
+            <div id="C004861S1_source" class="dyn-source">
+<pre>
+Arity taking:nothing takeKeyword?(:foo) should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be false for arity having no keywords <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004861S2_source')" id="l_C004861S2_source">show source</a> ]</span>
+            <div id="C004861S2_source" class="dyn-source">
+<pre>
+Arity from(a, b 2) takeKeyword?(:foo) should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be true for arity having the keyword <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004861S3_source')" id="l_C004861S3_source">show source</a> ]</span>
+            <div id="C004861S3_source" class="dyn-source">
+<pre>
+Arity from(a, b 2, foo:) takeKeyword?(:foo) should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be false for arity missing the keyword <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004861S4_source')" id="l_C004861S4_source">show source</a> ]</span>
+            <div id="C004861S4_source" class="dyn-source">
+<pre>
+Arity from(a, b 2, bar:) takeKeyword?(:foo) should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be false for arity taking krest <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004861S5_source')" id="l_C004861S5_source">show source</a> ]</span>
+            <div id="C004861S5_source" class="dyn-source">
+<pre>
+Arity from(a, b 2, +:(bar)) takeKeyword?(:foo) should be true 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00487"></a><b>takeNothing?</b>()
+          </div>
+          <div class="description">
+            <p>Return true if this arity takes nothing. For things that take no arguments at all.</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00487_source')" id="l_C00487_source">show source</a> ]</p>
+            <div id="C00487_source" class="dyn-source">
+<pre>
+method(
+  self ==(taking:nothing))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Arity takeNothing?</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be true for taking:nothing <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004871S0_source')" id="l_C004871S0_source">show source</a> ]</span>
+            <div id="C004871S0_source" class="dyn-source">
+<pre>
+Arity taking:nothing should takeNothing 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be false for taking:everything <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004871S1_source')" id="l_C004871S1_source">show source</a> ]</span>
+            <div id="C004871S1_source" class="dyn-source">
+<pre>
+Arity taking:everything should not takeNothing 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be false for arity taking arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C004871S2_source')" id="l_C004871S2_source">show source</a> ]</span>
+            <div id="C004871S2_source" class="dyn-source">
+<pre>
+Arity from(a) should not takeNothing 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </body>
+</html>

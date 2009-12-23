@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Kind: DefaultBehavior</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href=".././dokgen-style.css" type="text/css" media="screen" />
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=480,width=750" ).focus();
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+    <table border='0' cellpadding='0' cellspacing='0' width="100%" class='banner'>
+      <tr>
+        <td>
+          <table width="100%" border='0' cellpadding='0' cellspacing='0'>
+            <tr>
+              <td class="file-title" colspan="2">
+                <span class="file-title-prefix">Kind</span>
+                <br />
+                System
+              </td>
+              <td align="right">
+                <table cellspacing="0" cellpadding="2">
+                  <tr>
+                    <td>Main mimic:</td>
+                    <td>
+                      <a href="../kinds/Ground.html">Ground</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <div id="bodyContent">
+      <div id="content">
+        <div class="description">
+          <p>
+System defines things that represents the currently running system, such as the load path.
+          </p>
+        </div>
+
+        <div class="sectiontitle">Mimics</div>
+        <ul>
+          <li><a href="../kinds/Ground.html">Ground</a></li><li><a href="../kinds/DefaultBehavior.html">DefaultBehavior</a></li>
+        </ul>
+
+        <div class="sectiontitle">Inactive cells</div>
+        <ul>
+          <li><a href="#C00315">currentDebugger</a></li>
+<li><a href="#C00313">err</a></li>
+<li><a href="#C00314">in</a></li>
+<li><a href="#C00311">kind</a></li>
+<li><a href="#C00312">out</a></li>
+<li><a href="#C00324">programArguments</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Active cells</div>
+        <ul>
+          <li><a href="#C00326">atExit([code])</a></li>
+<li><a href="#C00321">currentDirectory()</a></li>
+<li><a href="#C00317">currentFile()</a></li>
+<li><a href="#C00322">currentWorkingDirectory()</a></li>
+<li><a href="#C00323">exit(other 1)</a></li>
+<li><a href="#C00316">feature?(feature)</a></li>
+<li><a href="#C00325">ifMain([code])</a></li>
+<li><a href="#C00319">loadPath()</a></li>
+<li><a href="#C00327">notice()</a></li>
+<li><a href="#C00320">randomNumber()</a></li>
+<li><a href="#C00318">windows?()</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Specs</div>
+        <div class="specs">
+          
+        </div>
+
+        <div class="sectiontitle">Inactive cells (details)</div>
+                <div class="cell">
+          <a name="C00315"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">currentDebugger</td>
+              <td>=</td>
+              <td class="cell-value">nil</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C00313"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">err</td>
+              <td>=</td>
+              <td class="cell-value">IO_0x22BC6389</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C00314"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">in</td>
+              <td>=</td>
+              <td class="cell-value">IO_0x7E2AC92F</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C00311"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">kind</td>
+              <td>=</td>
+              <td class="cell-value">"System"</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C00312"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">out</td>
+              <td>=</td>
+              <td class="cell-value">IO_0x2AFE6D5F</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C00324"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">programArguments</td>
+              <td>=</td>
+              <td class="cell-value">["-t"]</td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="sectiontitle">Active cells (details)</div>
+                <div class="cell">
+          <div class="title">
+          <a name="C00326"></a><b>atExit</b>([code])
+          </div>
+          <div class="description">
+            <p>adds a new piece of code that should be executed on exit</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00321"></a><b>currentDirectory</b>()
+          </div>
+          <div class="description">
+            <p>returns the current directory that the code is executing in</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00317"></a><b>currentFile</b>()
+          </div>
+          <div class="description">
+            <p>returns the current file executing</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00322"></a><b>currentWorkingDirectory</b>()
+          </div>
+          <div class="description">
+            <p>returns the current working directory</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00323"></a><b>exit</b>(other 1)
+          </div>
+          <div class="description">
+            <p>forcibly exits the currently running interpreter. takes one optional argument that defaults to 1 - which is the value to return from the process, if the process is exited.</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00316"></a><b>feature?</b>(feature)
+          </div>
+          <div class="description">
+            <p>takes one text or symbol argument and returns a boolean indicating whether the named feature is available on this runtime.</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00325"></a><b>ifMain</b>([code])
+          </div>
+          <div class="description">
+            <p>returns result of evaluating first argument</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00319"></a><b>loadPath</b>()
+          </div>
+          <div class="description">
+            <p>returns the current load path</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00327"></a><b>notice</b>()
+          </div>
+          <div class="description">
+            <p>returns a short text description of the receiver, the text System if this is the main System object, otherwise falls back to the super implementation</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00327_source')" id="l_C00327_source">show source</a> ]</p>
+            <div id="C00327_source" class="dyn-source">
+<pre>
+method(
+  if(cell(:self) ==(System), 
+    "System", 
+    super))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> System notice</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return 'System <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003271S0_source')" id="l_C003271S0_source">show source</a> ]</span>
+            <div id="C003271S0_source" class="dyn-source">
+<pre>
+System notice should ==("System") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not return 'System' for a mimic <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003271S1_source')" id="l_C003271S1_source">show source</a> ]</span>
+            <div id="C003271S1_source" class="dyn-source">
+<pre>
+System mimic notice should not ==("System") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00320"></a><b>randomNumber</b>()
+          </div>
+          <div class="description">
+            <p>returns a random number</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00318"></a><b>windows?</b>()
+          </div>
+          <div class="description">
+            <p>returns true if running on windows, otherwise false</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Kind: DefaultBehavior</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href=".././dokgen-style.css" type="text/css" media="screen" />
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=480,width=750" ).focus();
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+    <table border='0' cellpadding='0' cellspacing='0' width="100%" class='banner'>
+      <tr>
+        <td>
+          <table width="100%" border='0' cellpadding='0' cellspacing='0'>
+            <tr>
+              <td class="file-title" colspan="2">
+                <span class="file-title-prefix">Kind</span>
+                <br />
+                Origin
+              </td>
+              <td align="right">
+                <table cellspacing="0" cellpadding="2">
+                  <tr>
+                    <td>Main mimic:</td>
+                    <td>
+                      <a href="../kinds/Ground.html">Ground</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <div id="bodyContent">
+      <div id="content">
+        <div class="description">
+          <p>
+Any object created from scratch should usually be derived from Origin.
+          </p>
+        </div>
+
+        <div class="sectiontitle">Mimics</div>
+        <ul>
+          <li><a href="../kinds/Ground.html">Ground</a></li>
+        </ul>
+
+        <div class="sectiontitle">Inactive cells</div>
+        <ul>
+          <li><a href="#C00305">kind</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Active cells</div>
+        <ul>
+          <li><a href="#C00308">===(other)</a></li>
+<li><a href="#C00310">eval(source)</a></li>
+<li><a href="#C00309">mimic(...)</a></li>
+<li><a href="#C00307">print()</a></li>
+<li><a href="#C00306">println()</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Specs</div>
+        <div class="specs">
+          
+<b> Origin around mimic</b><br/>
+<ul style="list-style-type: none;">
+<li>- should ignore arguments sent to mimic <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S0_source')" id="l_C00K01S0_source">show source</a> ]</span>
+            <div id="C00K01S0_source" class="dyn-source">
+<pre>
+fn(Origin mimic(1, 2, 3, 4, 5)) should not signal(Condition Error) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should call initalize if such a cell exists <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S1_source')" id="l_C00K01S1_source">show source</a> ]</span>
+            <div id="C00K01S1_source" class="dyn-source">
+<pre>
+X = Origin mimic 
+Ground argumentsGiven = [] 
+X initialize = method(+(rest), +:(krest), argumentsGiven &lt;&lt;([](rest, krest))) 
+X mimic(12, foo: 42, 555 +(2)) 
+argumentsGiven should ==([]([]([](12, 557), {}(foo: 42)))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return a new mimic of the object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S2_source')" id="l_C00K01S2_source">show source</a> ]</span>
+            <div id="C00K01S2_source" class="dyn-source">
+<pre>
+X = Origin mimic 
+x = X mimic 
+x should not be same(X) 
+x should be mimic(X) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> Origin notice</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return 'Origin <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K02S0_source')" id="l_C00K02S0_source">show source</a> ]</span>
+            <div id="C00K02S0_source" class="dyn-source">
+<pre>
+Origin notice should ==("Origin") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not return 'Origin' for a mimic <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K02S1_source')" id="l_C00K02S1_source">show source</a> ]</span>
+            <div id="C00K02S1_source" class="dyn-source">
+<pre>
+Origin mimic notice should not ==("Origin") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+        </div>
+
+        <div class="sectiontitle">Inactive cells (details)</div>
+                <div class="cell">
+          <a name="C00305"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">kind</td>
+              <td>=</td>
+              <td class="cell-value">"Origin"</td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="sectiontitle">Active cells (details)</div>
+                <div class="cell">
+          <div class="title">
+          <a name="C00308"></a><b>===</b>(other)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00308_source')" id="l_C00308_source">show source</a> ]</p>
+            <div id="C00308_source" class="dyn-source">
+<pre>
+method(other, 
+  if(self same?(
+      #&lt;Origin:FB4538D&gt;), 
+    Reflector other:mimics?(cell(:other), 
+      #&lt;Origin:FB4538D&gt;), 
+    bind(rescue(Condition Error, fn(c, false)), 
+      self ==(
+        other))))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Origin ===</b><br/>
+<ul style="list-style-type: none;">
+<li>- should check for mimicness if receiver is Origin <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003081S0_source')" id="l_C003081S0_source">show source</a> ]</span>
+            <div id="C003081S0_source" class="dyn-source">
+<pre>
+Origin should ===(Origin) 
+Origin should ===(Origin mimic) 
+Origin should ===("foo") 
+Origin should not ===(Ground) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should check for equalness if receiver is not Origin <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003081S1_source')" id="l_C003081S1_source">show source</a> ]</span>
+            <div id="C003081S1_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = Origin mimic 
+z = Origin mimic 
+z == = fnx(other, other same?(x)) 
+x should ===(x) 
+x should not ===(y) 
+x should not ===(Origin) 
+x should not ===(z) 
+z should not ===(z) 
+z should ===(x) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00310"></a><b>eval</b>(source)
+          </div>
+          <div class="description">
+            <p>Takes some Text and evaluates it as Ioke source in the context of the receiver</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00310_source')" id="l_C00310_source">show source</a> ]</p>
+            <div id="C00310_source" class="dyn-source">
+<pre>
+method(source, 
+  Message fromText(source) evaluateOn(self))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Origin eval</b><br/>
+<ul style="list-style-type: none;">
+<li>- should eval on the receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003101S0_source')" id="l_C003101S0_source">show source</a> ]</span>
+            <div id="C003101S0_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x foo = 42 
+x eval("foo should == 42") 
+x eval("identity") should be same(x) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should eval an empty string <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003101S1_source')" id="l_C003101S1_source">show source</a> ]</span>
+            <div id="C003101S1_source" class="dyn-source">
+<pre>
+Origin eval("") should ==(nil) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should eval a number <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003101S2_source')" id="l_C003101S2_source">show source</a> ]</span>
+            <div id="C003101S2_source" class="dyn-source">
+<pre>
+Origin eval("1") should ==(1) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should eval a simple message <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003101S3_source')" id="l_C003101S3_source">show source</a> ]</span>
+            <div id="C003101S3_source" class="dyn-source">
+<pre>
+Origin eval("[](1,2,3,4)") should ==([](1, 2, 3, 4)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should eval a message with operator shuffling <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003101S4_source')" id="l_C003101S4_source">show source</a> ]</span>
+            <div id="C003101S4_source" class="dyn-source">
+<pre>
+Origin eval("1 + 2") should ==(3) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should eval multiple message chains <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003101S5_source')" id="l_C003101S5_source">show source</a> ]</span>
+            <div id="C003101S5_source" class="dyn-source">
+<pre>
+Origin eval("sam = 1. boris = 5. sooze = 10. sam + boris + sooze") should ==(16) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00309"></a><b>mimic</b>(...)
+          </div>
+          <div class="description">
+            <p>will return a new derivation of the receiving object. Might throw exceptions if the object is an oddball object.</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00309_source')" id="l_C00309_source">show source</a> ]</p>
+            <div id="C00309_source" class="dyn-source">
+<pre>
+macro(
+  aspectCall = macro(ss = if(@ kind ==("Locals"), @ self, @) 
+      call resendToValue(@@ cell(:primary), ss)) 
+  cell(:aspectCall) primary = @@ cell(:primary) 
+  call activateValueWithCachedArguments(@@ cell(:advice), self, aspectCall: cell(:aspectCall)) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00307"></a><b>print</b>()
+          </div>
+          <div class="description">
+            <p>Prints a text representation to standard output</p>
+          </div>
+          
+          <div class="specs">
+            <b> Origin print</b><br/>
+<ul style="list-style-type: none;">
+<li>- should print asText of object to 'System out' <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003071S0_source')" id="l_C003071S0_source">show source</a> ]</span>
+            <div id="C003071S0_source" class="dyn-source">
+<pre>
+oldSystemOutPrint = System out cell(:print) 
+Ground expected = nil 
+System out print = method(arg, Ground expected = arg) 
+"foobarz" print 
+System out print = cell(:oldSystemOutPrint) 
+expected should ==("foobarz") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00306"></a><b>println</b>()
+          </div>
+          <div class="description">
+            <p>Prints a text representation and a newline to standard output</p>
+          </div>
+          
+          <div class="specs">
+            <b> Origin println</b><br/>
+<ul style="list-style-type: none;">
+<li>- should print asText of object to 'System out' <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003061S0_source')" id="l_C003061S0_source">show source</a> ]</span>
+            <div id="C003061S0_source" class="dyn-source">
+<pre>
+oldSystemOutPrintln = System out cell(:println) 
+Ground expected = nil 
+System out println = method(arg, Ground expected = arg) 
+"foobarz" println 
+System out println = cell(:oldSystemOutPrintln) 
+expected should ==("foobarz") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </body>
+</html>

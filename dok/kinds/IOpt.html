@@ -1,0 +1,1212 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Kind: DefaultBehavior</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href=".././dokgen-style.css" type="text/css" media="screen" />
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=480,width=750" ).focus();
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+    <table border='0' cellpadding='0' cellspacing='0' width="100%" class='banner'>
+      <tr>
+        <td>
+          <table width="100%" border='0' cellpadding='0' cellspacing='0'>
+            <tr>
+              <td class="file-title" colspan="2">
+                <span class="file-title-prefix">Kind</span>
+                <br />
+                IOpt
+              </td>
+              <td align="right">
+                <table cellspacing="0" cellpadding="2">
+                  <tr>
+                    <td>Main mimic:</td>
+                    <td>
+                      <a href="../kinds/Origin.html">Origin</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <div id="bodyContent">
+      <div id="content">
+        <div class="description">
+          <p>
+
+          </p>
+        </div>
+
+        <div class="sectiontitle">Mimics</div>
+        <ul>
+          <li><a href="../kinds/Origin.html">Origin</a></li>
+        </ul>
+
+        <div class="sectiontitle">Inactive cells</div>
+        <ul>
+          <li><a href="#C00239">kind</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Active cells</div>
+        <ul>
+          <li><a href="#C00297">[](arg)</a></li>
+<li><a href="#C00298">[]=(...)</a></li>
+<li><a href="#C00303">asText()</a></li>
+<li><a href="#C00304">help(...)</a></li>
+<li><a href="#C00293">initialize()</a></li>
+<li><a href="#C00296">iopt:get(arg)</a></li>
+<li><a href="#C00294">iopt:ion(arg)</a></li>
+<li><a href="#C00295">iopt:key(arg)</a></li>
+<li><a href="#C00299">on(...)</a></li>
+<li><a href="#C00300">on=(...)</a></li>
+<li><a href="#C00302">parse(argv, +:krest)</a></li>
+<li><a href="#C00301">parse!(argv, errorUnknownOptions: true, +:krest)</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Specs</div>
+        <div class="specs">
+          
+        </div>
+
+        <div class="sectiontitle">Inactive cells (details)</div>
+                <div class="cell">
+          <a name="C00239"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">kind</td>
+              <td>=</td>
+              <td class="cell-value">"IOpt"</td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="sectiontitle">Active cells (details)</div>
+                <div class="cell">
+          <div class="title">
+          <a name="C00297"></a><b>[]</b>(arg)
+          </div>
+          <div class="description">
+            <p>Return the action handling the option given as argument</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00297_source')" id="l_C00297_source">show source</a> ]</p>
+            <div id="C00297_source" class="dyn-source">
+<pre>
+method(arg, 
+  if(h = iopt:get(arg), if(h cell?(:action), h action)))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> IOpt []</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return nil for a non existing option <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002971S0_source')" id="l_C002971S0_source">show source</a> ]</span>
+            <div id="C002971S0_source" class="dyn-source">
+<pre>
+o = IOpt mimic 
+o []("-f") should be nil
+</pre>
+            </div>
+            </span></li>
+<li>- should return the action that handles an option <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002971S1_source')" id="l_C002971S1_source">show source</a> ]</span>
+            <div id="C002971S1_source" class="dyn-source">
+<pre>
+a = IOpt Action mimic 
+o = IOpt mimic 
+o cell("iopt:actions") []("-f") = a 
+o []("-f") should ==(a) 
+o []("-f22") should ==(a) 
+o []("-f=22") should ==(a)
+</pre>
+            </div>
+            </span></li>
+<li>- should signal error if the option has not associated an action <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002971S2_source')" id="l_C002971S2_source">show source</a> ]</span>
+            <div id="C002971S2_source" class="dyn-source">
+<pre>
+o = IOpt mimic 
+o cell("iopt:actions") []("-f") = :foo 
+fn(o []("-f")) should signal(IOpt NoActionForOption)
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00298"></a><b>[]=</b>(...)
+          </div>
+          <div class="description">
+            <p>Create an action that handles the options given as indeces.
+    This RHS action can be one of several things:
+
+    nil - Will unregister the options from this object.
+    Symbol - Will create an Action CellActivation that will activate the cell with
+             that name upon execution.
+    :@     - Will create an Action CellAssignment that will store the required
+             option argument on the named cell.
+             e.g. :@here will store its value in cell(:here)
+    Text   - Will create an alias for the RHS option.
+    Action - Will register the action to handle options.
+    Message - Will create an Action MessageEvaluation that will evaluate the
+              message given on the action receiver.
+    value  - Will create an Action ValueActivation that will activate the given
+             value, this can anything like Method, LexicalContext, Macros, etc.
+    </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00298_source')" id="l_C00298_source">show source</a> ]</p>
+            <div id="C00298_source" class="dyn-source">
+<pre>
+macro(
+  options = list 
+  call arguments butLast each(i, a, 
+    a = call argAt(i) 
+    unless(m = iopt:ion(a), 
+      error!(MalformedOption, text: "Not a valid option: #{a}", option: a)) 
+    options &lt;&lt;(m option)) 
+  action = call arguments last 
+  action = if(action name ==(:(":@")) &&(action next) &&(action next next nil?), 
+      Action CellAssignment mimic(action next name), 
+      call argAt(call arguments length -(1))) 
+  case(cell(:action) kind, 
+    "nil", options each(o, iopt:actions [](o) = nil) 
+    return, 
+    "Symbol", 
+    if(action asText [](0 ..(0)) ==("@"), 
+      action = Action CellAssignment mimic(:(action asText [](1 ..(-(1))))), 
+      action = Action CellActivation mimic(action)), 
+    "Text", 
+    o = iopt:ion(action) 
+    unless(o, 
+      signal!(MalformedOption, text: "Not a valid option: #{action}", option: action)) 
+    unless(action = iopt:actions [](o option), 
+      signal!(NoActionForOption, 
+        text: "No action registered for option #{o option}", option: o option)), 
+    "Message", 
+    action = Action MessageEvaluation mimic(action), 
+    unless(cell(:action) mimics?(Action), 
+      action = Action ValueActivation mimic(cell(:action)))) 
+  action iopt = self 
+  if(@ cell("iopt:receiver"), action receiver = iopt:receiver) 
+  options each(o, action options &lt;&lt;(o) 
+    iopt:actions [](o) = action) 
+  action)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> IOpt []=</b><br/>
+<ul style="list-style-type: none;">
+<li>- should create an action by assigning a value to an option <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002981S0_source')" id="l_C002981S0_source">show source</a> ]</span>
+            <div id="C002981S0_source" class="dyn-source">
+<pre>
+o = IOpt mimic 
+o []("-f") = fn 
+o []("-f") should mimic(IOpt Action ValueActivation)
+</pre>
+            </div>
+            </span></li>
+<li>- should have self as the default receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002981S1_source')" id="l_C002981S1_source">show source</a> ]</span>
+            <div id="C002981S1_source" class="dyn-source">
+<pre>
+o = IOpt mimic 
+o []("-f") = fn 
+o []("-f") receiver should ==(o)
+</pre>
+            </div>
+            </span></li>
+<li>- should create an action that activates a cell by assigning a symbol to an option <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002981S2_source')" id="l_C002981S2_source">show source</a> ]</span>
+            <div id="C002981S2_source" class="dyn-source">
+<pre>
+o = IOpt mimic 
+o []("-f") = :flag 
+o []("-f") should mimic(IOpt Action CellActivation)
+</pre>
+            </div>
+            </span></li>
+<li>- should create an action that evaluates a message by assigning to an option <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002981S3_source')" id="l_C002981S3_source">show source</a> ]</span>
+            <div id="C002981S3_source" class="dyn-source">
+<pre>
+o = IOpt mimic 
+o []("-f") = Message fromText("why") 
+o []("-f") should mimic(IOpt Action MessageEvaluation) 
+o []("-f") = '(not) 
+o []("-f") should mimic(IOpt Action MessageEvaluation)
+</pre>
+            </div>
+            </span></li>
+<li>- should create an action that stores a cell by assigning a :@thing to an option <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002981S4_source')" id="l_C002981S4_source">show source</a> ]</span>
+            <div id="C002981S4_source" class="dyn-source">
+<pre>
+o = IOpt mimic 
+o []("-f") = :("@flag") 
+o []("-f") should mimic(IOpt Action CellAssignment) 
+o []("-f") = :@ thing 
+o []("-f") should mimic(IOpt Action CellAssignment)
+</pre>
+            </div>
+            </span></li>
+<li>- should not create an action if given one to bind to an option <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002981S5_source')" id="l_C002981S5_source">show source</a> ]</span>
+            <div id="C002981S5_source" class="dyn-source">
+<pre>
+o = IOpt mimic 
+o []("-f") = fn 
+a = o []("-f") 
+o []("--foo") = a 
+o []("--foo") should ==(a)
+</pre>
+            </div>
+            </span></li>
+<li>- should alias an action by assigning an existing option to a new one <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002981S6_source')" id="l_C002981S6_source">show source</a> ]</span>
+            <div id="C002981S6_source" class="dyn-source">
+<pre>
+o = IOpt mimic 
+o []("-f") = fn 
+a = o []("-f") 
+o []("--foo") = "-f" 
+o []("--foo") should ==(a)
+</pre>
+            </div>
+            </span></li>
+<li>- should signal error if the option being aliased does not exist <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002981S7_source')" id="l_C002981S7_source">show source</a> ]</span>
+            <div id="C002981S7_source" class="dyn-source">
+<pre>
+o = IOpt mimic 
+fn(o []("--foo") = "-f") should signal(IOpt NoActionForOption)
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to assign multiple options for a single action <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002981S8_source')" id="l_C002981S8_source">show source</a> ]</span>
+            <div id="C002981S8_source" class="dyn-source">
+<pre>
+o = IOpt mimic 
+o []("-f", "--foo") = fn 
+o []("-f") should ==(o []("--foo"))
+</pre>
+            </div>
+            </span></li>
+<li>- should remove an action by assigning nil to its options <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002981S9_source')" id="l_C002981S9_source">show source</a> ]</span>
+            <div id="C002981S9_source" class="dyn-source">
+<pre>
+o = IOpt mimic 
+o []("-f", "--foo", "--bar") = fn 
+a = o []("-f") 
+o []("-f") = nil 
+o []("--foo") should ==(a) 
+o []("--foo", "--bar") = nil 
+o []("--foo") should be nil 
+o []("--bar") should be nil
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00303"></a><b>asText</b>()
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00303_source')" id="l_C00303_source">show source</a> ]</p>
+            <div id="C00303_source" class="dyn-source">
+<pre>
+method(
+  help(:plain) asText)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00304"></a><b>help</b>(...)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00304_source')" id="l_C00304_source">show source</a> ]</p>
+            <div id="C00304_source" class="dyn-source">
+<pre>
+macro(
+  argCount = call arguments length 
+  cond(
+    argCount ==(
+      1), 
+    
+    format = call argAt(
+        0) 
+    
+    iopt:help [](format), 
+    argCount &gt;=(
+      1), 
+    
+    format = call argAt(
+        0) 
+    body = call arguments [](
+        1 ..(-(1))) 
+    
+    name = (format asText [](0 ..(0)) upper) +(format asText [](1 ..(-(1)))) 
+    msg = ('(mimic) &lt;&lt;(Message wrap(self))) 
+    body each(a, msg &lt;&lt;(a)) 
+    iopt:help [](format) = msg sendTo(IOpt Help cell(name)), 
+    error!(Condition Error Invocation NoMatch, message: call message, context: call currentContext)) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> IOpt help</b><br/>
+<ul style="list-style-type: none;">
+<li>- should have a Help Simple Plain by default <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003041S0_source')" id="l_C003041S0_source">show source</a> ]</span>
+            <div id="C003041S0_source" class="dyn-source">
+<pre>
+o = IOpt mimic 
+h = o help(:plain) 
+h should not be nil
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00293"></a><b>initialize</b>()
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00293_source')" id="l_C00293_source">show source</a> ]</p>
+            <div id="C00293_source" class="dyn-source">
+<pre>
+method(
+  @ iopt:receiver = nil 
+  @ iopt:actions = dict 
+  @ iopt:help = dict(plain: IOpt Help Plain Simple mimic(self)) 
+  @ initialize = method)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00296"></a><b>iopt:get</b>(arg)
+          </div>
+          <div class="description">
+            <p>Return the handler for option</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00296_source')" id="l_C00296_source">show source</a> ]</p>
+            <div id="C00296_source" class="dyn-source">
+<pre>
+method(arg, 
+  if(handler = iopt:ion(arg), 
+    if(handler action = iopt:actions [](handler option), 
+      unless(handler action mimics?(IOpt Action), 
+        signal!(NoActionForOption, text: "Not a valid action for #{arg}", 
+          option: arg, value: handler action))) 
+    handler))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00294"></a><b>iopt:ion</b>(arg)
+          </div>
+          <div class="description">
+            <p>If the argument is a valid option name, it MUST return
+    an object with the following cells:
+
+    short: an string like '-' if it is a short option, otherwise nil.
+           this value must be '-' or whatever prefix you use for short options.
+    option e.g. '-f', '--foo'. this value will be used to look for the
+           the option action by the iopt:get method.
+    immediate: if non-nil indicates this option has an immediate value,
+               for example in --foo=bar the inlined value should be bar
+               for short options like -l22 it should be 22.
+
+    If the argument is not a valid option name, return nil.
+
+    IOpt imposes no restriction on how an option looks like, by default
+    this method handles traditional unix style options. -f --foo.
+    But you can easily change that and have your options look like you
+    want for example like Mike tasks or windows /? style options if you
+    override this method.
+    </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00294_source')" id="l_C00294_source">show source</a> ]</p>
+            <div id="C00294_source" class="dyn-source">
+<pre>
+method(arg, 
+  if(m = #/^-({long}-)?({name}[\w_-]+)(=({immediate}.+))?$/ match(arg), 
+    if(m long nil? &&(m immediate nil?) &&(m name length &gt;(1)), 
+      m immediate = m name [](1 ..(-(1))) 
+      m name = m name [](0 ..(0))) 
+    m short = if(m long, nil, "-") 
+    m option = if(m long, "--", "-") +(m name) 
+    m))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> IOpt iopt:ion</b><br/>
+<ul style="list-style-type: none;">
+<li>- should recognize a short option <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002941S0_source')" id="l_C002941S0_source">show source</a> ]</span>
+            <div id="C002941S0_source" class="dyn-source">
+<pre>
+m = IOpt iopt:ion("-f") 
+m should not be nil 
+m long should be nil 
+m option should ==("-f") 
+m immediate should be nil
+</pre>
+            </div>
+            </span></li>
+<li>- should recognize a long option <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002941S1_source')" id="l_C002941S1_source">show source</a> ]</span>
+            <div id="C002941S1_source" class="dyn-source">
+<pre>
+m = IOpt iopt:ion("--foo") 
+m should not be nil 
+m long should not be nil 
+m option should ==("--foo") 
+m immediate should be nil
+</pre>
+            </div>
+            </span></li>
+<li>- should not recognize something that is not an option <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002941S2_source')" id="l_C002941S2_source">show source</a> ]</span>
+            <div id="C002941S2_source" class="dyn-source">
+<pre>
+IOpt iopt:ion("foo") should be nil 
+IOpt iopt:ion("- foo") should be nil 
+IOpt iopt:ion(" -foo") should be nil 
+IOpt iopt:ion("--@foo") should be nil 
+IOpt iopt:ion("--fo@") should be nil
+</pre>
+            </div>
+            </span></li>
+<li>- should obtain the immediate value for a short option using = <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002941S3_source')" id="l_C002941S3_source">show source</a> ]</span>
+            <div id="C002941S3_source" class="dyn-source">
+<pre>
+m = IOpt iopt:ion("-f=22") 
+m should not be nil 
+m long should be nil 
+m option should ==("-f") 
+m immediate should ==("22")
+</pre>
+            </div>
+            </span></li>
+<li>- should obtain the immediate value for a short option using = <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002941S4_source')" id="l_C002941S4_source">show source</a> ]</span>
+            <div id="C002941S4_source" class="dyn-source">
+<pre>
+m = IOpt iopt:ion("-f22=moo") 
+m should not be nil 
+m long should be nil 
+m option should ==("-f22") 
+m immediate should ==("moo")
+</pre>
+            </div>
+            </span></li>
+<li>- should obtain the immediate value for a short option <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002941S5_source')" id="l_C002941S5_source">show source</a> ]</span>
+            <div id="C002941S5_source" class="dyn-source">
+<pre>
+m = IOpt iopt:ion("-f22") 
+m should not be nil 
+m long should be nil 
+m option should ==("-f") 
+m immediate should ==("22")
+</pre>
+            </div>
+            </span></li>
+<li>- should obtain the immediate value for a long option using = <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002941S6_source')" id="l_C002941S6_source">show source</a> ]</span>
+            <div id="C002941S6_source" class="dyn-source">
+<pre>
+m = IOpt iopt:ion("--foo=bar") 
+m should not be nil 
+m long should not be nil 
+m option should ==("--foo") 
+m immediate should ==("bar")
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00295"></a><b>iopt:key</b>(arg)
+          </div>
+          <div class="description">
+            <p>Return non-nil if the argument is an option keyword.
+    If non-nil, the object should have the following cells defined:
+
+    name: The keyword name
+    immediate: The value if it has been provided with the keyword.
+
+    </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00295_source')" id="l_C00295_source">show source</a> ]</p>
+            <div id="C00295_source" class="dyn-source">
+<pre>
+method(arg, 
+  #/({name}[\w_-]+):({immediate}.+)?$/ match(arg))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> IOpt iopt:key</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return nil for a non option keyword <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002951S0_source')" id="l_C002951S0_source">show source</a> ]</span>
+            <div id="C002951S0_source" class="dyn-source">
+<pre>
+m = IOpt iopt:key("--foo") 
+m should be nil
+</pre>
+            </div>
+            </span></li>
+<li>- should return nil for a non option keyword <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002951S1_source')" id="l_C002951S1_source">show source</a> ]</span>
+            <div id="C002951S1_source" class="dyn-source">
+<pre>
+m = IOpt iopt:key("jojo :") 
+m should be nil
+</pre>
+            </div>
+            </span></li>
+<li>- should recognize an option keyword <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002951S2_source')" id="l_C002951S2_source">show source</a> ]</span>
+            <div id="C002951S2_source" class="dyn-source">
+<pre>
+m = IOpt iopt:key("foo:") 
+m should not be nil 
+m name should ==("foo") 
+m immediate should be nil
+</pre>
+            </div>
+            </span></li>
+<li>- should obtain the immediate value for an option keyword <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002951S3_source')" id="l_C002951S3_source">show source</a> ]</span>
+            <div id="C002951S3_source" class="dyn-source">
+<pre>
+m = IOpt iopt:key("foo:jojo") 
+m should not be nil 
+m name should ==("foo") 
+m immediate should ==("jojo")
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00299"></a><b>on</b>(...)
+          </div>
+          <div class="description">
+            <p>You can use this to create actions having an object as receiver.
+
+    - If the first arguments are options, the remaining arguments
+      will be used to create a LexicalBlock which will be the action handler.
+      These lexical blocks can access '@' and 'self' cells that reference
+      the action receiver. (in this case the iopt object itself)
+
+         on(\"-h\", \"--help\", \"Show help\", @println. System exit)
+
+    - If only given one argument, will return a mimic of self, having
+      the given argument as receiver for all actions created with it.
+
+         opts = IOpt on(myApp)
+         opts on(\"--me\", \"Print myApp\", @println)
+         opts on(\"--path\", \"Set the path cell on myApp\", :@path)
+         opts on(\"-f\", \"Call method doSomething on myApp\", :doSomething)
+
+     - If the first argument is an object the remaining arguments
+       are used to create a lexicalBlock to handle the action, having
+       the first argument as receiver.
+
+          on(myApp, \"-v\", \"Print myApp version\", @version println)
+    </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00299_source')" id="l_C00299_source">show source</a> ]</p>
+            <div id="C00299_source" class="dyn-source">
+<pre>
+macro(
+  argCount = call arguments length 
+  if(
+    argCount ==(
+      0), 
+    
+    
+    self, 
+    if(
+      argCount ==(
+        1), 
+      
+      receiver = call argAt(
+          0) 
+      
+      other = @ mimic 
+      other iopt:receiver = cell(:receiver) 
+      other, 
+      if(
+        argCount &gt;=(
+          1), 
+        
+        receiver = call argAt(
+            0) 
+        args = call arguments [](
+            1 ..(-(1))) 
+        
+        options = list 
+        docs = list 
+        body = nil 
+        action = nil 
+        if(cell(:receiver) kind?("Text"), 
+          unless(handler = iopt:ion(receiver), 
+            signal!(MalformedOption, text: "Not a valid option: #{receiver}", option: receiver)) 
+          receiver = nil 
+          options &lt;&lt;(handler option)) 
+        while(
+          list(:("internal:createText"), :("internal:concatenateText")) include?(args first name) &&(args first last ==(args first)), 
+          txt = args first evaluateOn(call ground) 
+          if(handler = iopt:ion(txt), 
+            options &lt;&lt;(handler option), 
+            docs &lt;&lt;(txt)) 
+          args = args rest) 
+        body = if(args last symbol?, 
+            if(args last name ==(:(":@")), 
+              :("@#{args last next name}"), call argAt(call arguments length -(1))), 
+            if(args last name ==(:cachedResult), 
+              args last evaluateOn(call ground), 
+              args inject('(fn), m, a, m &lt;&lt;(a)) evaluateOn(call ground))) 
+        action = options inject(cell(:body), a, f, @ [](f) = cell(:a)) 
+        if(docs empty?, 
+          if(cell(:body) documentation, action documentation = cell(:body) documentation), 
+          action documentation = docs join("\n")) 
+        if(cell(:receiver), action receiver = cell(:receiver)) 
+        action 
+        , 
+        error!(Condition Error Invocation NoMatch, message: call message, context: call currentContext)))) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> IOpt on</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return self if no args given <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002991S0_source')" id="l_C002991S0_source">show source</a> ]</span>
+            <div id="C002991S0_source" class="dyn-source">
+<pre>
+o = IOpt mimic 
+o on should ==(o)
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> IOpt on when given an object as first argument</b><br/>
+<ul style="list-style-type: none;">
+<li>- should create a lexical block having that object as receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002992S0_source')" id="l_C002992S0_source">show source</a> ]</span>
+            <div id="C002992S0_source" class="dyn-source">
+<pre>
+v = Origin mimic 
+o = IOpt mimic 
+o on(v, "-h", "--help", "Display Help", @ print 
+  System exit) 
+o []("-h") should mimic(IOpt Action ValueActivation) 
+o []("--help") should mimic(IOpt Action ValueActivation) 
+o []("--help") receiver should ==(v)
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> IOpt on when given an object as first argument when the last argument is a symbol</b><br/>
+<ul style="list-style-type: none;">
+<li>- should create a cell assingment action if symbol starts with @ <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002993S0_source')" id="l_C002993S0_source">show source</a> ]</span>
+            <div id="C002993S0_source" class="dyn-source">
+<pre>
+v = Origin mimic 
+o = IOpt mimic 
+o on(v, "--set", "Assign value to a cell on v", :@ setMePlease) 
+o []("--set") should mimic(IOpt Action CellAssignment) 
+o []("--set") receiver should ==(v)
+</pre>
+            </div>
+            </span></li>
+<li>- should create a cell activation action <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002993S1_source')" id="l_C002993S1_source">show source</a> ]</span>
+            <div id="C002993S1_source" class="dyn-source">
+<pre>
+v = Origin mimic 
+o = IOpt mimic 
+o on(v, "--call", "Activating a cell on v", :pleaseCallMe!) 
+o []("--call") should mimic(IOpt Action CellActivation) 
+o []("--call") receiver should ==(v)
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> IOpt on when given an object as only argument</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return a mimic of the original Iopt object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002994S0_source')" id="l_C002994S0_source">show source</a> ]</span>
+            <div id="C002994S0_source" class="dyn-source">
+<pre>
+o = IOpt mimic 
+o on(nil) should mimic(o)
+</pre>
+            </div>
+            </span></li>
+<li>- should set the new receiver for actions defined with []= <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002994S1_source')" id="l_C002994S1_source">show source</a> ]</span>
+            <div id="C002994S1_source" class="dyn-source">
+<pre>
+v = Origin mimic 
+o = IOpt mimic 
+o on(v) []("-f") = :foo 
+o []("-f") receiver should ==(v)
+</pre>
+            </div>
+            </span></li>
+<li>- should set the new receiver for actions defined with on <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002994S2_source')" id="l_C002994S2_source">show source</a> ]</span>
+            <div id="C002994S2_source" class="dyn-source">
+<pre>
+v = Origin mimic 
+o = IOpt mimic 
+o on(v) on("--yay", "Yay!", yay println) 
+o []("--yay") receiver should ==(v)
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> IOpt on when given options as first arguments</b><br/>
+<ul style="list-style-type: none;">
+<li>- should create a lexical block to handle the option <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002995S0_source')" id="l_C002995S0_source">show source</a> ]</span>
+            <div id="C002995S0_source" class="dyn-source">
+<pre>
+o = IOpt mimic 
+o on("-h", "--help", "Display Help", @ print 
+  System exit) 
+o []("-h") should mimic(IOpt Action ValueActivation) 
+o []("--help") should mimic(IOpt Action ValueActivation)
+</pre>
+            </div>
+            </span></li>
+<li>- should concatenate text for action documentation <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002995S1_source')" id="l_C002995S1_source">show source</a> ]</span>
+            <div id="C002995S1_source" class="dyn-source">
+<pre>
+o = IOpt mimic 
+o on("-h", "Show", "This", "Help", @ print) 
+o []("-h") documentation should ==("Show\nThis\nHelp")
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> IOpt on when given options as first arguments when the last argument is a symbol</b><br/>
+<ul style="list-style-type: none;">
+<li>- should create a cell assingment action if symbol starts with :@ <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002996S0_source')" id="l_C002996S0_source">show source</a> ]</span>
+            <div id="C002996S0_source" class="dyn-source">
+<pre>
+o = IOpt mimic 
+o on("--set", "Assign value to a cell on o", :@ setMePlease) 
+o []("--set") should mimic(IOpt Action CellAssignment)
+</pre>
+            </div>
+            </span></li>
+<li>- should create a cell activation action <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002996S1_source')" id="l_C002996S1_source">show source</a> ]</span>
+            <div id="C002996S1_source" class="dyn-source">
+<pre>
+o = IOpt mimic 
+o on("--call", "Activating a cell on o", :pleaseCallMe!) 
+o []("--call") should mimic(IOpt Action CellActivation)
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00300"></a><b>on=</b>(...)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00300_source')" id="l_C00300_source">show source</a> ]</p>
+            <div id="C00300_source" class="dyn-source">
+<pre>
+macro(
+  argCount = call arguments length 
+  cond(
+    argCount &gt;=(
+      2), 
+    
+    first = call arguments [](
+        0) 
+    second = call arguments [](
+        1) 
+    rest = call arguments [](
+        2 ..(-(1))) 
+    
+    msg = call arguments butLast inject('(on), m, a, m &lt;&lt;(a)) 
+    msg &lt;&lt;(Message wrap(call argAt(call arguments length -(1)))) 
+    msg evaluateOn(call ground, call receiver), 
+    error!(Condition Error Invocation NoMatch, message: call message, context: call currentContext)) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> IOpt on=</b><br/>
+<ul style="list-style-type: none;">
+<li>- should evaluate the last argument as the action <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003001S0_source')" id="l_C003001S0_source">show source</a> ]</span>
+            <div id="C003001S0_source" class="dyn-source">
+<pre>
+o = IOpt mimic 
+o showHelp = method(@ print) 
+o on("-h", "--help") = o cell(:showHelp) 
+o []("-h") should mimic(IOpt Action ValueActivation) 
+o []("-h") cell(:valueToActivate) should be same(o cell(:showHelp))
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> IOpt on= when given an object as first argument</b><br/>
+<ul style="list-style-type: none;">
+<li>- should create an Action ValueActivation having a receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003002S0_source')" id="l_C003002S0_source">show source</a> ]</span>
+            <div id="C003002S0_source" class="dyn-source">
+<pre>
+v = Origin mimic 
+o = IOpt mimic 
+o on(v, "-h", "--help") = fn("Display Help", @ print 
+    System exit) 
+o []("-h") should mimic(IOpt Action ValueActivation) 
+o []("--help") should mimic(IOpt Action ValueActivation) 
+o []("--help") receiver should ==(v)
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> IOpt on= when given an object as first argument when the last argument is a symbol</b><br/>
+<ul style="list-style-type: none;">
+<li>- should create a cell assingment action if symbol starts with @ <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003003S0_source')" id="l_C003003S0_source">show source</a> ]</span>
+            <div id="C003003S0_source" class="dyn-source">
+<pre>
+v = Origin mimic 
+o = IOpt mimic 
+o on(v, "--set", "Assign value to a cell on v") = :("@setMePlease") 
+o []("--set") should mimic(IOpt Action CellAssignment) 
+o []("--set") receiver should ==(v)
+</pre>
+            </div>
+            </span></li>
+<li>- should create a cell activation action <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003003S1_source')" id="l_C003003S1_source">show source</a> ]</span>
+            <div id="C003003S1_source" class="dyn-source">
+<pre>
+v = Origin mimic 
+o = IOpt mimic 
+o on(v, "--call", "Activating a cell on v") = :pleaseCallMe! 
+o []("--call") should mimic(IOpt Action CellActivation) 
+o []("--call") receiver should ==(v)
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> IOpt on= when given an object as only argument</b><br/>
+<ul style="list-style-type: none;">
+<li>- should signal error if not given enought arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003004S0_source')" id="l_C003004S0_source">show source</a> ]</span>
+            <div id="C003004S0_source" class="dyn-source">
+<pre>
+o = IOpt mimic 
+fn(o on = nil) should signal(Condition Error Invocation NoMatch)
+</pre>
+            </div>
+            </span></li>
+<li>- should set the new receiver for actions defined with []= <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003004S1_source')" id="l_C003004S1_source">show source</a> ]</span>
+            <div id="C003004S1_source" class="dyn-source">
+<pre>
+v = Origin mimic 
+o = IOpt mimic 
+o on(v, "-f") = :foo 
+o []("-f") receiver should ==(v)
+</pre>
+            </div>
+            </span></li>
+<li>- should set the new receiver for actions defined with on <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003004S2_source')" id="l_C003004S2_source">show source</a> ]</span>
+            <div id="C003004S2_source" class="dyn-source">
+<pre>
+v = Origin mimic 
+o = IOpt mimic 
+o on(v, "--yay") = fn("Yay!", yay println) 
+o []("--yay") receiver should ==(v)
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> IOpt on= when given options as first arguments</b><br/>
+<ul style="list-style-type: none;">
+<li>- should create an Action ValueActivation <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003005S0_source')" id="l_C003005S0_source">show source</a> ]</span>
+            <div id="C003005S0_source" class="dyn-source">
+<pre>
+o = IOpt mimic 
+o on("-h", "--help") = fn("Display Help", @ print 
+    System exit) 
+o []("-h") should mimic(IOpt Action ValueActivation) 
+o []("--help") should mimic(IOpt Action ValueActivation)
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> IOpt on= when given options as first arguments when the last argument is a symbol</b><br/>
+<ul style="list-style-type: none;">
+<li>- should create a cell assingment action if symbol starts with @ <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003006S0_source')" id="l_C003006S0_source">show source</a> ]</span>
+            <div id="C003006S0_source" class="dyn-source">
+<pre>
+o = IOpt mimic 
+o on("--set") = :("@setMePlease") 
+o []("--set") should mimic(IOpt Action CellAssignment)
+</pre>
+            </div>
+            </span></li>
+<li>- should create a cell activation action <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003006S1_source')" id="l_C003006S1_source">show source</a> ]</span>
+            <div id="C003006S1_source" class="dyn-source">
+<pre>
+o = IOpt mimic 
+o pleaseCallMe! = method(:called) 
+o on("--call") = :pleaseCallMe! 
+o []("--call") should mimic(IOpt Action CellActivation)
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00302"></a><b>parse</b>(argv, +:krest)
+          </div>
+          <div class="description">
+            <p>Just parse the command line, don't execute actions.
+
+    If you need to do advanced stuff, like validate mutual exclusive options, or handle
+    unknown options in some way, executing only some actions under certain conditions,
+    then this method is for you.
+
+    See CommandLine initialize for a list of keyword arguments</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00302_source')" id="l_C00302_source">show source</a> ]</p>
+            <div id="C00302_source" class="dyn-source">
+<pre>
+method(argv, +:krest, 
+  CommandLine mimic(self, argv, *(krest)))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00301"></a><b>parse!</b>(argv, errorUnknownOptions: true, +:krest)
+          </div>
+          <div class="description">
+            <p>Execute the options specified on argv.
+
+    This method will first obtain the actions for each option present on argv,
+    consume option arguments for each of them according to their arity.
+
+    The argument given to this method will be stored at cell argv on this object.
+    Elements from argv not consumed by any option will be available at
+    programArguments cell on this object.
+
+    After processing the command line, each action will be executed by priority.
+
+    See CommandLine initialize for a list of keyword arguments
+    </p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00301_source')" id="l_C00301_source">show source</a> ]</p>
+            <div id="C00301_source" class="dyn-source">
+<pre>
+method(argv, errorUnknownOptions: true, +:krest, 
+  cmd = CommandLine mimic(self, argv, *(krest)) 
+  @ argv = cmd argv 
+  @ programArguments = cmd programArguments 
+  @ rest = cmd rest 
+  if(errorUnknownOptions &&(!(cmd unknownOptions empty?)), 
+    error!(UnknownOption, text: "Unknown options: %[%s %]" format(cmd unknownOptions))) 
+  cmd execute 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> IOpt parse!</b><br/>
+<ul style="list-style-type: none;">
+<li>- should execute options by priority <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003011S0_source')" id="l_C003011S0_source">show source</a> ]</span>
+            <div id="C003011S0_source" class="dyn-source">
+<pre>
+order = [] 
+o = IOpt mimic 
+o on("-a", order &lt;&lt;(:a)) 
+o on("-b", order &lt;&lt;(:b)) priority = -(2) 
+o on("-c", order &lt;&lt;(:c)) priority = -(1) 
+o on("-d", order &lt;&lt;(:d)) priority = 3 
+o on("-e", order &lt;&lt;(:e)) 
+o parse!([]("-d", "-e", "-c", "-a", "-b")) 
+order should ==([](:b, :c, :e, :a, :d))
+</pre>
+            </div>
+            </span></li>
+<li>- should not modify original arguments and store them on argv cell <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003011S1_source')" id="l_C003011S1_source">show source</a> ]</span>
+            <div id="C003011S1_source" class="dyn-source">
+<pre>
+o = IOpt mimic 
+o on("-a", nil) 
+argv = []("-not-an-option", "-a", "yes", "hey") 
+fn(o parse!(argv)) should signal(IOpt UnknownOption) 
+o parse!(argv, errorUnknownOptions: false) 
+o argv should ==([]("-not-an-option", "-a", "yes", "hey"))
+</pre>
+            </div>
+            </span></li>
+<li>- should store non option arguments on programArguments cell <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C003011S2_source')" id="l_C003011S2_source">show source</a> ]</span>
+            <div id="C003011S2_source" class="dyn-source">
+<pre>
+o = IOpt mimic 
+o on("-a", nil) 
+argv = []("-not-an-option", "-a", "yes", "hey") 
+fn(o parse!(argv)) should signal(IOpt UnknownOption) 
+o parse!(argv, errorUnknownOptions: false) 
+o programArguments should ==([]("-not-an-option", "yes", "hey"))
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </body>
+</html>

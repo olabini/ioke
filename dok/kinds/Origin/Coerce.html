@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Kind: DefaultBehavior</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../.././dokgen-style.css" type="text/css" media="screen" />
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=480,width=750" ).focus();
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+    <table border='0' cellpadding='0' cellspacing='0' width="100%" class='banner'>
+      <tr>
+        <td>
+          <table width="100%" border='0' cellpadding='0' cellspacing='0'>
+            <tr>
+              <td class="file-title" colspan="2">
+                <span class="file-title-prefix">Kind</span>
+                <br />
+                Origin Coerce
+              </td>
+              <td align="right">
+                <table cellspacing="0" cellpadding="2">
+                  <tr>
+                    <td>Main mimic:</td>
+                    <td>
+                      <a href="../../kinds/Origin.html">Origin</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <div id="bodyContent">
+      <div id="content">
+        <div class="description">
+          <p>
+
+          </p>
+        </div>
+
+        <div class="sectiontitle">Mimics</div>
+        <ul>
+          <li><a href="../../kinds/Origin.html">Origin</a></li>
+        </ul>
+
+        <div class="sectiontitle">Inactive cells</div>
+        <ul>
+          <li><a href="#C00259">all</a></li>
+<li><a href="#C00251">coerce_boolean?</a></li>
+<li><a href="#C00257">coerce_decimal?</a></li>
+<li><a href="#C00255">coerce_integer?</a></li>
+<li><a href="#C00249">coerce_nil?</a></li>
+<li><a href="#C00253">coerce_symbol?</a></li>
+<li><a href="#C00260">kind</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Active cells</div>
+        <ul>
+          <li><a href="#C00252">coerce_boolean(t)</a></li>
+<li><a href="#C00258">coerce_decimal(t)</a></li>
+<li><a href="#C00256">coerce_integer(t)</a></li>
+<li><a href="#C00250">coerce_nil(t)</a></li>
+<li><a href="#C00254">coerce_symbol(t)</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Specs</div>
+        <div class="specs">
+          
+        </div>
+
+        <div class="sectiontitle">Inactive cells (details)</div>
+                <div class="cell">
+          <a name="C00259"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">all</td>
+              <td>=</td>
+              <td class="cell-value">[:integer, :symbol, :boolean, :nil, :decimal]</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C00251"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">coerce_boolean?</td>
+              <td>=</td>
+              <td class="cell-value">fn(...)</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C00257"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">coerce_decimal?</td>
+              <td>=</td>
+              <td class="cell-value">fn(...)</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C00255"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">coerce_integer?</td>
+              <td>=</td>
+              <td class="cell-value">fn(...)</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C00249"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">coerce_nil?</td>
+              <td>=</td>
+              <td class="cell-value">fn(...)</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C00253"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">coerce_symbol?</td>
+              <td>=</td>
+              <td class="cell-value">fn(...)</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C00260"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">kind</td>
+              <td>=</td>
+              <td class="cell-value">"Origin Coerce"</td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="sectiontitle">Active cells (details)</div>
+                <div class="cell">
+          <div class="title">
+          <a name="C00252"></a><b>coerce_boolean</b>(t)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00252_source')" id="l_C00252_source">show source</a> ]</p>
+            <div id="C00252_source" class="dyn-source">
+<pre>
+method(t, 
+  t ==("true"))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00258"></a><b>coerce_decimal</b>(t)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00258_source')" id="l_C00258_source">show source</a> ]</p>
+            <div id="C00258_source" class="dyn-source">
+<pre>
+method(t, 
+  t toDecimal)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00256"></a><b>coerce_integer</b>(t)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00256_source')" id="l_C00256_source">show source</a> ]</p>
+            <div id="C00256_source" class="dyn-source">
+<pre>
+method(t, 
+  n = Message fromText(if(#/^[+-]/ ===(t), t [](1 ..(-(1))), t)) evaluateOn(self) 
+  if(#/^-/ ===(t), n negation, n))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00250"></a><b>coerce_nil</b>(t)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00250_source')" id="l_C00250_source">show source</a> ]</p>
+            <div id="C00250_source" class="dyn-source">
+<pre>
+method(t, 
+  nil)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00254"></a><b>coerce_symbol</b>(t)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00254_source')" id="l_C00254_source">show source</a> ]</p>
+            <div id="C00254_source" class="dyn-source">
+<pre>
+method(t, 
+  :(t [](1 ..(-(1)))))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </body>
+</html>

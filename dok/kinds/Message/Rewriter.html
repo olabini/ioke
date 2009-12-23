@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Kind: DefaultBehavior</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../.././dokgen-style.css" type="text/css" media="screen" />
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=480,width=750" ).focus();
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+    <table border='0' cellpadding='0' cellspacing='0' width="100%" class='banner'>
+      <tr>
+        <td>
+          <table width="100%" border='0' cellpadding='0' cellspacing='0'>
+            <tr>
+              <td class="file-title" colspan="2">
+                <span class="file-title-prefix">Kind</span>
+                <br />
+                Message Rewriter
+              </td>
+              <td align="right">
+                <table cellspacing="0" cellpadding="2">
+                  <tr>
+                    <td>Main mimic:</td>
+                    <td>
+                      <a href="../../kinds/Origin.html">Origin</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <div id="bodyContent">
+      <div id="content">
+        <div class="description">
+          <p>
+
+          </p>
+        </div>
+
+        <div class="sectiontitle">Mimics</div>
+        <ul>
+          <li><a href="../../kinds/Origin.html">Origin</a></li>
+        </ul>
+
+        <div class="sectiontitle">Inactive cells</div>
+        <ul>
+          <li><a href="#C00876">kind</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Active cells</div>
+        <ul>
+          <li><a href="#C00888">match(msg, pattern)</a></li>
+<li><a href="#C00877">rewrite(msg, pattern, recurse false)</a></li>
+<li><a href="#C00887">rewriteWith(u, pattern)</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Specs</div>
+        <div class="specs">
+          
+        </div>
+
+        <div class="sectiontitle">Inactive cells (details)</div>
+                <div class="cell">
+          <a name="C00876"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">kind</td>
+              <td>=</td>
+              <td class="cell-value">"Message Rewriter"</td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="sectiontitle">Active cells (details)</div>
+                <div class="cell">
+          <div class="title">
+          <a name="C00888"></a><b>match</b>(msg, pattern)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00888_source')" id="l_C00888_source">show source</a> ]</p>
+            <div id="C00888_source" class="dyn-source">
+<pre>
+method(msg, pattern, 
+  Unification tryUnify(pattern, msg) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00877"></a><b>rewrite</b>(msg, pattern, recurse false)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00877_source')" id="l_C00877_source">show source</a> ]</p>
+            <div id="C00877_source" class="dyn-source">
+<pre>
+method(msg, pattern, recurse false, 
+  start = nil 
+  current = nil 
+  m_msg = msg 
+  while(m_msg, 
+    oldArguments = m_msg arguments 
+    if(recurse &&(!(Unification internal:literal?(m_msg))), 
+      m_msg arguments = m_msg arguments map(mm, 
+          if(Unification internal:literal?(mm), 
+            mm, 
+            rewrite(mm, pattern, true)))) 
+    m = match(m_msg, pattern key) 
+    result = if(m, 
+        rewriteWith(m, pattern value), 
+        m_msg mimic 
+        ) 
+    m_msg arguments = oldArguments 
+    if(start nil?, 
+      start = result 
+      current = start last, 
+      current -&gt;(result) 
+      current = current last 
+      ) 
+    if(m, 
+      m nexts times(if(m_msg, m_msg = m_msg next)), 
+      m_msg = m_msg next) 
+    ) 
+  start 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00887"></a><b>rewriteWith</b>(u, pattern)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00887_source')" id="l_C00887_source">show source</a> ]</p>
+            <div id="C00887_source" class="dyn-source">
+<pre>
+method(u, pattern, 
+  start = nil 
+  current = nil 
+  p = pattern 
+  while(p, 
+    res = if(p symbol?, 
+        (msg, count) = u unifications [](p name) 
+        res = msg mimic 
+        curr = msg 
+        (1 ...(count)) each(n, 
+          curr = curr next 
+          newObj = curr mimic 
+          res last -&gt;(newObj) 
+          ) 
+        res, 
+        p mimic) 
+    unless(u internal:literal?(res), 
+      res arguments = p arguments map(a, 
+          rewriteWith(u, a))) 
+    if(start nil?, 
+      start = res 
+      current = start, 
+      current last -&gt;(res) 
+      current = current last) 
+    p = p next 
+    ) 
+  start 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </body>
+</html>

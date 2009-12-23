@@ -1,0 +1,4112 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Kind: DefaultBehavior</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href=".././dokgen-style.css" type="text/css" media="screen" />
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=480,width=750" ).focus();
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+    <table border='0' cellpadding='0' cellspacing='0' width="100%" class='banner'>
+      <tr>
+        <td>
+          <table width="100%" border='0' cellpadding='0' cellspacing='0'>
+            <tr>
+              <td class="file-title" colspan="2">
+                <span class="file-title-prefix">Kind</span>
+                <br />
+                DefaultBehavior
+              </td>
+              <td align="right">
+                <table cellspacing="0" cellpadding="2">
+                  <tr>
+                    <td>Main mimic:</td>
+                    <td>
+                      <a href="../kinds/DefaultBehavior/BaseBehavior.html">DefaultBehavior BaseBehavior</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <div id="bodyContent">
+      <div id="content">
+        <div class="description">
+          <p>
+DefaultBehavior is a mixin that provides most of the methods shared by most instances in the system.
+          </p>
+        </div>
+
+        <div class="sectiontitle">Mimics</div>
+        <ul>
+          <li><a href="../kinds/DefaultBehavior/BaseBehavior.html">DefaultBehavior BaseBehavior</a></li><li><a href="../kinds/DefaultBehavior/Assignment.html">DefaultBehavior Assignment</a></li><li><a href="../kinds/DefaultBehavior/Internal.html">DefaultBehavior Internal</a></li><li><a href="../kinds/DefaultBehavior/FlowControl.html">DefaultBehavior FlowControl</a></li><li><a href="../kinds/DefaultBehavior/Definitions.html">DefaultBehavior Definitions</a></li><li><a href="../kinds/DefaultBehavior/Conditions.html">DefaultBehavior Conditions</a></li><li><a href="../kinds/DefaultBehavior/Literals.html">DefaultBehavior Literals</a></li><li><a href="../kinds/DefaultBehavior/Case.html">DefaultBehavior Case</a></li><li><a href="../kinds/DefaultBehavior/Reflection.html">DefaultBehavior Reflection</a></li><li><a href="../kinds/DefaultBehavior/Boolean.html">DefaultBehavior Boolean</a></li><li><a href="../kinds/DefaultBehavior/Aspects.html">DefaultBehavior Aspects</a></li><li><a href="../kinds/ISpec/ExtendedDefaultBehavior.html">ISpec ExtendedDefaultBehavior</a></li>
+        </ul>
+
+        <div class="sectiontitle">Inactive cells</div>
+        <ul>
+          <li><a href="#C0021">kind</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Active cells</div>
+        <ul>
+          <li><a href="#C00235">cellDescriptionDict()</a></li>
+<li><a href="#C00236">cellSummary()</a></li>
+<li><a href="#C00232">genSym()</a></li>
+<li><a href="#C00233">inspect()</a></li>
+<li><a href="#C00234">notice()</a></li>
+<li><a href="#C00231">use(module false)</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Specs</div>
+        <div class="specs">
+          
+<b> DefaultBehavior !</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return the result of calling not on the object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S0_source')" id="l_C00K01S0_source">show source</a> ]</span>
+            <div id="C00K01S0_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x not = method(53) 
+!(x should) ==(53) 
+x = Origin mimic 
+x not = method(33) 
+!(x should) ==(33) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior %=</b><br/>
+<ul style="list-style-type: none;">
+<li>- should call % and then assign the result of this call to the same name <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K02S0_source')" id="l_C00K02S0_source">show source</a> ]</span>
+            <div id="C00K02S0_source" class="dyn-source">
+<pre>
+x = 12 
+%=(x, 5) 
+x should ==(2) 
+x = 13 
+%=(x, 4) 
+x should ==(1) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should work with a place <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K02S1_source')" id="l_C00K02S1_source">show source</a> ]</span>
+            <div id="C00K02S1_source" class="dyn-source">
+<pre>
+x = [](42) 
+x %=([](0), 4) 
+x [](0) should ==(2) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior &&</b><br/>
+<ul style="list-style-type: none;">
+<li>- should evaluate it's argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K03S0_source')" id="l_C00K03S0_source">show source</a> ]</span>
+            <div id="C00K03S0_source" class="dyn-source">
+<pre>
+x = 41 
+13 &&(x = 42) 
+x should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the result of the argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K03S1_source')" id="l_C00K03S1_source">show source</a> ]</span>
+            <div id="C00K03S1_source" class="dyn-source">
+<pre>
+5353 &&(42) should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be available in infix <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K03S2_source')" id="l_C00K03S2_source">show source</a> ]</span>
+            <div id="C00K03S2_source" class="dyn-source">
+<pre>
+("flurg" &&(43)) should ==(43) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior &&=</b><br/>
+<ul style="list-style-type: none;">
+<li>- should not assign a cell if it doesn't exist <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K04S0_source')" id="l_C00K04S0_source">show source</a> ]</span>
+            <div id="C00K04S0_source" class="dyn-source">
+<pre>
+&&=(xblurg, 42) 
+cell?(:xblurg) should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not assign a cell if it is nil <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K04S1_source')" id="l_C00K04S1_source">show source</a> ]</span>
+            <div id="C00K04S1_source" class="dyn-source">
+<pre>
+x = nil 
+&&=(x, 42) 
+x should be nil 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not assign a cell if it is false <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K04S2_source')" id="l_C00K04S2_source">show source</a> ]</span>
+            <div id="C00K04S2_source" class="dyn-source">
+<pre>
+x = false 
+&&=(x, 42) 
+x should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should assign a cell that exist <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K04S3_source')" id="l_C00K04S3_source">show source</a> ]</span>
+            <div id="C00K04S3_source" class="dyn-source">
+<pre>
+x = 43 
+&&=(x, 42) 
+x should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should work with a place <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K04S4_source')" id="l_C00K04S4_source">show source</a> ]</span>
+            <div id="C00K04S4_source" class="dyn-source">
+<pre>
+x = [](1, 3) 
+x &&=([](1), 42) 
+x should ==([](1, 42)) 
+x = [](2, 3) 
+x &&=([](2), 42) 
+x should ==([](2, 3)) 
+x = [](3, nil) 
+x &&=([](1), 42) 
+x should ==([](3, nil)) 
+x = [](4, false) 
+x &&=([](1), 42) 
+x should ==([](4, false)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior &=</b><br/>
+<ul style="list-style-type: none;">
+<li>- should call & and then assign the result of this call to the same name <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K05S0_source')" id="l_C00K05S0_source">show source</a> ]</span>
+            <div id="C00K05S0_source" class="dyn-source">
+<pre>
+x = 65535 
+&=(x, 1) 
+x should ==(1) 
+x = 8 
+&=(x, 8) 
+x should ==(8) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should work with a place <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K05S1_source')" id="l_C00K05S1_source">show source</a> ]</span>
+            <div id="C00K05S1_source" class="dyn-source">
+<pre>
+x = [](65535) 
+x &=([](0), 1) 
+x [](0) should ==(1) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior '</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return the things inside unevaluated <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K06S0_source')" id="l_C00K06S0_source">show source</a> ]</span>
+            <div id="C00K06S0_source" class="dyn-source">
+<pre>
+'(+(200)) name should ==(:("+")) 
+'(abc foo bar quux lux) name should ==(:abc) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior ''</b><br/>
+<ul style="list-style-type: none;">
+<li>- should work exactly like ' for anything not containing a ` or ' <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K07S0_source')" id="l_C00K07S0_source">show source</a> ]</span>
+            <div id="C00K07S0_source" class="dyn-source">
+<pre>
+''(+(200)) name should ==(:("+")) 
+''(abc foo bar quux lux) name should ==(:abc) 
+''(foo(bar +(quux(123)))) code should ==("foo(bar +(quux(123)))") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should splice a message that is the result of a ` form <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K07S1_source')" id="l_C00K07S1_source">show source</a> ]</span>
+            <div id="C00K07S1_source" class="dyn-source">
+<pre>
+''(mux `('(foo))) code should ==("mux foo") 
+''(mux(`('(foo)))) code should ==("mux(foo)") 
+xx = '(foo bar(if(true))) 
+''(max `(xx)) code should ==("max foo bar(if(true))") 
+mux = '(message) 
+out = ''(mux `(mux)) 
+mux &lt;&lt;('(foo)) 
+out code should ==("mux message(foo)") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should splice a message that is a deep copy of a ' form <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K07S2_source')" id="l_C00K07S2_source">show source</a> ]</span>
+            <div id="C00K07S2_source" class="dyn-source">
+<pre>
+mux = '(message) 
+''(mux '(mux)) code should ==("mux message") 
+out = ''(mux '(mux)) 
+mux &lt;&lt;('(foo)) 
+out code should ==("mux message") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should resplize an argument list to a spliced message without arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K07S3_source')" id="l_C00K07S3_source">show source</a> ]</span>
+            <div id="C00K07S3_source" class="dyn-source">
+<pre>
+''(mux `('(one)) (123, 456)) code should ==("mux one(123, 456)") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should wrap a cached result if the result from a ` form is not a message <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K07S4_source')" id="l_C00K07S4_source">show source</a> ]</span>
+            <div id="C00K07S4_source" class="dyn-source">
+<pre>
+''(mux(`(123))) code should ==("mux(123)") 
+''(mux(`(123))) code should ==("mux(123)") 
+flarg = 123 
+''(mux(`(flarg))) code should ==("mux(123)") 
+''(mux(`(flarg))) code should ==("mux(123)") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should should insert a literal ` if a `` message is encountered <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K07S5_source')" id="l_C00K07S5_source">show source</a> ]</span>
+            <div id="C00K07S5_source" class="dyn-source">
+<pre>
+''(mux ``(abc)) code should ==("mux `(abc)") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should should insert a literal ' if a '' message is encountered <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K07S6_source')" id="l_C00K07S6_source">show source</a> ]</span>
+            <div id="C00K07S6_source" class="dyn-source">
+<pre>
+''(mux ''(abc)) code should ==("mux '(abc)") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior **=</b><br/>
+<ul style="list-style-type: none;">
+<li>- should call ** and then assign the result of this call to the same name <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K08S0_source')" id="l_C00K08S0_source">show source</a> ]</span>
+            <div id="C00K08S0_source" class="dyn-source">
+<pre>
+x = 2 
+**=(x, 3) 
+x should ==(8) 
+x = 2 
+**=(x, 40) 
+x should ==(1099511627776) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should work with a place <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K08S1_source')" id="l_C00K08S1_source">show source</a> ]</span>
+            <div id="C00K08S1_source" class="dyn-source">
+<pre>
+x = [](3) 
+x **=([](0), 2) 
+x [](0) should ==(9) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior *=</b><br/>
+<ul style="list-style-type: none;">
+<li>- should call * and then assign the result of this call to the same name <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K09S0_source')" id="l_C00K09S0_source">show source</a> ]</span>
+            <div id="C00K09S0_source" class="dyn-source">
+<pre>
+x = 12 
+*=(x, 2) 
+x should ==(24) 
+x = 150 
+*=(x, -(2)) 
+x should ==(-(300)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should work with a place <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K09S1_source')" id="l_C00K09S1_source">show source</a> ]</span>
+            <div id="C00K09S1_source" class="dyn-source">
+<pre>
+x = [](42) 
+x *=([](0), 2) 
+x [](0) should ==(84) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior +=</b><br/>
+<ul style="list-style-type: none;">
+<li>- should call + and then assign the result of this call to the same name <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K010S0_source')" id="l_C00K010S0_source">show source</a> ]</span>
+            <div id="C00K010S0_source" class="dyn-source">
+<pre>
+x = 1 
++=(x, 2) 
+x should ==(3) 
+x = 42 
++=(x, -(1)) 
+x should ==(41) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should work with a place <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K010S1_source')" id="l_C00K010S1_source">show source</a> ]</span>
+            <div id="C00K010S1_source" class="dyn-source">
+<pre>
+x = [](1) 
+x +=([](0), 2) 
+x [](0) should ==(3) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior -=</b><br/>
+<ul style="list-style-type: none;">
+<li>- should call - and then assign the result of this call to the same name <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K011S0_source')" id="l_C00K011S0_source">show source</a> ]</span>
+            <div id="C00K011S0_source" class="dyn-source">
+<pre>
+x = 2 
+-=(x, 1) 
+x should ==(1) 
+x = 42 
+-=(x, -(1)) 
+x should ==(43) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should work with a place <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K011S1_source')" id="l_C00K011S1_source">show source</a> ]</span>
+            <div id="C00K011S1_source" class="dyn-source">
+<pre>
+x = [](42) 
+x -=([](0), 2) 
+x [](0) should ==(40) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior ..</b><br/>
+<ul style="list-style-type: none;">
+<li>- should create a range from 0 to 0 <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K012S0_source')" id="l_C00K012S0_source">show source</a> ]</span>
+            <div id="C00K012S0_source" class="dyn-source">
+<pre>
+(0 ..(0)) should have kind("Range") 
+(0 ..(0)) from should ==(0) 
+(0 ..(0)) to should ==(0) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should create a range from 0 to 1 <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K012S1_source')" id="l_C00K012S1_source">show source</a> ]</span>
+            <div id="C00K012S1_source" class="dyn-source">
+<pre>
+(0 ..(1)) should have kind("Range") 
+(0 ..(1)) from should ==(0) 
+(0 ..(1)) to should ==(1) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should create a range from 0 to -1 <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K012S2_source')" id="l_C00K012S2_source">show source</a> ]</span>
+            <div id="C00K012S2_source" class="dyn-source">
+<pre>
+(0 ..(-(1))) should have kind("Range") 
+(0 ..(-(1))) from should ==(0) 
+(0 ..(-(1))) to should ==(-(1)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should create a range from other numbers <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K012S3_source')" id="l_C00K012S3_source">show source</a> ]</span>
+            <div id="C00K012S3_source" class="dyn-source">
+<pre>
+(23 ..(-(342))) should have kind("Range") 
+(23 ..(-(342))) from should ==(23) 
+(23 ..(-(342))) to should ==(-(342)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should create an inclusive range <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K012S4_source')" id="l_C00K012S4_source">show source</a> ]</span>
+            <div id="C00K012S4_source" class="dyn-source">
+<pre>
+(0 ..(0)) inclusive? should true 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior ...</b><br/>
+<ul style="list-style-type: none;">
+<li>- should create a range from 0 to 0 <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K013S0_source')" id="l_C00K013S0_source">show source</a> ]</span>
+            <div id="C00K013S0_source" class="dyn-source">
+<pre>
+(0 ...(0)) should have kind("Range") 
+(0 ...(0)) from should ==(0) 
+(0 ...(0)) to should ==(0) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should create a range from 0 to 1 <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K013S1_source')" id="l_C00K013S1_source">show source</a> ]</span>
+            <div id="C00K013S1_source" class="dyn-source">
+<pre>
+(0 ...(1)) should have kind("Range") 
+(0 ...(1)) from should ==(0) 
+(0 ...(1)) to should ==(1) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should create a range from 0 to -1 <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K013S2_source')" id="l_C00K013S2_source">show source</a> ]</span>
+            <div id="C00K013S2_source" class="dyn-source">
+<pre>
+(0 ...(-(1))) should have kind("Range") 
+(0 ...(-(1))) from should ==(0) 
+(0 ...(-(1))) to should ==(-(1)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should create a range from other numbers <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K013S3_source')" id="l_C00K013S3_source">show source</a> ]</span>
+            <div id="C00K013S3_source" class="dyn-source">
+<pre>
+(23 ...(-(342))) should have kind("Range") 
+(23 ...(-(342))) from should ==(23) 
+(23 ...(-(342))) to should ==(-(342)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should create an inclusive range <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K013S4_source')" id="l_C00K013S4_source">show source</a> ]</span>
+            <div id="C00K013S4_source" class="dyn-source">
+<pre>
+(0 ...(0)) inclusive? should be false 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior /=</b><br/>
+<ul style="list-style-type: none;">
+<li>- should call / and then assign the result of this call to the same name <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K014S0_source')" id="l_C00K014S0_source">show source</a> ]</span>
+            <div id="C00K014S0_source" class="dyn-source">
+<pre>
+x = 12 
+/=(x, 2) 
+x should ==(6) 
+x = 150 
+/=(x, -(2)) 
+x should ==(-(75)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should work with a place <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K014S1_source')" id="l_C00K014S1_source">show source</a> ]</span>
+            <div id="C00K014S1_source" class="dyn-source">
+<pre>
+x = [](42) 
+x /=([](0), 2) 
+x [](0) should ==(21) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior <<=</b><br/>
+<ul style="list-style-type: none;">
+<li>- should call << and then assign the result of this call to the same name <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K015S0_source')" id="l_C00K015S0_source">show source</a> ]</span>
+            <div id="C00K015S0_source" class="dyn-source">
+<pre>
+x = 7 
+&lt;&lt;=(x, 2) 
+x should ==(28) 
+x = 9 
+&lt;&lt;=(x, 4) 
+x should ==(144) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should work with a place <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K015S1_source')" id="l_C00K015S1_source">show source</a> ]</span>
+            <div id="C00K015S1_source" class="dyn-source">
+<pre>
+x = [](9) 
+x &lt;&lt;=([](0), 4) 
+x [](0) should ==(144) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior =></b><br/>
+<ul style="list-style-type: none;">
+<li>- should return a new pair for simple objects <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K016S0_source')" id="l_C00K016S0_source">show source</a> ]</span>
+            <div id="C00K016S0_source" class="dyn-source">
+<pre>
+(23 =&gt;(15)) first should ==(23) 
+(23 =&gt;(15)) second should ==(15) 
+("str" =&gt;("foo")) first should ==("str") 
+("str" =&gt;("foo")) second should ==("foo")
+</pre>
+            </div>
+            </span></li>
+<li>- should return a new pair for more complicated expressions <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K016S1_source')" id="l_C00K016S1_source">show source</a> ]</span>
+            <div id="C00K016S1_source" class="dyn-source">
+<pre>
+(23 +(15) -(2) =&gt;(3332323 +(2))) first should ==(36) 
+(23 +(15) -(2) =&gt;(3332323 +(2))) second should ==(3332325)
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior >>=</b><br/>
+<ul style="list-style-type: none;">
+<li>- should call >> and then assign the result of this call to the same name <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K017S0_source')" id="l_C00K017S0_source">show source</a> ]</span>
+            <div id="C00K017S0_source" class="dyn-source">
+<pre>
+x = 7 
+&gt;&gt;=(x, 1) 
+x should ==(3) 
+x = 4095 
+&gt;&gt;=(x, 3) 
+x should ==(511) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should work with a place <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K017S1_source')" id="l_C00K017S1_source">show source</a> ]</span>
+            <div id="C00K017S1_source" class="dyn-source">
+<pre>
+x = [](7) 
+x &gt;&gt;=([](0), 1) 
+x [](0) should ==(3) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior ?&</b><br/>
+<ul style="list-style-type: none;">
+<li>- should evaluate it's argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K018S0_source')" id="l_C00K018S0_source">show source</a> ]</span>
+            <div id="C00K018S0_source" class="dyn-source">
+<pre>
+x = 41 
+13 ?&(x = 42) 
+x should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the result of the argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K018S1_source')" id="l_C00K018S1_source">show source</a> ]</span>
+            <div id="C00K018S1_source" class="dyn-source">
+<pre>
+5353 ?&(42) should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be available in infix <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K018S2_source')" id="l_C00K018S2_source">show source</a> ]</span>
+            <div id="C00K018S2_source" class="dyn-source">
+<pre>
+("flurg" ?&(43)) should ==(43) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior ?|</b><br/>
+<ul style="list-style-type: none;">
+<li>- should not evaluate it's argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K019S0_source')" id="l_C00K019S0_source">show source</a> ]</span>
+            <div id="C00K019S0_source" class="dyn-source">
+<pre>
+x = 41 
+123 ?|(x = 42) 
+x should ==(41) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K019S1_source')" id="l_C00K019S1_source">show source</a> ]</span>
+            <div id="C00K019S1_source" class="dyn-source">
+<pre>
+"murg" ?|(42) should ==("murg") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be available in infix <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K019S2_source')" id="l_C00K019S2_source">show source</a> ]</span>
+            <div id="C00K019S2_source" class="dyn-source">
+<pre>
+(444 ?|(43)) should ==(444) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior Aspects</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be possible to combine the different types of advice <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K020S0_source')" id="l_C00K020S0_source">show source</a> ]</span>
+            <div id="C00K020S0_source" class="dyn-source">
+<pre>
+Ground accesses = [] 
+x = Origin mimic do(
+    foo = method(arg, 
+        accesses &lt;&lt;([](:realMethod, arg)) 
+        18 
+        )) 
+x around(:foo) &lt;&lt;(fn(arg1, arg2, accesses &lt;&lt;([](:around1, arg1, arg2)) 
+    aspectCall(arg2) *(2))) 
+x before(:foo) &lt;&lt;(method(+(args), accesses &lt;&lt;([](:before1, args)))) 
+x after(:foo) &lt;&lt;(method(+(args), accesses &lt;&lt;([](:after1, args, aspectResult)))) 
+x around(:foo) &lt;&lt;(method(+(args), accesses &lt;&lt;([](:around2, args)) 
+    aspectCall(*(args map(*(2)))))) 
+x foo(1, 2) should ==(36) 
+accesses should ==([]([](:around2, [](1, 2)), [](:before1, [](2, 4)), [](:around1, 2, 4), [](:realMethod, 4), [](:after1, [](2, 4), 36))) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior Case</b><br/>
+<ul style="list-style-type: none;">
+</ul>
+<b> DefaultBehavior Conditions</b><br/>
+<ul style="list-style-type: none;">
+</ul>
+<b> DefaultBehavior Definitions</b><br/>
+<ul style="list-style-type: none;">
+</ul>
+<b> DefaultBehavior FlowControl</b><br/>
+<ul style="list-style-type: none;">
+</ul>
+<b> DefaultBehavior []</b><br/>
+<ul style="list-style-type: none;">
+<li>- should create a new empty list when given no arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K025S0_source')" id="l_C00K025S0_source">show source</a> ]</span>
+            <div id="C00K025S0_source" class="dyn-source">
+<pre>
+x = [] 
+x should have kind("List") 
+x should not be same(List) 
+x should mimic(List) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should create a new list with the evaluated arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K025S1_source')" id="l_C00K025S1_source">show source</a> ]</span>
+            <div id="C00K025S1_source" class="dyn-source">
+<pre>
+x = [](1, 2, "abc", 3 +(42)) 
+x length should ==(4) 
+x [](0) should ==(1) 
+x [](1) should ==(2) 
+x [](2) should ==("abc") 
+x [](3) should ==(45) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior ^=</b><br/>
+<ul style="list-style-type: none;">
+<li>- should call ^ and then assign the result of this call to the same name <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K026S0_source')" id="l_C00K026S0_source">show source</a> ]</span>
+            <div id="C00K026S0_source" class="dyn-source">
+<pre>
+x = 3 
+^=(x, 5) 
+x should ==(6) 
+x = -(2) 
+^=(x, -(255)) 
+x should ==(255) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should work with a place <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K026S1_source')" id="l_C00K026S1_source">show source</a> ]</span>
+            <div id="C00K026S1_source" class="dyn-source">
+<pre>
+x = [](3) 
+x ^=([](0), 5) 
+x [](0) should ==(6) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior `</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return something with a name of cachedResult <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K027S0_source')" id="l_C00K027S0_source">show source</a> ]</span>
+            <div id="C00K027S0_source" class="dyn-source">
+<pre>
+`(42) name should ==(:cachedResult) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should evaluate its argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K027S1_source')" id="l_C00K027S1_source">show source</a> ]</span>
+            <div id="C00K027S1_source" class="dyn-source">
+<pre>
+`(Ground flurg = 444) 
+flurg should ==(444) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return a message <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K027S2_source')" id="l_C00K027S2_source">show source</a> ]</span>
+            <div id="C00K027S2_source" class="dyn-source">
+<pre>
+`(42) should have kind("Message") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return something that when evaluated yields the value sent to the wrap method <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K027S3_source')" id="l_C00K027S3_source">show source</a> ]</span>
+            <div id="C00K027S3_source" class="dyn-source">
+<pre>
+x = 55 
+m = `(x) 
+m evaluateOn(Ground, Ground) should be same(x) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior and</b><br/>
+<ul style="list-style-type: none;">
+<li>- should evaluate it's argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K028S0_source')" id="l_C00K028S0_source">show source</a> ]</span>
+            <div id="C00K028S0_source" class="dyn-source">
+<pre>
+x = 41 
+13 and(x = 42) 
+x should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the result of the argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K028S1_source')" id="l_C00K028S1_source">show source</a> ]</span>
+            <div id="C00K028S1_source" class="dyn-source">
+<pre>
+5353 and(42) should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be available in infix <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K028S2_source')" id="l_C00K028S2_source">show source</a> ]</span>
+            <div id="C00K028S2_source" class="dyn-source">
+<pre>
+("flurg" and(43)) should ==(43) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior asText</b><br/>
+<ul style="list-style-type: none;">
+<li>- should call toString and return the text from that <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K029S0_source')" id="l_C00K029S0_source">show source</a> ]</span>
+            <div id="C00K029S0_source" class="dyn-source">
+<pre>
+Origin mimic asText should match(#/^#&lt;Origin:[0-9A-F]+&gt;$/) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior become!</b><br/>
+<ul style="list-style-type: none;">
+<li>- should not be possible to have nil become something <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K030S0_source')" id="l_C00K030S0_source">show source</a> ]</span>
+            <div id="C00K030S0_source" class="dyn-source">
+<pre>
+fn(nil become!(42)) should signal(Condition Error CantMimicOddball) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not be possible to have true become something <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K030S1_source')" id="l_C00K030S1_source">show source</a> ]</span>
+            <div id="C00K030S1_source" class="dyn-source">
+<pre>
+fn(true become!(42)) should signal(Condition Error CantMimicOddball) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not be possible to have false become something <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K030S2_source')" id="l_C00K030S2_source">show source</a> ]</span>
+            <div id="C00K030S2_source" class="dyn-source">
+<pre>
+fn(false become!(42)) should signal(Condition Error CantMimicOddball) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to have a number become something else <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K030S3_source')" id="l_C00K030S3_source">show source</a> ]</span>
+            <div id="C00K030S3_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+
+y = -(324234534534145) 
+y become!(x) 
+y should have kind("Origin") 
+y asText should not ==("-324234534534145") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to have something become a number <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K030S4_source')" id="l_C00K030S4_source">show source</a> ]</span>
+            <div id="C00K030S4_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = 42 
+x become!(y) 
+x should have kind("Number") 
+x should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to have a text become something else <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K030S5_source')" id="l_C00K030S5_source">show source</a> ]</span>
+            <div id="C00K030S5_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = "foobar" 
+y become!(x) 
+y should have kind("Origin") 
+y should not ==("foobar") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to have something become a text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K030S6_source')" id="l_C00K030S6_source">show source</a> ]</span>
+            <div id="C00K030S6_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = "foobar" 
+x become!(y) 
+x should have kind("Text") 
+x should ==("foobar") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K030S7_source')" id="l_C00K030S7_source">show source</a> ]</span>
+            <div id="C00K030S7_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = Origin mimic 
+x become!(y) should be same(y) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should modify the reciever to have the same documentation <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K030S8_source')" id="l_C00K030S8_source">show source</a> ]</span>
+            <div id="C00K030S8_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = Origin mimic 
+x documentation = "foo" 
+y documentation = "quux" 
+x become!(y) 
+x documentation should ==("quux") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should give both objects the same uniqueHexId <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K030S9_source')" id="l_C00K030S9_source">show source</a> ]</span>
+            <div id="C00K030S9_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = Origin mimic 
+x uniqueHexId should not ==(y uniqueHexId) 
+y uniqueHexId should not ==(x uniqueHexId) 
+x become!(y) 
+x uniqueHexId should ==(y uniqueHexId) 
+y uniqueHexId should ==(x uniqueHexId) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should give objects that are the same <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K030S10_source')" id="l_C00K030S10_source">show source</a> ]</span>
+            <div id="C00K030S10_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = Origin mimic 
+x should not be same(y) 
+y should not be same(x) 
+x become!(y) 
+x should be same(y) 
+y should be same(x) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should give objects that mimic each other <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K030S11_source')" id="l_C00K030S11_source">show source</a> ]</span>
+            <div id="C00K030S11_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = Origin mimic 
+x become!(y) 
+x should be mimic(y) 
+y should be mimic(x) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should give objects that when modified will change each other <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K030S12_source')" id="l_C00K030S12_source">show source</a> ]</span>
+            <div id="C00K030S12_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = Origin mimic 
+x become!(y) 
+x z = 42 
+y z should ==(42) 
+y q = 35 
+x q should ==(35) 
+b = Origin mimic 
+x mimic!(b) 
+y should have mimic(b) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior break</b><br/>
+<ul style="list-style-type: none;">
+<li>- should have nil as value by default <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K031S0_source')" id="l_C00K031S0_source">show source</a> ]</span>
+            <div id="C00K031S0_source" class="dyn-source">
+<pre>
+loop(break) should be nil 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take a return value <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K031S1_source')" id="l_C00K031S1_source">show source</a> ]</span>
+            <div id="C00K031S1_source" class="dyn-source">
+<pre>
+loop(break(42)) should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior derive</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be able to derive from Origin <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K032S0_source')" id="l_C00K032S0_source">show source</a> ]</span>
+            <div id="C00K032S0_source" class="dyn-source">
+<pre>
+result = Origin derive 
+result should have kind("Origin") 
+result should not be same(Origin) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be able to derive from Ground <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K032S1_source')" id="l_C00K032S1_source">show source</a> ]</span>
+            <div id="C00K032S1_source" class="dyn-source">
+<pre>
+result = Ground derive 
+result should have kind("Ground") 
+result should not be same(Ground) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be able to derive from Text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K032S2_source')" id="l_C00K032S2_source">show source</a> ]</span>
+            <div id="C00K032S2_source" class="dyn-source">
+<pre>
+result = Text derive 
+result should have kind("Text") 
+result should not be same(Text) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior dict</b><br/>
+<ul style="list-style-type: none;">
+<li>- should create a new empty dict when given no arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K033S0_source')" id="l_C00K033S0_source">show source</a> ]</span>
+            <div id="C00K033S0_source" class="dyn-source">
+<pre>
+x = dict 
+x should be kind("Dict") 
+x should not be same(Dict) 
+x should mimic(Dict) 
+x = dict 
+x should be kind("Dict") 
+x should not be same(Dict) 
+x should mimic(Dict) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should create a new dict with the evaluated arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K033S1_source')" id="l_C00K033S1_source">show source</a> ]</span>
+            <div id="C00K033S1_source" class="dyn-source">
+<pre>
+result = dict(1 =&gt;(2), "abc" =&gt;(3 +(42)), :foo =&gt;(123), :bar =&gt;("x")) 
+result asList length should ==(4) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should create a new dict with keyword arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K033S2_source')" id="l_C00K033S2_source">show source</a> ]</span>
+            <div id="C00K033S2_source" class="dyn-source">
+<pre>
+result = dict(abc: 2, foo: 3 +(42), bar: 123, quux: "x") 
+result asList length should ==(4) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take arguments that are not keyword or pairs and add nil as value for them <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K033S3_source')" id="l_C00K033S3_source">show source</a> ]</span>
+            <div id="C00K033S3_source" class="dyn-source">
+<pre>
+dict(123, "foo", 13 +(2), :bar) should ==(dict(123 =&gt;(nil), "foo" =&gt;(nil), 15 =&gt;(nil), :bar =&gt;(nil))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take keyword arguments without a next pointer and add nil as value for them <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K033S4_source')" id="l_C00K033S4_source">show source</a> ]</span>
+            <div id="C00K033S4_source" class="dyn-source">
+<pre>
+dict(foo:, bar:, quux:) should ==(dict(:foo =&gt;(nil), :bar =&gt;(nil), :quux =&gt;(nil))) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior do</b><br/>
+<ul style="list-style-type: none;">
+<li>- should execute a piece of code inside an object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K034S0_source')" id="l_C00K034S0_source">show source</a> ]</span>
+            <div id="C00K034S0_source" class="dyn-source">
+<pre>
+r = Origin mimic 
+r do(
+  s = 42 
+  t = "str" 
+  ) 
+cell?(:s) should be false 
+r s should ==(42) 
+r t should ==("str") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior documentation</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be correct for internal:createText <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K035S0_source')" id="l_C00K035S0_source">show source</a> ]</span>
+            <div id="C00K035S0_source" class="dyn-source">
+<pre>
+cell(:internal:createText) documentation should ==("expects one 'strange' argument. creates a new instance of Text with the given Java String backing it.") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be correct for = <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K035S1_source')" id="l_C00K035S1_source">show source</a> ]</span>
+            <div id="C00K035S1_source" class="dyn-source">
+<pre>
+cell(:("=")) documentation should ==("expects two or more arguments, the first arguments unevaluated, the last evaluated. assigns the result of evaluating the last argument in the context of the caller, and assigns this result to the name/s provided by the first arguments. the first arguments remains unevaluated. the result of the assignment is the value assigned to the name. if the last argument is a method-like object and it's name is not set, that name will be set to the name of the cell.") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be correct for asText <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K035S2_source')" id="l_C00K035S2_source">show source</a> ]</span>
+            <div id="C00K035S2_source" class="dyn-source">
+<pre>
+cell(:asText) documentation should ==("returns a textual representation of the object called on.") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be correct for documentation <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K035S3_source')" id="l_C00K035S3_source">show source</a> ]</span>
+            <div id="C00K035S3_source" class="dyn-source">
+<pre>
+cell(:documentation) documentation should ==("returns the documentation text of the object called on. anything can have a documentation text - this text will initially be nil.") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be correct for cell <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K035S4_source')" id="l_C00K035S4_source">show source</a> ]</span>
+            <div id="C00K035S4_source" class="dyn-source">
+<pre>
+cell(:cell) documentation should ==("expects one evaluated text or symbol argument and returns the cell that matches that name, without activating even if it's activatable.") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be correct for method <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K035S5_source')" id="l_C00K035S5_source">show source</a> ]</span>
+            <div id="C00K035S5_source" class="dyn-source">
+<pre>
+cell(:method) documentation should ==("expects any number of unevaluated arguments. if no arguments at all are given, will just return nil. creates a new method based on the arguments. this method will be evaluated using the context of the object it's called on, and thus the definition can not refer to the outside scope where the method is defined. (there are other ways of achieving this). all arguments except the last one is expected to be names of arguments that will be used in the method. there will possible be additions to the format of arguments later on - including named parameters and optional arguments. the actual code is the last argument given.") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be correct for use <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K035S6_source')" id="l_C00K035S6_source">show source</a> ]</span>
+            <div id="C00K035S6_source" class="dyn-source">
+<pre>
+cell(:use) documentation should ==("takes one or more evaluated string argument. will import the files corresponding to each of the strings named based on the Ioke loading behavior that can be found in the documentation for the loadBehavior cell on System.") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior false?</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return true for nil <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K036S0_source')" id="l_C00K036S0_source">show source</a> ]</span>
+            <div id="C00K036S0_source" class="dyn-source">
+<pre>
+nil false? should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return true for false <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K036S1_source')" id="l_C00K036S1_source">show source</a> ]</span>
+            <div id="C00K036S1_source" class="dyn-source">
+<pre>
+false false? should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return false for true <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K036S2_source')" id="l_C00K036S2_source">show source</a> ]</span>
+            <div id="C00K036S2_source" class="dyn-source">
+<pre>
+true false? should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return false for a Number <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K036S3_source')" id="l_C00K036S3_source">show source</a> ]</span>
+            <div id="C00K036S3_source" class="dyn-source">
+<pre>
+123 false? should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return false for a Text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K036S4_source')" id="l_C00K036S4_source">show source</a> ]</span>
+            <div id="C00K036S4_source" class="dyn-source">
+<pre>
+"flurg" false? should be false 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior fn</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be possible to give it a documentation string <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K037S0_source')" id="l_C00K037S0_source">show source</a> ]</span>
+            <div id="C00K037S0_source" class="dyn-source">
+<pre>
+fn("foo is bar", nil) documentation should ==("foo is bar") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should mimic LexicalBlock <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K037S1_source')" id="l_C00K037S1_source">show source</a> ]</span>
+            <div id="C00K037S1_source" class="dyn-source">
+<pre>
+result = fn("hello" println) 
+result should have kind("LexicalBlock") 
+result should not ==(LexicalBlock) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return nil when invoking 'call' on an empty block <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K037S2_source')" id="l_C00K037S2_source">show source</a> ]</span>
+            <div id="C00K037S2_source" class="dyn-source">
+<pre>
+fn call should be nil 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to execute it by invoking 'call' on it <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K037S3_source')" id="l_C00K037S3_source">show source</a> ]</span>
+            <div id="C00K037S3_source" class="dyn-source">
+<pre>
+fn(1 +(1)) call should ==(2) 
+x = fn(42 +(4)) 
+x call 
+x call should ==(46) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should have access to variables in the scope it was defined, in simple do <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K037S4_source')" id="l_C00K037S4_source">show source</a> ]</span>
+            <div id="C00K037S4_source" class="dyn-source">
+<pre>
+x = 26 
+fn(x) call should ==(26) 
+x = Origin mimic 
+x do(
+  y = 42 
+  z = fn(y +(1)) call) 
+x z should ==(43) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should have access to variables in the scope it was defined, in more complicated do <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K037S5_source')" id="l_C00K037S5_source">show source</a> ]</span>
+            <div id="C00K037S5_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x do(
+  y = 42 
+  z = fn(y +(2))) 
+x z call should ==(44) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should have access to variables in the scope it was defined, in more nested blocks <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K037S6_source')" id="l_C00K037S6_source">show source</a> ]</span>
+            <div id="C00K037S6_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x do(
+  y = 42 
+  z = fn(fn(y +(3)) call)) 
+x z call should ==(45) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should have access to variables in the scope it was defined, in method <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K037S7_source')" id="l_C00K037S7_source">show source</a> ]</span>
+            <div id="C00K037S7_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x y = method(
+    z = 42 
+    fn(z +(5)) 
+    ) 
+x y call should ==(47) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should have access to variables in the scope it was defined, in method, getting self <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K037S8_source')" id="l_C00K037S8_source">show source</a> ]</span>
+            <div id="C00K037S8_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x y = method(
+    fn(self) 
+    ) 
+x y call should ==(x) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K037S9_source')" id="l_C00K037S9_source">show source</a> ]</span>
+            <div id="C00K037S9_source" class="dyn-source">
+<pre>
+fn(x, x) call(42) should ==(42) 
+fn(x, x +(2)) call(42) should ==(44) 
+fn(x, y, x +(y) +(2)) call(3, 7) should ==(12) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should complain when given the wrong number of arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K037S10_source')" id="l_C00K037S10_source">show source</a> ]</span>
+            <div id="C00K037S10_source" class="dyn-source">
+<pre>
+fn(fn call(42)) should signal(Condition Error Invocation TooManyArguments) 
+fn(fn(x, x) call) should signal(Condition Error Invocation TooFewArguments) 
+fn(fn(x, x) call(12, 42)) should signal(Condition Error Invocation TooManyArguments) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be able to update variables in the scope it was defined <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K037S11_source')" id="l_C00K037S11_source">show source</a> ]</span>
+            <div id="C00K037S11_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x do(
+  y = 42 
+  fn(y = 43) call 
+  ) 
+x y should ==(43) 
+x = Origin mimic 
+x do(
+  y = 44 
+  zz = fn(y = 45) 
+  ) 
+x zz call 
+x y should ==(45) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should create a new variable when assigning something that doesn't exist <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K037S12_source')" id="l_C00K037S12_source">show source</a> ]</span>
+            <div id="C00K037S12_source" class="dyn-source">
+<pre>
+fn(blarg = 42 
+  blarg) call should ==(42) 
+cell?(:blarg) should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to get the code for the block by calling 'code' on it <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K037S13_source')" id="l_C00K037S13_source">show source</a> ]</span>
+            <div id="C00K037S13_source" class="dyn-source">
+<pre>
+fn code should ==("fn(nil)") 
+fn(nil) code should ==("fn(nil)") 
+fn(1) code should ==("fn(1)") 
+fn(1 +(1)) code should ==("fn(1 +(1))") 
+fn(x, x +(x)) code should ==("fn(x, x +(x))") 
+fn(x 12, x +(x)) code should ==("fn(x 12, x +(x))") 
+fn(x, x +(x) 
+  x *(x)) code should ==("fn(x, x +(x) .\nx *(x))") 
+fn(x:, x +(x) 
+  x *(x)) code should ==("fn(x: nil, x +(x) .\nx *(x))") 
+fn(x: 12, x +(x) 
+  x *(x)) code should ==("fn(x: 12, x +(x) .\nx *(x))") 
+fn(x, +(rest), x +(x) 
+  x *(x)) code should ==("fn(x, +rest, x +(x) .\nx *(x))") 
+fn(x, +:(rest), x +(x) 
+  x *(x)) code should ==("fn(x, +:rest, x +(x) .\nx *(x))") 
+fnx code should ==("fnx(nil)") 
+fnx(nil) code should ==("fnx(nil)") 
+fnx(1) code should ==("fnx(1)") 
+fnx(1 +(1)) code should ==("fnx(1 +(1))") 
+fnx(x, x +(x)) code should ==("fnx(x, x +(x))") 
+fnx(x 12, x +(x)) code should ==("fnx(x 12, x +(x))") 
+fnx(x, x +(x) 
+  x *(x)) code should ==("fnx(x, x +(x) .\nx *(x))") 
+fnx(x:, x +(x) 
+  x *(x)) code should ==("fnx(x: nil, x +(x) .\nx *(x))") 
+fnx(x: 12, x +(x) 
+  x *(x)) code should ==("fnx(x: 12, x +(x) .\nx *(x))") 
+fnx(x, +(rest), x +(x) 
+  x *(x)) code should ==("fnx(x, +rest, x +(x) .\nx *(x))") 
+fnx(x, +:(rest), x +(x) 
+  x *(x)) code should ==("fnx(x, +:rest, x +(x) .\nx *(x))") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should shadow reading of outer variables when getting arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K037S14_source')" id="l_C00K037S14_source">show source</a> ]</span>
+            <div id="C00K037S14_source" class="dyn-source">
+<pre>
+x = 32 
+fn(x, x) call(43) should ==(43) 
+x should ==(32) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should shadow writing of outer variables when getting arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K037S15_source')" id="l_C00K037S15_source">show source</a> ]</span>
+            <div id="C00K037S15_source" class="dyn-source">
+<pre>
+x = 32 
+fn(x, x = 13 
+  x) call(123) should ==(13) 
+x should ==(32) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior fnx</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be possible to give it a documentation string <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K038S0_source')" id="l_C00K038S0_source">show source</a> ]</span>
+            <div id="C00K038S0_source" class="dyn-source">
+<pre>
+fnx("foo is bar", nil) documentation should ==("foo is bar") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return something that is activatable for empty list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K038S1_source')" id="l_C00K038S1_source">show source</a> ]</span>
+            <div id="C00K038S1_source" class="dyn-source">
+<pre>
+fnx activatable should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return something that is activatable for code <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K038S2_source')" id="l_C00K038S2_source">show source</a> ]</span>
+            <div id="C00K038S2_source" class="dyn-source">
+<pre>
+fnx("hello") activatable should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return something that is activatable for code with arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K038S3_source')" id="l_C00K038S3_source">show source</a> ]</span>
+            <div id="C00K038S3_source" class="dyn-source">
+<pre>
+fnx(x, y, x +(y)) activatable should be true 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior freeze!</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be possible to call several times without effect <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K039S0_source')" id="l_C00K039S0_source">show source</a> ]</span>
+            <div id="C00K039S0_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x freeze! 
+x freeze! 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not be possible to modify a frozen object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K039S1_source')" id="l_C00K039S1_source">show source</a> ]</span>
+            <div id="C00K039S1_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x existing = 43 
+x freeze! 
+
+fn(x y = 42) should signal(Condition Error ModifyOnFrozen) 
+
+fn(x existing = 42) should signal(Condition Error ModifyOnFrozen) 
+
+fn(x mimic!(Origin mimic)) should signal(Condition Error ModifyOnFrozen) 
+fn(x prependMimic!(Origin mimic)) should signal(Condition Error ModifyOnFrozen) 
+
+fn(x removeMimic!(Origin)) should signal(Condition Error ModifyOnFrozen) 
+
+fn(x removeAllMimics!) should signal(Condition Error ModifyOnFrozen) 
+
+fn(x documentation = "blarg") should signal(Condition Error ModifyOnFrozen) 
+
+fn(x become!(42)) should signal(Condition Error ModifyOnFrozen) 
+
+fn(x removeCell!(:existing)) should signal(Condition Error ModifyOnFrozen) 
+
+fn(x undefineCell!(:existing)) should signal(Condition Error ModifyOnFrozen) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be copied when becoming <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K039S2_source')" id="l_C00K039S2_source">show source</a> ]</span>
+            <div id="C00K039S2_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = Origin mimic 
+x freeze! 
+y become!(x) 
+y should be frozen 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior frozen?</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return false on something that isn't frozen <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K040S0_source')" id="l_C00K040S0_source">show source</a> ]</span>
+            <div id="C00K040S0_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x should not be frozen 
+x freeze! 
+x should be frozen 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior if</b><br/>
+<ul style="list-style-type: none;">
+<li>- should evaluate it's first element once <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K041S0_source')" id="l_C00K041S0_source">show source</a> ]</span>
+            <div id="C00K041S0_source" class="dyn-source">
+<pre>
+x = 42 
+if(++(x)) 
+x should ==(43) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return it's second argument if the first element evaluates to true <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K041S1_source')" id="l_C00K041S1_source">show source</a> ]</span>
+            <div id="C00K041S1_source" class="dyn-source">
+<pre>
+if(true, 42, 43) should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return it's third argument if the first element evaluates to false <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K041S2_source')" id="l_C00K041S2_source">show source</a> ]</span>
+            <div id="C00K041S2_source" class="dyn-source">
+<pre>
+if(false, 42, 43) should ==(43) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the result of evaluating the first argument if there are no more arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K041S3_source')" id="l_C00K041S3_source">show source</a> ]</span>
+            <div id="C00K041S3_source" class="dyn-source">
+<pre>
+if(44) should ==(44) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the result of evaluating the first argument if it is false and there are only two arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K041S4_source')" id="l_C00K041S4_source">show source</a> ]</span>
+            <div id="C00K041S4_source" class="dyn-source">
+<pre>
+if(false) should be false 
+if(nil) should be nil 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should assign the test result to the variable it <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K041S5_source')" id="l_C00K041S5_source">show source</a> ]</span>
+            <div id="C00K041S5_source" class="dyn-source">
+<pre>
+if(42, it) should ==(42) 
+if(nil, 42, it) should be nil 
+if(false, 42, it) should be false 
+if("str", 42, it) should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should have a lexical context for the it variable <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K041S6_source')" id="l_C00K041S6_source">show source</a> ]</span>
+            <div id="C00K041S6_source" class="dyn-source">
+<pre>
+if(42, fn(it)) call should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to nest it variables lexically <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K041S7_source')" id="l_C00K041S7_source">show source</a> ]</span>
+            <div id="C00K041S7_source" class="dyn-source">
+<pre>
+if(42, [](it, if(13, [](it, if(nil, 44, it), it)))) should ==([](42, [](13, nil, 13))) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior in?</b><br/>
+<ul style="list-style-type: none;">
+<li>- should call 'include?' on the argument with itself as argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K042S0_source')" id="l_C00K042S0_source">show source</a> ]</span>
+            <div id="C00K042S0_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x include? = method(arg, [](arg, 42)) 
+y = Origin mimic 
+y in?(x) should ==([](y, 42)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return true if the object is in a list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K042S1_source')" id="l_C00K042S1_source">show source</a> ]</span>
+            <div id="C00K042S1_source" class="dyn-source">
+<pre>
+1 in?([](1, 2, 3)) should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return false if the object is not in a list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K042S2_source')" id="l_C00K042S2_source">show source</a> ]</span>
+            <div id="C00K042S2_source" class="dyn-source">
+<pre>
+1 in?([](2, 3, 4)) should be false 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior internal:compositeRegexp</b><br/>
+<ul style="list-style-type: none;">
+<li>- should combine several strings and expects the last entry to be a regular expression <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K043S0_source')" id="l_C00K043S0_source">show source</a> ]</span>
+            <div id="C00K043S0_source" class="dyn-source">
+<pre>
+internal:compositeRegexp("abc", "foo", #/bar/) should ==(#/abcfoobar/) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should use the flags from the last regular expression <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K043S1_source')" id="l_C00K043S1_source">show source</a> ]</span>
+            <div id="C00K043S1_source" class="dyn-source">
+<pre>
+internal:compositeRegexp("abc", #/ bar/mx) should ==(#/abc bar/mx) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should work in a literal syntax too <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K043S2_source')" id="l_C00K043S2_source">show source</a> ]</span>
+            <div id="C00K043S2_source" class="dyn-source">
+<pre>
+internal:compositeRegexp(foo , "bar", , m) should ==(#/foo bar/m) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior internal:concatenateText</b><br/>
+<ul style="list-style-type: none;">
+<li>- should combine several strings <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K044S0_source')" id="l_C00K044S0_source">show source</a> ]</span>
+            <div id="C00K044S0_source" class="dyn-source">
+<pre>
+"foobarflux" should ==("foobarflux") 
+x = "str" 
+"foo#{x}flux" should ==("foostrflux") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should combine strings with the text representation of other stuff <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K044S1_source')" id="l_C00K044S1_source">show source</a> ]</span>
+            <div id="C00K044S1_source" class="dyn-source">
+<pre>
+"foo#{123}flux" should ==("foo123flux") 
+"#{[](1, 2, 3)}foo" should ==("[1, 2, 3]foo") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior internal:createText</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be possible to invoke from Ioke with a regular String <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K045S0_source')" id="l_C00K045S0_source">show source</a> ]</span>
+            <div id="C00K045S0_source" class="dyn-source">
+<pre>
+internal:createText("foo") should ==("foo") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior is?</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return false if the object doesn't mimic the argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K046S0_source')" id="l_C00K046S0_source">show source</a> ]</span>
+            <div id="C00K046S0_source" class="dyn-source">
+<pre>
+f = Origin mimic 
+Origin is?(f) should be false 
+f = Origin mimic 
+DefaultBehavior is?(f) should be false 
+f = Origin mimic 
+12 is?(f) should be false 
+f = Origin mimic 
+f is?(12) should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return true if the object is the same as the argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K046S1_source')" id="l_C00K046S1_source">show source</a> ]</span>
+            <div id="C00K046S1_source" class="dyn-source">
+<pre>
+f = Origin mimic 
+f is?(f) should be true 
+Origin is?(Origin) should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return true if any of the mimics are the argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K046S2_source')" id="l_C00K046S2_source">show source</a> ]</span>
+            <div id="C00K046S2_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = x mimic 
+z = y mimic 
+z is?(Origin) should be true 
+x = Origin mimic 
+y = x mimic 
+z = y mimic 
+z is?(x) should be true 
+x = Origin mimic 
+y = x mimic 
+z = y mimic 
+z is?(y) should be true 
+x = Origin mimic 
+y = x mimic 
+z = y mimic 
+z is?(z) should be true 
+f = Origin mimic 
+Origin mimic!(f) 
+x = Origin mimic 
+y = x mimic 
+z = y mimic 
+z is?(f) should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should handle a cycle of mimics correctly <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K046S3_source')" id="l_C00K046S3_source">show source</a> ]</span>
+            <div id="C00K046S3_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = x mimic 
+z = y mimic 
+Origin mimic!(z) 
+z is?(Number) should be false 
+x = Origin mimic 
+y = x mimic 
+z = y mimic 
+Origin mimic!(z) 
+z is?(Origin) should be true 
+x = Origin mimic 
+y = x mimic 
+z = y mimic 
+Origin mimic!(z) 
+z is?(Base) should be true 
+x = Origin mimic 
+x mimic!(x) 
+x is?(Origin) should be true 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior kind?</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return false if the kind doesn't match <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K047S0_source')" id="l_C00K047S0_source">show source</a> ]</span>
+            <div id="C00K047S0_source" class="dyn-source">
+<pre>
+Text kind?("nil") should be false 
+Text kind?("Number") should be false 
+"" kind?("nil") should be false 
+"" kind?("Number") should be false 
+"" kind?("System") should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return true if the current object has the kind <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K047S1_source')" id="l_C00K047S1_source">show source</a> ]</span>
+            <div id="C00K047S1_source" class="dyn-source">
+<pre>
+Text kind?("Text") should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return true if the main mimic has the kind <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K047S2_source')" id="l_C00K047S2_source">show source</a> ]</span>
+            <div id="C00K047S2_source" class="dyn-source">
+<pre>
+"" kind?("Text") should be true 
+"" kind?("DefaultBehavior") should be true 
+"" kind?("Base") should be true 
+"" kind?("Ground") should be true 
+"" kind?("Origin") should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return true if another mimic has the kind <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K047S3_source')" id="l_C00K047S3_source">show source</a> ]</span>
+            <div id="C00K047S3_source" class="dyn-source">
+<pre>
+123 kind?("Mixins Comparing") should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should handle a cycle of mimics correctly <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K047S4_source')" id="l_C00K047S4_source">show source</a> ]</span>
+            <div id="C00K047S4_source" class="dyn-source">
+<pre>
+f = Origin mimic 
+f mimic!(f) 
+f kind?("Origin") should be true 
+f = Origin mimic 
+Origin mimic!(f) 
+f kind?("Origin") should be true 
+f = Origin mimic 
+Origin mimic!(f) 
+f kind?("DefaultBehavior") should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should validate type of argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K047S5_source')" id="l_C00K047S5_source">show source</a> ]</span>
+            <div id="C00K047S5_source" class="dyn-source">
+<pre>
+fn("" kind?([])) should signal(Condition Error Type IncorrectType) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior lecro</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return a lecro that returns nil when called with no arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K048S0_source')" id="l_C00K048S0_source">show source</a> ]</span>
+            <div id="C00K048S0_source" class="dyn-source">
+<pre>
+lecro call should be nil 
+lecro call should be nil 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should name itself after the slot it's assigned to if it has no name <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K048S1_source')" id="l_C00K048S1_source">show source</a> ]</span>
+            <div id="C00K048S1_source" class="dyn-source">
+<pre>
+x = lecro(nil) 
+cell(:x) name should ==("x") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not change it's name if it already has a name <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K048S2_source')" id="l_C00K048S2_source">show source</a> ]</span>
+            <div id="C00K048S2_source" class="dyn-source">
+<pre>
+x = lecro(nil) 
+y = cell(:x) 
+cell(:y) name should ==("x") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should know it's own name <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K048S3_source')" id="l_C00K048S3_source">show source</a> ]</span>
+            <div id="C00K048S3_source" class="dyn-source">
+<pre>
+(x = lecro(nil)) name should ==("x") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be activatable <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K048S4_source')" id="l_C00K048S4_source">show source</a> ]</span>
+            <div id="C00K048S4_source" class="dyn-source">
+<pre>
+lecro activatable should be true 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior lecrox</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return a lecro that returns nil when called with no arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K049S0_source')" id="l_C00K049S0_source">show source</a> ]</span>
+            <div id="C00K049S0_source" class="dyn-source">
+<pre>
+lecrox call should be nil 
+lecrox call should be nil 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should name itself after the slot it's assigned to if it has no name <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K049S1_source')" id="l_C00K049S1_source">show source</a> ]</span>
+            <div id="C00K049S1_source" class="dyn-source">
+<pre>
+x = lecrox(nil) 
+cell(:x) name should ==("x") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not change it's name if it already has a name <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K049S2_source')" id="l_C00K049S2_source">show source</a> ]</span>
+            <div id="C00K049S2_source" class="dyn-source">
+<pre>
+x = lecrox(nil) 
+y = cell(:x) 
+cell(:y) name should ==("x") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should know it's own name <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K049S3_source')" id="l_C00K049S3_source">show source</a> ]</span>
+            <div id="C00K049S3_source" class="dyn-source">
+<pre>
+(x = lecrox(nil)) name should ==("x") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not be activatable <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K049S4_source')" id="l_C00K049S4_source">show source</a> ]</span>
+            <div id="C00K049S4_source" class="dyn-source">
+<pre>
+lecrox activatable should be false 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior list</b><br/>
+<ul style="list-style-type: none;">
+<li>- should create a new empty list when given no arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K050S0_source')" id="l_C00K050S0_source">show source</a> ]</span>
+            <div id="C00K050S0_source" class="dyn-source">
+<pre>
+x = list 
+x should have kind("List") 
+x should not be same(List) 
+x should mimic(List) 
+x = list 
+x should have kind("List") 
+x should not be same(List) 
+x should mimic(List) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should create a new list with the evaluated arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K050S1_source')" id="l_C00K050S1_source">show source</a> ]</span>
+            <div id="C00K050S1_source" class="dyn-source">
+<pre>
+x = list(1, 2, "abc", 3 +(42)) 
+x length should ==(4) 
+x [](0) should ==(1) 
+x [](1) should ==(2) 
+x [](2) should ==("abc") 
+x [](3) should ==(45) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior loop</b><br/>
+<ul style="list-style-type: none;">
+<li>- should loop until interrupted by break <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K051S0_source')" id="l_C00K051S0_source">show source</a> ]</span>
+            <div id="C00K051S0_source" class="dyn-source">
+<pre>
+x = 42 
+loop(++(x) 
+  if(x ==(45), break)) 
+x should ==(45) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior macro</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return a macro that returns nil when called with no arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K052S0_source')" id="l_C00K052S0_source">show source</a> ]</span>
+            <div id="C00K052S0_source" class="dyn-source">
+<pre>
+macro call should be nil 
+macro call should be nil 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should name itself after the slot it's assigned to if it has no name <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K052S1_source')" id="l_C00K052S1_source">show source</a> ]</span>
+            <div id="C00K052S1_source" class="dyn-source">
+<pre>
+x = macro(nil) 
+cell(:x) name should ==("x") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not change it's name if it already has a name <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K052S2_source')" id="l_C00K052S2_source">show source</a> ]</span>
+            <div id="C00K052S2_source" class="dyn-source">
+<pre>
+x = macro(nil) 
+y = cell(:x) 
+cell(:y) name should ==("x") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should know it's own name <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K052S3_source')" id="l_C00K052S3_source">show source</a> ]</span>
+            <div id="C00K052S3_source" class="dyn-source">
+<pre>
+(x = macro(nil)) name should ==("x") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior message</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return a new message <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K053S0_source')" id="l_C00K053S0_source">show source</a> ]</span>
+            <div id="C00K053S0_source" class="dyn-source">
+<pre>
+message("foo") should have kind("Message") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take a text argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K053S1_source')" id="l_C00K053S1_source">show source</a> ]</span>
+            <div id="C00K053S1_source" class="dyn-source">
+<pre>
+message("foo") name should ==(:foo) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take a symbol argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K053S2_source')" id="l_C00K053S2_source">show source</a> ]</span>
+            <div id="C00K053S2_source" class="dyn-source">
+<pre>
+message(:foo) name should ==(:foo) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior method</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return a method that returns nil when called with no arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K054S0_source')" id="l_C00K054S0_source">show source</a> ]</span>
+            <div id="C00K054S0_source" class="dyn-source">
+<pre>
+method call should be nil 
+method call should be nil 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should name itself after the slot it's assigned to if it has no name <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K054S1_source')" id="l_C00K054S1_source">show source</a> ]</span>
+            <div id="C00K054S1_source" class="dyn-source">
+<pre>
+(x = method(nil)) name should ==("x") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not change it's name if it already has a name <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K054S2_source')" id="l_C00K054S2_source">show source</a> ]</span>
+            <div id="C00K054S2_source" class="dyn-source">
+<pre>
+x = method(nil) 
+y = cell("x") 
+cell("y") name should ==("x") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should know it's own name <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K054S3_source')" id="l_C00K054S3_source">show source</a> ]</span>
+            <div id="C00K054S3_source" class="dyn-source">
+<pre>
+(x = method(nil)) name should ==("x") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior mimic!</b><br/>
+<ul style="list-style-type: none;">
+<li>- should add a new mimic to the list of mimics <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K055S0_source')" id="l_C00K055S0_source">show source</a> ]</span>
+            <div id="C00K055S0_source" class="dyn-source">
+<pre>
+f = Origin mimic 
+g = Origin mimic 
+f mimic!(g) 
+f mimics length should ==(2) 
+f mimics [](0) should ==(Origin) 
+f mimics [](1) should ==(g) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not add a mimic that's already in the list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K055S1_source')" id="l_C00K055S1_source">show source</a> ]</span>
+            <div id="C00K055S1_source" class="dyn-source">
+<pre>
+f = Origin mimic 
+f mimic!(Origin) 
+f mimic!(Origin) 
+f mimic!(Origin) 
+f mimic!(Origin) 
+f mimics length should ==(1) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not be able to mimic nil <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K055S2_source')" id="l_C00K055S2_source">show source</a> ]</span>
+            <div id="C00K055S2_source" class="dyn-source">
+<pre>
+fn(Origin mimic mimic!(nil)) should signal(Condition Error CantMimicOddball) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not be able to mimic true <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K055S3_source')" id="l_C00K055S3_source">show source</a> ]</span>
+            <div id="C00K055S3_source" class="dyn-source">
+<pre>
+fn(Origin mimic mimic!(true)) should signal(Condition Error CantMimicOddball) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not be able to mimic false <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K055S4_source')" id="l_C00K055S4_source">show source</a> ]</span>
+            <div id="C00K055S4_source" class="dyn-source">
+<pre>
+fn(Origin mimic mimic!(false)) should signal(Condition Error CantMimicOddball) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not be able to mimic symbols <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K055S5_source')" id="l_C00K055S5_source">show source</a> ]</span>
+            <div id="C00K055S5_source" class="dyn-source">
+<pre>
+fn(Origin mimic mimic!(:foo)) should signal(Condition Error CantMimicOddball) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the receiving object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K055S6_source')" id="l_C00K055S6_source">show source</a> ]</span>
+            <div id="C00K055S6_source" class="dyn-source">
+<pre>
+f = Origin mimic 
+f mimic!(Origin) should ==(f) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior mimics</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return a list with Origin for a simple mimic <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K056S0_source')" id="l_C00K056S0_source">show source</a> ]</span>
+            <div id="C00K056S0_source" class="dyn-source">
+<pre>
+Origin mimic mimics should ==([](Origin)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return a list with all mimics <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K056S1_source')" id="l_C00K056S1_source">show source</a> ]</span>
+            <div id="C00K056S1_source" class="dyn-source">
+<pre>
+X = Origin mimic 
+Y = Origin mimic 
+Z = Origin mimic 
+y = Y mimic 
+y mimic!(X) 
+y mimic!(Z) 
+y mimics should ==([](Y, X, Z)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior mimics?</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return false if the object doesn't mimic the argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K057S0_source')" id="l_C00K057S0_source">show source</a> ]</span>
+            <div id="C00K057S0_source" class="dyn-source">
+<pre>
+f = Origin mimic 
+Origin mimics?(f) should be false 
+f = Origin mimic 
+DefaultBehavior mimics?(f) should be false 
+f = Origin mimic 
+12 mimics?(f) should be false 
+f = Origin mimic 
+f mimics?(12) should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return true if the object is the same as the argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K057S1_source')" id="l_C00K057S1_source">show source</a> ]</span>
+            <div id="C00K057S1_source" class="dyn-source">
+<pre>
+f = Origin mimic 
+f mimics?(f) should be true 
+Origin mimics?(Origin) should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return true if any of the mimics are the argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K057S2_source')" id="l_C00K057S2_source">show source</a> ]</span>
+            <div id="C00K057S2_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = x mimic 
+z = y mimic 
+z mimics?(Origin) should be true 
+x = Origin mimic 
+y = x mimic 
+z = y mimic 
+z mimics?(x) should be true 
+x = Origin mimic 
+y = x mimic 
+z = y mimic 
+z mimics?(y) should be true 
+x = Origin mimic 
+y = x mimic 
+z = y mimic 
+z mimics?(z) should be true 
+f = Origin mimic 
+Origin mimic!(f) 
+x = Origin mimic 
+y = x mimic 
+z = y mimic 
+z mimics?(f) should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should handle a cycle of mimics correctly <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K057S3_source')" id="l_C00K057S3_source">show source</a> ]</span>
+            <div id="C00K057S3_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = x mimic 
+z = y mimic 
+Origin mimic!(z) 
+z mimics?(Number) should be false 
+x = Origin mimic 
+y = x mimic 
+z = y mimic 
+Origin mimic!(z) 
+z mimics?(Origin) should be true 
+x = Origin mimic 
+y = x mimic 
+z = y mimic 
+Origin mimic!(z) 
+z mimics?(Base) should be true 
+x = Origin mimic 
+x mimic!(x) 
+x mimics?(Origin) should be true 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior nand</b><br/>
+<ul style="list-style-type: none;">
+<li>- should evaluate it's argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K058S0_source')" id="l_C00K058S0_source">show source</a> ]</span>
+            <div id="C00K058S0_source" class="dyn-source">
+<pre>
+x = 41 
+30 nand(x = 42) 
+x should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return false if the argument evaluates to true <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K058S1_source')" id="l_C00K058S1_source">show source</a> ]</span>
+            <div id="C00K058S1_source" class="dyn-source">
+<pre>
+(30 nand(42)) should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return true if the argument evaluates to false <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K058S2_source')" id="l_C00K058S2_source">show source</a> ]</span>
+            <div id="C00K058S2_source" class="dyn-source">
+<pre>
+(30 nand(false)) should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return true if the argument evaluates to nil <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K058S3_source')" id="l_C00K058S3_source">show source</a> ]</span>
+            <div id="C00K058S3_source" class="dyn-source">
+<pre>
+(30 nand(nil)) should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be available in infix <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K058S4_source')" id="l_C00K058S4_source">show source</a> ]</span>
+            <div id="C00K058S4_source" class="dyn-source">
+<pre>
+(30 nand(43)) should be false 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior nil?</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return true for nil <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K059S0_source')" id="l_C00K059S0_source">show source</a> ]</span>
+            <div id="C00K059S0_source" class="dyn-source">
+<pre>
+nil nil? should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return false for false <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K059S1_source')" id="l_C00K059S1_source">show source</a> ]</span>
+            <div id="C00K059S1_source" class="dyn-source">
+<pre>
+false nil? should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return false for true <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K059S2_source')" id="l_C00K059S2_source">show source</a> ]</span>
+            <div id="C00K059S2_source" class="dyn-source">
+<pre>
+true nil? should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return false for a Number <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K059S3_source')" id="l_C00K059S3_source">show source</a> ]</span>
+            <div id="C00K059S3_source" class="dyn-source">
+<pre>
+123 nil? should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return false for a Text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K059S4_source')" id="l_C00K059S4_source">show source</a> ]</span>
+            <div id="C00K059S4_source" class="dyn-source">
+<pre>
+"flurg" nil? should be false 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior nor</b><br/>
+<ul style="list-style-type: none;">
+<li>- should not evaluate it's argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K060S0_source')" id="l_C00K060S0_source">show source</a> ]</span>
+            <div id="C00K060S0_source" class="dyn-source">
+<pre>
+x = 41 
+30 nor(x = 42) 
+x should ==(41) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return false <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K060S1_source')" id="l_C00K060S1_source">show source</a> ]</span>
+            <div id="C00K060S1_source" class="dyn-source">
+<pre>
+30 nor(42) should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be available in infix <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K060S2_source')" id="l_C00K060S2_source">show source</a> ]</span>
+            <div id="C00K060S2_source" class="dyn-source">
+<pre>
+(30 nor(43)) should be false 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior not</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return nil for a number <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K061S0_source')" id="l_C00K061S0_source">show source</a> ]</span>
+            <div id="C00K061S0_source" class="dyn-source">
+<pre>
+123 not should be nil 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return nil for a text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K061S1_source')" id="l_C00K061S1_source">show source</a> ]</span>
+            <div id="C00K061S1_source" class="dyn-source">
+<pre>
+"foo" not should be nil 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior or</b><br/>
+<ul style="list-style-type: none;">
+<li>- should not evaluate it's argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K062S0_source')" id="l_C00K062S0_source">show source</a> ]</span>
+            <div id="C00K062S0_source" class="dyn-source">
+<pre>
+x = 41 
+123 or(x = 42) 
+x should ==(41) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K062S1_source')" id="l_C00K062S1_source">show source</a> ]</span>
+            <div id="C00K062S1_source" class="dyn-source">
+<pre>
+"murg" or(42) should ==("murg") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be available in infix <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K062S2_source')" id="l_C00K062S2_source">show source</a> ]</span>
+            <div id="C00K062S2_source" class="dyn-source">
+<pre>
+(444 or(43)) should ==(444) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior prependMimic!</b><br/>
+<ul style="list-style-type: none;">
+<li>- should add a new mimic to the list of mimics <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K063S0_source')" id="l_C00K063S0_source">show source</a> ]</span>
+            <div id="C00K063S0_source" class="dyn-source">
+<pre>
+f = Origin mimic 
+g = Origin mimic 
+f prependMimic!(g) 
+f mimics length should ==(2) 
+f mimics [](1) should ==(Origin) 
+f mimics [](0) should ==(g) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not add a mimic that's already in the list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K063S1_source')" id="l_C00K063S1_source">show source</a> ]</span>
+            <div id="C00K063S1_source" class="dyn-source">
+<pre>
+f = Origin mimic 
+f prependMimic!(Origin) 
+f prependMimic!(Origin) 
+f prependMimic!(Origin) 
+f prependMimic!(Origin) 
+f mimics length should ==(1) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not be able to mimic nil <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K063S2_source')" id="l_C00K063S2_source">show source</a> ]</span>
+            <div id="C00K063S2_source" class="dyn-source">
+<pre>
+fn(Origin mimic prependMimic!(nil)) should signal(Condition Error CantMimicOddball) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not be able to mimic true <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K063S3_source')" id="l_C00K063S3_source">show source</a> ]</span>
+            <div id="C00K063S3_source" class="dyn-source">
+<pre>
+fn(Origin mimic prependMimic!(true)) should signal(Condition Error CantMimicOddball) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not be able to mimic false <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K063S4_source')" id="l_C00K063S4_source">show source</a> ]</span>
+            <div id="C00K063S4_source" class="dyn-source">
+<pre>
+fn(Origin mimic prependMimic!(false)) should signal(Condition Error CantMimicOddball) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not be able to mimic symbols <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K063S5_source')" id="l_C00K063S5_source">show source</a> ]</span>
+            <div id="C00K063S5_source" class="dyn-source">
+<pre>
+fn(Origin mimic prependMimic!(:foo)) should signal(Condition Error CantMimicOddball) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the receiving object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K063S6_source')" id="l_C00K063S6_source">show source</a> ]</span>
+            <div id="C00K063S6_source" class="dyn-source">
+<pre>
+f = Origin mimic 
+f prependMimic!(Origin) should ==(f) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior removeAllMimics!</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return the object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K064S0_source')" id="l_C00K064S0_source">show source</a> ]</span>
+            <div id="C00K064S0_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x uniqueHexId = DefaultBehavior cell(:uniqueHexId) 
+x removeAllMimics! uniqueHexId should ==(x uniqueHexId) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should remove all mimics <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K064S1_source')" id="l_C00K064S1_source">show source</a> ]</span>
+            <div id="C00K064S1_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x mimic!(Text) 
+x mimics = DefaultBehavior cell(:mimics) 
+x removeAllMimics! mimics should ==([]) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior removeMimic!</b><br/>
+<ul style="list-style-type: none;">
+<li>- should not remove something it doesn't mimic <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K065S0_source')" id="l_C00K065S0_source">show source</a> ]</span>
+            <div id="C00K065S0_source" class="dyn-source">
+<pre>
+Origin mimic removeMimic!("foo") mimics should ==([](Origin)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K065S1_source')" id="l_C00K065S1_source">show source</a> ]</span>
+            <div id="C00K065S1_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x removeMimic!(1) should ==(x) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should remove any mimic it has <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K065S2_source')" id="l_C00K065S2_source">show source</a> ]</span>
+            <div id="C00K065S2_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x mimics = DefaultBehavior cell(:mimics) 
+x removeMimic!(Origin) 
+x mimics should ==([]) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not remove any other mimic <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K065S3_source')" id="l_C00K065S3_source">show source</a> ]</span>
+            <div id="C00K065S3_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = Origin mimic 
+x mimic!(y) 
+x removeMimic!(y) 
+x mimics should ==([](Origin)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior return</b><br/>
+<ul style="list-style-type: none;">
+<li>- should have nil as value by default <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K066S0_source')" id="l_C00K066S0_source">show source</a> ]</span>
+            <div id="C00K066S0_source" class="dyn-source">
+<pre>
+method(return) call should be nil 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take a return value <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K066S1_source')" id="l_C00K066S1_source">show source</a> ]</span>
+            <div id="C00K066S1_source" class="dyn-source">
+<pre>
+method(return(42)) call should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior same?</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return false for different objects <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K067S0_source')" id="l_C00K067S0_source">show source</a> ]</span>
+            <div id="C00K067S0_source" class="dyn-source">
+<pre>
+Origin mimic should not be same(Origin mimic) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return true for the same objects <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K067S1_source')" id="l_C00K067S1_source">show source</a> ]</span>
+            <div id="C00K067S1_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x should be same(x) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior send</b><br/>
+<ul style="list-style-type: none;">
+<li>- should invoke the method named <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K068S0_source')" id="l_C00K068S0_source">show source</a> ]</span>
+            <div id="C00K068S0_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo = method(self called = true)) 
+x send(:foo) 
+x called should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should pass along the arguments sent <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K068S1_source')" id="l_C00K068S1_source">show source</a> ]</span>
+            <div id="C00K068S1_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo = method(+(args), +:(kargs), self called = [](args, kargs))) 
+x send(:foo, 1, blah: :foo, "123", :foo, max: 32 +(15)) 
+x called should ==([]([](1, "123", :foo), {}(blah: :foo, max: 47))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the result of the call <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K068S2_source')" id="l_C00K068S2_source">show source</a> ]</span>
+            <div id="C00K068S2_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo = method(42 *(3))) 
+x send(:foo) should ==(126) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior set</b><br/>
+<ul style="list-style-type: none;">
+<li>- should create a new empty set when given no arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K069S0_source')" id="l_C00K069S0_source">show source</a> ]</span>
+            <div id="C00K069S0_source" class="dyn-source">
+<pre>
+x = set 
+x should have kind("Set") 
+x should not be same(Set) 
+x should mimic(Set) 
+x = set 
+x should have kind("Set") 
+x should not be same(Set) 
+x should mimic(Set) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should create a new set with the evaluated arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K069S1_source')" id="l_C00K069S1_source">show source</a> ]</span>
+            <div id="C00K069S1_source" class="dyn-source">
+<pre>
+result = set(1, 2, "abc", 3 +(42)) 
+result asList length should ==(4) 
+outside = [] 
+result each(x, 
+  if(x mimics?(Text), 
+    x should ==("abc"), 
+    outside &lt;&lt;(x))) 
+outside sort should ==([](1, 2, 45)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior size</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be 0 for an empty dict <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K070S0_source')" id="l_C00K070S0_source">show source</a> ]</span>
+            <div id="C00K070S0_source" class="dyn-source">
+<pre>
+dict size should ==(0)
+</pre>
+            </div>
+            </span></li>
+<li>- should be the number of pairs in dict <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K070S1_source')" id="l_C00K070S1_source">show source</a> ]</span>
+            <div id="C00K070S1_source" class="dyn-source">
+<pre>
+dict(a: 1, b: 2) size should ==(2)
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior super</b><br/>
+<ul style="list-style-type: none;">
+<li>- should not be available if no super method is there <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K071S0_source')" id="l_C00K071S0_source">show source</a> ]</span>
+            <div id="C00K071S0_source" class="dyn-source">
+<pre>
+fn(method(super) call) should signal(Condition Error NoSuchCell) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the super value if it is not method <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K071S1_source')" id="l_C00K071S1_source">show source</a> ]</span>
+            <div id="C00K071S1_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x foo = 42 
+x2 = x mimic 
+x2 foo = method(super) 
+x2 foo should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should call the super method with the same self <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K071S2_source')" id="l_C00K071S2_source">show source</a> ]</span>
+            <div id="C00K071S2_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x foo = method([](self)) 
+x2 = x mimic 
+x2 foo = method(super) 
+x2 foo should ==([](x2)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to give different arguments to super <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K071S3_source')" id="l_C00K071S3_source">show source</a> ]</span>
+            <div id="C00K071S3_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x foo = method(+(args), args) 
+x2 = x mimic 
+x2 foo = method(super(1, 2, 3)) 
+x2 foo should ==([](1, 2, 3)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to call super several times in a row <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K071S4_source')" id="l_C00K071S4_source">show source</a> ]</span>
+            <div id="C00K071S4_source" class="dyn-source">
+<pre>
+Ground called_super_spec = [] 
+x = Origin mimic 
+x foo = method(called_super_spec &lt;&lt;("foo1")) 
+x2 = x mimic 
+x2 foo = method(called_super_spec &lt;&lt;("foo2") 
+    super) 
+x3 = x2 mimic 
+x3 foo = method(called_super_spec &lt;&lt;("foo3") 
+    super) 
+x3 foo 
+called_super_spec should ==([]("foo3", "foo2", "foo1")) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior syntax</b><br/>
+<ul style="list-style-type: none;">
+<li>- should name itself after the slot it's assigned to if it has no name <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K072S0_source')" id="l_C00K072S0_source">show source</a> ]</span>
+            <div id="C00K072S0_source" class="dyn-source">
+<pre>
+x = syntax(nil) 
+cell(:x) name should ==("x") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not change it's name if it already has a name <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K072S1_source')" id="l_C00K072S1_source">show source</a> ]</span>
+            <div id="C00K072S1_source" class="dyn-source">
+<pre>
+x = syntax(nil) 
+y = cell(:x) 
+cell(:y) name should ==("x") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should know it's own name <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K072S2_source')" id="l_C00K072S2_source">show source</a> ]</span>
+            <div id="C00K072S2_source" class="dyn-source">
+<pre>
+(x = syntax(nil)) name should ==("x") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior thaw!</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be possible to call several times without effect <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K073S0_source')" id="l_C00K073S0_source">show source</a> ]</span>
+            <div id="C00K073S0_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x freeze! 
+x thaw! 
+x thaw! 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should unfreeze an object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K073S1_source')" id="l_C00K073S1_source">show source</a> ]</span>
+            <div id="C00K073S1_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x freeze! 
+x thaw! 
+x should not be frozen 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior true?</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return false for nil <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K074S0_source')" id="l_C00K074S0_source">show source</a> ]</span>
+            <div id="C00K074S0_source" class="dyn-source">
+<pre>
+nil true? should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return false for false <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K074S1_source')" id="l_C00K074S1_source">show source</a> ]</span>
+            <div id="C00K074S1_source" class="dyn-source">
+<pre>
+false true? should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return true for true <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K074S2_source')" id="l_C00K074S2_source">show source</a> ]</span>
+            <div id="C00K074S2_source" class="dyn-source">
+<pre>
+true true? should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return true for a Number <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K074S3_source')" id="l_C00K074S3_source">show source</a> ]</span>
+            <div id="C00K074S3_source" class="dyn-source">
+<pre>
+123 true? should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return true for a Text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K074S4_source')" id="l_C00K074S4_source">show source</a> ]</span>
+            <div id="C00K074S4_source" class="dyn-source">
+<pre>
+"flurg" true? should be true 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior tuple</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return the right kind of tuple for up to nine elements <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K075S0_source')" id="l_C00K075S0_source">show source</a> ]</span>
+            <div id="C00K075S0_source" class="dyn-source">
+<pre>
+tuple should be same(Tuple) 
+tuple(1, 2) should mimic(Tuple Two) 
+tuple(1, 2, 3) should mimic(Tuple Three) 
+tuple(1, 2, 3, 4) should mimic(Tuple Four) 
+tuple(1, 2, 3, 4, 5) should mimic(Tuple Five) 
+tuple(1, 2, 3, 4, 5, 6) should mimic(Tuple Six) 
+tuple(1, 2, 3, 4, 5, 6, 7) should mimic(Tuple Seven) 
+tuple(1, 2, 3, 4, 5, 6, 7, 8) should mimic(Tuple Eight) 
+tuple(1, 2, 3, 4, 5, 6, 7, 8, 9) should mimic(Tuple Nine) 
+tuple(1, 2, 3, 4, 5, 6, 7, 8, 9, 10) should mimic(Tuple Many) 
+tuple(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11) should mimic(Tuple Many) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should add accessor methods for Tuple Many tuples <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K075S1_source')" id="l_C00K075S1_source">show source</a> ]</span>
+            <div id="C00K075S1_source" class="dyn-source">
+<pre>
+tx = tuple(1, 2, 3, 4, 5, 6, 7, 8, "9", 42, "blarg") 
+tx _9 should ==("9") 
+tx _10 should ==(42) 
+tx _11 should ==("blarg") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should set the elements correctly <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K075S2_source')" id="l_C00K075S2_source">show source</a> ]</span>
+            <div id="C00K075S2_source" class="dyn-source">
+<pre>
+tx = tuple(5, 4, 3, 2, 1) 
+tx first should ==(5) 
+tx _1 should ==(5) 
+tx second should ==(4) 
+tx _2 should ==(4) 
+tx third should ==(3) 
+tx _3 should ==(3) 
+tx fourth should ==(2) 
+tx _4 should ==(2) 
+tx fifth should ==(1) 
+tx _5 should ==(1) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior uniqueHexId</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return different ids for different objects <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K076S0_source')" id="l_C00K076S0_source">show source</a> ]</span>
+            <div id="C00K076S0_source" class="dyn-source">
+<pre>
+Origin mimic uniqueHexId should not ==(Origin mimic uniqueHexId) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the same id for the same object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K076S1_source')" id="l_C00K076S1_source">show source</a> ]</span>
+            <div id="C00K076S1_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x uniqueHexId should ==(x uniqueHexId) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior unless</b><br/>
+<ul style="list-style-type: none;">
+<li>- should evaluate it's first element once <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K077S0_source')" id="l_C00K077S0_source">show source</a> ]</span>
+            <div id="C00K077S0_source" class="dyn-source">
+<pre>
+x = 42 
+unless(++(x)) 
+x should ==(43) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return it's second argument if the first element evaluates to false <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K077S1_source')" id="l_C00K077S1_source">show source</a> ]</span>
+            <div id="C00K077S1_source" class="dyn-source">
+<pre>
+unless(false, 42, 43) should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return it's third argument if the first element evaluates to true <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K077S2_source')" id="l_C00K077S2_source">show source</a> ]</span>
+            <div id="C00K077S2_source" class="dyn-source">
+<pre>
+unless(true, 42, 43) should ==(43) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the result of evaluating the first argument if there are no more arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K077S3_source')" id="l_C00K077S3_source">show source</a> ]</span>
+            <div id="C00K077S3_source" class="dyn-source">
+<pre>
+unless(44) should ==(44) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the result of evaluating the first argument if it is true and there are only two arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K077S4_source')" id="l_C00K077S4_source">show source</a> ]</span>
+            <div id="C00K077S4_source" class="dyn-source">
+<pre>
+unless(true, 13) should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should assign the test result to the variable it <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K077S5_source')" id="l_C00K077S5_source">show source</a> ]</span>
+            <div id="C00K077S5_source" class="dyn-source">
+<pre>
+unless(42, nil, it) should ==(42) 
+unless(nil, it, 42) should be nil 
+unless(false, it, 42) should be false 
+unless("str", it, 42) should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should have a lexical context for the it variable <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K077S6_source')" id="l_C00K077S6_source">show source</a> ]</span>
+            <div id="C00K077S6_source" class="dyn-source">
+<pre>
+unless(42, nil, fn(it)) call should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to nest it variables lexically <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K077S7_source')" id="l_C00K077S7_source">show source</a> ]</span>
+            <div id="C00K077S7_source" class="dyn-source">
+<pre>
+unless(42, nil, [](it, unless(13, nil, [](it, unless(nil, it, 44), it)))) should ==([](42, [](13, nil, 13))) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior until</b><br/>
+<ul style="list-style-type: none;">
+<li>- should not do anything if initial argument is true <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K078S0_source')" id="l_C00K078S0_source">show source</a> ]</span>
+            <div id="C00K078S0_source" class="dyn-source">
+<pre>
+x = 42 
+until(true, x = 43) 
+x should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should loop until the argument becomes true <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K078S1_source')" id="l_C00K078S1_source">show source</a> ]</span>
+            <div id="C00K078S1_source" class="dyn-source">
+<pre>
+x = 42 
+until(x ==(45), ++(x)) 
+x should ==(45) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the last statement value <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K078S2_source')" id="l_C00K078S2_source">show source</a> ]</span>
+            <div id="C00K078S2_source" class="dyn-source">
+<pre>
+x = 42 
+until(x ==(43), ++(x) 
+  "blurg") should ==("blurg") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be interrupted by break <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K078S3_source')" id="l_C00K078S3_source">show source</a> ]</span>
+            <div id="C00K078S3_source" class="dyn-source">
+<pre>
+x = 42 
+until(x ==(50), ++(x) 
+  if(x ==(45), break)) 
+x should ==(45) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be continued by continue <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K078S4_source')" id="l_C00K078S4_source">show source</a> ]</span>
+            <div id="C00K078S4_source" class="dyn-source">
+<pre>
+count = 0 
+x = 42 
+until(x ==(50), ++(count) 
+  if(x ==(45), x = 47 
+    continue) 
+  ++(x) 
+  ) 
+x should ==(50) 
+count should ==(7) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return nil if no arguments provided <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K078S5_source')" id="l_C00K078S5_source">show source</a> ]</span>
+            <div id="C00K078S5_source" class="dyn-source">
+<pre>
+until should be nil 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior while</b><br/>
+<ul style="list-style-type: none;">
+<li>- should not do anything if initial argument is false <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K079S0_source')" id="l_C00K079S0_source">show source</a> ]</span>
+            <div id="C00K079S0_source" class="dyn-source">
+<pre>
+x = 42 
+while(false, x = 43) 
+x should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should loop until the argument becomes false <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K079S1_source')" id="l_C00K079S1_source">show source</a> ]</span>
+            <div id="C00K079S1_source" class="dyn-source">
+<pre>
+x = 42 
+while(x &lt;(45), ++(x)) 
+x should ==(45) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the last statement value <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K079S2_source')" id="l_C00K079S2_source">show source</a> ]</span>
+            <div id="C00K079S2_source" class="dyn-source">
+<pre>
+x = 42 
+while(x &lt;(43), ++(x) 
+  "blurg") should ==("blurg") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be interrupted by break <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K079S3_source')" id="l_C00K079S3_source">show source</a> ]</span>
+            <div id="C00K079S3_source" class="dyn-source">
+<pre>
+x = 42 
+while(x &lt;(50), ++(x) 
+  if(x ==(45), break)) 
+x should ==(45) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be continued by continue <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K079S4_source')" id="l_C00K079S4_source">show source</a> ]</span>
+            <div id="C00K079S4_source" class="dyn-source">
+<pre>
+count = 0 
+x = 42 
+while(x &lt;(50), ++(count) 
+  if(x ==(45), x = 47 
+    continue) 
+  ++(x) 
+  ) 
+x should ==(50) 
+count should ==(7) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return nil if no arguments provided <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K079S5_source')" id="l_C00K079S5_source">show source</a> ]</span>
+            <div id="C00K079S5_source" class="dyn-source">
+<pre>
+while should be nil 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior with</b><br/>
+<ul style="list-style-type: none;">
+<li>- should just mimic an object if no arguments given <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K080S0_source')" id="l_C00K080S0_source">show source</a> ]</span>
+            <div id="C00K080S0_source" class="dyn-source">
+<pre>
+Origin with cellNames should ==([]) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should set the given keywords as cells <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K080S1_source')" id="l_C00K080S1_source">show source</a> ]</span>
+            <div id="C00K080S1_source" class="dyn-source">
+<pre>
+Origin with(foo: 13) cellNames should ==([](:foo)) 
+Origin with(foo: 13) cells should ==({}(foo: 13)) 
+Origin with(foo: 13, bar: 14) cellNames should ==([](:foo, :bar)) 
+Origin with(foo: 13, bar: 14) cells should ==({}(foo: 13, bar: 14)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior xor</b><br/>
+<ul style="list-style-type: none;">
+<li>- should evaluate it's argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K081S0_source')" id="l_C00K081S0_source">show source</a> ]</span>
+            <div id="C00K081S0_source" class="dyn-source">
+<pre>
+x = 41 
+30 xor(x = 42) 
+x should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return false if the argument is true <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K081S1_source')" id="l_C00K081S1_source">show source</a> ]</span>
+            <div id="C00K081S1_source" class="dyn-source">
+<pre>
+(30 xor(true)) should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return true if the argument is false <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K081S2_source')" id="l_C00K081S2_source">show source</a> ]</span>
+            <div id="C00K081S2_source" class="dyn-source">
+<pre>
+(30 xor(false)) should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return true if the argument is nil <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K081S3_source')" id="l_C00K081S3_source">show source</a> ]</span>
+            <div id="C00K081S3_source" class="dyn-source">
+<pre>
+(30 xor(nil)) should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be available in infix <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K081S4_source')" id="l_C00K081S4_source">show source</a> ]</span>
+            <div id="C00K081S4_source" class="dyn-source">
+<pre>
+(30 xor(43)) should be false 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior {}</b><br/>
+<ul style="list-style-type: none;">
+<li>- should create a new empty dict when given no arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K082S0_source')" id="l_C00K082S0_source">show source</a> ]</span>
+            <div id="C00K082S0_source" class="dyn-source">
+<pre>
+x = {} 
+x should be kind("Dict") 
+x should not be same(Dict) 
+x should mimic(Dict) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should create a new dict with the evaluated arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K082S1_source')" id="l_C00K082S1_source">show source</a> ]</span>
+            <div id="C00K082S1_source" class="dyn-source">
+<pre>
+result = {}(1 =&gt;(2), "abc" =&gt;(3 +(42)), :foo =&gt;(123), :bar =&gt;("x")) 
+result asList length should ==(4) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should create a new dict with keyword arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K082S2_source')" id="l_C00K082S2_source">show source</a> ]</span>
+            <div id="C00K082S2_source" class="dyn-source">
+<pre>
+result = {}(abc: 2, foo: 3 +(42), bar: 123, quux: "x") 
+result asList length should ==(4) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take arguments that are not keyword or pairs and add nil as value for them <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K082S3_source')" id="l_C00K082S3_source">show source</a> ]</span>
+            <div id="C00K082S3_source" class="dyn-source">
+<pre>
+{}(123, "foo", 13 +(2), :bar) should ==({}(123 =&gt;(nil), "foo" =&gt;(nil), 15 =&gt;(nil), :bar =&gt;(nil))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take keyword arguments without a next pointer and add nil as value for them <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K082S4_source')" id="l_C00K082S4_source">show source</a> ]</span>
+            <div id="C00K082S4_source" class="dyn-source">
+<pre>
+{}(foo:, bar:, quux:) should ==({}(:foo =&gt;(nil), :bar =&gt;(nil), :quux =&gt;(nil))) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior |=</b><br/>
+<ul style="list-style-type: none;">
+<li>- should call | and then assign the result of this call to the same name <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K083S0_source')" id="l_C00K083S0_source">show source</a> ]</span>
+            <div id="C00K083S0_source" class="dyn-source">
+<pre>
+x = 5 
+|=(x, 6) 
+x should ==(7) 
+x = 5 
+|=(x, 4) 
+x should ==(5) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should work with a place <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K083S1_source')" id="l_C00K083S1_source">show source</a> ]</span>
+            <div id="C00K083S1_source" class="dyn-source">
+<pre>
+x = [](5) 
+x |=([](0), 6) 
+x [](0) should ==(7) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior ||</b><br/>
+<ul style="list-style-type: none;">
+<li>- should not evaluate it's argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K084S0_source')" id="l_C00K084S0_source">show source</a> ]</span>
+            <div id="C00K084S0_source" class="dyn-source">
+<pre>
+x = 41 
+123 ||(x = 42) 
+x should ==(41) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K084S1_source')" id="l_C00K084S1_source">show source</a> ]</span>
+            <div id="C00K084S1_source" class="dyn-source">
+<pre>
+"murg" ||(42) should ==("murg") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be available in infix <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K084S2_source')" id="l_C00K084S2_source">show source</a> ]</span>
+            <div id="C00K084S2_source" class="dyn-source">
+<pre>
+(444 ||(43)) should ==(444) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior ||=</b><br/>
+<ul style="list-style-type: none;">
+<li>- should assign a cell if it doesn't exist <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K085S0_source')" id="l_C00K085S0_source">show source</a> ]</span>
+            <div id="C00K085S0_source" class="dyn-source">
+<pre>
+||=(test_double_pipe_equals, 42) 
+test_double_pipe_equals should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should assign a cell if it is nil <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K085S1_source')" id="l_C00K085S1_source">show source</a> ]</span>
+            <div id="C00K085S1_source" class="dyn-source">
+<pre>
+x = nil 
+||=(x, 42) 
+x should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should assign a cell if it is false <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K085S2_source')" id="l_C00K085S2_source">show source</a> ]</span>
+            <div id="C00K085S2_source" class="dyn-source">
+<pre>
+x = false 
+||=(x, 42) 
+x should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not assign a cell that exist <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K085S3_source')" id="l_C00K085S3_source">show source</a> ]</span>
+            <div id="C00K085S3_source" class="dyn-source">
+<pre>
+x = 43 
+||=(x, 42) 
+x should ==(43) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should work with a place <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K085S4_source')" id="l_C00K085S4_source">show source</a> ]</span>
+            <div id="C00K085S4_source" class="dyn-source">
+<pre>
+x = [](1, 3) 
+x ||=([](1), 42) 
+x should ==([](1, 3)) 
+x = [](2, 3) 
+x ||=([](2), 42) 
+x should ==([](2, 3, 42)) 
+x = [](3, nil) 
+x ||=([](1), 42) 
+x should ==([](3, 42)) 
+x = [](4, false) 
+x ||=([](1), 42) 
+x should ==([](4, 42)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior ?</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be possible to create a new LexicalBlock with it <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K086S0_source')" id="l_C00K086S0_source">show source</a> ]</span>
+            <div id="C00K086S0_source" class="dyn-source">
+<pre>
+? call should be nil 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to create a new LexicalBlock with it that returns a value <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K086S1_source')" id="l_C00K086S1_source">show source</a> ]</span>
+            <div id="C00K086S1_source" class="dyn-source">
+<pre>
+?(42) call should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior ?</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be possible to create a new LexicalBlock with it <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K087S0_source')" id="l_C00K087S0_source">show source</a> ]</span>
+            <div id="C00K087S0_source" class="dyn-source">
+<pre>
+? call should be nil 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to create a new LexicalBlock with it that returns a value <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K087S1_source')" id="l_C00K087S1_source">show source</a> ]</span>
+            <div id="C00K087S1_source" class="dyn-source">
+<pre>
+?(42) call should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> DefaultBehavior ?</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return a new empty set <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K088S0_source')" id="l_C00K088S0_source">show source</a> ]</span>
+            <div id="C00K088S0_source" class="dyn-source">
+<pre>
+x = ? 
+x should have kind("Set") 
+x should not be same(Set) 
+x should mimic(Set) 
+x = ? 
+x should have kind("Set") 
+x should not be same(Set) 
+x should mimic(Set) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+        </div>
+
+        <div class="sectiontitle">Inactive cells (details)</div>
+                <div class="cell">
+          <a name="C0021"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">kind</td>
+              <td>=</td>
+              <td class="cell-value">"DefaultBehavior"</td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="sectiontitle">Active cells (details)</div>
+                <div class="cell">
+          <div class="title">
+          <a name="C00235"></a><b>cellDescriptionDict</b>()
+          </div>
+          <div class="description">
+            <p>returns a dict containing each cell and it's corresponding description</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00235_source')" id="l_C00235_source">show source</a> ]</p>
+            <div id="C00235_source" class="dyn-source">
+<pre>
+method(
+  cellNames = cell(:self) cellNames sort 
+  cellDescs = cellNames map(name, cell(:self) cell(name) notice) 
+  {} addKeysAndValues(cellNames, cellDescs))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> DefaultBehavior cellDescriptionDict</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return an empty dict for an object without cells <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002351S0_source')" id="l_C002351S0_source">show source</a> ]</span>
+            <div id="C002351S0_source" class="dyn-source">
+<pre>
+Origin mimic cellDescriptionDict should ==({}) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return a dict with an element for something more complicated <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002351S1_source')" id="l_C002351S1_source">show source</a> ]</span>
+            <div id="C002351S1_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x foo = :bar 
+x cellDescriptionDict should ==({}(foo: ":bar")) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return a dict with an element for a method <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002351S2_source')" id="l_C002351S2_source">show source</a> ]</span>
+            <div id="C002351S2_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x foo = method(bar) 
+x cellDescriptionDict should ==({}(foo: "foo:method(...)")) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return a dict with more than one element <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002351S3_source')" id="l_C002351S3_source">show source</a> ]</span>
+            <div id="C002351S3_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x y = 42 
+x z = 22 
+x cellDescriptionDict should ==({}(y: "42", z: "22")) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00236"></a><b>cellSummary</b>()
+          </div>
+          <div class="description">
+            <p>returns a representation of the current object that includes information about it's cells</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00236_source')" id="l_C00236_source">show source</a> ]</p>
+            <div id="C00236_source" class="dyn-source">
+<pre>
+method(
+  cellDescriptions = cellDescriptionDict 
+  vals = cellDescriptions keys sort map(k, list(k, cellDescriptions [](k))) 
+  " #{cell(:self) notice}:
+%*[  %-28s = %s\n%]" format(vals))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> DefaultBehavior cellSummary</b><br/>
+<ul style="list-style-type: none;">
+<li>- should use notice for the first line <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002361S0_source')" id="l_C002361S0_source">show source</a> ]</span>
+            <div id="C002361S0_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x uniqueHexId = "0x3FF420" 
+x cellSummary [](0 ...(18)) should ==(" Origin_0x3FF420:\n") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should use cellDescriptionDict for the data <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002361S1_source')" id="l_C002361S1_source">show source</a> ]</span>
+            <div id="C002361S1_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x uniqueHexId = "0x3FF420" 
+x cellDescriptionDict = {}(foo: "bar") 
+x cellSummary [](0 ...(57)) should ==(" Origin_0x3FF420:\n  foo                          = bar\n") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00232"></a><b>genSym</b>()
+          </div>
+          <div class="description">
+            <p>returns a new, unique symbol every time called. The symbol will be quite unreadable, and uses a closure to generate a new number every time that is independent from external state.</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00232_source')" id="l_C00232_source">show source</a> ]</p>
+            <div id="C00232_source" class="dyn-source">
+<pre>
+fnx(
+  :("#&lt;GS#{++(n)}&gt;"))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> DefaultBehavior genSym</b><br/>
+<ul style="list-style-type: none;">
+<li>- should generate a new thing every time called <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002321S0_source')" id="l_C002321S0_source">show source</a> ]</span>
+            <div id="C002321S0_source" class="dyn-source">
+<pre>
+genSym should not ==(genSym) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should generate a symbol <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002321S1_source')" id="l_C002321S1_source">show source</a> ]</span>
+            <div id="C002321S1_source" class="dyn-source">
+<pre>
+genSym should have kind("Symbol") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00233"></a><b>inspect</b>()
+          </div>
+          <div class="description">
+            <p>returns a longer description of the receiver, in general including cell information</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00233_source')" id="l_C00233_source">show source</a> ]</p>
+            <div id="C00233_source" class="dyn-source">
+<pre>
+method(
+  cellSummary)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> DefaultBehavior inspect</b><br/>
+<ul style="list-style-type: none;">
+<li>- should use cellSummary <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002331S0_source')" id="l_C002331S0_source">show source</a> ]</span>
+            <div id="C002331S0_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x cellSummary = "blarg" 
+x inspect should ==("blarg") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00234"></a><b>notice</b>()
+          </div>
+          <div class="description">
+            <p>returns a short text description of the receiver</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00234_source')" id="l_C00234_source">show source</a> ]</p>
+            <div id="C00234_source" class="dyn-source">
+<pre>
+method(
+  if(currentMessage Origin ==(cell(:self)), 
+    "Origin", 
+    if(currentMessage Ground ==(cell(:self)), 
+      "Ground", 
+      "#{cell(:self) kind}_#{cell(:self) uniqueHexId}" 
+      )))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> DefaultBehavior notice</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return the kind and hex string for a simple object from Origin <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002341S0_source')" id="l_C002341S0_source">show source</a> ]</span>
+            <div id="C002341S0_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x uniqueHexId = "0x3FF420" 
+x notice should ==("Origin_0x3FF420") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should handle a new kind <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002341S1_source')" id="l_C002341S1_source">show source</a> ]</span>
+            <div id="C002341S1_source" class="dyn-source">
+<pre>
+Ground Blarg = Origin mimic 
+x = Blarg mimic 
+x uniqueHexId = "0x3FF420" 
+x notice should ==("Blarg_0x3FF420") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00231"></a><b>use</b>(module false)
+          </div>
+          <div class="description">
+            <p>takes one or more evaluated string argument. will import the files corresponding to each of the strings named based on the Ioke loading behavior that can be found in the documentation for the loadBehavior cell on System.</p>
+          </div>
+          
+          <div class="specs">
+            <b> DefaultBehavior use</b><br/>
+<ul style="list-style-type: none;">
+<li>- should load a file with an absolute file name <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002311S0_source')" id="l_C002311S0_source">show source</a> ]</span>
+            <div id="C002311S0_source" class="dyn-source">
+<pre>
+result = use(System currentDirectory +("/_test2/loadx")) 
+result should be true 
+loadx_loaded should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should load a file in the same directory <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002311S1_source')" id="l_C002311S1_source">show source</a> ]</span>
+            <div id="C002311S1_source" class="dyn-source">
+<pre>
+result = use("test/load1") 
+result should be true 
+val should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should load a file in the same directory when explicitly have suffix <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002311S2_source')" id="l_C002311S2_source">show source</a> ]</span>
+            <div id="C002311S2_source" class="dyn-source">
+<pre>
+result = use("test/load2.ik") 
+result should be true 
+val2 should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not load something that's already been loaded <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002311S3_source')" id="l_C002311S3_source">show source</a> ]</span>
+            <div id="C002311S3_source" class="dyn-source">
+<pre>
+Ground vex = 13 
+use("test/load3") should be true 
+use("test/load3") should be false 
+vex should ==(14) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should search the added load paths <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002311S4_source')" id="l_C002311S4_source">show source</a> ]</span>
+            <div id="C002311S4_source" class="dyn-source">
+<pre>
+System loadPath &lt;&lt;("test/sub_load") 
+use("foo1") 
+Ground fooHasBeenLoaded should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should raise exception if it can't find something <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C002311S5_source')" id="l_C002311S5_source">show source</a> ]</span>
+            <div id="C002311S5_source" class="dyn-source">
+<pre>
+fn(use("blarg")) should signal(Condition Error Load) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </body>
+</html>

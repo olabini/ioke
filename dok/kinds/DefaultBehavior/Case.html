@@ -1,0 +1,747 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Kind: DefaultBehavior</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../.././dokgen-style.css" type="text/css" media="screen" />
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=480,width=750" ).focus();
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+    <table border='0' cellpadding='0' cellspacing='0' width="100%" class='banner'>
+      <tr>
+        <td>
+          <table width="100%" border='0' cellpadding='0' cellspacing='0'>
+            <tr>
+              <td class="file-title" colspan="2">
+                <span class="file-title-prefix">Kind</span>
+                <br />
+                DefaultBehavior Case
+              </td>
+              <td align="right">
+                <table cellspacing="0" cellpadding="2">
+                  <tr>
+                    <td>Main mimic:</td>
+                    <td>
+                      none
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <div id="bodyContent">
+      <div id="content">
+        <div class="description">
+          <p>
+contains behavior related to the case statement
+          </p>
+        </div>
+
+        <div class="sectiontitle">Mimics</div>
+        <ul>
+          none
+        </ul>
+
+        <div class="sectiontitle">Inactive cells</div>
+        <ul>
+          <li><a href="#C00141">inspect</a></li>
+<li><a href="#C00138">kind</a></li>
+<li><a href="#C00140">notice</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Active cells</div>
+        <ul>
+          <li><a href="#C00139">case(value, [elseCode] nil, +[whensAndThens])</a></li>
+<li><a href="#C00145">case:and(+args)</a></li>
+<li><a href="#C00172">case:else()</a></li>
+<li><a href="#C00158">case:nand(first, +args)</a></li>
+<li><a href="#C00163">case:nor(first, +args)</a></li>
+<li><a href="#C00153">case:not(other)</a></li>
+<li><a href="#C00149">case:or(+args)</a></li>
+<li><a href="#C00171">case:otherwise()</a></li>
+<li><a href="#C00168">case:xor(first, +args)</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Specs</div>
+        <div class="specs">
+          
+        </div>
+
+        <div class="sectiontitle">Inactive cells (details)</div>
+                <div class="cell">
+          <a name="C00141"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">inspect</td>
+              <td>=</td>
+              <td class="cell-value">"DefaultBehavior Case"</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C00138"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">kind</td>
+              <td>=</td>
+              <td class="cell-value">"DefaultBehavior Case"</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C00140"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">notice</td>
+              <td>=</td>
+              <td class="cell-value">"DefaultBehavior Case"</td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="sectiontitle">Active cells (details)</div>
+                <div class="cell">
+          <div class="title">
+          <a name="C00139"></a><b>case</b>(value, [elseCode] nil, +[whensAndThens])
+          </div>
+          <div class="description">
+            <p>takes one argument that should evaluate to a value, zero or more whenAndThen pairs and one optional else clause. will first evaluate the initial value, then check each whenAndThen pair against this value. if the when part of a pair returns true, then return the result of evaluating the then part. if no pair matches and no else clause is present, returns nil. if an else clause is there, it should be the last one. each whenAndThen pair is comprised of two arguments, where the first is the when argument and the second is the then argument. the when part will be evaluated and the result of this evaluation will be sent a === message with the value as argument.</p>
+          </div>
+          
+          <div class="specs">
+            <b> DefaultBehavior Case case</b><br/>
+<ul style="list-style-type: none;">
+<li>- should only evaluate the first value once <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001391S0_source')" id="l_C001391S0_source">show source</a> ]</span>
+            <div id="C001391S0_source" class="dyn-source">
+<pre>
+Ground caseTests = [] 
+case((caseTests &lt;&lt;(:evaluated) 
+    44), 
+  1 ..(42), :one, 
+  43 ..(45), :two) 
+caseTests should ==([](:evaluated)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should only evaluate the when part of each entry until something returns true <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001391S1_source')" id="l_C001391S1_source">show source</a> ]</span>
+            <div id="C001391S1_source" class="dyn-source">
+<pre>
+Ground caseTests = [] 
+case(42, 
+  (caseTests &lt;&lt;(:one) 
+    1 ..(30)), :onex, 
+  (caseTests &lt;&lt;(:two) 
+    2 ..(40)), :twox, 
+  (caseTests &lt;&lt;(:three) 
+    3 ..(44)), :threex, 
+  (caseTests &lt;&lt;(:four) 
+    4 ..(45)), :fourx) 
+caseTests should ==([](:one, :two, :three)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the value of the then part that succeeds <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001391S2_source')" id="l_C001391S2_source">show source</a> ]</span>
+            <div id="C001391S2_source" class="dyn-source">
+<pre>
+case(42, 
+  1 ..(10), :one, 
+  10 ..(30), :two, 
+  30 ..(50), :three, 
+  50 ..(60), :four) should ==(:three) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return nil if no part matches <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001391S3_source')" id="l_C001391S3_source">show source</a> ]</span>
+            <div id="C001391S3_source" class="dyn-source">
+<pre>
+case(42) should be nil 
+case(42, 
+  1 ..(10), :one) should be nil 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should execute the last statement if there is no when part for it <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001391S4_source')" id="l_C001391S4_source">show source</a> ]</span>
+            <div id="C001391S4_source" class="dyn-source">
+<pre>
+case(42, 
+  1 ..(10), :one, 
+  42 +(2)) should ==(44) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should call === with the result of the condition on each when part <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001391S5_source')" id="l_C001391S5_source">show source</a> ]</span>
+            <div id="C001391S5_source" class="dyn-source">
+<pre>
+Ground caseTests = [] 
+obj = Origin mimic 
+obj cell("===") = method(other, caseTests &lt;&lt;(other) 
+    false) 
+case(44 *(2), 
+  obj, "blah", 
+  obj, "bluh" 
+  ) 
+caseTests should ==([](88, 88)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should transform the when part to call cond:name if it exists <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001391S6_source')" id="l_C001391S6_source">show source</a> ]</span>
+            <div id="C001391S6_source" class="dyn-source">
+<pre>
+Ground blargCalled = [] 
+blarg = method(Ground blargCalled &lt;&lt;(:true), 1 ..(10)) 
+case(5, 
+  blarg, :foo) should ==(:foo) 
+blargCalled should ==([](:true)) 
+Ground wowserCalled = [] 
+DefaultBehavior Case cell("case:caseTestWowser") = method(+(args), 
+    wowserCalled &lt;&lt;(:mix) 
+    1 ...(10)) 
+case(5, 
+  caseTestWowser, :foo) should ==(:foo) 
+case(5, 
+  caseTestWowser(1, 2, 3), :foo) should ==(:foo) 
+wowserCalled should ==([](:mix, :mix)) 
+case(5, 
+  caseTestWowser(1, caseTestWowser(44), 3), :foo) should ==(:foo) 
+wowserCalled should ==([](:mix, :mix, :mix, :mix)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00145"></a><b>case:and</b>(+args)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00145_source')" id="l_C00145_source">show source</a> ]</p>
+            <div id="C00145_source" class="dyn-source">
+<pre>
+method(+args, 
+  DefaultBehavior Case AndCombiner with(components: args))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> DefaultBehavior Case case:and</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return an object that calls === on each argument and returns true if all are true <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001451S0_source')" id="l_C001451S0_source">show source</a> ]</span>
+            <div id="C001451S0_source" class="dyn-source">
+<pre>
+Ground calledWith = [] 
+x = Origin mimic 
+y = Origin mimic 
+x === = method(other, 
+    Ground calledWith &lt;&lt;([](:x, other)) 
+    true) 
+y === = method(other, 
+    Ground calledWith &lt;&lt;([](:y, other)) 
+    true) 
+case:and(x, y) should ===(42) 
+Ground calledWith should ==([]([](:x, 42), [](:y, 42))) 
+case:and(1 ..(5), 3 ..(4)) should ===(4) 
+x === = method(other, 
+    Ground calledWith &lt;&lt;([](:x, other)) 
+    false) 
+Ground calledWith = [] 
+(case:and(x, y) ===(43)) should be false 
+Ground calledWith should ==([]([](:x, 43))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to use within a case-expression <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001451S1_source')" id="l_C001451S1_source">show source</a> ]</span>
+            <div id="C001451S1_source" class="dyn-source">
+<pre>
+case(42, and(1 ..(50), 40 ..(45)), :foo) should ==(:foo) 
+case(42, and(and(40 ..(43)), 40 ..(45)), :foo) should ==(:foo) 
+case(42, and(and(and(40 ..(43), 10 ...(12))), 40 ..(45)), :foo) should be nil 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00172"></a><b>case:else</b>()
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00172_source')" id="l_C00172_source">show source</a> ]</p>
+            <div id="C00172_source" class="dyn-source">
+<pre>
+method(
+  DefaultBehavior Case Else)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> DefaultBehavior Case case:else</b><br/>
+<ul style="list-style-type: none;">
+<li>- should not take any arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001721S0_source')" id="l_C001721S0_source">show source</a> ]</span>
+            <div id="C001721S0_source" class="dyn-source">
+<pre>
+fn(case:else(1)) should signal(Condition Error Invocation TooManyArguments) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return an object that returns true from === <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001721S1_source')" id="l_C001721S1_source">show source</a> ]</span>
+            <div id="C001721S1_source" class="dyn-source">
+<pre>
+(case:else ===(:x)) should be true 
+(case:else ===(nil)) should be true 
+(case:else ===(42)) should be true 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00158"></a><b>case:nand</b>(first, +args)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00158_source')" id="l_C00158_source">show source</a> ]</p>
+            <div id="C00158_source" class="dyn-source">
+<pre>
+method(first, +args, 
+  DefaultBehavior Case NAndCombiner with(first: first, components: args))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> DefaultBehavior Case case:nand</b><br/>
+<ul style="list-style-type: none;">
+<li>- should take at least one argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001581S0_source')" id="l_C001581S0_source">show source</a> ]</span>
+            <div id="C001581S0_source" class="dyn-source">
+<pre>
+fn(case:nand) should signal(Condition Error Invocation TooFewArguments) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return an object that fulfills the nand protocal when called with === <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001581S1_source')" id="l_C001581S1_source">show source</a> ]</span>
+            <div id="C001581S1_source" class="dyn-source">
+<pre>
+(case:nand(1 ..(5)) ===(2)) should be false 
+(case:nand(1 ..(5)) ===(6)) should be true 
+(case:nand(1 ..(5), 1 ...(3)) ===(2)) should be false 
+(case:nand(1 ..(5), 1 ...(2)) ===(6)) should be true 
+(case:nand(1 ..(5), 1 ..(7)) ===(6)) should be true 
+(case:nand(1 ..(7), 1 ..(5)) ===(6)) should be true 
+(case:nand(1 ..(5), 1 ...(3), 2 ..(3)) ===(2)) should be false 
+(case:nand(1 ..(5), 1 ...(2), 1 ..(3)) ===(6)) should be true 
+(case:nand(1 ..(5), 1 ..(7), 1 ..(3)) ===(6)) should be true 
+(case:nand(1 ..(7), 1 ..(5), 1 ..(3)) ===(6)) should be true 
+(case:nand(1 ..(5), 1 ...(2), 1 ..(100)) ===(6)) should be true 
+(case:nand(1 ..(5), 1 ..(7), 1 ..(100)) ===(6)) should be true 
+(case:nand(1 ..(7), 1 ..(5), 1 ..(100)) ===(6)) should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to use within a case-expression <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001581S2_source')" id="l_C001581S2_source">show source</a> ]</span>
+            <div id="C001581S2_source" class="dyn-source">
+<pre>
+case(42, nand(1 ..(30)), :foo) should ==(:foo) 
+case(42, nand(nand(1 ..(50), 43 ..(50)), 42 ..(43)), :foo) should be nil 
+case(42, nand(nand(1 ..(50), 40 ..(50)), 43 ..(44)), :foo) should ==(:foo) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00163"></a><b>case:nor</b>(first, +args)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00163_source')" id="l_C00163_source">show source</a> ]</p>
+            <div id="C00163_source" class="dyn-source">
+<pre>
+method(first, +args, 
+  DefaultBehavior Case NOrCombiner with(first: first, components: args))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> DefaultBehavior Case case:nor</b><br/>
+<ul style="list-style-type: none;">
+<li>- should take at least one argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001631S0_source')" id="l_C001631S0_source">show source</a> ]</span>
+            <div id="C001631S0_source" class="dyn-source">
+<pre>
+fn(case:nor) should signal(Condition Error Invocation TooFewArguments) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return an object that fulfills the nor protocal when called with === <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001631S1_source')" id="l_C001631S1_source">show source</a> ]</span>
+            <div id="C001631S1_source" class="dyn-source">
+<pre>
+(case:nor(1 ..(5)) ===(2)) should be false 
+(case:nor(1 ..(5)) ===(6)) should be true 
+(case:nor(1 ..(5), 1 ...(3)) ===(2)) should be false 
+(case:nor(1 ..(5), 1 ...(2)) ===(6)) should be true 
+(case:nor(1 ..(5), 1 ..(7)) ===(6)) should be false 
+(case:nor(1 ..(7), 1 ..(5)) ===(6)) should be false 
+(case:nor(1 ..(5), 1 ...(3), 2 ..(3)) ===(2)) should be false 
+(case:nor(1 ..(5), 1 ...(2), 1 ..(3)) ===(6)) should be true 
+(case:nor(1 ..(5), 1 ..(7), 1 ..(3)) ===(6)) should be false 
+(case:nor(1 ..(7), 1 ..(5), 1 ..(3)) ===(6)) should be false 
+(case:nor(1 ..(5), 1 ...(2), 1 ..(100)) ===(6)) should be false 
+(case:nor(1 ..(5), 1 ..(7), 1 ..(100)) ===(6)) should be false 
+(case:nor(1 ..(7), 1 ..(5), 1 ..(100)) ===(6)) should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to use within a case-expression <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001631S2_source')" id="l_C001631S2_source">show source</a> ]</span>
+            <div id="C001631S2_source" class="dyn-source">
+<pre>
+case(42, nor(1 ..(30)), :foo) should ==(:foo) 
+case(42, nor(nor(1 ..(50), 43 ..(50)), 42 ..(43)), :foo) should be nil 
+case(42, nor(nor(1 ..(50), 40 ..(50)), 43 ..(44)), :foo) should ==(:foo) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00153"></a><b>case:not</b>(other)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00153_source')" id="l_C00153_source">show source</a> ]</p>
+            <div id="C00153_source" class="dyn-source">
+<pre>
+method(other, 
+  DefaultBehavior Case NotCombiner with(other: other))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> DefaultBehavior Case case:not</b><br/>
+<ul style="list-style-type: none;">
+<li>- should take exactly one argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001531S0_source')" id="l_C001531S0_source">show source</a> ]</span>
+            <div id="C001531S0_source" class="dyn-source">
+<pre>
+fn(case:not) should signal(Condition Error Invocation TooFewArguments) 
+fn(case:not(1, 2)) should signal(Condition Error Invocation TooManyArguments) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return an object that when calling === on it will return the inverse of the argument to it <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001531S1_source')" id="l_C001531S1_source">show source</a> ]</span>
+            <div id="C001531S1_source" class="dyn-source">
+<pre>
+(case:not(1 ..(5)) ===(0)) should be true 
+(case:not(1 ..(5)) ===(1)) should be false 
+(case:not(1 ..(5)) ===(2)) should be false 
+(case:not(1 ..(5)) ===(3)) should be false 
+(case:not(1 ..(5)) ===(4)) should be false 
+(case:not(1 ..(5)) ===(5)) should be false 
+(case:not(1 ..(5)) ===(6)) should be true 
+(case:not(1 ...(5)) ===(0)) should be true 
+(case:not(1 ...(5)) ===(1)) should be false 
+(case:not(1 ...(5)) ===(2)) should be false 
+(case:not(1 ...(5)) ===(3)) should be false 
+(case:not(1 ...(5)) ===(4)) should be false 
+(case:not(1 ...(5)) ===(5)) should be true 
+(case:not(1 ...(5)) ===(6)) should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to use within a case-expression <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001531S2_source')" id="l_C001531S2_source">show source</a> ]</span>
+            <div id="C001531S2_source" class="dyn-source">
+<pre>
+case(42, not(1 ..(30)), :foo) should ==(:foo) 
+case(42, not(not(not(30 ..(33)))), :foo) should ==(:foo) 
+case(42, not(not(30 ..(33))), :foo) should be nil 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00149"></a><b>case:or</b>(+args)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00149_source')" id="l_C00149_source">show source</a> ]</p>
+            <div id="C00149_source" class="dyn-source">
+<pre>
+method(+args, 
+  DefaultBehavior Case OrCombiner with(components: args))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> DefaultBehavior Case case:or</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return an object that calls === on each argument and returns true if at least one are true <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001491S0_source')" id="l_C001491S0_source">show source</a> ]</span>
+            <div id="C001491S0_source" class="dyn-source">
+<pre>
+Ground calledWith = [] 
+x = Origin mimic 
+y = Origin mimic 
+x === = method(other, 
+    Ground calledWith &lt;&lt;([](:x, other)) 
+    true) 
+y === = method(other, 
+    Ground calledWith &lt;&lt;([](:y, other)) 
+    true) 
+(case:or(x, y) ===(42)) should be true 
+Ground calledWith should ==([]([](:x, 42))) 
+(case:or(1 ..(3), 3 ..(4)) ===(4)) should be true 
+x === = method(other, 
+    Ground calledWith &lt;&lt;([](:x, other)) 
+    false) 
+(case:or(x, x) ===(43)) should be false 
+Ground calledWith = [] 
+(case:or(x, y) ===(43)) should be true 
+Ground calledWith should ==([]([](:x, 43), [](:y, 43))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to use within a case-expression <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001491S1_source')" id="l_C001491S1_source">show source</a> ]</span>
+            <div id="C001491S1_source" class="dyn-source">
+<pre>
+case(42, or(1 ..(40), 40 ..(45)), :foo) should ==(:foo) 
+case(42, or(or(50 ..(53)), 40 ..(45)), :foo) should ==(:foo) 
+case(42, or(or(or(30 ..(33), 10 ...(12))), 40 ..(41)), :foo) should be nil 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00171"></a><b>case:otherwise</b>()
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00171_source')" id="l_C00171_source">show source</a> ]</p>
+            <div id="C00171_source" class="dyn-source">
+<pre>
+method(
+  DefaultBehavior Case Else)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> DefaultBehavior Case case:otherwise</b><br/>
+<ul style="list-style-type: none;">
+<li>- should not take any arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001711S0_source')" id="l_C001711S0_source">show source</a> ]</span>
+            <div id="C001711S0_source" class="dyn-source">
+<pre>
+fn(case:otherwise(1)) should signal(Condition Error Invocation TooManyArguments) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return an object that returns true from === <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001711S1_source')" id="l_C001711S1_source">show source</a> ]</span>
+            <div id="C001711S1_source" class="dyn-source">
+<pre>
+(case:otherwise ===(:x)) should be true 
+(case:otherwise ===(nil)) should be true 
+(case:otherwise ===(42)) should be true 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00168"></a><b>case:xor</b>(first, +args)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00168_source')" id="l_C00168_source">show source</a> ]</p>
+            <div id="C00168_source" class="dyn-source">
+<pre>
+method(first, +args, 
+  DefaultBehavior Case XOrCombiner with(first: first, components: args))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> DefaultBehavior Case case:xor</b><br/>
+<ul style="list-style-type: none;">
+<li>- should take at least one argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001681S0_source')" id="l_C001681S0_source">show source</a> ]</span>
+            <div id="C001681S0_source" class="dyn-source">
+<pre>
+fn(case:xor) should signal(Condition Error Invocation TooFewArguments) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return an object that fulfills the xor protocal when called with === <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001681S1_source')" id="l_C001681S1_source">show source</a> ]</span>
+            <div id="C001681S1_source" class="dyn-source">
+<pre>
+(case:xor(1 ..(5)) ===(2)) should be true 
+(case:xor(1 ..(5)) ===(6)) should be false 
+(case:xor(1 ..(5), 1 ...(3)) ===(2)) should be false 
+(case:xor(1 ..(5), 1 ...(2)) ===(6)) should be false 
+(case:xor(1 ..(5), 1 ..(7)) ===(6)) should be true 
+(case:xor(1 ..(7), 1 ..(5)) ===(6)) should be true 
+(case:xor(1 ..(5), 1 ...(3), 2 ..(3)) ===(2)) should be false 
+(case:xor(1 ..(5), 1 ...(2), 1 ..(3)) ===(6)) should be false 
+(case:xor(1 ..(5), 1 ..(7), 1 ..(3)) ===(6)) should be true 
+(case:xor(1 ..(7), 1 ..(5), 1 ..(3)) ===(6)) should be true 
+(case:xor(1 ..(5), 1 ...(2), 1 ..(100)) ===(6)) should be true 
+(case:xor(1 ..(5), 1 ..(7), 1 ..(100)) ===(6)) should be false 
+(case:xor(1 ..(7), 1 ..(5), 1 ..(100)) ===(6)) should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to use within a case-expression <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C001681S2_source')" id="l_C001681S2_source">show source</a> ]</span>
+            <div id="C001681S2_source" class="dyn-source">
+<pre>
+case(42, xor(1 ..(50)), :foo) should ==(:foo) 
+case(42, xor(xor(1 ..(50), 43 ..(50)), 42 ..(43)), :foo) should be nil 
+case(42, xor(xor(1 ..(50), 40 ..(50)), 42 ..(44)), :foo) should ==(:foo) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </body>
+</html>

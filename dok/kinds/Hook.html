@@ -1,0 +1,1284 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Kind: DefaultBehavior</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href=".././dokgen-style.css" type="text/css" media="screen" />
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=480,width=750" ).focus();
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+    <table border='0' cellpadding='0' cellspacing='0' width="100%" class='banner'>
+      <tr>
+        <td>
+          <table width="100%" border='0' cellpadding='0' cellspacing='0'>
+            <tr>
+              <td class="file-title" colspan="2">
+                <span class="file-title-prefix">Kind</span>
+                <br />
+                Hook
+              </td>
+              <td align="right">
+                <table cellspacing="0" cellpadding="2">
+                  <tr>
+                    <td>Main mimic:</td>
+                    <td>
+                      <a href="../kinds/Origin.html">Origin</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <div id="bodyContent">
+      <div id="content">
+        <div class="description">
+          <p>
+A hook allow you to observe what happens to a specific object. All hooks have Hook in their mimic chain.
+          </p>
+        </div>
+
+        <div class="sectiontitle">Mimics</div>
+        <ul>
+          <li><a href="../kinds/Origin.html">Origin</a></li>
+        </ul>
+
+        <div class="sectiontitle">Inactive cells</div>
+        <ul>
+          <li><a href="#C001147">kind</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Active cells</div>
+        <ul>
+          <li><a href="#C001151">cellAdded(obj, sym)</a></li>
+<li><a href="#C001152">cellChanged(obj, sym, originalValue)</a></li>
+<li><a href="#C001153">cellRemoved(obj, sym, originalValue)</a></li>
+<li><a href="#C001154">cellUndefined(obj, sym, originalValue)</a></li>
+<li><a href="#C001149">connectedObjects()</a></li>
+<li><a href="#C001150">hook!(objectToHookInto)</a></li>
+<li><a href="#C001148">into(firstConnected, +restConnected)</a></li>
+<li><a href="#C001155">mimicAdded(obj, newMimic)</a></li>
+<li><a href="#C001156">mimicRemoved(obj, removedMimic)</a></li>
+<li><a href="#C001158">mimicked(obj, newMimicker)</a></li>
+<li><a href="#C001157">mimicsChanged(obj, changedMimic)</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Specs</div>
+        <div class="specs">
+          
+        </div>
+
+        <div class="sectiontitle">Inactive cells (details)</div>
+                <div class="cell">
+          <a name="C001147"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">kind</td>
+              <td>=</td>
+              <td class="cell-value">"Hook"</td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="sectiontitle">Active cells (details)</div>
+                <div class="cell">
+          <div class="title">
+          <a name="C001151"></a><b>cellAdded</b>(obj, sym)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C001151_source')" id="l_C001151_source">show source</a> ]</p>
+            <div id="C001151_source" class="dyn-source">
+<pre>
+method(obj, sym, 
+  nil)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Hook cellAdded</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be called on the hook when a cell is added on the observed object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011511S0_source')" id="l_C0011511S0_source">show source</a> ]</span>
+            <div id="C0011511S0_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+yy = Hook into(xx) 
+yy invoked = 0 
+yy cellAdded = method(obj, _, @ ++(invoked)) 
+xx bar = "hello" 
+yy invoked should ==(1) 
+xx flux = method(nil) 
+yy invoked should ==(2) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be called after the cell has been added <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011511S1_source')" id="l_C0011511S1_source">show source</a> ]</span>
+            <div id="C0011511S1_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+yy = Hook into(xx) 
+yy cellAdded = fnx(obj, _, 
+    xx fox should ==("blarg") 
+    ) 
+xx fox = "blarg" 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should give the object that has been updated <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011511S2_source')" id="l_C0011511S2_source">show source</a> ]</span>
+            <div id="C0011511S2_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+yy = Hook into(xx) 
+yy cellAdded = fnx(obj, _, 
+    obj should be(xx) 
+    ) 
+xx fox = "blarg" 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should give the name of the added cell to the hook as an argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011511S3_source')" id="l_C0011511S3_source">show source</a> ]</span>
+            <div id="C0011511S3_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+yy = Hook into(xx) 
+yy cellAdded = fnx(obj, sym, 
+    sym should ==(:fox) 
+    ) 
+xx fox = "blarg" 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should fire on more than one hook if available <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011511S4_source')" id="l_C0011511S4_source">show source</a> ]</span>
+            <div id="C0011511S4_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+yy = Origin mimic 
+zz = Hook into(xx, yy) 
+zz invoked = 0 
+zz cellAdded = method(_, _, 
+    @ ++(invoked) 
+    ) 
+xx blah = "arg" 
+yy foo = "ax" 
+yy muuh = "wow" 
+zz invoked should ==(3) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not fire when a cell is updated <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011511S5_source')" id="l_C0011511S5_source">show source</a> ]</span>
+            <div id="C0011511S5_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+yy = Hook into(xx) 
+xx blarg = "hello" 
+yy invoked = 0 
+yy cellAdded = method(obj, _, @ ++(invoked)) 
+xx blarg = "goodbye" 
+yy invoked should ==(0) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001152"></a><b>cellChanged</b>(obj, sym, originalValue)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C001152_source')" id="l_C001152_source">show source</a> ]</p>
+            <div id="C001152_source" class="dyn-source">
+<pre>
+method(obj, sym, originalValue, 
+  nil)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Hook cellChanged</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be called on the hook when a cell is added on the observed object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011521S0_source')" id="l_C0011521S0_source">show source</a> ]</span>
+            <div id="C0011521S0_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+yy = Hook into(xx) 
+yy invoked = 0 
+yy cellChanged = method(_, _, _, @ ++(invoked)) 
+xx bar = "hello" 
+yy invoked should ==(1) 
+xx flux = method(nil) 
+yy invoked should ==(2) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should yield nil as the previous value when adding a cell <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011521S1_source')" id="l_C0011521S1_source">show source</a> ]</span>
+            <div id="C0011521S1_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+yy = Hook into(xx) 
+yy cellChanged = method(_, _, prev, prev should be nil) 
+xx bar = "hello" 
+xx flux = method(nil) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be called on the hook when a cell is removed on the observed object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011521S2_source')" id="l_C0011521S2_source">show source</a> ]</span>
+            <div id="C0011521S2_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+xx one = 42 
+xx two = 43 
+yy = Hook into(xx) 
+yy invoked = 0 
+yy cellChanged = method(_, _, _, @ ++(invoked)) 
+xx removeCell!(:one) 
+yy invoked should ==(1) 
+xx removeCell!(:two) 
+yy invoked should ==(2) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be called after the cell has been removed <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011521S3_source')" id="l_C0011521S3_source">show source</a> ]</span>
+            <div id="C0011521S3_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+xx one = 42 
+yy = Hook into(xx) 
+yy cellChanged = fnx(_, _, _, xx cell?(:one) should be false) 
+xx removeCell!(:one) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should yield the original value of the cell when removing <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011521S4_source')" id="l_C0011521S4_source">show source</a> ]</span>
+            <div id="C0011521S4_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+xx val = "foxy" 
+yy = Hook into(xx) 
+yy cellChanged = fnx(_, _, orig, orig should ==("foxy")) 
+xx removeCell!(:val) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be called on the hook when a cell is undefined on the observed object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011521S5_source')" id="l_C0011521S5_source">show source</a> ]</span>
+            <div id="C0011521S5_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+xx one = 42 
+xx two = 43 
+yy = Hook into(xx) 
+yy invoked = 0 
+yy cellChanged = method(_, _, _, @ ++(invoked)) 
+xx undefineCell!(:one) 
+yy invoked should ==(1) 
+xx undefineCell!(:two) 
+yy invoked should ==(2) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be called after the cell has been undefined <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011521S6_source')" id="l_C0011521S6_source">show source</a> ]</span>
+            <div id="C0011521S6_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+xx one = 42 
+yy = Hook into(xx) 
+yy cellChanged = fnx(_, _, _, xx cell?(:one) should be false) 
+xx undefineCell!(:one) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should yield the original value of the cell when undefined <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011521S7_source')" id="l_C0011521S7_source">show source</a> ]</span>
+            <div id="C0011521S7_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+xx val = "foxy" 
+yy = Hook into(xx) 
+yy cellChanged = fnx(_, _, orig, orig should ==("foxy")) 
+xx undefineCell!(:val) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be called on the hook when a cell is changed on the observed object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011521S8_source')" id="l_C0011521S8_source">show source</a> ]</span>
+            <div id="C0011521S8_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+xx val = "foxy" 
+yy = Hook into(xx) 
+yy invoked = 0 
+yy cellChanged = method(_, _, _, @ ++(invoked)) 
+xx val = "blaxy" 
+yy invoked should ==(1) 
+xx val = "no way" 
+yy invoked should ==(2) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be called after the change <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011521S9_source')" id="l_C0011521S9_source">show source</a> ]</span>
+            <div id="C0011521S9_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+xx val = "foxy" 
+yy = Hook into(xx) 
+yy cellChanged = fnx(_, _, _, xx val should ==("more")) 
+xx val = "more" 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should yield the object the change happened on <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011521S10_source')" id="l_C0011521S10_source">show source</a> ]</span>
+            <div id="C0011521S10_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+xx val = "foxy" 
+yy = Hook into(xx) 
+yy cellChanged = fnx(obj, _, _, obj should be(xx)) 
+xx val = "more" 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should yield the name of the cell <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011521S11_source')" id="l_C0011521S11_source">show source</a> ]</span>
+            <div id="C0011521S11_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+xx val = "foxy" 
+yy = Hook into(xx) 
+yy cellChanged = fnx(_, sym, _, sym should ==(:val)) 
+xx val = "more" 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should yield the original value of the cell <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011521S12_source')" id="l_C0011521S12_source">show source</a> ]</span>
+            <div id="C0011521S12_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+xx val = "foxy" 
+yy = Hook into(xx) 
+yy cellChanged = fnx(_, _, orig, orig should ==("foxy")) 
+xx val = "more" 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should fire on more than one hook if available <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011521S13_source')" id="l_C0011521S13_source">show source</a> ]</span>
+            <div id="C0011521S13_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+yy = Origin mimic 
+zz = Hook into(xx, yy) 
+zz invoked = 0 
+zz cellChanged = method(_, _, _, 
+    @ ++(invoked) 
+    ) 
+xx blah = "arg" 
+yy foo = "ax" 
+yy muuh = "wow" 
+xx blah = "no way" 
+zz invoked should ==(4) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001153"></a><b>cellRemoved</b>(obj, sym, originalValue)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C001153_source')" id="l_C001153_source">show source</a> ]</p>
+            <div id="C001153_source" class="dyn-source">
+<pre>
+method(obj, sym, originalValue, 
+  nil)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Hook cellRemoved</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be called on the hook when a cell is removed on the observed object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011531S0_source')" id="l_C0011531S0_source">show source</a> ]</span>
+            <div id="C0011531S0_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+xx val = "foo" 
+xx vax = "fox" 
+yy = Hook into(xx) 
+yy invoked = 0 
+yy cellRemoved = method(_, _, _, @ ++(invoked)) 
+xx removeCell!(:val) 
+yy invoked should ==(1) 
+xx removeCell!(:vax) 
+yy invoked should ==(2) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be called after cellChanged <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011531S1_source')" id="l_C0011531S1_source">show source</a> ]</span>
+            <div id="C0011531S1_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+xx val = "foo" 
+yy = Hook into(xx) 
+yy doneCellChanged? = false 
+yy cellChanged = method(_, _, _, @ doneCellChanged? = true) 
+yy cellRemoved = method(_, _, _, should have doneCellChanged) 
+xx removeCell!(:val) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be called after the cell has been removed <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011531S2_source')" id="l_C0011531S2_source">show source</a> ]</span>
+            <div id="C0011531S2_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+xx one = 42 
+yy = Hook into(xx) 
+yy cellRemoved = fnx(_, _, _, xx cell?(:one) should be false) 
+xx removeCell!(:one) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should yield the object the cell belonged on <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011531S3_source')" id="l_C0011531S3_source">show source</a> ]</span>
+            <div id="C0011531S3_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+xx one = 42 
+yy = Hook into(xx) 
+yy cellRemoved = fnx(obj, _, _, obj should be(xx)) 
+xx removeCell!(:one) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should yield the name of the cell <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011531S4_source')" id="l_C0011531S4_source">show source</a> ]</span>
+            <div id="C0011531S4_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+xx one = 42 
+yy = Hook into(xx) 
+yy cellRemoved = fnx(_, sym, _, sym should ==(:one)) 
+xx removeCell!(:one) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should yield the previous value of the cell <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011531S5_source')" id="l_C0011531S5_source">show source</a> ]</span>
+            <div id="C0011531S5_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+xx one = 42 
+yy = Hook into(xx) 
+yy cellRemoved = fnx(_, _, prev, prev should ==(42)) 
+xx removeCell!(:one) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001154"></a><b>cellUndefined</b>(obj, sym, originalValue)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C001154_source')" id="l_C001154_source">show source</a> ]</p>
+            <div id="C001154_source" class="dyn-source">
+<pre>
+method(obj, sym, originalValue, 
+  nil)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Hook cellUndefined</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be called on the hook when a cell is removed on the observed object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011541S0_source')" id="l_C0011541S0_source">show source</a> ]</span>
+            <div id="C0011541S0_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+xx val = "foo" 
+xx vax = "fox" 
+yy = Hook into(xx) 
+yy invoked = 0 
+yy cellUndefined = method(_, _, _, @ ++(invoked)) 
+xx undefineCell!(:val) 
+yy invoked should ==(1) 
+xx undefineCell!(:vax) 
+yy invoked should ==(2) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be called after cellChanged <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011541S1_source')" id="l_C0011541S1_source">show source</a> ]</span>
+            <div id="C0011541S1_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+xx val = "foo" 
+yy = Hook into(xx) 
+yy doneCellChanged? = false 
+yy cellChanged = method(_, _, _, @ doneCellChanged? = true) 
+yy cellUndefined = method(_, _, _, should have doneCellChanged) 
+xx undefineCell!(:val) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be called after the cell has been undefined <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011541S2_source')" id="l_C0011541S2_source">show source</a> ]</span>
+            <div id="C0011541S2_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+xx one = 42 
+yy = Hook into(xx) 
+yy cellUndefined = fnx(_, _, _, xx cell?(:one) should be false) 
+xx undefineCell!(:one) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should yield the object the cell belonged on <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011541S3_source')" id="l_C0011541S3_source">show source</a> ]</span>
+            <div id="C0011541S3_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+xx one = 42 
+yy = Hook into(xx) 
+yy cellUndefined = fnx(obj, _, _, obj should be(xx)) 
+xx undefineCell!(:one) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should yield the name of the cell <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011541S4_source')" id="l_C0011541S4_source">show source</a> ]</span>
+            <div id="C0011541S4_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+xx one = 42 
+yy = Hook into(xx) 
+yy cellUndefined = fnx(_, sym, _, sym should ==(:one)) 
+xx undefineCell!(:one) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should yield the previous value of the cell <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011541S5_source')" id="l_C0011541S5_source">show source</a> ]</span>
+            <div id="C0011541S5_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+xx one = 42 
+yy = Hook into(xx) 
+yy cellUndefined = fnx(_, _, prev, prev should ==(42)) 
+xx undefineCell!(:one) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001149"></a><b>connectedObjects</b>()
+          </div>
+          <div class="description">
+            <p>returns the objects this hook is connected to</p>
+          </div>
+          
+          <div class="specs">
+            <b> Hook connectedObjects</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return the connected objects for that hook <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011491S0_source')" id="l_C0011491S0_source">show source</a> ]</span>
+            <div id="C0011491S0_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = Origin mimic 
+z = Origin mimic 
+Hook into(x) connectedObjects [](0) should be(x) 
+Hook into(x, y) connectedObjects [](0) should be(x) 
+Hook into(x, y) connectedObjects [](1) should be(y) 
+Hook into(x, y, z) connectedObjects [](0) should be(x) 
+Hook into(x, y, z) connectedObjects [](1) should be(y) 
+Hook into(x, y, z) connectedObjects [](2) should be(z) 
+Hook into(x, y, z) connectedObjects length should ==(3) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001150"></a><b>hook!</b>(objectToHookInto)
+          </div>
+          <div class="description">
+            <p>Takes one argument and will add that to the list of connected objects</p>
+          </div>
+          
+          <div class="specs">
+            <b> Hook hook!</b><br/>
+<ul style="list-style-type: none;">
+<li>- should add a new observed object to the receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011501S0_source')" id="l_C0011501S0_source">show source</a> ]</span>
+            <div id="C0011501S0_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+yy = Hook into(xx) 
+zz = Origin mimic 
+yy hook!(zz) 
+yy connectedObjects [](1) should be(zz) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001148"></a><b>into</b>(firstConnected, +restConnected)
+          </div>
+          <div class="description">
+            <p>Takes one or more arguments to hook into and returns a new Hook connected to them.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Hook into</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return a new hook object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011481S0_source')" id="l_C0011481S0_source">show source</a> ]</span>
+            <div id="C0011481S0_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+yy = Hook into(xx) 
+yy should mimic(Hook) 
+yy should not be(Hook) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take one or more arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011481S1_source')" id="l_C0011481S1_source">show source</a> ]</span>
+            <div id="C0011481S1_source" class="dyn-source">
+<pre>
+Hook into(Origin mimic) 
+Hook into(Origin mimic, Origin mimic) 
+Hook into(Origin mimic, Origin mimic, Origin mimic) 
+Hook into(Origin mimic, Origin mimic, Origin mimic, Origin mimic) 
+Hook into(Origin mimic, Origin mimic, Origin mimic, Origin mimic, Origin mimic) 
+fn(Hook into) should signal(Condition Error Invocation TooFewArguments) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001155"></a><b>mimicAdded</b>(obj, newMimic)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C001155_source')" id="l_C001155_source">show source</a> ]</p>
+            <div id="C001155_source" class="dyn-source">
+<pre>
+method(obj, newMimic, 
+  nil)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Hook mimicAdded</b><br/>
+<ul style="list-style-type: none;">
+<li>- should call the hook when a mimic gets added <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011551S0_source')" id="l_C0011551S0_source">show source</a> ]</span>
+            <div id="C0011551S0_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+yy = Hook into(xx) 
+blah = Origin mimic 
+blah2 = Origin mimic 
+yy invoked = 0 
+yy mimicAdded = method(_, _, @ ++(invoked)) 
+xx mimic!(blah) 
+yy invoked should ==(1) 
+xx mimic!(blah2) 
+yy invoked should ==(2) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should yield the object the mimic was added to <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011551S1_source')" id="l_C0011551S1_source">show source</a> ]</span>
+            <div id="C0011551S1_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+yy = Hook into(xx) 
+blah = Origin mimic 
+yy mimicAdded = fnx(obj, _, obj should be(xx)) 
+xx mimic!(blah) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should yield the mimic added <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011551S2_source')" id="l_C0011551S2_source">show source</a> ]</span>
+            <div id="C0011551S2_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+yy = Hook into(xx) 
+blah = Origin mimic 
+yy mimicAdded = fnx(_, m, m should be(blah)) 
+xx mimic!(blah) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should work correctly when using prependMimic! <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011551S3_source')" id="l_C0011551S3_source">show source</a> ]</span>
+            <div id="C0011551S3_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+yy = Hook into(xx) 
+blah = Origin mimic 
+blah2 = Origin mimic 
+yy invoked = 0 
+yy mimicAdded = method(_, _, @ ++(invoked)) 
+xx prependMimic!(blah) 
+yy invoked should ==(1) 
+xx prependMimic!(blah2) 
+yy invoked should ==(2) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should fire after the mimic has been added <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011551S4_source')" id="l_C0011551S4_source">show source</a> ]</span>
+            <div id="C0011551S4_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+yy = Hook into(xx) 
+blah = Origin mimic 
+yy mimicAdded = fnx(_, _, xx should mimic(blah)) 
+xx mimic!(blah) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001156"></a><b>mimicRemoved</b>(obj, removedMimic)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C001156_source')" id="l_C001156_source">show source</a> ]</p>
+            <div id="C001156_source" class="dyn-source">
+<pre>
+method(obj, removedMimic, 
+  nil)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Hook mimicRemoved</b><br/>
+<ul style="list-style-type: none;">
+<li>- should fire after a mimic has been removed <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011561S0_source')" id="l_C0011561S0_source">show source</a> ]</span>
+            <div id="C0011561S0_source" class="dyn-source">
+<pre>
+Bex = Origin mimic 
+xx = Bex mimic 
+xx mimic!(Origin) 
+yy = Hook into(xx) 
+yy invoked = 0 
+yy mimicRemoved = method(_, _, @ ++(invoked)) 
+xx removeMimic!(Bex) 
+yy invoked should ==(1) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should fire after the mimic has been removed <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011561S1_source')" id="l_C0011561S1_source">show source</a> ]</span>
+            <div id="C0011561S1_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+blah = Origin mimic 
+xx mimic!(blah) 
+yy = Hook into(xx) 
+yy mimicRemoved = fnx(_, _, xx should not mimic(blah)) 
+xx removeMimic!(blah) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should fire once for every mimic removed when you are removing more than one mimic <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011561S2_source')" id="l_C0011561S2_source">show source</a> ]</span>
+            <div id="C0011561S2_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+blah = Origin mimic 
+foox = Origin mimic 
+xx mimic!(blah) 
+xx mimic!(foox) 
+yy = Hook into(xx) 
+yy invoked = 0 
+yy mimicRemoved = method(_, _, @ ++(invoked)) 
+xx removeAllMimics! 
+yy invoked should ==(3) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should yield the object the event happened on <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011561S3_source')" id="l_C0011561S3_source">show source</a> ]</span>
+            <div id="C0011561S3_source" class="dyn-source">
+<pre>
+Bex = Origin mimic 
+xx = Bex mimic 
+xx mimic!(Origin) 
+yy = Hook into(xx) 
+yy mimicRemoved = fnx(obj, _, obj should be(xx)) 
+xx removeMimic!(Bex) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should yield the mimic that was removed <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011561S4_source')" id="l_C0011561S4_source">show source</a> ]</span>
+            <div id="C0011561S4_source" class="dyn-source">
+<pre>
+Bex = Origin mimic 
+xx = Bex mimic 
+xx mimic!(Origin) 
+yy = Hook into(xx) 
+yy mimicRemoved = fnx(_, mm, mm should be(Bex)) 
+xx removeMimic!(Bex) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001158"></a><b>mimicked</b>(obj, newMimicker)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C001158_source')" id="l_C001158_source">show source</a> ]</p>
+            <div id="C001158_source" class="dyn-source">
+<pre>
+method(obj, newMimicker, 
+  nil)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Hook mimicked</b><br/>
+<ul style="list-style-type: none;">
+<li>- should fire when the object under observation gets mimicked <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011581S0_source')" id="l_C0011581S0_source">show source</a> ]</span>
+            <div id="C0011581S0_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+yy = Hook into(xx) 
+yy invoked = 0 
+yy mimicked = method(_, _, @ ++(invoked)) 
+xx mimic 
+yy invoked should ==(1) 
+xx mimic 
+xx mimic 
+yy invoked should ==(3) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should fire when a mimic is added after the fact with mimic! <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011581S1_source')" id="l_C0011581S1_source">show source</a> ]</span>
+            <div id="C0011581S1_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+zz = Origin mimic 
+yy = Hook into(xx) 
+yy invoked = 0 
+yy mimicked = method(_, _, @ ++(invoked)) 
+zz mimic!(xx) 
+yy invoked should ==(1) 
+Origin mimic mimic!(xx) 
+Origin mimic mimic!(xx) 
+yy invoked should ==(3) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should fire when a mimic is added after the fact with prependMimic! <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011581S2_source')" id="l_C0011581S2_source">show source</a> ]</span>
+            <div id="C0011581S2_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+zz = Origin mimic 
+yy = Hook into(xx) 
+yy invoked = 0 
+yy mimicked = method(_, _, @ ++(invoked)) 
+zz prependMimic!(xx) 
+yy invoked should ==(1) 
+Origin mimic prependMimic!(xx) 
+Origin mimic prependMimic!(xx) 
+yy invoked should ==(3) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should fire AFTER the object has been mimicked <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011581S3_source')" id="l_C0011581S3_source">show source</a> ]</span>
+            <div id="C0011581S3_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+zz = Origin mimic 
+yy = Hook into(xx) 
+yy mimicked = fnx(_, _, zz should mimic(xx)) 
+zz mimic!(xx) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should yield the object observed <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011581S4_source')" id="l_C0011581S4_source">show source</a> ]</span>
+            <div id="C0011581S4_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+yy = Hook into(xx) 
+yy mimicked = fnx(obj, _, obj should be(xx)) 
+xx mimic 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should yield the object that mimicked the observed object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011581S5_source')" id="l_C0011581S5_source">show source</a> ]</span>
+            <div id="C0011581S5_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+zz = Origin mimic 
+yy = Hook into(xx) 
+yy mimicked = fnx(_, mm, mm should be(zz)) 
+zz mimic!(xx) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001157"></a><b>mimicsChanged</b>(obj, changedMimic)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C001157_source')" id="l_C001157_source">show source</a> ]</p>
+            <div id="C001157_source" class="dyn-source">
+<pre>
+method(obj, changedMimic, 
+  nil)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Hook mimicsChanged</b><br/>
+<ul style="list-style-type: none;">
+<li>- should fire when a mimic is added <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011571S0_source')" id="l_C0011571S0_source">show source</a> ]</span>
+            <div id="C0011571S0_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+yy = Hook into(xx) 
+blah = Origin mimic 
+blah2 = Origin mimic 
+yy invoked = 0 
+yy mimicsChanged = method(_, _, @ ++(invoked)) 
+xx mimic!(blah) 
+yy invoked should ==(1) 
+xx mimic!(blah2) 
+yy invoked should ==(2) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should fire after the mimic is added <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011571S1_source')" id="l_C0011571S1_source">show source</a> ]</span>
+            <div id="C0011571S1_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+yy = Hook into(xx) 
+blah = Origin mimic 
+yy mimicsChanged = fnx(_, _, xx should mimic(blah)) 
+xx mimic!(blah) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should fire when a mimic is prepend added <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011571S2_source')" id="l_C0011571S2_source">show source</a> ]</span>
+            <div id="C0011571S2_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+yy = Hook into(xx) 
+blah = Origin mimic 
+blah2 = Origin mimic 
+yy invoked = 0 
+yy mimicsChanged = method(_, _, @ ++(invoked)) 
+xx prependMimic!(blah) 
+yy invoked should ==(1) 
+xx prependMimic!(blah2) 
+yy invoked should ==(2) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should fire after the mimic is prepend added <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011571S3_source')" id="l_C0011571S3_source">show source</a> ]</span>
+            <div id="C0011571S3_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+yy = Hook into(xx) 
+blah = Origin mimic 
+yy mimicsChanged = fnx(_, _, xx should mimic(blah)) 
+xx prependMimic!(blah) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should fire when a mimic is removed <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011571S4_source')" id="l_C0011571S4_source">show source</a> ]</span>
+            <div id="C0011571S4_source" class="dyn-source">
+<pre>
+Bex = Origin mimic 
+xx = Bex mimic 
+xx mimic!(Origin) 
+yy = Hook into(xx) 
+yy invoked = 0 
+yy mimicsChanged = method(_, _, @ ++(invoked)) 
+xx removeMimic!(Bex) 
+yy invoked should ==(1) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should fire after the mimic is removed <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011571S5_source')" id="l_C0011571S5_source">show source</a> ]</span>
+            <div id="C0011571S5_source" class="dyn-source">
+<pre>
+Bex = Origin mimic 
+xx = Bex mimic 
+xx mimic!(Origin) 
+yy = Hook into(xx) 
+yy mimicsChanged = fnx(_, _, xx should not mimic(Bex)) 
+xx removeMimic!(Bex) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should fire when a mimic is removed when all mimics are removed <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011571S6_source')" id="l_C0011571S6_source">show source</a> ]</span>
+            <div id="C0011571S6_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+blah = Origin mimic 
+foox = Origin mimic 
+xx mimic!(blah) 
+xx mimic!(foox) 
+yy = Hook into(xx) 
+yy invoked = 0 
+yy mimicsChanged = method(_, _, @ ++(invoked)) 
+xx removeAllMimics! 
+yy invoked should ==(3) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should yield the object that the change was made on <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011571S7_source')" id="l_C0011571S7_source">show source</a> ]</span>
+            <div id="C0011571S7_source" class="dyn-source">
+<pre>
+Bex = Origin mimic 
+xx = Bex mimic 
+xx mimic!(Origin) 
+yy = Hook into(xx) 
+yy mimicsChanged = fnx(obj, _, obj should be(xx)) 
+xx removeMimic!(Bex) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should yield the mimic that was added <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011571S8_source')" id="l_C0011571S8_source">show source</a> ]</span>
+            <div id="C0011571S8_source" class="dyn-source">
+<pre>
+xx = Origin mimic 
+yy = Hook into(xx) 
+blah = Origin mimic 
+yy mimicsChanged = fnx(_, addedMimic, addedMimic should be(blah)) 
+xx mimic!(blah) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should yield the mimic that was removed <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011571S9_source')" id="l_C0011571S9_source">show source</a> ]</span>
+            <div id="C0011571S9_source" class="dyn-source">
+<pre>
+Bex = Origin mimic 
+xx = Bex mimic 
+xx mimic!(Origin) 
+yy = Hook into(xx) 
+yy mimicsChanged = fnx(_, removedMimic, removedMimic should be(Bex)) 
+xx removeMimic!(Bex) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </body>
+</html>

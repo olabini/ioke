@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Kind: DefaultBehavior</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../../.././dokgen-style.css" type="text/css" media="screen" />
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=480,width=750" ).focus();
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+    <table border='0' cellpadding='0' cellspacing='0' width="100%" class='banner'>
+      <tr>
+        <td>
+          <table width="100%" border='0' cellpadding='0' cellspacing='0'>
+            <tr>
+              <td class="file-title" colspan="2">
+                <span class="file-title-prefix">Kind</span>
+                <br />
+                DefaultBehavior Aspects Pointcut
+              </td>
+              <td align="right">
+                <table cellspacing="0" cellpadding="2">
+                  <tr>
+                    <td>Main mimic:</td>
+                    <td>
+                      <a href="../../../kinds/Origin.html">Origin</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <div id="bodyContent">
+      <div id="content">
+        <div class="description">
+          <p>
+
+          </p>
+        </div>
+
+        <div class="sectiontitle">Mimics</div>
+        <ul>
+          <li><a href="../../../kinds/Origin.html">Origin</a></li>
+        </ul>
+
+        <div class="sectiontitle">Inactive cells</div>
+        <ul>
+          <li><a href="#C00219">kind</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Active cells</div>
+        <ul>
+          <li><a href="#C00225">&lt;&lt;(advice)</a></li>
+<li><a href="#C00226">add(name, advice)</a></li>
+<li><a href="#C00224">addAdviceOnCell(cellName, advice, adviceName nil)</a></li>
+<li><a href="#C00222">addToJoins(matches, joins)</a></li>
+<li><a href="#C00220">advice?(obj)</a></li>
+<li><a href="#C00221">cacheCall?(obj)</a></li>
+<li><a href="#C00229">remove(name)</a></li>
+<li><a href="#C00230">removeAll(name)</a></li>
+<li><a href="#C00228">removeAllNamedAdvice(cellName, name)</a></li>
+<li><a href="#C00227">removeFirstNamedAdvice(cellName, name)</a></li>
+<li><a href="#C00223">removeFromJoins(excepts, joins)</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Specs</div>
+        <div class="specs">
+          
+        </div>
+
+        <div class="sectiontitle">Inactive cells (details)</div>
+                <div class="cell">
+          <a name="C00219"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">kind</td>
+              <td>=</td>
+              <td class="cell-value">"DefaultBehavior Aspects Pointcut"</td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="sectiontitle">Active cells (details)</div>
+                <div class="cell">
+          <div class="title">
+          <a name="C00225"></a><b>&lt;&lt;</b>(advice)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00225_source')" id="l_C00225_source">show source</a> ]</p>
+            <div id="C00225_source" class="dyn-source">
+<pre>
+method(advice, 
+  joins = set(*(joinPoints)) 
+  addToJoins(self cell(:matching), joins) 
+  removeFromJoins(self cell(:except), joins) 
+  joins remove!(:kind) 
+  joins each(cellName, addAdviceOnCell(cellName, cell(:advice))) 
+  self 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00226"></a><b>add</b>(name, advice)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00226_source')" id="l_C00226_source">show source</a> ]</p>
+            <div id="C00226_source" class="dyn-source">
+<pre>
+method(name, advice, 
+  joins = set(*(joinPoints)) 
+  addToJoins(self cell(:matching), joins) 
+  removeFromJoins(self cell(:except), joins) 
+  joins remove!(:kind) 
+  joins each(cellName, addAdviceOnCell(cellName, cell(:advice), name)) 
+  self 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00224"></a><b>addAdviceOnCell</b>(cellName, advice, adviceName nil)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00224_source')" id="l_C00224_source">show source</a> ]</p>
+            <div id="C00224_source" class="dyn-source">
+<pre>
+method(cellName, advice, adviceName nil, 
+  primary = if(self cell(:receiver) cell?(cellName), 
+      self cell(:receiver) cell(cellName), 
+      macro(
+        bind(restart(useValue, fn(newValue, newValue)), 
+          error!(Condition Error NoSuchCell, message: call message, context: call ground, receiver: call receiver, cellName: call message name)) 
+        ) 
+      ) 
+  theMacro = nil 
+  case(type, 
+    :before, 
+    theMacro = if(cacheCall?(cell(:advice)), 
+        if(cacheCall?(cell(:primary)), 
+          macro(
+            call activateValueWithCachedArguments(@@ cell(:advice)) 
+            call activateValueWithCachedArguments(@@ cell(:primary))), 
+          macro(
+            call activateValueWithCachedArguments(@@ cell(:advice)) 
+            call resendToValue(@@ cell(:primary)))), 
+        if(cacheCall?(cell(:primary)), 
+          macro(
+            call activateValue(@@ cell(:advice)) 
+            call activateValueWithCachedArguments(@@ cell(:primary))), 
+          macro(
+            call activateValue(@@ cell(:advice)) 
+            call resendToValue(@@ cell(:primary))))), 
+    :after, 
+    theMacro = if(cacheCall?(cell(:advice)), 
+        if(cacheCall?(cell(:primary)), 
+          macro(
+            result = call activateValueWithCachedArguments(@@ cell(:primary)) 
+            call activateValueWithCachedArguments(@@ cell(:advice), aspectResult: result) 
+            result 
+            ), 
+          macro(
+            result = call resendToValue(@@ cell(:primary)) 
+            call activateValueWithCachedArguments(@@ cell(:advice), aspectResult: result) 
+            result 
+            )), 
+        if(cacheCall?(cell(:primary)), 
+          macro(
+            result = call activateValueWithCachedArguments(@@ cell(:primary)) 
+            call activateValue(@@ cell(:advice), aspectResult: result) 
+            result 
+            ), 
+          macro(
+            result = call resendToValue(@@ cell(:primary)) 
+            call activateValue(@@ cell(:advice), aspectResult: result) 
+            result))), 
+    :around, 
+    theMacro = if(cacheCall?(cell(:advice)), 
+        if(cacheCall?(cell(:primary)), 
+          macro(
+            aspectCall = macro(ss = if(@ kind ==("Locals"), @ self, @) 
+                call activateValueWithCachedArguments(@@ cell(:primary), ss)) 
+            cell(:aspectCall) primary = @@ cell(:primary) 
+            call activateValueWithCachedArguments(@@ cell(:advice), self, aspectCall: cell(:aspectCall)) 
+            ), 
+          macro(
+            aspectCall = macro(ss = if(@ kind ==("Locals"), @ self, @) 
+                call resendToValue(@@ cell(:primary), ss)) 
+            cell(:aspectCall) primary = @@ cell(:primary) 
+            call activateValueWithCachedArguments(@@ cell(:advice), self, aspectCall: cell(:aspectCall)) 
+            )), 
+        if(cacheCall?(cell(:primary)), 
+          macro(
+            aspectCall = macro(ss = if(@ kind ==("Locals"), @ self, @) 
+                call activateValueWithCachedArguments(@@ cell(:primary), ss)) 
+            cell(:aspectCall) primary = @@ cell(:primary) 
+            call activateValue(@@ cell(:advice), self, aspectCall: cell(:aspectCall)) 
+            ), 
+          macro(
+            aspectCall = macro(ss = if(@ kind ==("Locals"), @ self, @) 
+                call resendToValue(@@ cell(:primary), ss)) 
+            cell(:aspectCall) primary = @@ cell(:primary) 
+            call activateValue(@@ cell(:advice), self, aspectCall: cell(:aspectCall))))) 
+    ) 
+  cell(:theMacro) pointcut = self 
+  cell(:theMacro) advice = cell(:advice) 
+  cell(:theMacro) primary = cell(:primary) 
+  cell(:theMacro) documentation = cell(:primary) documentation 
+  if(adviceName, cell(:theMacro) adviceName = adviceName) 
+  if(advice?(cell(:primary)), cell(:primary) outerAdvice = cell(:theMacro)) 
+  self cell(:receiver) cell(cellName) = cell(:theMacro) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00222"></a><b>addToJoins</b>(matches, joins)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00222_source')" id="l_C00222_source">show source</a> ]</p>
+            <div id="C00222_source" class="dyn-source">
+<pre>
+method(matches, joins, 
+  case(cell(:matches), 
+    :any, 
+    self cell(:receiver) cellNames(true, Origin) each(cn, joins &lt;&lt;(cn)), 
+    :anyFromSelf, 
+    self cell(:receiver) cellNames(false) each(cn, joins &lt;&lt;(cn)), 
+    or(Regexp, LexicalBlock), 
+    self cell(:receiver) cellNames(true, Origin) grep(cell(:matches), cn, joins &lt;&lt;(cn)), 
+    List, 
+    matches each(m, addToJoins(m, joins)) 
+    ) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00220"></a><b>advice?</b>(obj)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00220_source')" id="l_C00220_source">show source</a> ]</p>
+            <div id="C00220_source" class="dyn-source">
+<pre>
+method(obj, 
+  cell(:obj) cell?(:kind?) &&((cell(:obj) kind?("DefaultMacro") &&(cell(:obj) cell?(:advice)))) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00221"></a><b>cacheCall?</b>(obj)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00221_source')" id="l_C00221_source">show source</a> ]</p>
+            <div id="C00221_source" class="dyn-source">
+<pre>
+method(obj, 
+  case(cell(:obj) kind, 
+    "DefaultMethod", true, 
+    "LexicalBlock", true, 
+    "LexicalMacro", true, 
+    "DefaultMacro", true, 
+    "DefaultSyntax", true, 
+    "JavaMethod", true, 
+    false) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00229"></a><b>remove</b>(name)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00229_source')" id="l_C00229_source">show source</a> ]</p>
+            <div id="C00229_source" class="dyn-source">
+<pre>
+method(name, 
+  joins = set(*(joinPoints)) 
+  addToJoins(self cell(:matching), joins) 
+  removeFromJoins(self cell(:except), joins) 
+  joins remove!(:kind) 
+  joins each(cellName, removeFirstNamedAdvice(cellName, name)) 
+  self 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00230"></a><b>removeAll</b>(name)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00230_source')" id="l_C00230_source">show source</a> ]</p>
+            <div id="C00230_source" class="dyn-source">
+<pre>
+method(name, 
+  joins = set(*(joinPoints)) 
+  addToJoins(self cell(:matching), joins) 
+  removeFromJoins(self cell(:except), joins) 
+  joins remove!(:kind) 
+  joins each(cellName, removeAllNamedAdvice(cellName, name)) 
+  self 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00228"></a><b>removeAllNamedAdvice</b>(cellName, name)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00228_source')" id="l_C00228_source">show source</a> ]</p>
+            <div id="C00228_source" class="dyn-source">
+<pre>
+method(cellName, name, 
+  currVal = self cell(:receiver) cell(cellName) 
+  while(advice?(cell(:currVal)), 
+    if(cell(:currVal) cell?(:adviceName) &&(cell(:currVal) adviceName ==(name)) &&(cell(:currVal) pointcut type ==(self type)), 
+      if(cell(:currVal) cell?(:outerAdvice), 
+        outer = cell(:currVal) cell(:outerAdvice) 
+        cell(:outer) primary = cell(:currVal) cell(:primary) 
+        if(advice?(cell(:currVal) cell(:primary)), 
+          cell(:currVal) cell(:primary) outerAdvice = cell(:outer)), 
+        self cell(:receiver) cell(cellName) = cell(:currVal) cell(:primary) 
+        if(advice?(cell(:currVal) cell(:primary)), 
+          cell(:currVal) cell(:primary) removeCell!(:outerAdvice)) 
+        ) 
+      ) 
+    currVal = cell(:currVal) cell(:primary) 
+    ) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00227"></a><b>removeFirstNamedAdvice</b>(cellName, name)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00227_source')" id="l_C00227_source">show source</a> ]</p>
+            <div id="C00227_source" class="dyn-source">
+<pre>
+method(cellName, name, 
+  currVal = self cell(:receiver) cell(cellName) 
+  while(advice?(cell(:currVal)), 
+    if(cell(:currVal) cell?(:adviceName) &&(cell(:currVal) adviceName ==(name)) &&(cell(:currVal) pointcut type ==(self type)), 
+      if(cell(:currVal) cell?(:outerAdvice), 
+        outer = cell(:currVal) cell(:outerAdvice) 
+        cell(:outer) primary = cell(:currVal) cell(:primary) 
+        if(advice?(cell(:currVal) cell(:primary)), 
+          cell(:currVal) cell(:primary) outerAdvice = cell(:outer)), 
+        self cell(:receiver) cell(cellName) = cell(:currVal) cell(:primary) 
+        if(advice?(cell(:currVal) cell(:primary)), 
+          cell(:currVal) cell(:primary) removeCell!(:outerAdvice)) 
+        ) 
+      return) 
+    currVal = cell(:currVal) cell(:primary) 
+    ) 
+  bind(restart(ignore, fn), 
+    error!(Condition Error NoSuchAdvice, cellName: cellName, adviceName: name)) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00223"></a><b>removeFromJoins</b>(excepts, joins)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00223_source')" id="l_C00223_source">show source</a> ]</p>
+            <div id="C00223_source" class="dyn-source">
+<pre>
+method(excepts, joins, 
+  case(cell(:excepts), 
+    or(Regexp, LexicalBlock), 
+    toRemove = joins grep(cell(:excepts)) 
+    toRemove each(tr, joins remove!(tr)), 
+    List, 
+    excepts each(ex, removeFromJoins(ex, joins)), 
+    Symbol, 
+    joins remove!(excepts) 
+    ) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,1099 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Kind: DefaultBehavior</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href=".././dokgen-style.css" type="text/css" media="screen" />
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=480,width=750" ).focus();
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+    <table border='0' cellpadding='0' cellspacing='0' width="100%" class='banner'>
+      <tr>
+        <td>
+          <table width="100%" border='0' cellpadding='0' cellspacing='0'>
+            <tr>
+              <td class="file-title" colspan="2">
+                <span class="file-title-prefix">Kind</span>
+                <br />
+                Base
+              </td>
+              <td align="right">
+                <table cellspacing="0" cellpadding="2">
+                  <tr>
+                    <td>Main mimic:</td>
+                    <td>
+                      none
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <div id="bodyContent">
+      <div id="content">
+        <div class="description">
+          <p>
+Base is the top of the inheritance structure. Most of the objects in the system are derived from this instance. Base should keep its cells to the bare minimum needed for the system.
+          </p>
+        </div>
+
+        <div class="sectiontitle">Mimics</div>
+        <ul>
+          none
+        </ul>
+
+        <div class="sectiontitle">Inactive cells</div>
+        <ul>
+          <li><a href="#C0020">inspect</a></li>
+<li><a href="#C002">kind</a></li>
+<li><a href="#C0019">notice</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Active cells</div>
+        <ul>
+          <li><a href="#C007">=([place], value, +[morePlacesForDestructuring])</a></li>
+<li><a href="#C0017">==(other)</a></li>
+<li><a href="#C008">cell(cellName)</a></li>
+<li><a href="#C0016">cell=(cellName, value)</a></li>
+<li><a href="#C009">cell?(cellName)</a></li>
+<li><a href="#C0014">cellNames(includeMimics false, cutoff nil)</a></li>
+<li><a href="#C0011">cellOwner(cellName)</a></li>
+<li><a href="#C0010">cellOwner?(cellName)</a></li>
+<li><a href="#C0015">cells(includeMimics false)</a></li>
+<li><a href="#C003">documentation()</a></li>
+<li><a href="#C005">documentation=(text)</a></li>
+<li><a href="#C0018">hash()</a></li>
+<li><a href="#C004">identity()</a></li>
+<li><a href="#C006">mimic()</a></li>
+<li><a href="#C0012">removeCell!(cellName)</a></li>
+<li><a href="#C0013">undefineCell!(cellName)</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Specs</div>
+        <div class="specs">
+          
+        </div>
+
+        <div class="sectiontitle">Inactive cells (details)</div>
+                <div class="cell">
+          <a name="C0020"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">inspect</td>
+              <td>=</td>
+              <td class="cell-value">"Base"</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C002"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">kind</td>
+              <td>=</td>
+              <td class="cell-value">"Base"</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C0019"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">notice</td>
+              <td>=</td>
+              <td class="cell-value">"Base"</td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="sectiontitle">Active cells (details)</div>
+                <div class="cell">
+          <div class="title">
+          <a name="C007"></a><b>=</b>([place], value, +[morePlacesForDestructuring])
+          </div>
+          <div class="description">
+            <p>expects two or more arguments, the first arguments unevaluated, the last evaluated. assigns the result of evaluating the last argument in the context of the caller, and assigns this result to the name/s provided by the first arguments. the first arguments remains unevaluated. the result of the assignment is the value assigned to the name. if the last argument is a method-like object and it's name is not set, that name will be set to the name of the cell.</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C0017"></a><b>==</b>(other)
+          </div>
+          <div class="description">
+            <p>returns true if the left hand side is equal to the right hand side. exactly what this means depend on the object. the default behavior of Ioke objects is to only be equal if they are the same instance.</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C008"></a><b>cell</b>(cellName)
+          </div>
+          <div class="description">
+            <p>expects one evaluated text or symbol argument and returns the cell that matches that name, without activating even if it's activatable.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Base cell</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be possible to get a cell using a Text argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0081S0_source')" id="l_C0081S0_source">show source</a> ]</span>
+            <div id="C0081S0_source" class="dyn-source">
+<pre>
+x = 42 
+cell("x") should ==(x) 
+Text x = 42 
+Text cell("x") should ==(Text x) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to get a cell using a Symbol argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0081S1_source')" id="l_C0081S1_source">show source</a> ]</span>
+            <div id="C0081S1_source" class="dyn-source">
+<pre>
+x = 42 
+cell(:x) should ==(x) 
+Text x = 42 
+Text cell(:x) should ==(Text x) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to get a cell with an empty name <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0081S2_source')" id="l_C0081S2_source">show source</a> ]</span>
+            <div id="C0081S2_source" class="dyn-source">
+<pre>
+cell(:("")) kind should ==("DefaultMethod") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should report an error if trying to get a cell that doesn't exist in that object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0081S3_source')" id="l_C0081S3_source">show source</a> ]</span>
+            <div id="C0081S3_source" class="dyn-source">
+<pre>
+fn(cell(:clurg)) should signal(Condition Error NoSuchCell) 
+fn(cell("clurg")) should signal(Condition Error NoSuchCell) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C0016"></a><b>cell=</b>(cellName, value)
+          </div>
+          <div class="description">
+            <p>expects one evaluated text or symbol argument that names the cell to set, sets this cell to the result of evaluating the second argument, and returns the value set.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Base cell=</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be possible to set a cell using a Text argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00161S0_source')" id="l_C00161S0_source">show source</a> ]</span>
+            <div id="C00161S0_source" class="dyn-source">
+<pre>
+cell("blurg") = 42 
+blurg should ==(42) 
+Text cell("murg") = 42 
+Text murg should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to set a cell using a Symbol argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00161S1_source')" id="l_C00161S1_source">show source</a> ]</span>
+            <div id="C00161S1_source" class="dyn-source">
+<pre>
+cell(:blurg) = 42 
+blurg should ==(42) 
+Text cell(:murg) = 42 
+Text murg should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to set a cell with an empty name <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00161S2_source')" id="l_C00161S2_source">show source</a> ]</span>
+            <div id="C00161S2_source" class="dyn-source">
+<pre>
+oldEmpty = cell("") 
+Text cell("") = 42 
+Text cell("") should ==(42) 
+Text cell("") = cell(:oldEmpty) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to set a cell with complicated expressions <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00161S3_source')" id="l_C00161S3_source">show source</a> ]</span>
+            <div id="C00161S3_source" class="dyn-source">
+<pre>
+f = Origin mimic 
+f b = "foobar" 
+Text cell(f b) = 42 +(24) -(3) 
+Text cell(:foobar) should ==(63) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to set a cell that doesn't exist <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00161S4_source')" id="l_C00161S4_source">show source</a> ]</span>
+            <div id="C00161S4_source" class="dyn-source">
+<pre>
+cell(:blurg) = 42 
+blurg should ==(42) 
+Text cell(:murg) = 42 
+Text murg should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to set a cell that does exist <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00161S5_source')" id="l_C00161S5_source">show source</a> ]</span>
+            <div id="C00161S5_source" class="dyn-source">
+<pre>
+Ground x = 42 
+cell(:x) = 43 
+x should ==(43) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to set a cell that does exist in a mimic. this should not change the mimic value <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00161S6_source')" id="l_C00161S6_source">show source</a> ]</span>
+            <div id="C00161S6_source" class="dyn-source">
+<pre>
+one = Origin mimic 
+one x = 42 
+two = one mimic 
+two cell(:x) = 43 
+one x should ==(42) 
+one = Origin mimic 
+one x = 42 
+two = one mimic 
+two cell(:x) = 43 
+two x should ==(43) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C009"></a><b>cell?</b>(cellName)
+          </div>
+          <div class="description">
+            <p>expects one evaluated text or symbol argument and returns a boolean indicating whether such a cell is reachable from this point.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Base cell?</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be possible to check for the existance of a cell using a text argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0091S0_source')" id="l_C0091S0_source">show source</a> ]</span>
+            <div id="C0091S0_source" class="dyn-source">
+<pre>
+x = 42 
+cell?("x") should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to check for the existance of a cell using a symbol argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0091S1_source')" id="l_C0091S1_source">show source</a> ]</span>
+            <div id="C0091S1_source" class="dyn-source">
+<pre>
+x = 42 
+cell?(:x) should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to check for the existance of a cell with an empty name <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0091S2_source')" id="l_C0091S2_source">show source</a> ]</span>
+            <div id="C0091S2_source" class="dyn-source">
+<pre>
+cell?("") should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to check for the existance of a cell that doesn't exist <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0091S3_source')" id="l_C0091S3_source">show source</a> ]</span>
+            <div id="C0091S3_source" class="dyn-source">
+<pre>
+cell?(:murg) should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to check for the existance of a cell that does exist <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0091S4_source')" id="l_C0091S4_source">show source</a> ]</span>
+            <div id="C0091S4_source" class="dyn-source">
+<pre>
+cell?(:Ground) should be true 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C0014"></a><b>cellNames</b>(includeMimics false, cutoff nil)
+          </div>
+          <div class="description">
+            <p>takes one optional evaluated boolean argument, which defaults to false. if false, this method returns a list of the cell names of the receiver. if true, it returns the cell names of this object and all it's mimics recursively.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Base cellNames</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return the cell names of this object by default <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00141S0_source')" id="l_C00141S0_source">show source</a> ]</span>
+            <div id="C00141S0_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x cellNames should ==([]) 
+x f = 13 
+x cellNames should ==([](:f)) 
+x Why = 1 
+x cellNames should ==([](:f, :Why)) 
+x = Origin mimic 
+x Why = 1 
+x f = 13 
+x cellNames should ==([](:Why, :f)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take a boolean, when given will make it return all cell names in both this and it's parents objects <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00141S1_source')" id="l_C00141S1_source">show source</a> ]</span>
+            <div id="C00141S1_source" class="dyn-source">
+<pre>
+baseNames = Base cells keys asList sort 
+defaultBehaviorNames = DefaultBehavior cells keys sort 
+defaultBehaviorAllNames = DefaultBehavior cells(true) keys sort 
+iokeGroundNames = IokeGround cells keys sort 
+groundNames = Ground cells keys sort 
+originNames = Origin cells keys sort 
+
+nativeGroundAllNames = if(System feature?(:java), JavaGround cells keys sort, []) 
+groundAllNames = set(*(iokeGroundNames +(groundNames) +(nativeGroundAllNames) +(baseNames) +(defaultBehaviorAllNames))) sort 
+originAllNames = set(*(originNames +(groundAllNames) +(nativeGroundAllNames))) sort 
+Base cellNames sort should ==(baseNames) 
+Base cellNames(false) sort should ==(baseNames) 
+Base cellNames(true) sort should ==(baseNames) 
+DefaultBehavior cellNames sort should ==(defaultBehaviorNames) 
+DefaultBehavior cellNames(false) sort should ==(defaultBehaviorNames) 
+DefaultBehavior cellNames(true) sort should ==(defaultBehaviorAllNames) 
+Ground cellNames sort should ==(groundNames) 
+Ground cellNames(false) sort should ==(groundNames) 
+Ground cellNames(true) sort should ==(groundAllNames) 
+Origin cellNames sort should ==(originNames) 
+Origin cellNames(false) sort should ==(originNames) 
+Origin cellNames(true) sort should ==(originAllNames) 
+Text x = Origin mimic 
+Text x cellNames(true) sort should ==(originAllNames) 
+Text x = Origin mimic 
+Text x foxy_base_spec = 12 
+Text x cellNames(true) sort should ==(([](:foxy_base_spec) +(originAllNames)) sort) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C0011"></a><b>cellOwner</b>(cellName)
+          </div>
+          <div class="description">
+            <p>expects one evaluated text or symbol argument and returns the closest object that defines such a cell. if it doesn't exist, a NoSuchCell condition will be signalled.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Base cellOwner</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return the closest owner of a cell <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00111S0_source')" id="l_C00111S0_source">show source</a> ]</span>
+            <div id="C00111S0_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = x mimic 
+x foo = 123 
+y foo = "bar" 
+x cellOwner(:foo) should be same(x) 
+y cellOwner(:foo) should be same(y) 
+x mimic cellOwner(:foo) should be same(x) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should signal a condition if there is no such cell <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00111S1_source')" id="l_C00111S1_source">show source</a> ]</span>
+            <div id="C00111S1_source" class="dyn-source">
+<pre>
+fn(Origin cellOwner(:test_cell_owner)) should signal(Condition Error NoSuchCell) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should offer an ignore restart if the cell can't be found <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00111S2_source')" id="l_C00111S2_source">show source</a> ]</span>
+            <div id="C00111S2_source" class="dyn-source">
+<pre>
+fn(Origin cellOwner(:test_cell_owner)) should offer(restart(ignore, fn)) 
+fn(Origin cellOwner(:test_cell_owner)) should returnFromRestart(:ignore) ==(nil) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C0010"></a><b>cellOwner?</b>(cellName)
+          </div>
+          <div class="description">
+            <p>expects one evaluated text or symbol argument and returns a boolean indicating whether this cell is owned by the receiver or not. the assumption is that the cell should exist. if it doesn't exist, a NoSuchCell condition will be signalled.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Base cellOwner?</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return true if the cell name is owned by this object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00101S0_source')" id="l_C00101S0_source">show source</a> ]</span>
+            <div id="C00101S0_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = x mimic 
+x foo = 123 
+y foo = "bar" 
+x cellOwner?(:foo) should be true 
+y cellOwner?(:foo) should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return false if the cell name is owned by another object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00101S1_source')" id="l_C00101S1_source">show source</a> ]</span>
+            <div id="C00101S1_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = x mimic 
+x foo = 123 
+y cellOwner?(:foo) should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should signal a condition if there is no such cell <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00101S2_source')" id="l_C00101S2_source">show source</a> ]</span>
+            <div id="C00101S2_source" class="dyn-source">
+<pre>
+fn(Origin cellOwner?(:test_cell_owner)) should signal(Condition Error NoSuchCell) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should offer an ignore restart if the cell can't be found <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00101S3_source')" id="l_C00101S3_source">show source</a> ]</span>
+            <div id="C00101S3_source" class="dyn-source">
+<pre>
+fn(Origin cellOwner?(:test_cell_owner)) should offer(restart(ignore, fn)) 
+fn(Origin cellOwner?(:test_cell_owner)) should returnFromRestart(:ignore) ==(false) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C0015"></a><b>cells</b>(includeMimics false)
+          </div>
+          <div class="description">
+            <p>takes one optional evaluated boolean argument, which defaults to false. if false, this method returns a dict of the cell names and values of the receiver. if true, it returns the cell names and values of this object and all it's mimics recursively.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Base cells</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return the cells of this object by default <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00151S0_source')" id="l_C00151S0_source">show source</a> ]</span>
+            <div id="C00151S0_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x cells should ==({}) 
+x = Origin mimic 
+x f = 13 
+x cells should ==({}(f: 13)) 
+x = Origin mimic 
+x f = 13 
+x Why = 1 
+x cells should ==({}(f: 13, Why: 1)) 
+x = Origin mimic 
+x Why = 1 
+x f = 13 
+x cells should ==({}(f: 13, Why: 1)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take a boolean, when given will make it return all cells in both this and it's parents objects <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00151S1_source')" id="l_C00151S1_source">show source</a> ]</span>
+            <div id="C00151S1_source" class="dyn-source">
+<pre>
+x = Base mimic 
+x cells(true) should ==({}(
+    kind: Base cell(:kind), 
+    mimic: Base cell(:mimic), 
+    :("=") =&gt;(Base cell(:("="))), 
+    :("==") =&gt;(Base cell(:("=="))), 
+    hash: Base cell(:hash), 
+    documentation: Base cell(:documentation), 
+    :("documentation=") =&gt;(Base cell(:("documentation="))), 
+    cell: Base cell(:cell), 
+    identity: Base cell(:identity), 
+    cellNames: Base cell(:cellNames), 
+    cells: Base cell(:cells), 
+    :("cell=") =&gt;(Base cell(:("cell="))), 
+    notice: "Base", 
+    inspect: "Base", 
+    :("removeCell!") =&gt;(Base cell(:("removeCell!"))), 
+    :("undefineCell!") =&gt;(Base cell(:("undefineCell!"))), 
+    :("cellOwner?") =&gt;(Base cell(:("cellOwner?"))), 
+    :("cellOwner") =&gt;(Base cell(:("cellOwner"))), 
+    :("cell?") =&gt;(Base cell("cell?")))) 
+x = Base mimic 
+x kind = "blarg" 
+x cells(true) should ==({}(
+    kind: "blarg", 
+    mimic: Base cell(:mimic), 
+    :("=") =&gt;(Base cell(:("="))), 
+    :("==") =&gt;(Base cell(:("=="))), 
+    hash: Base cell(:hash), 
+    documentation: Base cell(:documentation), 
+    :("documentation=") =&gt;(Base cell(:("documentation="))), 
+    cell: Base cell(:cell), 
+    identity: Base cell(:identity), 
+    cellNames: Base cell(:cellNames), 
+    cells: Base cell(:cells), 
+    :("cell=") =&gt;(Base cell(:("cell="))), 
+    notice: "Base", 
+    inspect: "Base", 
+    :("removeCell!") =&gt;(Base cell(:("removeCell!"))), 
+    :("undefineCell!") =&gt;(Base cell(:("undefineCell!"))), 
+    :("cellOwner?") =&gt;(Base cell(:("cellOwner?"))), 
+    :("cellOwner") =&gt;(Base cell(:("cellOwner"))), 
+    :("cell?") =&gt;(Base cell("cell?")))) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C003"></a><b>documentation</b>()
+          </div>
+          <div class="description">
+            <p>returns the documentation text of the object called on. anything can have a documentation text - this text will initially be nil.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Base documentation</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return nil for a new object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0031S0_source')" id="l_C0031S0_source">show source</a> ]</span>
+            <div id="C0031S0_source" class="dyn-source">
+<pre>
+Origin mimic documentation should be nil 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the documentation string for an object that has documentation <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0031S1_source')" id="l_C0031S1_source">show source</a> ]</span>
+            <div id="C0031S1_source" class="dyn-source">
+<pre>
+Origin documentation should ==("Any object created from scratch should usually be derived from Origin.") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C005"></a><b>documentation=</b>(text)
+          </div>
+          <div class="description">
+            <p>sets the documentation string for a specific object.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Base documentation=</b><br/>
+<ul style="list-style-type: none;">
+<li>- should set the documentation for an object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0051S0_source')" id="l_C0051S0_source">show source</a> ]</span>
+            <div id="C0051S0_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x cell(:documentation) kind should ==("NativeMethod") 
+x documentation = "Wow, you didn't believe that, right?" 
+x cell(:documentation) kind should ==("NativeMethod") 
+x documentation should ==("Wow, you didn't believe that, right?") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the documentation string set <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0051S1_source')" id="l_C0051S1_source">show source</a> ]</span>
+            <div id="C0051S1_source" class="dyn-source">
+<pre>
+(Origin mimic documentation = "something") should ==("something") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should validate type of argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0051S2_source')" id="l_C0051S2_source">show source</a> ]</span>
+            <div id="C0051S2_source" class="dyn-source">
+<pre>
+fn(Origin mimic documentation = []) should signal(Condition Error Type IncorrectType) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C0018"></a><b>hash</b>()
+          </div>
+          <div class="description">
+            <p>returns a hash for the object</p>
+          </div>
+          
+          <div class="specs">
+            <b> Base hash</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be different for different objects <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00181S0_source')" id="l_C00181S0_source">show source</a> ]</span>
+            <div id="C00181S0_source" class="dyn-source">
+<pre>
+Origin mimic hash should not ==(Origin mimic hash) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be the same for the same object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00181S1_source')" id="l_C00181S1_source">show source</a> ]</span>
+            <div id="C00181S1_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x hash should ==(x hash) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C004"></a><b>identity</b>()
+          </div>
+          <div class="description">
+            <p>returns this object</p>
+          </div>
+          
+          <div class="specs">
+            <b> Base identity</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return a newly created Origin <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0041S0_source')" id="l_C0041S0_source">show source</a> ]</span>
+            <div id="C0041S0_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x identity should be same(x) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C006"></a><b>mimic</b>()
+          </div>
+          <div class="description">
+            <p>will return a new derivation of the receiving object. Might throw exceptions if the object is an oddball object.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Base mimic</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be able to mimic Origin <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0061S0_source')" id="l_C0061S0_source">show source</a> ]</span>
+            <div id="C0061S0_source" class="dyn-source">
+<pre>
+result = Origin mimic 
+result should have kind("Origin") 
+result should not be same(Origin) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be able to mimic Ground <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0061S1_source')" id="l_C0061S1_source">show source</a> ]</span>
+            <div id="C0061S1_source" class="dyn-source">
+<pre>
+result = Ground mimic 
+result should have kind("Ground") 
+result should not be same(Ground) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be able to mimic Base <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0061S2_source')" id="l_C0061S2_source">show source</a> ]</span>
+            <div id="C0061S2_source" class="dyn-source">
+<pre>
+result = Base mimic 
+result kind should ==("Base") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be able to mimic Text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0061S3_source')" id="l_C0061S3_source">show source</a> ]</span>
+            <div id="C0061S3_source" class="dyn-source">
+<pre>
+result = Text mimic 
+result should have kind("Text") 
+result should not be same(Text) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not be able to mimic nil <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0061S4_source')" id="l_C0061S4_source">show source</a> ]</span>
+            <div id="C0061S4_source" class="dyn-source">
+<pre>
+fn(nil mimic) should signal(Condition Error CantMimicOddball) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C0012"></a><b>removeCell!</b>(cellName)
+          </div>
+          <div class="description">
+            <p>expects one evaluated text or symbol argument and removes that cell from the current receiver. if the current receiver has no such object, signals a condition. note that if another cell with that name is available in the mimic chain, it will still be accessible after calling this method. the method returns the receiver.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Base removeCell!</b><br/>
+<ul style="list-style-type: none;">
+<li>- should remove the cell <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00121S0_source')" id="l_C00121S0_source">show source</a> ]</span>
+            <div id="C00121S0_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x flurgus_cell_test = 123 
+x removeCell!(:flurgus_cell_test) 
+x cell?(:flurgus_cell_test) should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should signal a condition if no such cell exists <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00121S1_source')" id="l_C00121S1_source">show source</a> ]</span>
+            <div id="C00121S1_source" class="dyn-source">
+<pre>
+fn(Origin mimic removeCell!(:foo)) should signal(Condition Error NoSuchCell) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should offer an ignore restart if the cell can't be found <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00121S2_source')" id="l_C00121S2_source">show source</a> ]</span>
+            <div id="C00121S2_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+fn(x removeCell!(:foo)) should offer(restart(ignore, fn)) 
+fn(x removeCell!(:foo)) should returnFromRestart(:ignore) ==(x) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should only remove a cell on the current object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00121S3_source')" id="l_C00121S3_source">show source</a> ]</span>
+            <div id="C00121S3_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = x mimic 
+x foo = "blurg" 
+y foo = "blarg" 
+y removeCell!(:foo) 
+y cell?(:foo) should be true 
+y foo should ==("blurg") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C0013"></a><b>undefineCell!</b>(cellName)
+          </div>
+          <div class="description">
+            <p>expects one evaluated text or symbol argument and makes that cell undefined in the current receiver. what that means is that from now on it will look like this cell doesn't exist in the receiver or any of its mimics. the cell will not show up if you call cellNames on the receiver or any of the receivers mimics. the undefined status can be removed by doing removeCell! on the correct cell name. a cell name that doesn't exist can still be undefined. the method returns the receiver.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Base undefineCell!</b><br/>
+<ul style="list-style-type: none;">
+<li>- should remove the cell <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00131S0_source')" id="l_C00131S0_source">show source</a> ]</span>
+            <div id="C00131S0_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x flurgus_cell_test = 123 
+x undefineCell!(:flurgus_cell_test) 
+x cell?(:flurgus_cell_test) should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not signal a condition if no such cell exists <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00131S1_source')" id="l_C00131S1_source">show source</a> ]</span>
+            <div id="C00131S1_source" class="dyn-source">
+<pre>
+Origin mimic undefineCell!(:test_undefine_cell) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should make the cell inaccessible <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00131S2_source')" id="l_C00131S2_source">show source</a> ]</span>
+            <div id="C00131S2_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = x mimic 
+x foo = "blurg" 
+y foo = "blarg" 
+y undefineCell!(:foo) 
+x cell?(:foo) should be true 
+y cell?(:foo) should be false 
+fn(y foo) should signal(Condition Error NoSuchCell) 
+fn(y mimic foo) should signal(Condition Error NoSuchCell) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should stop the cell from showing up in cellNames <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00131S3_source')" id="l_C00131S3_source">show source</a> ]</span>
+            <div id="C00131S3_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = x mimic 
+x foo = "blurg" 
+y foo = "blarg" 
+y undefineCell!(:foo) 
+x cellNames should ==([](:foo)) 
+y cellNames should ==([]) 
+x cellNames(true) should include(:foo) 
+y cellNames(true) should not include(:foo) 
+y mimic cellNames(true) should not include(:foo) 
+z = y mimic 
+z foo = 123 
+z cellNames(true) should include(:foo) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should stop the cell from showing up in cells <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00131S4_source')" id="l_C00131S4_source">show source</a> ]</span>
+            <div id="C00131S4_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = x mimic 
+x foo = "blurg" 
+y foo = "blarg" 
+y undefineCell!(:foo) 
+x cells should ==({}(foo: "blurg")) 
+y cells should ==({}) 
+x cells(true) keys should include(:foo) 
+y cells(true) keys should not include(:foo) 
+y mimic cells(true) keys should not include(:foo) 
+z = y mimic 
+z foo = 123 
+z cells(true) keys should include(:foo) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should stop the cell from being able to get with cell <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00131S5_source')" id="l_C00131S5_source">show source</a> ]</span>
+            <div id="C00131S5_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = x mimic 
+x foo = "blurg" 
+y foo = "blarg" 
+y undefineCell!(:foo) 
+x cell(:foo) should ==("blurg") 
+fn(y cell(:foo)) should signal(Condition Error NoSuchCell) 
+z = y mimic 
+z foo = 123 
+z foo should ==(123) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should stop the cell from showing up with cellOwner <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00131S6_source')" id="l_C00131S6_source">show source</a> ]</span>
+            <div id="C00131S6_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = x mimic 
+x foo = "blurg" 
+y foo = "blarg" 
+y undefineCell!(:foo) 
+fn(y cellOwner(:foo)) should signal(Condition Error NoSuchCell) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should stop the cell from showing up with cellOwner? <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00131S7_source')" id="l_C00131S7_source">show source</a> ]</span>
+            <div id="C00131S7_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = x mimic 
+x foo = "blurg" 
+y foo = "blarg" 
+y undefineCell!(:foo) 
+fn(y cellOwner?(:foo)) should signal(Condition Error NoSuchCell) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to remove the undefine with removeCell! <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00131S8_source')" id="l_C00131S8_source">show source</a> ]</span>
+            <div id="C00131S8_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = x mimic 
+x foo = "blurg" 
+y foo = "blarg" 
+y undefineCell!(:foo) 
+y removeCell!(:foo) 
+y foo should ==("blurg") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,2003 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Kind: DefaultBehavior</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href=".././dokgen-style.css" type="text/css" media="screen" />
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=480,width=750" ).focus();
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+    <table border='0' cellpadding='0' cellspacing='0' width="100%" class='banner'>
+      <tr>
+        <td>
+          <table width="100%" border='0' cellpadding='0' cellspacing='0'>
+            <tr>
+              <td class="file-title" colspan="2">
+                <span class="file-title-prefix">Kind</span>
+                <br />
+                Message
+              </td>
+              <td align="right">
+                <table cellspacing="0" cellpadding="2">
+                  <tr>
+                    <td>Main mimic:</td>
+                    <td>
+                      <a href="../kinds/Mixins/Enumerable.html">Mixins Enumerable</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <div id="bodyContent">
+      <div id="content">
+        <div class="description">
+          <p>
+A Message is the basic code unit in Ioke.
+          </p>
+        </div>
+
+        <div class="sectiontitle">Mimics</div>
+        <ul>
+          <li><a href="../kinds/Mixins/Enumerable.html">Mixins Enumerable</a></li><li><a href="../kinds/Origin.html">Origin</a></li><li><a href="../kinds/Mixins/Sequenced.html">Mixins Sequenced</a></li>
+        </ul>
+
+        <div class="sectiontitle">Inactive cells</div>
+        <ul>
+          <li><a href="#C00831">kind</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Active cells</div>
+        <ul>
+          <li><a href="#C00856">-&gt;(nextMessage)</a></li>
+<li><a href="#C00854">&lt;&lt;(...)</a></li>
+<li><a href="#C00873">==(other)</a></li>
+<li><a href="#C00874">===(other)</a></li>
+<li><a href="#C00855">&gt;&gt;(newArgument)</a></li>
+<li><a href="#C00853">appendArgument(newArgument)</a></li>
+<li><a href="#C00833">arguments()</a></li>
+<li><a href="#C00857">arguments=(newArguments)</a></li>
+<li><a href="#C00848">asStackTraceText()</a></li>
+<li><a href="#C00832">code()</a></li>
+<li><a href="#C00849">deepCopy()</a></li>
+<li><a href="#C00863">doText(code)</a></li>
+<li><a href="#C00837">each([indexOrArgOrCode] nil, [argOrCode] nil, [code] nil)</a></li>
+<li><a href="#C00859">evalArgAt(argumentIndex, context)</a></li>
+<li><a href="#C00858">evaluateOn(ground, receiver ground, +arguments)</a></li>
+<li><a href="#C00841">filename()</a></li>
+<li><a href="#C00834">formattedCode()</a></li>
+<li><a href="#C00872">from(...)</a></li>
+<li><a href="#C00861">fromText(code)</a></li>
+<li><a href="#C00850">keyword?()</a></li>
+<li><a href="#C00845">last()</a></li>
+<li><a href="#C00842">line()</a></li>
+<li><a href="#C00835">name()</a></li>
+<li><a href="#C00838">name=(newName)</a></li>
+<li><a href="#C00844">next()</a></li>
+<li><a href="#C00839">next=(newNext)</a></li>
+<li><a href="#C00843">position()</a></li>
+<li><a href="#C00846">prev()</a></li>
+<li><a href="#C00840">prev=(newPrev)</a></li>
+<li><a href="#C00889">rewrite(+patterns)</a></li>
+<li><a href="#C00890">rewrite:recursively(+patterns)</a></li>
+<li><a href="#C00852">sendTo(newReceiver, context nil)</a></li>
+<li><a href="#C00875">seq()</a></li>
+<li><a href="#C00860">shuffleOperators()</a></li>
+<li><a href="#C00851">symbol?()</a></li>
+<li><a href="#C00847">terminator?()</a></li>
+<li><a href="#C00836">walk([argOrCode] nil, [code] nil)</a></li>
+<li><a href="#C00862">wrap(value)</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Specs</div>
+        <div class="specs">
+          
+<b> Message OperatorTable</b><br/>
+<ul style="list-style-type: none;">
+</ul>
+        </div>
+
+        <div class="sectiontitle">Inactive cells (details)</div>
+                <div class="cell">
+          <a name="C00831"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">kind</td>
+              <td>=</td>
+              <td class="cell-value">"Message"</td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="sectiontitle">Active cells (details)</div>
+                <div class="cell">
+          <div class="title">
+          <a name="C00856"></a><b>-&gt;</b>(nextMessage)
+          </div>
+          <div class="description">
+            <p>evaluates the argument and makes it the new next pointer of the receiver. it also modifies the argument so its prev pointer points back to this message. if the argument is nil, the next pointer will be erased. it then returns the receiving message.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Message -></b><br/>
+<ul style="list-style-type: none;">
+<li>- should change the next pointer of the receiver to the argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008561S0_source')" id="l_C008561S0_source">show source</a> ]</span>
+            <div id="C008561S0_source" class="dyn-source">
+<pre>
+one = '(foo) 
+two = '(bar) 
+one -&gt;(two) 
+one next should be same(two) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should change the prev pointer of the argument to the receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008561S1_source')" id="l_C008561S1_source">show source</a> ]</span>
+            <div id="C008561S1_source" class="dyn-source">
+<pre>
+one = '(foo) 
+two = '(bar) 
+one -&gt;(two) 
+two prev should be same(one) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the argument message <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008561S2_source')" id="l_C008561S2_source">show source</a> ]</span>
+            <div id="C008561S2_source" class="dyn-source">
+<pre>
+one = '(foo) 
+('(bar) -&gt;(one)) should be same(one) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should accept nil as an argument, and set the next pointer to nil in that case <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008561S3_source')" id="l_C008561S3_source">show source</a> ]</span>
+            <div id="C008561S3_source" class="dyn-source">
+<pre>
+x = '(foo bar) 
+x -&gt;(nil) 
+x next should be nil 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should validate type of argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008561S4_source')" id="l_C008561S4_source">show source</a> ]</span>
+            <div id="C008561S4_source" class="dyn-source">
+<pre>
+fn('(foo) -&gt;([])) should signal(Condition Error Type IncorrectType) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008561S5_source')" id="l_C008561S5_source">show source</a> ]</span>
+            <div id="C008561S5_source" class="dyn-source">
+<pre>
+Message should checkReceiverTypeOn(:("-&gt;"), '(foo)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00854"></a><b>&lt;&lt;</b>(...)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+          
+          <div class="specs">
+            <b> Message <<</b><br/>
+<ul style="list-style-type: none;">
+<li>- should add an argument at the end of the message argument list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008541S0_source')" id="l_C008541S0_source">show source</a> ]</span>
+            <div id="C008541S0_source" class="dyn-source">
+<pre>
+msg = '(foo(x)) 
+msg &lt;&lt;('(blarg mux)) 
+msg code should ==("foo(x, blarg mux)") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the original message <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008541S1_source')" id="l_C008541S1_source">show source</a> ]</span>
+            <div id="C008541S1_source" class="dyn-source">
+<pre>
+msg = '(foo(x)) 
+(msg &lt;&lt;('(blarg mux))) should be same(msg) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00873"></a><b>==</b>(other)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00873_source')" id="l_C00873_source">show source</a> ]</p>
+            <div id="C00873_source" class="dyn-source">
+<pre>
+method(other, 
+  cell(:other) kind ==("Message") &&(
+    
+    @ name ==(other name)) &&(
+    
+    @ arguments ==(other arguments)) &&(
+    
+    @ next ==(other next)))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Message ==</b><br/>
+<ul style="list-style-type: none;">
+<li>- should use name as a basis for equality <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008731S0_source')" id="l_C008731S0_source">show source</a> ]</span>
+            <div id="C008731S0_source" class="dyn-source">
+<pre>
+'(foo) should not ==('(bar)) 
+'(foo) should not ==('(foox)) 
+'(foo) should ==('(foo)) 
+'(flobibar) should ==('(flobibar)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not care about previous pointer <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008731S1_source')" id="l_C008731S1_source">show source</a> ]</span>
+            <div id="C008731S1_source" class="dyn-source">
+<pre>
+x1 = '(abc def) 
+x2 = '(def) 
+x3 = '(foo def) 
+x1 next should ==(x2) 
+x2 should ==(x1 next) 
+x3 next should ==(x1 next) 
+x3 next should ==(x2) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should include the next pointer in tests for equality <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008731S2_source')" id="l_C008731S2_source">show source</a> ]</span>
+            <div id="C008731S2_source" class="dyn-source">
+<pre>
+x1 = '(abc def) 
+x2 = '(abc) 
+x3 = '(abc def 
+    foo) 
+x4 = '(abc def) 
+x1 should ==(x4) 
+x1 should not ==(x2) 
+x1 should not ==(x3) 
+x2 should not ==(x1) 
+x2 should not ==(x3) 
+x2 should not ==(x4) 
+x3 should not ==(x1) 
+x3 should not ==(x2) 
+x3 should not ==(x4) 
+x4 should ==(x1) 
+x4 should not ==(x2) 
+x4 should not ==(x3) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should include the arguments in tests for equality <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008731S3_source')" id="l_C008731S3_source">show source</a> ]</span>
+            <div id="C008731S3_source" class="dyn-source">
+<pre>
+x1 = '(foo bar) 
+x2 = '(foo(bar) bar) 
+x3 = '(foo(bar x, bar x)) 
+x4 = '(foo(bar x, bar x)) 
+x1 should not ==(x2) 
+x1 should not ==(x3) 
+x1 should not ==(x4) 
+x2 should not ==(x1) 
+x2 should not ==(x3) 
+x2 should not ==(x4) 
+x3 should not ==(x1) 
+x3 should not ==(x2) 
+x3 should ==(x4) 
+x4 should not ==(x1) 
+x4 should not ==(x2) 
+x4 should ==(x3) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should work when given base as argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008731S4_source')" id="l_C008731S4_source">show source</a> ]</span>
+            <div id="C008731S4_source" class="dyn-source">
+<pre>
+('(foo) ==(Base)) should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should work when given basebehavior as argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008731S5_source')" id="l_C008731S5_source">show source</a> ]</span>
+            <div id="C008731S5_source" class="dyn-source">
+<pre>
+('(foo) ==(DefaultBehavior BaseBehavior)) should be false 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00874"></a><b>===</b>(other)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00874_source')" id="l_C00874_source">show source</a> ]</p>
+            <div id="C00874_source" class="dyn-source">
+<pre>
+method(other, 
+  if(self same?(
+      ()), 
+    Reflector other:mimics?(cell(:other), 
+      ()), 
+    bind(rescue(Condition Error, fn(c, false)), 
+      self ==(
+        other))))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00855"></a><b>&gt;&gt;</b>(newArgument)
+          </div>
+          <div class="description">
+            <p>evaluates the argument and adds it to the beginning of the argument list of this message. it then returns the receiving message.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Message >></b><br/>
+<ul style="list-style-type: none;">
+<li>- should add an argument at the beginning of the message argument list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008551S0_source')" id="l_C008551S0_source">show source</a> ]</span>
+            <div id="C008551S0_source" class="dyn-source">
+<pre>
+msg = '(foo(x)) 
+msg &gt;&gt;('(blarg mux)) 
+msg code should ==("foo(blarg mux, x)") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the original message <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008551S1_source')" id="l_C008551S1_source">show source</a> ]</span>
+            <div id="C008551S1_source" class="dyn-source">
+<pre>
+msg = '(foo(x)) 
+(msg &gt;&gt;('(blarg mux))) should be same(msg) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00853"></a><b>appendArgument</b>(newArgument)
+          </div>
+          <div class="description">
+            <p>evaluates the argument and adds it to the argument list of this message. it then returns the receiving message.</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00833"></a><b>arguments</b>()
+          </div>
+          <div class="description">
+            <p>Returns the unevaluated arguments for this message</p>
+          </div>
+          
+          <div class="specs">
+            <b> Message arguments</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return the actual arguments list - modifying this will modify the original list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008331S0_source')" id="l_C008331S0_source">show source</a> ]</span>
+            <div id="C008331S0_source" class="dyn-source">
+<pre>
+msg = '(foo(x)) 
+arg = msg arguments 
+arg &lt;&lt;('(y)) 
+msg code should ==("foo(x, y)") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00857"></a><b>arguments=</b>(newArguments)
+          </div>
+          <div class="description">
+            <p>sets the arguments for this message. if given nil the arguments list will be creared, otherwise the list given as arguments will be used. it then returns the receiving message.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Message arguments=</b><br/>
+<ul style="list-style-type: none;">
+<li>- should not modify the list - but create a new one instead when the list is cleared <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008571S0_source')" id="l_C008571S0_source">show source</a> ]</span>
+            <div id="C008571S0_source" class="dyn-source">
+<pre>
+msg = '(foo(x)) 
+args = msg arguments 
+msg arguments = nil 
+args should ==([]('(x))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not modify the list - but create a new one instead when the list is set to one element <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008571S1_source')" id="l_C008571S1_source">show source</a> ]</span>
+            <div id="C008571S1_source" class="dyn-source">
+<pre>
+msg = '(foo(x)) 
+args = msg arguments 
+msg arguments = '(bax) 
+args should ==([]('(x))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not modify the list - but create a new one instead when the list is set to one element <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008571S2_source')" id="l_C008571S2_source">show source</a> ]</span>
+            <div id="C008571S2_source" class="dyn-source">
+<pre>
+msg = '(foo(x)) 
+args = msg arguments 
+msg arguments = []('(bax)) 
+args should ==([]('(x))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should clear the arguments list if given nil <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008571S3_source')" id="l_C008571S3_source">show source</a> ]</span>
+            <div id="C008571S3_source" class="dyn-source">
+<pre>
+msg = '(foo(x)) 
+msg arguments = nil 
+msg code should ==("foo") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should set the only argument unless given a list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008571S4_source')" id="l_C008571S4_source">show source</a> ]</span>
+            <div id="C008571S4_source" class="dyn-source">
+<pre>
+msg = '(foo(x, y)) 
+msg arguments = '(bar) 
+msg code should ==("foo(bar)") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should change the arguments list to the given list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008571S5_source')" id="l_C008571S5_source">show source</a> ]</span>
+            <div id="C008571S5_source" class="dyn-source">
+<pre>
+msg = '(foo(x, y)) 
+other = '(me(i, j)) 
+msg arguments = other arguments 
+msg code should ==("foo(i, j)") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008571S6_source')" id="l_C008571S6_source">show source</a> ]</span>
+            <div id="C008571S6_source" class="dyn-source">
+<pre>
+Message should checkReceiverTypeOn(:("arguments="), '(foo)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00848"></a><b>asStackTraceText</b>()
+          </div>
+          <div class="description">
+            <p>returns a string that describes this message as a stack trace elemtn</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00832"></a><b>code</b>()
+          </div>
+          <div class="description">
+            <p>Returns a code representation of the object</p>
+          </div>
+          
+          <div class="specs">
+            <b> Message code</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return a text representation of itself <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008321S0_source')" id="l_C008321S0_source">show source</a> ]</span>
+            <div id="C008321S0_source" class="dyn-source">
+<pre>
+Message fromText("foo") code should ==("foo") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return a text representation of itself with arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008321S1_source')" id="l_C008321S1_source">show source</a> ]</span>
+            <div id="C008321S1_source" class="dyn-source">
+<pre>
+Message fromText("foo(123, 321)") code should ==("foo(123, 321)") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return empty parenthesis for the empty message <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008321S2_source')" id="l_C008321S2_source">show source</a> ]</span>
+            <div id="C008321S2_source" class="dyn-source">
+<pre>
+Message fromText("()") code should ==("()") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should include the next pointer if any exists <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008321S3_source')" id="l_C008321S3_source">show source</a> ]</span>
+            <div id="C008321S3_source" class="dyn-source">
+<pre>
+Message fromText("foo bar") code should ==("foo bar") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008321S4_source')" id="l_C008321S4_source">show source</a> ]</span>
+            <div id="C008321S4_source" class="dyn-source">
+<pre>
+Message should checkReceiverTypeOn(:code) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00849"></a><b>deepCopy</b>()
+          </div>
+          <div class="description">
+            <p>returns a deep clone of this message chain, starting at the current point.</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00863"></a><b>doText</b>(code)
+          </div>
+          <div class="description">
+            <p>Takes one evaluated argument and executes the contents of that text in the current context and returns the result of that.</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00837"></a><b>each</b>([indexOrArgOrCode] nil, [argOrCode] nil, [code] nil)
+          </div>
+          <div class="description">
+            <p>takes either one or two or three arguments. if one argument is given, it should be a message chain that will be sent to each message in the chain. the result will be thrown away. if two arguments are given, the first is an unevaluated name that will be set to each of the messages in the chain in succession, and then the second argument will be evaluated in a scope with that argument in it. if three arguments is given, the first one is an unevaluated name that will be set to the index of each message, and the other two arguments are the name of the argument for the value, and the actual code. the code will evaluate in a lexical context, and if the argument name is available outside the context, it will be shadowed. the method will return the original message.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Message each</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return a seq when given no arguments <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008371S0_source')" id="l_C008371S0_source">show source</a> ]</span>
+            <div id="C008371S0_source" class="dyn-source">
+<pre>
+x = '(foo) each 
+x should mimic(Sequence) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should always execute for itself <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008371S1_source')" id="l_C008371S1_source">show source</a> ]</span>
+            <div id="C008371S1_source" class="dyn-source">
+<pre>
+Ground x = 0 
+'(foo) each(Ground ++(x)) 
+Ground x should ==(1) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should execute once for each message in the chain <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008371S2_source')" id="l_C008371S2_source">show source</a> ]</span>
+            <div id="C008371S2_source" class="dyn-source">
+<pre>
+result = [] 
+'(foo bar quux) each(m, result &lt;&lt;(m name)) 
+result should ==([](:foo, :bar, :quux)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to just give it a message chain, that will be invoked on each object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008371S3_source')" id="l_C008371S3_source">show source</a> ]</span>
+            <div id="C008371S3_source" class="dyn-source">
+<pre>
+Ground y = [] 
+Ground xs = method(y &lt;&lt;(self name)) 
+'(foo bar quux) each(xs) 
+y should ==([](:foo, :bar, :quux)) 
+x = 0 
+'(foo bar quux) each(nil 
+  ++(x)) 
+x should ==(3) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to give it an argument name, and code <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008371S4_source')" id="l_C008371S4_source">show source</a> ]</span>
+            <div id="C008371S4_source" class="dyn-source">
+<pre>
+y = [] 
+'(foo bar quux) each(x, y &lt;&lt;(x name)) 
+y should ==([](:foo, :bar, :quux)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008371S5_source')" id="l_C008371S5_source">show source</a> ]</span>
+            <div id="C008371S5_source" class="dyn-source">
+<pre>
+y = '(foo bar quux) 
+(y each(x, x)) should be same(y) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should establish a lexical context when invoking the methods. this context will be the same for all invocations. <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008371S6_source')" id="l_C008371S6_source">show source</a> ]</span>
+            <div id="C008371S6_source" class="dyn-source">
+<pre>
+'(foo bar quux) each(x_list, blarg = 32) 
+cell?(:x_list) should be false 
+cell?(:blarg) should be false 
+x = 14 
+'(foo bar quux) each(x, blarg = 32) 
+x should ==(14) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to give it an extra argument to get the index <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008371S7_source')" id="l_C008371S7_source">show source</a> ]</span>
+            <div id="C008371S7_source" class="dyn-source">
+<pre>
+y = [] 
+'(foo bar baz quux) each(i, x, y &lt;&lt;([](i, x name))) 
+y should ==([]([](0, :foo), [](1, :bar), [](2, :baz), [](3, :quux))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008371S8_source')" id="l_C008371S8_source">show source</a> ]</span>
+            <div id="C008371S8_source" class="dyn-source">
+<pre>
+Message should checkReceiverTypeOn(:each) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00859"></a><b>evalArgAt</b>(argumentIndex, context)
+          </div>
+          <div class="description">
+            <p>takes one index, and a context and returns the evaluated argument at that index.</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00858"></a><b>evaluateOn</b>(ground, receiver ground, +arguments)
+          </div>
+          <div class="description">
+            <p>Takes one or more evaluated arguments and sends this message chain to where the first argument is ground, and if there are more arguments, the second is the receiver, and the rest will be the arguments</p>
+          </div>
+          
+          <div class="specs">
+            <b> Message evaluateOn</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be possible to create a message from text, with arguments and send that to a number <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008581S0_source')" id="l_C008581S0_source">show source</a> ]</span>
+            <div id="C008581S0_source" class="dyn-source">
+<pre>
+Message fromText("+(200)") evaluateOn(20) should ==(220) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should possible to send a simple message that is not predefined <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008581S1_source')" id="l_C008581S1_source">show source</a> ]</span>
+            <div id="C008581S1_source" class="dyn-source">
+<pre>
+Ground f = method(self asText) 
+Message fromText("f") evaluateOn(42) should ==("42") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should evaluate the full message chain <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008581S2_source')" id="l_C008581S2_source">show source</a> ]</span>
+            <div id="C008581S2_source" class="dyn-source">
+<pre>
+Message fromText("+(200) +(10) -(5)") evaluateOn(20) should ==(225) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00841"></a><b>filename</b>()
+          </div>
+          <div class="description">
+            <p>returns the file name where this message is written</p>
+          </div>
+          
+          <div class="specs">
+            <b> Message filename</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be preserved on mimic <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008411S0_source')" id="l_C008411S0_source">show source</a> ]</span>
+            <div id="C008411S0_source" class="dyn-source">
+<pre>
+m1 = '(foo) 
+m2 = m1 mimic 
+m2 filename should ==(m1 filename) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00834"></a><b>formattedCode</b>()
+          </div>
+          <div class="description">
+            <p>Returns a formatted code representation of the object</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00872"></a><b>from</b>(...)
+          </div>
+          <div class="description">
+            <p>returns the message chain for the argument given</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00872_source')" id="l_C00872_source">show source</a> ]</p>
+            <div id="C00872_source" class="dyn-source">
+<pre>
+macro(
+  argCount = call arguments length 
+  cond(
+    argCount ==(
+      1), 
+    
+    code = call arguments [](
+        0) 
+    
+    code deepCopy, 
+    error!(Condition Error Invocation NoMatch, message: call message, context: call currentContext)) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Message from</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return the things inside unevaluated <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008721S0_source')" id="l_C008721S0_source">show source</a> ]</span>
+            <div id="C008721S0_source" class="dyn-source">
+<pre>
+Message from(+(200)) name should ==(:("+")) 
+Message from(abc foo bar quux lux) name should ==(:abc) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00861"></a><b>fromText</b>(code)
+          </div>
+          <div class="description">
+            <p>Takes one evaluated argument and returns the message resulting from parsing and operator shuffling the resulting message.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Message fromText</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return a message from the text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008611S0_source')" id="l_C008611S0_source">show source</a> ]</span>
+            <div id="C008611S0_source" class="dyn-source">
+<pre>
+Message fromText("foo") name should ==(:foo) 
+Message fromText("foo bar") next name should ==(:bar) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00850"></a><b>keyword?</b>()
+          </div>
+          <div class="description">
+            <p>returns true if this message is a keyword parameter or not</p>
+          </div>
+          
+          <div class="specs">
+            <b> Message keyword?</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return true for a message that ends with a colon <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008501S0_source')" id="l_C008501S0_source">show source</a> ]</span>
+            <div id="C008501S0_source" class="dyn-source">
+<pre>
+Message fromText("foo:") keyword? should be true 
+Message fromText("bar::::") keyword? should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return false for something simple <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008501S1_source')" id="l_C008501S1_source">show source</a> ]</span>
+            <div id="C008501S1_source" class="dyn-source">
+<pre>
+Message fromText("foo") keyword? should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return false for the empty message <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008501S2_source')" id="l_C008501S2_source">show source</a> ]</span>
+            <div id="C008501S2_source" class="dyn-source">
+<pre>
+Message fromText("()") keyword? should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008501S3_source')" id="l_C008501S3_source">show source</a> ]</span>
+            <div id="C008501S3_source" class="dyn-source">
+<pre>
+Message should checkReceiverTypeOn(:keyword?) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00845"></a><b>last</b>()
+          </div>
+          <div class="description">
+            <p>returns the last message in the chain</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00842"></a><b>line</b>()
+          </div>
+          <div class="description">
+            <p>returns the line where this message is written</p>
+          </div>
+          
+          <div class="specs">
+            <b> Message line</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be preserved on mimic <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008421S0_source')" id="l_C008421S0_source">show source</a> ]</span>
+            <div id="C008421S0_source" class="dyn-source">
+<pre>
+m1 = '(foo) 
+m2 = m1 mimic 
+m2 line should ==(m1 line) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00835"></a><b>name</b>()
+          </div>
+          <div class="description">
+            <p>returns the name of this message</p>
+          </div>
+          
+          <div class="specs">
+            <b> Message name</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return the name of something simple <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008351S0_source')" id="l_C008351S0_source">show source</a> ]</span>
+            <div id="C008351S0_source" class="dyn-source">
+<pre>
+Message fromText("foo") name should ==(:foo) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return an empty name <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008351S1_source')" id="l_C008351S1_source">show source</a> ]</span>
+            <div id="C008351S1_source" class="dyn-source">
+<pre>
+Message fromText("()") name should ==(:("")) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return a name with a question mark <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008351S2_source')" id="l_C008351S2_source">show source</a> ]</span>
+            <div id="C008351S2_source" class="dyn-source">
+<pre>
+Message fromText("blarg?") name should ==(:("blarg?")) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008351S3_source')" id="l_C008351S3_source">show source</a> ]</span>
+            <div id="C008351S3_source" class="dyn-source">
+<pre>
+Message should checkReceiverTypeOn(:name) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00838"></a><b>name=</b>(newName)
+          </div>
+          <div class="description">
+            <p>sets the name of the message and then returns that name</p>
+          </div>
+          
+          <div class="specs">
+            <b> Message name=</b><br/>
+<ul style="list-style-type: none;">
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008381S0_source')" id="l_C008381S0_source">show source</a> ]</span>
+            <div id="C008381S0_source" class="dyn-source">
+<pre>
+Message should checkReceiverTypeOn(:("name="), "foo") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00844"></a><b>next</b>()
+          </div>
+          <div class="description">
+            <p>returns the next message in the chain, or nil</p>
+          </div>
+          
+          <div class="specs">
+            <b> Message next</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return nil if there is no next <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008441S0_source')" id="l_C008441S0_source">show source</a> ]</span>
+            <div id="C008441S0_source" class="dyn-source">
+<pre>
+Message fromText("foo") next should be nil 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the next pointer <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008441S1_source')" id="l_C008441S1_source">show source</a> ]</span>
+            <div id="C008441S1_source" class="dyn-source">
+<pre>
+Message fromText("foo bar") next name should ==(:bar) 
+Message fromText("foo(123, 321) bar") next name should ==(:bar) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008441S2_source')" id="l_C008441S2_source">show source</a> ]</span>
+            <div id="C008441S2_source" class="dyn-source">
+<pre>
+Message should checkReceiverTypeOn(:next) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00839"></a><b>next=</b>(newNext)
+          </div>
+          <div class="description">
+            <p>sets the next pointer of the message and then returns that pointer</p>
+          </div>
+          
+          <div class="specs">
+            <b> Message next=</b><br/>
+<ul style="list-style-type: none;">
+<li>- should set the next pointer <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008391S0_source')" id="l_C008391S0_source">show source</a> ]</span>
+            <div id="C008391S0_source" class="dyn-source">
+<pre>
+msg = Message fromText("foo bar") 
+val = msg cell(:next) 
+msg next = nil 
+msg next should be nil 
+(msg cell(:next) ==(cell(:val))) should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should validate type of argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008391S1_source')" id="l_C008391S1_source">show source</a> ]</span>
+            <div id="C008391S1_source" class="dyn-source">
+<pre>
+fn(Message next = []) should signal(Condition Error Type IncorrectType) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008391S2_source')" id="l_C008391S2_source">show source</a> ]</span>
+            <div id="C008391S2_source" class="dyn-source">
+<pre>
+Message should checkReceiverTypeOn(:("next="), '(foo)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00843"></a><b>position</b>()
+          </div>
+          <div class="description">
+            <p>returns the position on the line where this message is written</p>
+          </div>
+          
+          <div class="specs">
+            <b> Message position</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be preserved on mimic <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008431S0_source')" id="l_C008431S0_source">show source</a> ]</span>
+            <div id="C008431S0_source" class="dyn-source">
+<pre>
+m1 = '(foo) 
+m2 = m1 mimic 
+m2 position should ==(m1 position) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00846"></a><b>prev</b>()
+          </div>
+          <div class="description">
+            <p>returns the previous message in the chain, or nil</p>
+          </div>
+          
+          <div class="specs">
+            <b> Message prev</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return nil if there is no next <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008461S0_source')" id="l_C008461S0_source">show source</a> ]</span>
+            <div id="C008461S0_source" class="dyn-source">
+<pre>
+Message fromText("foo") prev should be nil 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the prev pointer <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008461S1_source')" id="l_C008461S1_source">show source</a> ]</span>
+            <div id="C008461S1_source" class="dyn-source">
+<pre>
+Message fromText("foo bar") next prev name should ==(:foo) 
+Message fromText("foo(123, 321) bar") next prev name should ==(:foo) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008461S2_source')" id="l_C008461S2_source">show source</a> ]</span>
+            <div id="C008461S2_source" class="dyn-source">
+<pre>
+Message should checkReceiverTypeOn(:next) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00840"></a><b>prev=</b>(newPrev)
+          </div>
+          <div class="description">
+            <p>sets the prev pointer of the message and then returns that pointer</p>
+          </div>
+          
+          <div class="specs">
+            <b> Message prev=</b><br/>
+<ul style="list-style-type: none;">
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008401S0_source')" id="l_C008401S0_source">show source</a> ]</span>
+            <div id="C008401S0_source" class="dyn-source">
+<pre>
+Message should checkReceiverTypeOn(:("prev="), "foo") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should set the prev pointer <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008401S1_source')" id="l_C008401S1_source">show source</a> ]</span>
+            <div id="C008401S1_source" class="dyn-source">
+<pre>
+msg = Message fromText("foo bar") 
+val = msg next cell(:prev) 
+msg next prev = nil 
+msg next prev should be nil 
+(msg next cell(:prev) ==(cell(:val))) should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should validate type of argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008401S2_source')" id="l_C008401S2_source">show source</a> ]</span>
+            <div id="C008401S2_source" class="dyn-source">
+<pre>
+fn(Message prev = []) should signal(Condition Error Type IncorrectType) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008401S3_source')" id="l_C008401S3_source">show source</a> ]</span>
+            <div id="C008401S3_source" class="dyn-source">
+<pre>
+Message should checkReceiverTypeOn(:("prev="), '(foo)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00889"></a><b>rewrite</b>(+patterns)
+          </div>
+          <div class="description">
+            <p>Takes zero or more pairs of message chains, that describe how rewriting of the current message chain should happen. The message patterns can use symbols to match variable pieces of the pattern.</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00889_source')" id="l_C00889_source">show source</a> ]</p>
+            <div id="C00889_source" class="dyn-source">
+<pre>
+method(+patterns, 
+  patterns inject(self, 
+    current, 
+    pattern, 
+    Rewriter rewrite(current, pattern)) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Message rewrite</b><br/>
+<ul style="list-style-type: none;">
+<li>- should rewrite a very simple message chain <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008891S0_source')" id="l_C008891S0_source">show source</a> ]</span>
+            <div id="C008891S0_source" class="dyn-source">
+<pre>
+msg = '(foo) 
+output = msg rewrite(
+    '(:x) =&gt;('(something(:x))) 
+    ) 
+msg should ==('(foo)) 
+output should ==('(something(foo))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should rewrite a next into an argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008891S1_source')" id="l_C008891S1_source">show source</a> ]</span>
+            <div id="C008891S1_source" class="dyn-source">
+<pre>
+msg = '(foo bar) 
+output = msg rewrite(
+    '(:x :y) =&gt;('(:x(:y)))) 
+output should ==('(foo(bar))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should rewrite an argument into a next <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008891S2_source')" id="l_C008891S2_source">show source</a> ]</span>
+            <div id="C008891S2_source" class="dyn-source">
+<pre>
+msg = '(foo(bar)) 
+output = msg rewrite(
+    '(:x(:y)) =&gt;('(:x :y))) 
+output should ==('(foo bar)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should duplicate something if needed <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008891S3_source')" id="l_C008891S3_source">show source</a> ]</span>
+            <div id="C008891S3_source" class="dyn-source">
+<pre>
+msg = '(foo(bar)) 
+output = msg rewrite(
+    '(:x(:y)) =&gt;('(:x :y :y))) 
+output should ==('(foo bar bar)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should ignore pieces before it can't do anything with <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008891S4_source')" id="l_C008891S4_source">show source</a> ]</span>
+            <div id="C008891S4_source" class="dyn-source">
+<pre>
+msg = '(bux(blarg) foo bar) 
+output = msg rewrite(
+    '(:x :y) =&gt;('(:x(:y)))) 
+output should ==('(bux(blarg) foo(bar))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should ignore pieces after it can't do anything with <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008891S5_source')" id="l_C008891S5_source">show source</a> ]</span>
+            <div id="C008891S5_source" class="dyn-source">
+<pre>
+msg = '(foo bar bux(blarg)) 
+output = msg rewrite(
+    '(:x :y) =&gt;('(:x(:y)))) 
+output should ==('(foo(bar) bux(blarg))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should apply the same pattern at more than one place <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008891S6_source')" id="l_C008891S6_source">show source</a> ]</span>
+            <div id="C008891S6_source" class="dyn-source">
+<pre>
+msg = '(foo(bar) qux(bar) blarg foo(muxie)) 
+output = msg rewrite(
+    '(:x(:y)) =&gt;('(:x :y))) 
+output should ==('(foo bar qux bar blarg foo muxie)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should match a fixed thing on the left hand side <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008891S7_source')" id="l_C008891S7_source">show source</a> ]</span>
+            <div id="C008891S7_source" class="dyn-source">
+<pre>
+msg = '(foo(bar) blux(barg)) 
+output = msg rewrite(
+    '(foo(:y)) =&gt;('(foo :y))) 
+output should ==('(foo bar blux(barg))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should apply two patterns in a row, just as if you had called them each by its own <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008891S8_source')" id="l_C008891S8_source">show source</a> ]</span>
+            <div id="C008891S8_source" class="dyn-source">
+<pre>
+msg = '(foo(bar) bar(bax)) 
+msg rewrite(
+  '(:x(:y)) =&gt;('(:x :y)), 
+  '(:q :p) =&gt;('(:p :q :q)) 
+  ) should ==(msg rewrite('(:x(:y)) =&gt;('(:x :y))) rewrite('(:q :p) =&gt;('(:p :q :q)))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to grab more than one thing using the :all: pattern <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008891S9_source')" id="l_C008891S9_source">show source</a> ]</span>
+            <div id="C008891S9_source" class="dyn-source">
+<pre>
+msg = '(foo bar bax quux blax) 
+output = msg rewrite(
+    '(:x :all(2, :y)) =&gt;('(:x(:y)))) 
+output should ==('(foo(bar bax) quux blax)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to grab the rest using the :all: pattern <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008891S10_source')" id="l_C008891S10_source">show source</a> ]</span>
+            <div id="C008891S10_source" class="dyn-source">
+<pre>
+msg = '(foo bar bax quux) 
+output = msg rewrite(
+    '(:x :all(:y)) =&gt;('(:x(:y)))) 
+output should ==('(foo(bar bax quux))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to grab only up to the terminator with the rest pattern <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008891S11_source')" id="l_C008891S11_source">show source</a> ]</span>
+            <div id="C008891S11_source" class="dyn-source">
+<pre>
+msg = '(foo bar bax quux 
+    fluxie blarb) 
+output = msg rewrite(
+    '(foo :all(:y)) =&gt;('(foo(:y)))) 
+output should ==('(foo(bar bax quux) 
+    fluxie blarb)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to grab up to a point with until <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008891S12_source')" id="l_C008891S12_source">show source</a> ]</span>
+            <div id="C008891S12_source" class="dyn-source">
+<pre>
+msg = '(foo bar bax quux) 
+output = msg rewrite(
+    '(:x :until(bax, :y)) =&gt;('(:x(:y)))) 
+output should ==('(foo(bar bax) quux)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should handle calls to internal: as if it was a non-argument thing <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008891S13_source')" id="l_C008891S13_source">show source</a> ]</span>
+            <div id="C008891S13_source" class="dyn-source">
+<pre>
+msg = '(foo(1)) 
+output = msg rewrite(
+    '(:x(:y)) =&gt;('(:x bar(:y)))) 
+output should ==('(foo bar(1))) 
+msg = '(foo("flux")) 
+output = msg rewrite(
+    '(:x(:y)) =&gt;('(:x bar(:y)))) 
+output should ==('(foo bar("flux"))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to unify on specific literals <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008891S14_source')" id="l_C008891S14_source">show source</a> ]</span>
+            <div id="C008891S14_source" class="dyn-source">
+<pre>
+msg = '(foo(42)) 
+output = msg rewrite(
+    '(:x(42)) =&gt;('(bar(:x)))) 
+output should ==('(bar(foo))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to insert a new literal <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008891S15_source')" id="l_C008891S15_source">show source</a> ]</span>
+            <div id="C008891S15_source" class="dyn-source">
+<pre>
+msg = '(foo) 
+output = msg rewrite(
+    '(:x) =&gt;('(foo bar(:x(42))))) 
+output should ==('(foo bar(foo(42)))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to specify unmatched names with :not <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008891S16_source')" id="l_C008891S16_source">show source</a> ]</span>
+            <div id="C008891S16_source" class="dyn-source">
+<pre>
+msg = '(foo bar quux) 
+output = msg rewrite(
+    '(:not(foo) :x) =&gt;('(foo :x))) 
+output should ==('(foo foo quux)) 
+msg = '(foo bar baz bletch quux) 
+output = msg rewrite(
+    '(:not(foo, bar, baz) :x) =&gt;('(fox :x))) 
+output should ==('(foo bar baz fox quux)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to unify on the unmatched name <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008891S17_source')" id="l_C008891S17_source">show source</a> ]</span>
+            <div id="C008891S17_source" class="dyn-source">
+<pre>
+msg = '(foo bar quux) 
+output = msg rewrite(
+    '(:not(foo, :y) :x) =&gt;('(:x :y))) 
+output should ==('(foo quux bar)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should work recursively <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008891S18_source')" id="l_C008891S18_source">show source</a> ]</span>
+            <div id="C008891S18_source" class="dyn-source">
+<pre>
+msg = '(foo x bar(foo y)) 
+output = msg rewrite:recursively(
+    '(foo :b) =&gt;('(:b foo))) 
+output should ==('(x foo bar(y foo))) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00890"></a><b>rewrite:recursively</b>(+patterns)
+          </div>
+          <div class="description">
+            <p>Takes zero or more pairs of message chains, that describe how rewriting of the current message chain should happen. The message patterns can use symbols to match variable pieces of the pattern.</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00890_source')" id="l_C00890_source">show source</a> ]</p>
+            <div id="C00890_source" class="dyn-source">
+<pre>
+method(+patterns, 
+  patterns inject(self, 
+    current, 
+    pattern, 
+    Rewriter rewrite(current, pattern, true)) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00852"></a><b>sendTo</b>(newReceiver, context nil)
+          </div>
+          <div class="description">
+            <p>Takes one evaluated argument and sends this message to that argument</p>
+          </div>
+          
+          <div class="specs">
+            <b> Message sendTo</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be possible to create a message from text, with arguments and send that to a number <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008521S0_source')" id="l_C008521S0_source">show source</a> ]</span>
+            <div id="C008521S0_source" class="dyn-source">
+<pre>
+Message fromText("+(200)") sendTo(20) should ==(220) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should possible to send a simple message that is not predefined <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008521S1_source')" id="l_C008521S1_source">show source</a> ]</span>
+            <div id="C008521S1_source" class="dyn-source">
+<pre>
+Ground f = method(self asText) 
+Message fromText("f") sendTo(42) should ==("42") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should only send one message and not follow the next pointer <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008521S2_source')" id="l_C008521S2_source">show source</a> ]</span>
+            <div id="C008521S2_source" class="dyn-source">
+<pre>
+Message fromText("+(200) +(10) -(5)") sendTo(20) should ==(220) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00875"></a><b>seq</b>()
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00875_source')" id="l_C00875_source">show source</a> ]</p>
+            <div id="C00875_source" class="dyn-source">
+<pre>
+method(
+  s = Sequence mimic do(
+      next = method(
+          obj = @ currentMessage 
+          @ currentMessage = @ currentMessage next 
+          obj 
+          ) 
+      next? = method(!(@ currentMessage nil?)) 
+      ) 
+  s currentMessage = @ 
+  s 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Message seq</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return a Sequence <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008751S0_source')" id="l_C008751S0_source">show source</a> ]</span>
+            <div id="C008751S0_source" class="dyn-source">
+<pre>
+'(foo) seq should mimic(Sequence) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return an object that yields all messages <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008751S1_source')" id="l_C008751S1_source">show source</a> ]</span>
+            <div id="C008751S1_source" class="dyn-source">
+<pre>
+ss = '(foo bar quux) seq 
+ss next should ==('(foo bar quux)) 
+ss next should ==('(bar quux)) 
+ss next should ==('(quux)) 
+ss next? should be false 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00860"></a><b>shuffleOperators</b>()
+          </div>
+          <div class="description">
+            <p>Will rearrange this message and all submessages to follow regular C style operator precedence rules. Will use Message OperatorTable to guide this operation. The operation is mutating, but should not change anything if done twice.</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00851"></a><b>symbol?</b>()
+          </div>
+          <div class="description">
+            <p>returns true if this message is a symbol message or not</p>
+          </div>
+          
+          <div class="specs">
+            <b> Message symbol?</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return true for a message that starts with a colon <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008511S0_source')" id="l_C008511S0_source">show source</a> ]</span>
+            <div id="C008511S0_source" class="dyn-source">
+<pre>
+Message fromText(":foo") symbol? should be true 
+Message fromText("::::bar") symbol? should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return false for something simple <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008511S1_source')" id="l_C008511S1_source">show source</a> ]</span>
+            <div id="C008511S1_source" class="dyn-source">
+<pre>
+Message fromText("foo") symbol? should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return false for the empty message <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008511S2_source')" id="l_C008511S2_source">show source</a> ]</span>
+            <div id="C008511S2_source" class="dyn-source">
+<pre>
+Message fromText("()") symbol? should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008511S3_source')" id="l_C008511S3_source">show source</a> ]</span>
+            <div id="C008511S3_source" class="dyn-source">
+<pre>
+Message should checkReceiverTypeOn(:symbol?) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00847"></a><b>terminator?</b>()
+          </div>
+          <div class="description">
+            <p>returns true when this message is a terminator, otherwise false</p>
+          </div>
+          
+          <div class="specs">
+            <b> Message terminator?</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be true when it is a '.' message <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008471S0_source')" id="l_C008471S0_source">show source</a> ]</span>
+            <div id="C008471S0_source" class="dyn-source">
+<pre>
+msg = Message fromText(".") 
+msg name should ==(:(".")) 
+msg terminator? should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not be true when it is not a '.' message <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008471S1_source')" id="l_C008471S1_source">show source</a> ]</span>
+            <div id="C008471S1_source" class="dyn-source">
+<pre>
+msg = Message fromText("foo bar") 
+msg terminator? should be false 
+msg next terminator? should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008471S2_source')" id="l_C008471S2_source">show source</a> ]</span>
+            <div id="C008471S2_source" class="dyn-source">
+<pre>
+Message should checkReceiverTypeOn(:("terminator?")) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00836"></a><b>walk</b>([argOrCode] nil, [code] nil)
+          </div>
+          <div class="description">
+            <p>takes either one or two arguments. if one argument is given, it should be a message chain that will be sent to each message in the chain, recursively. the result will be thrown away. if two arguments are given, the first is an unevaluated name that will be set to each of the messages in the chain in succession, and then the second argument will be evaluated in a scope with that argument in it. the code will evaluate in a lexical context, and if the argument name is available outside the context, it will be shadowed. the method will return the original message.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Message walk</b><br/>
+<ul style="list-style-type: none;">
+<li>- should always execute for itself <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008361S0_source')" id="l_C008361S0_source">show source</a> ]</span>
+            <div id="C008361S0_source" class="dyn-source">
+<pre>
+Ground x = 0 
+'(foo(bar)) walk(Ground ++(x)) 
+Ground x should ==(2) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should execute once for each message and each argument in the chain <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008361S1_source')" id="l_C008361S1_source">show source</a> ]</span>
+            <div id="C008361S1_source" class="dyn-source">
+<pre>
+result = [] 
+'(foo(bar) quux(bar)) walk(m, result &lt;&lt;(m name)) 
+result should ==([](:foo, :bar, :quux, :bar)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to just give it a message chain, and it will be invoked on each object recursively <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008361S2_source')" id="l_C008361S2_source">show source</a> ]</span>
+            <div id="C008361S2_source" class="dyn-source">
+<pre>
+Ground y = [] 
+Ground xs = method(y &lt;&lt;(self name)) 
+'(foo bar(quux)) walk(xs) 
+y should ==([](:foo, :bar, :quux)) 
+x = 0 
+'(foo bar(quux)) walk(nil 
+  ++(x)) 
+x should ==(3) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to give it an argument name, and code <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008361S3_source')" id="l_C008361S3_source">show source</a> ]</span>
+            <div id="C008361S3_source" class="dyn-source">
+<pre>
+y = [] 
+'(foo bar(quux)) walk(x, y &lt;&lt;(x name)) 
+y should ==([](:foo, :bar, :quux)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008361S4_source')" id="l_C008361S4_source">show source</a> ]</span>
+            <div id="C008361S4_source" class="dyn-source">
+<pre>
+y = '(foo bar(quux)) 
+(y walk(x, x)) should be same(y) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should establish a lexical context when invoking the methods. this context will be the same for all invocations. <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008361S5_source')" id="l_C008361S5_source">show source</a> ]</span>
+            <div id="C008361S5_source" class="dyn-source">
+<pre>
+'(foo bar(quux)) walk(x_list, blarg = 32) 
+cell?(:x_list) should be false 
+cell?(:blarg) should be false 
+x = 14 
+'(foo bar quux) walk(x, blarg = 32) 
+x should ==(14) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008361S6_source')" id="l_C008361S6_source">show source</a> ]</span>
+            <div id="C008361S6_source" class="dyn-source">
+<pre>
+Message should checkReceiverTypeOn(:walk) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00862"></a><b>wrap</b>(value)
+          </div>
+          <div class="description">
+            <p>Takes one evaluated argument and returns a message that wraps the value of that argument.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Message wrap</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return something with a name of cachedResult <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008621S0_source')" id="l_C008621S0_source">show source</a> ]</span>
+            <div id="C008621S0_source" class="dyn-source">
+<pre>
+Message wrap(42) name should ==(:cachedResult) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should evaluate its argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008621S1_source')" id="l_C008621S1_source">show source</a> ]</span>
+            <div id="C008621S1_source" class="dyn-source">
+<pre>
+Message wrap(Ground flurg = 444) 
+flurg should ==(444) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return a message <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008621S2_source')" id="l_C008621S2_source">show source</a> ]</span>
+            <div id="C008621S2_source" class="dyn-source">
+<pre>
+Message wrap(42) should have kind("Message") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return something that when evaluated yields the value sent to the wrap method <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C008621S3_source')" id="l_C008621S3_source">show source</a> ]</span>
+            <div id="C008621S3_source" class="dyn-source">
+<pre>
+x = 55 
+m = Message wrap(x) 
+m evaluateOn(Ground, Ground) should be same(x) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </body>
+</html>

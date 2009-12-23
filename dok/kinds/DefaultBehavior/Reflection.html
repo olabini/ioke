@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Kind: DefaultBehavior</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="../.././dokgen-style.css" type="text/css" media="screen" />
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=480,width=750" ).focus();
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+    <table border='0' cellpadding='0' cellspacing='0' width="100%" class='banner'>
+      <tr>
+        <td>
+          <table width="100%" border='0' cellpadding='0' cellspacing='0'>
+            <tr>
+              <td class="file-title" colspan="2">
+                <span class="file-title-prefix">Kind</span>
+                <br />
+                DefaultBehavior Reflection
+              </td>
+              <td align="right">
+                <table cellspacing="0" cellpadding="2">
+                  <tr>
+                    <td>Main mimic:</td>
+                    <td>
+                      none
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <div id="bodyContent">
+      <div id="content">
+        <div class="description">
+          <p>
+contains behavior related to reflection
+          </p>
+        </div>
+
+        <div class="sectiontitle">Mimics</div>
+        <ul>
+          none
+        </ul>
+
+        <div class="sectiontitle">Inactive cells</div>
+        <ul>
+          <li><a href="#C00194">inspect</a></li>
+<li><a href="#C00173">kind</a></li>
+<li><a href="#C00193">notice</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Active cells</div>
+        <ul>
+          <li><a href="#C00177">!=(other)</a></li>
+<li><a href="#C00178">asText()</a></li>
+<li><a href="#C00187">become!(objectToBecome)</a></li>
+<li><a href="#C00191">derive()</a></li>
+<li><a href="#C00189">freeze!()</a></li>
+<li><a href="#C00188">frozen?()</a></li>
+<li><a href="#C00192">in?(aList)</a></li>
+<li><a href="#C00181">is?(potentialMimic)</a></li>
+<li><a href="#C00179">kind?(name)</a></li>
+<li><a href="#C00185">mimic!(newMimic)</a></li>
+<li><a href="#C00182">mimics()</a></li>
+<li><a href="#C00180">mimics?(potentialMimic)</a></li>
+<li><a href="#C00186">prependMimic!(newMimic)</a></li>
+<li><a href="#C00183">removeAllMimics!()</a></li>
+<li><a href="#C00184">removeMimic!(mimicToRemove)</a></li>
+<li><a href="#C00175">same?(other)</a></li>
+<li><a href="#C00176">send(messageName, +[arguments], +:keywordArguments)</a></li>
+<li><a href="#C00190">thaw!()</a></li>
+<li><a href="#C00174">uniqueHexId()</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Specs</div>
+        <div class="specs">
+          
+        </div>
+
+        <div class="sectiontitle">Inactive cells (details)</div>
+                <div class="cell">
+          <a name="C00194"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">inspect</td>
+              <td>=</td>
+              <td class="cell-value">"DefaultBehavior Reflection"</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C00173"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">kind</td>
+              <td>=</td>
+              <td class="cell-value">"DefaultBehavior Reflection"</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C00193"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">notice</td>
+              <td>=</td>
+              <td class="cell-value">"DefaultBehavior Reflection"</td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="sectiontitle">Active cells (details)</div>
+                <div class="cell">
+          <div class="title">
+          <a name="C00177"></a><b>!=</b>(other)
+          </div>
+          <div class="description">
+            <p>returns false if the left hand side is equal to the right hand side. exactly what this means depend on the object. the default behavior of Ioke objects is to only be equal if they are the same instance.</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00178"></a><b>asText</b>()
+          </div>
+          <div class="description">
+            <p>returns a textual representation of the object called on.</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00187"></a><b>become!</b>(objectToBecome)
+          </div>
+          <div class="description">
+            <p>modifies the receiver to be in all ways identical to the argument. if the receiver is nil, true or false, this method can't be used - but those are the only exceptions. it's generally not recommended to use it on kinds and objects that are important for the Ioke runtime, since the result might be highly unpredictable.</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00191"></a><b>derive</b>()
+          </div>
+          <div class="description">
+            <p>calls mimic.</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00191_source')" id="l_C00191_source">show source</a> ]</p>
+            <div id="C00191_source" class="dyn-source">
+<pre>
+method(
+  mimic)
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00189"></a><b>freeze!</b>()
+          </div>
+          <div class="description">
+            <p>ensures that the receiver is frozen</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00188"></a><b>frozen?</b>()
+          </div>
+          <div class="description">
+            <p>returns true if the receiver is frozen, otherwise false</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00192"></a><b>in?</b>(aList)
+          </div>
+          <div class="description">
+            <p>returns true if the receiver is included in the argument. sends 'include?' to the argument to find this out</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00192_source')" id="l_C00192_source">show source</a> ]</p>
+            <div id="C00192_source" class="dyn-source">
+<pre>
+method(aList, 
+  aList include?(self))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00181"></a><b>is?</b>(potentialMimic)
+          </div>
+          <div class="description">
+            <p>Takes one evaluated argument and returns either true or false if this object or one of it's mimics mimics that argument. exactly the same as 'mimics?'</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00179"></a><b>kind?</b>(name)
+          </div>
+          <div class="description">
+            <p>Takes one evaluated Text argument and returns either true or false if this object or one of it's mimics have the kind of the name specified</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00185"></a><b>mimic!</b>(newMimic)
+          </div>
+          <div class="description">
+            <p>Takes one evaluated argument and adds it to the list of mimics for the receiver. the receiver will be returned.</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00182"></a><b>mimics</b>()
+          </div>
+          <div class="description">
+            <p>returns a list of all the mimics of the receiver. it will not be the same list as is used to back the object, so modifications to this list will not show up in the object.</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00180"></a><b>mimics?</b>(potentialMimic)
+          </div>
+          <div class="description">
+            <p>Takes one evaluated argument and returns either true or false if this object or one of it's mimics mimics that argument</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00186"></a><b>prependMimic!</b>(newMimic)
+          </div>
+          <div class="description">
+            <p>Takes one evaluated argument and prepends it to the list of mimics for the receiver. the receiver will be returned.</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00183"></a><b>removeAllMimics!</b>()
+          </div>
+          <div class="description">
+            <p>removes all mimics on the receiver, and returns the receiver</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00184"></a><b>removeMimic!</b>(mimicToRemove)
+          </div>
+          <div class="description">
+            <p>removes the argument mimic from the list of all mimics on the receiver. will do nothing if the receiver has no such mimic. it returns the receiver</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00175"></a><b>same?</b>(other)
+          </div>
+          <div class="description">
+            <p>returns true if the evaluated argument is the same reference as the receiver, false otherwise.</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00176"></a><b>send</b>(messageName, +[arguments], +:keywordArguments)
+          </div>
+          <div class="description">
+            <p>takes the name of a message to send, and the arguments to give it. send should generally behave exactly as if you had sent the message itself - except that you can give a variable containing the name.</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00190"></a><b>thaw!</b>()
+          </div>
+          <div class="description">
+            <p>ensures that the receiver is not frozen</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00174"></a><b>uniqueHexId</b>()
+          </div>
+          <div class="description">
+            <p>returns a text hex representation of the receiver in upper case hex literal, starting with 0x. This value is based on System.identityHashCode, and as such is not totally guaranteed to be totally unique. but almost.</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </body>
+</html>

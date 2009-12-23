@@ -1,0 +1,1861 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Kind: DefaultBehavior</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href=".././dokgen-style.css" type="text/css" media="screen" />
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=480,width=750" ).focus();
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+    <table border='0' cellpadding='0' cellspacing='0' width="100%" class='banner'>
+      <tr>
+        <td>
+          <table width="100%" border='0' cellpadding='0' cellspacing='0'>
+            <tr>
+              <td class="file-title" colspan="2">
+                <span class="file-title-prefix">Kind</span>
+                <br />
+                Reflector
+              </td>
+              <td align="right">
+                <table cellspacing="0" cellpadding="2">
+                  <tr>
+                    <td>Main mimic:</td>
+                    <td>
+                      <a href="../kinds/Origin.html">Origin</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <div id="bodyContent">
+      <div id="content">
+        <div class="description">
+          <p>
+Allows access to the internals of any object without actually using methods on that object
+          </p>
+        </div>
+
+        <div class="sectiontitle">Mimics</div>
+        <ul>
+          <li><a href="../kinds/Origin.html">Origin</a></li>
+        </ul>
+
+        <div class="sectiontitle">Inactive cells</div>
+        <ul>
+          <li><a href="#C001119">kind</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Active cells</div>
+        <ul>
+          <li><a href="#C001140">other:become!(other, objectToBecome)</a></li>
+<li><a href="#C001130">other:cell(other, cellName)</a></li>
+<li><a href="#C001138">other:cell=(other, cellName, value)</a></li>
+<li><a href="#C001131">other:cell?(other, cellName)</a></li>
+<li><a href="#C001136">other:cellNames(other, includeMimics false, cutoff nil)</a></li>
+<li><a href="#C001133">other:cellOwner(other, cellName)</a></li>
+<li><a href="#C001132">other:cellOwner?(other, cellName)</a></li>
+<li><a href="#C001137">other:cells(other, includeMimics false)</a></li>
+<li><a href="#C001120">other:documentation(other)</a></li>
+<li><a href="#C001121">other:documentation=(other, text)</a></li>
+<li><a href="#C001142">other:freeze!(other)</a></li>
+<li><a href="#C001141">other:frozen?(other)</a></li>
+<li><a href="#C001124">other:is?(other, potentialMimic)</a></li>
+<li><a href="#C001122">other:kind?(other, name)</a></li>
+<li><a href="#C001139">other:mimic(other)</a></li>
+<li><a href="#C001128">other:mimic!(other, newMimic)</a></li>
+<li><a href="#C001125">other:mimics(other)</a></li>
+<li><a href="#C001123">other:mimics?(other, potentialMimic)</a></li>
+<li><a href="#C001129">other:prependMimic!(other, newMimic)</a></li>
+<li><a href="#C001126">other:removeAllMimics!(other)</a></li>
+<li><a href="#C001134">other:removeCell!(other, cellName)</a></li>
+<li><a href="#C001127">other:removeMimic!(other, mimicToRemove)</a></li>
+<li><a href="#C001145">other:same?(this, other)</a></li>
+<li><a href="#C001146">other:send(other, messageName, +[arguments], +:keywordArguments)</a></li>
+<li><a href="#C001143">other:thaw!(other)</a></li>
+<li><a href="#C001135">other:undefineCell!(other, cellName)</a></li>
+<li><a href="#C001144">other:uniqueHexId(other)</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Specs</div>
+        <div class="specs">
+          
+<b> Reflector other:removeMimics!</b><br/>
+<ul style="list-style-type: none;">
+<li>- should not remove something it doesn't mimic <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S0_source')" id="l_C00K01S0_source">show source</a> ]</span>
+            <div id="C00K01S0_source" class="dyn-source">
+<pre>
+Reflector other:removeMimic!(Origin mimic, "foo") mimics should ==([](Origin)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S1_source')" id="l_C00K01S1_source">show source</a> ]</span>
+            <div id="C00K01S1_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+Reflector other:removeMimic!(x, 1) should ==(x) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should remove any mimic it has <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S2_source')" id="l_C00K01S2_source">show source</a> ]</span>
+            <div id="C00K01S2_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x mimics = DefaultBehavior cell(:mimics) 
+Reflector other:removeMimic!(x, Origin) 
+x mimics should ==([]) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not remove any other mimic <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S3_source')" id="l_C00K01S3_source">show source</a> ]</span>
+            <div id="C00K01S3_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = Origin mimic 
+x mimic!(y) 
+Reflector other:removeMimic!(x, y) 
+x mimics should ==([](Origin)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+        </div>
+
+        <div class="sectiontitle">Inactive cells (details)</div>
+                <div class="cell">
+          <a name="C001119"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">kind</td>
+              <td>=</td>
+              <td class="cell-value">"Reflector"</td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="sectiontitle">Active cells (details)</div>
+                <div class="cell">
+          <div class="title">
+          <a name="C001140"></a><b>other:become!</b>(other, objectToBecome)
+          </div>
+          <div class="description">
+            <p>modifies the receiver to be in all ways identical to the argument. if the receiver is nil, true or false, this method can't be used - but those are the only exceptions. it's generally not recommended to use it on kinds and objects that are important for the Ioke runtime, since the result might be highly unpredictable.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Reflector other:become!</b><br/>
+<ul style="list-style-type: none;">
+<li>- should not be possible to have nil become something <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011401S0_source')" id="l_C0011401S0_source">show source</a> ]</span>
+            <div id="C0011401S0_source" class="dyn-source">
+<pre>
+fn(Reflector other:become!(nil, 42)) should signal(Condition Error CantMimicOddball) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not be possible to have true become something <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011401S1_source')" id="l_C0011401S1_source">show source</a> ]</span>
+            <div id="C0011401S1_source" class="dyn-source">
+<pre>
+fn(Reflector other:become!(true, 42)) should signal(Condition Error CantMimicOddball) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not be possible to have false become something <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011401S2_source')" id="l_C0011401S2_source">show source</a> ]</span>
+            <div id="C0011401S2_source" class="dyn-source">
+<pre>
+fn(Reflector other:become!(false, 42)) should signal(Condition Error CantMimicOddball) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to have a number become something else <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011401S3_source')" id="l_C0011401S3_source">show source</a> ]</span>
+            <div id="C0011401S3_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+
+y = -(324234534534145) 
+Reflector other:become!(y, x) 
+y should have kind("Origin") 
+y asText should not ==("-324234534534145") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to have something become a number <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011401S4_source')" id="l_C0011401S4_source">show source</a> ]</span>
+            <div id="C0011401S4_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = 42 
+Reflector other:become!(x, y) 
+x should have kind("Number") 
+x should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to have a text become something else <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011401S5_source')" id="l_C0011401S5_source">show source</a> ]</span>
+            <div id="C0011401S5_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = "foobar" 
+Reflector other:become!(y, x) 
+y should have kind("Origin") 
+y should not ==("foobar") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to have something become a text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011401S6_source')" id="l_C0011401S6_source">show source</a> ]</span>
+            <div id="C0011401S6_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = "foobar" 
+Reflector other:become!(x, y) 
+x should have kind("Text") 
+x should ==("foobar") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011401S7_source')" id="l_C0011401S7_source">show source</a> ]</span>
+            <div id="C0011401S7_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = Origin mimic 
+Reflector other:become!(x, y) should be same(y) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should modify the reciever to have the same documentation <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011401S8_source')" id="l_C0011401S8_source">show source</a> ]</span>
+            <div id="C0011401S8_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = Origin mimic 
+x documentation = "foo" 
+y documentation = "quux" 
+Reflector other:become!(x, y) 
+x documentation should ==("quux") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should give both objects the same uniqueHexId <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011401S9_source')" id="l_C0011401S9_source">show source</a> ]</span>
+            <div id="C0011401S9_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = Origin mimic 
+x uniqueHexId should not ==(y uniqueHexId) 
+y uniqueHexId should not ==(x uniqueHexId) 
+Reflector other:become!(x, y) 
+x uniqueHexId should ==(y uniqueHexId) 
+y uniqueHexId should ==(x uniqueHexId) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should give objects that are the same <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011401S10_source')" id="l_C0011401S10_source">show source</a> ]</span>
+            <div id="C0011401S10_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = Origin mimic 
+x should not be same(y) 
+y should not be same(x) 
+Reflector other:become!(x, y) 
+x should be same(y) 
+y should be same(x) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should give objects that mimic each other <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011401S11_source')" id="l_C0011401S11_source">show source</a> ]</span>
+            <div id="C0011401S11_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = Origin mimic 
+Reflector other:become!(x, y) 
+x should be mimic(y) 
+y should be mimic(x) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should give objects that when modified will change each other <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011401S12_source')" id="l_C0011401S12_source">show source</a> ]</span>
+            <div id="C0011401S12_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = Origin mimic 
+Reflector other:become!(x, y) 
+x z = 42 
+y z should ==(42) 
+y q = 35 
+x q should ==(35) 
+b = Origin mimic 
+x mimic!(b) 
+y should have mimic(b) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001130"></a><b>other:cell</b>(other, cellName)
+          </div>
+          <div class="description">
+            <p>expects one evaluated text or symbol argument and returns the cell that matches that name, without activating even if it's activatable.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Reflector other:cell</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be possible to get a cell using a Text argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011301S0_source')" id="l_C0011301S0_source">show source</a> ]</span>
+            <div id="C0011301S0_source" class="dyn-source">
+<pre>
+x = 42 
+Reflector other:cell(identity, "x") should ==(x) 
+Text x = 42 
+Reflector other:cell(Text, "x") should ==(Text x) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to get a cell using a Symbol argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011301S1_source')" id="l_C0011301S1_source">show source</a> ]</span>
+            <div id="C0011301S1_source" class="dyn-source">
+<pre>
+x = 42 
+Reflector other:cell(identity, :x) should ==(x) 
+Text x = 42 
+Reflector other:cell(Text, :x) should ==(Text x) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to get a cell with an empty name <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011301S2_source')" id="l_C0011301S2_source">show source</a> ]</span>
+            <div id="C0011301S2_source" class="dyn-source">
+<pre>
+Reflector other:cell(identity, :("")) kind should ==("DefaultMethod") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should report an error if trying to get a cell that doesn't exist in that object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011301S3_source')" id="l_C0011301S3_source">show source</a> ]</span>
+            <div id="C0011301S3_source" class="dyn-source">
+<pre>
+fn(Reflector other:cell(identity, :clurg)) should signal(Condition Error NoSuchCell) 
+fn(Reflector other:cell(identity, "clurg")) should signal(Condition Error NoSuchCell) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001138"></a><b>other:cell=</b>(other, cellName, value)
+          </div>
+          <div class="description">
+            <p>expects one evaluated text or symbol argument that names the cell to set, sets this cell to the result of evaluating the second argument, and returns the value set.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Reflector other:cell=</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be possible to set a cell using a Text argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011381S0_source')" id="l_C0011381S0_source">show source</a> ]</span>
+            <div id="C0011381S0_source" class="dyn-source">
+<pre>
+Reflector other:cell(Text, "murg") = 42 
+Text murg should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to set a cell using a Symbol argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011381S1_source')" id="l_C0011381S1_source">show source</a> ]</span>
+            <div id="C0011381S1_source" class="dyn-source">
+<pre>
+Reflector other:cell(Text, :murg) = 42 
+Text murg should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to set a cell with an empty name <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011381S2_source')" id="l_C0011381S2_source">show source</a> ]</span>
+            <div id="C0011381S2_source" class="dyn-source">
+<pre>
+oldEmpty = cell("") 
+Reflector other:cell(Text, "") = 42 
+Text cell("") should ==(42) 
+Text cell("") = cell(:oldEmpty) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to set a cell with complicated expressions <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011381S3_source')" id="l_C0011381S3_source">show source</a> ]</span>
+            <div id="C0011381S3_source" class="dyn-source">
+<pre>
+f = Origin mimic 
+f b = "foobar" 
+Reflector other:cell(Text, f b) = 42 +(24) -(3) 
+Text cell(:foobar) should ==(63) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to set a cell that doesn't exist <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011381S4_source')" id="l_C0011381S4_source">show source</a> ]</span>
+            <div id="C0011381S4_source" class="dyn-source">
+<pre>
+Reflector other:cell(Text, :murg) = 42 
+Text murg should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to set a cell that does exist <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011381S5_source')" id="l_C0011381S5_source">show source</a> ]</span>
+            <div id="C0011381S5_source" class="dyn-source">
+<pre>
+Ground x = 42 
+Reflector other:cell(identity, :x) = 43 
+x should ==(43) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to set a cell that does exist in a mimic. this should not change the mimic value <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011381S6_source')" id="l_C0011381S6_source">show source</a> ]</span>
+            <div id="C0011381S6_source" class="dyn-source">
+<pre>
+one = Origin mimic 
+one x = 42 
+two = one mimic 
+Reflector other:cell(two, :x) = 43 
+one x should ==(42) 
+one = Origin mimic 
+one x = 42 
+two = one mimic 
+Reflector other:cell(two, :x) = 43 
+two x should ==(43) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001131"></a><b>other:cell?</b>(other, cellName)
+          </div>
+          <div class="description">
+            <p>expects one evaluated text or symbol argument and returns a boolean indicating whether such a cell is reachable from this point.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Reflector other:cell?</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be possible to check for the existance of a cell using a text argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011311S0_source')" id="l_C0011311S0_source">show source</a> ]</span>
+            <div id="C0011311S0_source" class="dyn-source">
+<pre>
+x = 42 
+Reflector other:cell?(identity, "x") should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to check for the existance of a cell using a symbol argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011311S1_source')" id="l_C0011311S1_source">show source</a> ]</span>
+            <div id="C0011311S1_source" class="dyn-source">
+<pre>
+x = 42 
+Reflector other:cell?(identity, :x) should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to check for the existance of a cell with an empty name <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011311S2_source')" id="l_C0011311S2_source">show source</a> ]</span>
+            <div id="C0011311S2_source" class="dyn-source">
+<pre>
+Reflector other:cell?(identity, "") should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to check for the existance of a cell that doesn't exist <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011311S3_source')" id="l_C0011311S3_source">show source</a> ]</span>
+            <div id="C0011311S3_source" class="dyn-source">
+<pre>
+Reflector other:cell?(identity, :murg) should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to check for the existance of a cell that does exist <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011311S4_source')" id="l_C0011311S4_source">show source</a> ]</span>
+            <div id="C0011311S4_source" class="dyn-source">
+<pre>
+Reflector other:cell?(identity, :Ground) should be true 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001136"></a><b>other:cellNames</b>(other, includeMimics false, cutoff nil)
+          </div>
+          <div class="description">
+            <p>takes one optional evaluated boolean argument, which defaults to false. if false, this method returns a list of the cell names of the receiver. if true, it returns the cell names of this object and all it's mimics recursively.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Reflector other:cellNames</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return the cell names of this object by default <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011361S0_source')" id="l_C0011361S0_source">show source</a> ]</span>
+            <div id="C0011361S0_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+Reflector other:cellNames(x) should ==([]) 
+x f = 13 
+Reflector other:cellNames(x) should ==([](:f)) 
+x Why = 1 
+Reflector other:cellNames(x) should ==([](:f, :Why)) 
+x = Origin mimic 
+x Why = 1 
+x f = 13 
+Reflector other:cellNames(x) should ==([](:Why, :f)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take a boolean, when given will make it return all cell names in both this and it's parents objects <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011361S1_source')" id="l_C0011361S1_source">show source</a> ]</span>
+            <div id="C0011361S1_source" class="dyn-source">
+<pre>
+baseNames = Base cells keys asList sort 
+defaultBehaviorNames = DefaultBehavior cells keys sort 
+defaultBehaviorAllNames = DefaultBehavior cells(true) keys sort 
+iokeGroundNames = IokeGround cells keys sort 
+groundNames = Ground cells keys sort 
+originNames = Origin cells keys sort 
+
+nativeGroundAllNames = if(System feature?(:java), JavaGround cells keys sort, []) 
+groundAllNames = set(*(iokeGroundNames +(groundNames) +(nativeGroundAllNames) +(baseNames) +(defaultBehaviorAllNames))) sort 
+originAllNames = set(*(originNames +(groundAllNames) +(nativeGroundAllNames))) sort 
+Reflector other:cellNames(Base) sort should ==(baseNames) 
+Reflector other:cellNames(Base, false) sort should ==(baseNames) 
+Reflector other:cellNames(Base, true) sort should ==(baseNames) 
+Reflector other:cellNames(DefaultBehavior) sort should ==(defaultBehaviorNames) 
+Reflector other:cellNames(DefaultBehavior, false) sort should ==(defaultBehaviorNames) 
+Reflector other:cellNames(DefaultBehavior, true) sort should ==(defaultBehaviorAllNames) 
+Reflector other:cellNames(Ground) sort should ==(groundNames) 
+Reflector other:cellNames(Ground, false) sort should ==(groundNames) 
+Reflector other:cellNames(Ground, true) sort should ==(groundAllNames) 
+Reflector other:cellNames(Origin) sort should ==(originNames) 
+Reflector other:cellNames(Origin, false) sort should ==(originNames) 
+Reflector other:cellNames(Origin, true) sort should ==(originAllNames) 
+Text x = Origin mimic 
+Reflector other:cellNames(Text x, true) sort should ==(originAllNames) 
+Text x = Origin mimic 
+Text x foxy_base_spec = 12 
+Reflector other:cellNames(Text x, true) sort should ==(([](:foxy_base_spec) +(originAllNames)) sort) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001133"></a><b>other:cellOwner</b>(other, cellName)
+          </div>
+          <div class="description">
+            <p>expects one evaluated text or symbol argument and returns the closest object that defines such a cell. if it doesn't exist, a NoSuchCell condition will be signalled.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Reflector other:cellOwner</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return the closest owner of a cell <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011331S0_source')" id="l_C0011331S0_source">show source</a> ]</span>
+            <div id="C0011331S0_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = x mimic 
+x foo = 123 
+y foo = "bar" 
+Reflector other:cellOwner(x, :foo) should be same(x) 
+Reflector other:cellOwner(y, :foo) should be same(y) 
+Reflector other:cellOwner(x mimic, :foo) should be same(x) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should signal a condition if there is no such cell <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011331S1_source')" id="l_C0011331S1_source">show source</a> ]</span>
+            <div id="C0011331S1_source" class="dyn-source">
+<pre>
+fn(Reflector other:cellOwner(Origin, :test_cell_owner)) should signal(Condition Error NoSuchCell) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should offer an ignore restart if the cell can't be found <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011331S2_source')" id="l_C0011331S2_source">show source</a> ]</span>
+            <div id="C0011331S2_source" class="dyn-source">
+<pre>
+fn(Reflector other:cellOwner(Origin, :test_cell_owner)) should offer(restart(ignore, fn)) 
+fn(Reflector other:cellOwner(Origin, :test_cell_owner)) should returnFromRestart(:ignore) ==(nil) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001132"></a><b>other:cellOwner?</b>(other, cellName)
+          </div>
+          <div class="description">
+            <p>expects one evaluated text or symbol argument and returns a boolean indicating whether this cell is owned by the receiver or not. the assumption is that the cell should exist. if it doesn't exist, a NoSuchCell condition will be signalled.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Reflector other:cellOwner?</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return true if the cell name is owned by this object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011321S0_source')" id="l_C0011321S0_source">show source</a> ]</span>
+            <div id="C0011321S0_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = x mimic 
+x foo = 123 
+y foo = "bar" 
+Reflector other:cellOwner?(x, :foo) should be true 
+Reflector other:cellOwner?(y, :foo) should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return false if the cell name is owned by another object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011321S1_source')" id="l_C0011321S1_source">show source</a> ]</span>
+            <div id="C0011321S1_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = x mimic 
+x foo = 123 
+Reflector other:cellOwner?(y, :foo) should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should signal a condition if there is no such cell <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011321S2_source')" id="l_C0011321S2_source">show source</a> ]</span>
+            <div id="C0011321S2_source" class="dyn-source">
+<pre>
+fn(Reflector other:cellOwner?(Origin, :test_cell_owner)) should signal(Condition Error NoSuchCell) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should offer an ignore restart if the cell can't be found <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011321S3_source')" id="l_C0011321S3_source">show source</a> ]</span>
+            <div id="C0011321S3_source" class="dyn-source">
+<pre>
+fn(Reflector other:cellOwner?(Origin, :test_cell_owner)) should offer(restart(ignore, fn)) 
+fn(Reflector other:cellOwner?(Origin, :test_cell_owner)) should returnFromRestart(:ignore) ==(false) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001137"></a><b>other:cells</b>(other, includeMimics false)
+          </div>
+          <div class="description">
+            <p>takes one optional evaluated boolean argument, which defaults to false. if false, this method returns a dict of the cell names and values of the receiver. if true, it returns the cell names and values of this object and all it's mimics recursively.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Reflector other:cells</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return the cells of this object by default <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011371S0_source')" id="l_C0011371S0_source">show source</a> ]</span>
+            <div id="C0011371S0_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+Reflector other:cells(x) should ==({}) 
+x = Origin mimic 
+x f = 13 
+Reflector other:cells(x) should ==({}(f: 13)) 
+x = Origin mimic 
+x f = 13 
+x Why = 1 
+Reflector other:cells(x) should ==({}(f: 13, Why: 1)) 
+x = Origin mimic 
+x Why = 1 
+x f = 13 
+Reflector other:cells(x) should ==({}(f: 13, Why: 1)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take a boolean, when given will make it return all cells in both this and it's parents objects <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011371S1_source')" id="l_C0011371S1_source">show source</a> ]</span>
+            <div id="C0011371S1_source" class="dyn-source">
+<pre>
+x = Base mimic 
+Reflector other:cells(x, true) should ==({}(
+    kind: Base cell(:kind), 
+    mimic: Base cell(:mimic), 
+    :("=") =&gt;(Base cell(:("="))), 
+    :("==") =&gt;(Base cell(:("=="))), 
+    hash: Base cell(:hash), 
+    documentation: Base cell(:documentation), 
+    :("documentation=") =&gt;(Base cell(:("documentation="))), 
+    cell: Base cell(:cell), 
+    identity: Base cell(:identity), 
+    cellNames: Base cell(:cellNames), 
+    cells: Base cell(:cells), 
+    :("cell=") =&gt;(Base cell(:("cell="))), 
+    notice: "Base", 
+    inspect: "Base", 
+    :("removeCell!") =&gt;(Base cell(:("removeCell!"))), 
+    :("undefineCell!") =&gt;(Base cell(:("undefineCell!"))), 
+    :("cellOwner?") =&gt;(Base cell(:("cellOwner?"))), 
+    :("cellOwner") =&gt;(Base cell(:("cellOwner"))), 
+    :("cell?") =&gt;(Base cell("cell?")))) 
+x = Base mimic 
+x kind = "blarg" 
+Reflector other:cells(x, true) should ==({}(
+    kind: "blarg", 
+    mimic: Base cell(:mimic), 
+    :("=") =&gt;(Base cell(:("="))), 
+    :("==") =&gt;(Base cell(:("=="))), 
+    hash: Base cell(:hash), 
+    documentation: Base cell(:documentation), 
+    :("documentation=") =&gt;(Base cell(:("documentation="))), 
+    cell: Base cell(:cell), 
+    identity: Base cell(:identity), 
+    cellNames: Base cell(:cellNames), 
+    cells: Base cell(:cells), 
+    :("cell=") =&gt;(Base cell(:("cell="))), 
+    notice: "Base", 
+    inspect: "Base", 
+    :("removeCell!") =&gt;(Base cell(:("removeCell!"))), 
+    :("undefineCell!") =&gt;(Base cell(:("undefineCell!"))), 
+    :("cellOwner?") =&gt;(Base cell(:("cellOwner?"))), 
+    :("cellOwner") =&gt;(Base cell(:("cellOwner"))), 
+    :("cell?") =&gt;(Base cell("cell?")))) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001120"></a><b>other:documentation</b>(other)
+          </div>
+          <div class="description">
+            <p>returns the documentation text of the object given as argument. anything can have a documentation text - this text will initially be nil.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Reflector other:documentation</b><br/>
+<ul style="list-style-type: none;">
+<li>- should fetch an objects documentation <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011201S0_source')" id="l_C0011201S0_source">show source</a> ]</span>
+            <div id="C0011201S0_source" class="dyn-source">
+<pre>
+obj = Origin mimic 
+Reflector other:documentation(obj) should be nil 
+obj documentation = "foo bar" 
+Reflector other:documentation(obj) should ==("foo bar") 
+obj removeAllMimics! 
+Reflector other:documentation(obj) should ==("foo bar") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001121"></a><b>other:documentation=</b>(other, text)
+          </div>
+          <div class="description">
+            <p>sets the documentation string for a specific object.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Reflector other:documentation=</b><br/>
+<ul style="list-style-type: none;">
+<li>- should set the documentation on an object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011211S0_source')" id="l_C0011211S0_source">show source</a> ]</span>
+            <div id="C0011211S0_source" class="dyn-source">
+<pre>
+obj = Origin mimic 
+Reflector other:documentation(obj) = "flux" 
+obj documentation should ==("flux") 
+obj removeAllMimics! 
+Reflector other:documentation(obj) should ==("flux") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001142"></a><b>other:freeze!</b>(other)
+          </div>
+          <div class="description">
+            <p>ensures that the receiver is frozen</p>
+          </div>
+          
+          <div class="specs">
+            <b> Reflector other:freeze!</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be possible to call several times without effect <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011421S0_source')" id="l_C0011421S0_source">show source</a> ]</span>
+            <div id="C0011421S0_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+Reflector other:freeze!(x) 
+x freeze! 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not be possible to modify a frozen object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011421S1_source')" id="l_C0011421S1_source">show source</a> ]</span>
+            <div id="C0011421S1_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x existing = 43 
+Reflector other:freeze!(x) 
+
+fn(x y = 42) should signal(Condition Error ModifyOnFrozen) 
+
+fn(x existing = 42) should signal(Condition Error ModifyOnFrozen) 
+
+fn(x mimic!(Origin mimic)) should signal(Condition Error ModifyOnFrozen) 
+fn(x prependMimic!(Origin mimic)) should signal(Condition Error ModifyOnFrozen) 
+
+fn(x removeMimic!(Origin)) should signal(Condition Error ModifyOnFrozen) 
+
+fn(x removeAllMimics!) should signal(Condition Error ModifyOnFrozen) 
+
+fn(x documentation = "blarg") should signal(Condition Error ModifyOnFrozen) 
+
+fn(x become!(42)) should signal(Condition Error ModifyOnFrozen) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be copied when becoming <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011421S2_source')" id="l_C0011421S2_source">show source</a> ]</span>
+            <div id="C0011421S2_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = Origin mimic 
+Reflector other:freeze!(x) 
+y become!(x) 
+y should be frozen 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001141"></a><b>other:frozen?</b>(other)
+          </div>
+          <div class="description">
+            <p>returns true if the receiver is frozen, otherwise false</p>
+          </div>
+          
+          <div class="specs">
+            <b> Reflector other:frozen?</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return false on something that isn't frozen <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011411S0_source')" id="l_C0011411S0_source">show source</a> ]</span>
+            <div id="C0011411S0_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+Reflector other:frozen?(x) should be false 
+x freeze! 
+Reflector other:frozen?(x) should be true 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001124"></a><b>other:is?</b>(other, potentialMimic)
+          </div>
+          <div class="description">
+            <p>Takes one evaluated argument and returns either true or false if this object or one of it's mimics mimics that argument. exactly the same as 'other:mimics?'</p>
+          </div>
+          
+          <div class="specs">
+            <b> Reflector other:is?</b><br/>
+<ul style="list-style-type: none;">
+<li>- should work correctly for any object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011241S0_source')" id="l_C0011241S0_source">show source</a> ]</span>
+            <div id="C0011241S0_source" class="dyn-source">
+<pre>
+Reflector other:is?(DefaultBehavior, Origin) should be false 
+Reflector other:is?(Ground, Base) should be true 
+obj = Origin mimic 
+Reflector other:is?(obj, Origin) should be true 
+Reflector other:is?(obj, Base) should be true 
+obj removeAllMimics! 
+Reflector other:is?(obj, Origin) should be false 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001122"></a><b>other:kind?</b>(other, name)
+          </div>
+          <div class="description">
+            <p>Takes one evaluated Text argument and returns either true or false if this object or one of it's mimics have the kind of the name specified</p>
+          </div>
+          
+          <div class="specs">
+            <b> Reflector other:kind?</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return false if the kind doesn't match <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011221S0_source')" id="l_C0011221S0_source">show source</a> ]</span>
+            <div id="C0011221S0_source" class="dyn-source">
+<pre>
+Reflector other:kind?(Text, "nil") should be false 
+Reflector other:kind?(Text, "Number") should be false 
+Reflector other:kind?("", "nil") should be false 
+Reflector other:kind?("", "Number") should be false 
+Reflector other:kind?("", "System") should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return true if the current object has the kind <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011221S1_source')" id="l_C0011221S1_source">show source</a> ]</span>
+            <div id="C0011221S1_source" class="dyn-source">
+<pre>
+Reflector other:kind?(Text, "Text") should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return true if the main mimic has the kind <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011221S2_source')" id="l_C0011221S2_source">show source</a> ]</span>
+            <div id="C0011221S2_source" class="dyn-source">
+<pre>
+Reflector other:kind?("", "Text") should be true 
+Reflector other:kind?("", "DefaultBehavior") should be true 
+Reflector other:kind?("", "Base") should be true 
+Reflector other:kind?("", "Ground") should be true 
+Reflector other:kind?("", "Origin") should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return true if another mimic has the kind <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011221S3_source')" id="l_C0011221S3_source">show source</a> ]</span>
+            <div id="C0011221S3_source" class="dyn-source">
+<pre>
+Reflector other:kind?(123, "Mixins Comparing") should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should handle a cycle of mimics correctly <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011221S4_source')" id="l_C0011221S4_source">show source</a> ]</span>
+            <div id="C0011221S4_source" class="dyn-source">
+<pre>
+f = Origin mimic 
+f mimic!(f) 
+Reflector other:kind?(f, "Origin") should be true 
+f = Origin mimic 
+Origin mimic!(f) 
+Reflector other:kind?(f, "Origin") should be true 
+f = Origin mimic 
+Origin mimic!(f) 
+Reflector other:kind?(f, "DefaultBehavior") should be true 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001139"></a><b>other:mimic</b>(other)
+          </div>
+          <div class="description">
+            <p>will return a new derivation of the receiving object. Might throw exceptions if the object is an oddball object.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Reflector other:mimic</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be able to mimic Origin <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011391S0_source')" id="l_C0011391S0_source">show source</a> ]</span>
+            <div id="C0011391S0_source" class="dyn-source">
+<pre>
+result = Reflector other:mimic(Origin) 
+result should have kind("Origin") 
+result should not be same(Origin) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be able to mimic Ground <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011391S1_source')" id="l_C0011391S1_source">show source</a> ]</span>
+            <div id="C0011391S1_source" class="dyn-source">
+<pre>
+result = Reflector other:mimic(Ground) 
+result should have kind("Ground") 
+result should not be same(Ground) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be able to mimic Base <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011391S2_source')" id="l_C0011391S2_source">show source</a> ]</span>
+            <div id="C0011391S2_source" class="dyn-source">
+<pre>
+result = Reflector other:mimic(Base) 
+result kind should ==("Base") 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be able to mimic Text <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011391S3_source')" id="l_C0011391S3_source">show source</a> ]</span>
+            <div id="C0011391S3_source" class="dyn-source">
+<pre>
+result = Reflector other:mimic(Text) 
+result should have kind("Text") 
+result should not be same(Text) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001128"></a><b>other:mimic!</b>(other, newMimic)
+          </div>
+          <div class="description">
+            <p>Takes one evaluated argument and adds it to the list of mimics for the receiver. the receiver will be returned.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Reflector other:mimic!</b><br/>
+<ul style="list-style-type: none;">
+<li>- should add a new mimic to the list of mimics <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011281S0_source')" id="l_C0011281S0_source">show source</a> ]</span>
+            <div id="C0011281S0_source" class="dyn-source">
+<pre>
+f = Origin mimic 
+g = Origin mimic 
+Reflector other:mimic!(f, g) 
+f mimics length should ==(2) 
+f mimics [](0) should ==(Origin) 
+f mimics [](1) should ==(g) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not add a mimic that's already in the list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011281S1_source')" id="l_C0011281S1_source">show source</a> ]</span>
+            <div id="C0011281S1_source" class="dyn-source">
+<pre>
+f = Origin mimic 
+Reflector other:mimic!(f, Origin) 
+Reflector other:mimic!(f, Origin) 
+Reflector other:mimic!(f, Origin) 
+Reflector other:mimic!(f, Origin) 
+f mimics length should ==(1) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not be able to mimic nil <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011281S2_source')" id="l_C0011281S2_source">show source</a> ]</span>
+            <div id="C0011281S2_source" class="dyn-source">
+<pre>
+fn(Reflector other:mimic!(Origin mimic, nil)) should signal(Condition Error CantMimicOddball) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not be able to mimic true <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011281S3_source')" id="l_C0011281S3_source">show source</a> ]</span>
+            <div id="C0011281S3_source" class="dyn-source">
+<pre>
+fn(Reflector other:mimic!(Origin mimic, true)) should signal(Condition Error CantMimicOddball) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not be able to mimic false <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011281S4_source')" id="l_C0011281S4_source">show source</a> ]</span>
+            <div id="C0011281S4_source" class="dyn-source">
+<pre>
+fn(Reflector other:mimic!(Origin mimic, false)) should signal(Condition Error CantMimicOddball) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not be able to mimic symbols <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011281S5_source')" id="l_C0011281S5_source">show source</a> ]</span>
+            <div id="C0011281S5_source" class="dyn-source">
+<pre>
+fn(Reflector other:mimic!(Origin mimic, :foo)) should signal(Condition Error CantMimicOddball) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the receiving object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011281S6_source')" id="l_C0011281S6_source">show source</a> ]</span>
+            <div id="C0011281S6_source" class="dyn-source">
+<pre>
+f = Origin mimic 
+Reflector other:mimic!(f, Origin) should ==(f) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001125"></a><b>other:mimics</b>(other)
+          </div>
+          <div class="description">
+            <p>returns a list of all the mimics of the receiver. it will not be the same list as is used to back the object, so modifications to this list will not show up in the object.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Reflector other:mimics</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return the mimics for an object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011251S0_source')" id="l_C0011251S0_source">show source</a> ]</span>
+            <div id="C0011251S0_source" class="dyn-source">
+<pre>
+obj = Origin mimic 
+obj2 = obj mimic 
+obj3 = Origin mimic 
+obj2 mimic!(obj3) 
+Reflector other:mimics(obj) should ==([](Origin)) 
+Reflector other:mimics(obj2) should ==([](obj, obj3)) 
+Reflector other:mimics(obj3) should ==([](Origin)) 
+obj3 removeAllMimics! 
+Reflector other:mimics(obj3) should ==([]) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001123"></a><b>other:mimics?</b>(other, potentialMimic)
+          </div>
+          <div class="description">
+            <p>Takes one evaluated argument and returns either true or false if this object or one of it's mimics mimics that argument</p>
+          </div>
+          
+          <div class="specs">
+            <b> Reflector other:mimics?</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return false if the object doesn't mimic the argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011231S0_source')" id="l_C0011231S0_source">show source</a> ]</span>
+            <div id="C0011231S0_source" class="dyn-source">
+<pre>
+f = Origin mimic 
+Reflector other:mimics?(Origin, f) should be false 
+f = Origin mimic 
+Reflector other:mimics?(DefaultBehavior, f) should be false 
+f = Origin mimic 
+Reflector other:mimics?(12, f) should be false 
+f = Origin mimic 
+Reflector other:mimics?(f, 12) should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return true if the object is the same as the argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011231S1_source')" id="l_C0011231S1_source">show source</a> ]</span>
+            <div id="C0011231S1_source" class="dyn-source">
+<pre>
+f = Origin mimic 
+Reflector other:mimics?(f, f) should be true 
+Reflector other:mimics?(Origin, Origin) should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return true if any of the mimics are the argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011231S2_source')" id="l_C0011231S2_source">show source</a> ]</span>
+            <div id="C0011231S2_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = x mimic 
+z = y mimic 
+Reflector other:mimics?(z, Origin) should be true 
+x = Origin mimic 
+y = x mimic 
+z = y mimic 
+Reflector other:mimics?(z, x) should be true 
+x = Origin mimic 
+y = x mimic 
+z = y mimic 
+Reflector other:mimics?(z, y) should be true 
+x = Origin mimic 
+y = x mimic 
+z = y mimic 
+Reflector other:mimics?(z, z) should be true 
+f = Origin mimic 
+Origin mimic!(f) 
+x = Origin mimic 
+y = x mimic 
+z = y mimic 
+Reflector other:mimics?(z, f) should be true 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should handle a cycle of mimics correctly <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011231S3_source')" id="l_C0011231S3_source">show source</a> ]</span>
+            <div id="C0011231S3_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = x mimic 
+z = y mimic 
+Origin mimic!(z) 
+Reflector other:mimics?(z, Number) should be false 
+x = Origin mimic 
+y = x mimic 
+z = y mimic 
+Origin mimic!(z) 
+Reflector other:mimics?(z, Origin) should be true 
+x = Origin mimic 
+y = x mimic 
+z = y mimic 
+Origin mimic!(z) 
+Reflector other:mimics?(z, Base) should be true 
+x = Origin mimic 
+x mimic!(x) 
+Reflector other:mimics?(x, Origin) should be true 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001129"></a><b>other:prependMimic!</b>(other, newMimic)
+          </div>
+          <div class="description">
+            <p>Takes one evaluated argument and prepends it to the list of mimics for the receiver. the receiver will be returned.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Reflector other:prependMimic!</b><br/>
+<ul style="list-style-type: none;">
+<li>- should add a new mimic to the list of mimics <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011291S0_source')" id="l_C0011291S0_source">show source</a> ]</span>
+            <div id="C0011291S0_source" class="dyn-source">
+<pre>
+f = Origin mimic 
+g = Origin mimic 
+Reflector other:prependMimic!(f, g) 
+f mimics length should ==(2) 
+f mimics [](1) should ==(Origin) 
+f mimics [](0) should ==(g) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not add a mimic that's already in the list <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011291S1_source')" id="l_C0011291S1_source">show source</a> ]</span>
+            <div id="C0011291S1_source" class="dyn-source">
+<pre>
+f = Origin mimic 
+Reflector other:prependMimic!(f, Origin) 
+Reflector other:prependMimic!(f, Origin) 
+Reflector other:prependMimic!(f, Origin) 
+Reflector other:prependMimic!(f, Origin) 
+f mimics length should ==(1) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not be able to mimic nil <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011291S2_source')" id="l_C0011291S2_source">show source</a> ]</span>
+            <div id="C0011291S2_source" class="dyn-source">
+<pre>
+fn(Reflector other:prependMimic!(Origin mimic, nil)) should signal(Condition Error CantMimicOddball) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not be able to mimic true <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011291S3_source')" id="l_C0011291S3_source">show source</a> ]</span>
+            <div id="C0011291S3_source" class="dyn-source">
+<pre>
+fn(Reflector other:prependMimic!(Origin mimic, true)) should signal(Condition Error CantMimicOddball) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not be able to mimic false <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011291S4_source')" id="l_C0011291S4_source">show source</a> ]</span>
+            <div id="C0011291S4_source" class="dyn-source">
+<pre>
+fn(Reflector other:prependMimic!(Origin mimic, false)) should signal(Condition Error CantMimicOddball) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not be able to mimic symbols <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011291S5_source')" id="l_C0011291S5_source">show source</a> ]</span>
+            <div id="C0011291S5_source" class="dyn-source">
+<pre>
+fn(Reflector other:prependMimic!(Origin mimic, :foo)) should signal(Condition Error CantMimicOddball) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the receiving object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011291S6_source')" id="l_C0011291S6_source">show source</a> ]</span>
+            <div id="C0011291S6_source" class="dyn-source">
+<pre>
+f = Origin mimic 
+Reflector other:prependMimic!(f, Origin) should ==(f) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001126"></a><b>other:removeAllMimics!</b>(other)
+          </div>
+          <div class="description">
+            <p>removes all mimics on the receiver, and returns the receiver</p>
+          </div>
+          
+          <div class="specs">
+            <b> Reflector other:removeAllMimics!</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return the object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011261S0_source')" id="l_C0011261S0_source">show source</a> ]</span>
+            <div id="C0011261S0_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x uniqueHexId = DefaultBehavior cell(:uniqueHexId) 
+Reflector other:removeAllMimics!(x) uniqueHexId should ==(x uniqueHexId) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should remove all mimics <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011261S1_source')" id="l_C0011261S1_source">show source</a> ]</span>
+            <div id="C0011261S1_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x mimic!(Text) 
+x mimics = DefaultBehavior cell(:mimics) 
+Reflector other:removeAllMimics!(x) mimics should ==([]) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001134"></a><b>other:removeCell!</b>(other, cellName)
+          </div>
+          <div class="description">
+            <p>expects one evaluated text or symbol argument and removes that cell from the current receiver. if the current receiver has no such object, signals a condition. note that if another cell with that name is available in the mimic chain, it will still be accessible after calling this method. the method returns the receiver.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Reflector other:removeCell!</b><br/>
+<ul style="list-style-type: none;">
+<li>- should remove the cell <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011341S0_source')" id="l_C0011341S0_source">show source</a> ]</span>
+            <div id="C0011341S0_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x flurgus_cell_test = 123 
+Reflector other:removeCell!(x, :flurgus_cell_test) 
+x cell?(:flurgus_cell_test) should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should signal a condition if no such cell exists <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011341S1_source')" id="l_C0011341S1_source">show source</a> ]</span>
+            <div id="C0011341S1_source" class="dyn-source">
+<pre>
+fn(Reflector other:removeCell!(Origin mimic, :foo)) should signal(Condition Error NoSuchCell) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should offer an ignore restart if the cell can't be found <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011341S2_source')" id="l_C0011341S2_source">show source</a> ]</span>
+            <div id="C0011341S2_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+fn(Reflector other:removeCell!(x, :foo)) should offer(restart(ignore, fn)) 
+fn(Reflector other:removeCell!(x, :foo)) should returnFromRestart(:ignore) ==(x) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should only remove a cell on the current object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011341S3_source')" id="l_C0011341S3_source">show source</a> ]</span>
+            <div id="C0011341S3_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = x mimic 
+x foo = "blurg" 
+y foo = "blarg" 
+Reflector other:removeCell!(y, :foo) 
+y cell?(:foo) should be true 
+y foo should ==("blurg") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001127"></a><b>other:removeMimic!</b>(other, mimicToRemove)
+          </div>
+          <div class="description">
+            <p>removes the argument mimic from the list of all mimics on the receiver. will do nothing if the receiver has no such mimic. it returns the receiver</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001145"></a><b>other:same?</b>(this, other)
+          </div>
+          <div class="description">
+            <p>returns true if the evaluated argument is the same reference as the receiver, false otherwise.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Reflector other:same?</b><br/>
+<ul style="list-style-type: none;">
+<li>- should work for all kinds of objects <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011451S0_source')" id="l_C0011451S0_source">show source</a> ]</span>
+            <div id="C0011451S0_source" class="dyn-source">
+<pre>
+obj = Origin mimic 
+Reflector other:same?(Base, Base) should be true 
+Reflector other:same?(Base, Origin) should be false 
+Reflector other:same?(obj, Origin) should be false 
+Reflector other:same?(obj, obj) should be true 
+obj removeAllMimics! 
+Reflector other:same?(obj, Origin) should be false 
+Reflector other:same?(obj, obj) should be true 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001146"></a><b>other:send</b>(other, messageName, +[arguments], +:keywordArguments)
+          </div>
+          <div class="description">
+            <p>takes the name of a message to send, and the arguments to give it. send should generally behave exactly as if you had sent the message itself - except that you can give a variable containing the name.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Reflector other:send</b><br/>
+<ul style="list-style-type: none;">
+<li>- should work on all objects <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011461S0_source')" id="l_C0011461S0_source">show source</a> ]</span>
+            <div id="C0011461S0_source" class="dyn-source">
+<pre>
+x = Origin mimic do(
+    foo = method(42)) 
+Reflector other:send(x, :foo) should ==(42) 
+x removeAllMimics! 
+Reflector other:send(x, :foo) should ==(42) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001143"></a><b>other:thaw!</b>(other)
+          </div>
+          <div class="description">
+            <p>ensures that the receiver is not frozen</p>
+          </div>
+          
+          <div class="specs">
+            <b> Reflector other:thaw!</b><br/>
+<ul style="list-style-type: none;">
+<li>- should be possible to call several times without effect <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011431S0_source')" id="l_C0011431S0_source">show source</a> ]</span>
+            <div id="C0011431S0_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x freeze! 
+Reflector other:thaw!(x) 
+Reflector other:thaw!(x) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should unfreeze an object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011431S1_source')" id="l_C0011431S1_source">show source</a> ]</span>
+            <div id="C0011431S1_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x freeze! 
+Reflector other:thaw!(x) 
+x should not be frozen 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001135"></a><b>other:undefineCell!</b>(other, cellName)
+          </div>
+          <div class="description">
+            <p>expects one evaluated text or symbol argument and makes that cell undefined in the current receiver. what that means is that from now on it will look like this cell doesn't exist in the receiver or any of its mimics. the cell will not show up if you call cellNames on the receiver or any of the receivers mimics. the undefined status can be removed by doing removeCell! on the correct cell name. a cell name that doesn't exist can still be undefined. the method returns the receiver.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Reflector other:undefineCell!</b><br/>
+<ul style="list-style-type: none;">
+<li>- should remove the cell <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011351S0_source')" id="l_C0011351S0_source">show source</a> ]</span>
+            <div id="C0011351S0_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+x flurgus_cell_test = 123 
+Reflector other:undefineCell!(x, :flurgus_cell_test) 
+x cell?(:flurgus_cell_test) should be false 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not signal a condition if no such cell exists <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011351S1_source')" id="l_C0011351S1_source">show source</a> ]</span>
+            <div id="C0011351S1_source" class="dyn-source">
+<pre>
+Reflector other:undefineCell!(Origin mimic, :test_undefine_cell) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should stop the cell from showing up in cellNames <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011351S2_source')" id="l_C0011351S2_source">show source</a> ]</span>
+            <div id="C0011351S2_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = x mimic 
+x foo = "blurg" 
+y foo = "blarg" 
+Reflector other:undefineCell!(y, :foo) 
+x cellNames should ==([](:foo)) 
+y cellNames should ==([]) 
+x cellNames(true) should include(:foo) 
+y cellNames(true) should not include(:foo) 
+y mimic cellNames(true) should not include(:foo) 
+z = y mimic 
+z foo = 123 
+z cellNames(true) should include(:foo) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should stop the cell from showing up in cells <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011351S3_source')" id="l_C0011351S3_source">show source</a> ]</span>
+            <div id="C0011351S3_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = x mimic 
+x foo = "blurg" 
+y foo = "blarg" 
+Reflector other:undefineCell!(y, :foo) 
+x cells should ==({}(foo: "blurg")) 
+y cells should ==({}) 
+x cells(true) keys should include(:foo) 
+y cells(true) keys should not include(:foo) 
+y mimic cells(true) keys should not include(:foo) 
+z = y mimic 
+z foo = 123 
+z cells(true) keys should include(:foo) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should stop the cell from being able to get with cell <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011351S4_source')" id="l_C0011351S4_source">show source</a> ]</span>
+            <div id="C0011351S4_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = x mimic 
+x foo = "blurg" 
+y foo = "blarg" 
+Reflector other:undefineCell!(y, :foo) 
+x cell(:foo) should ==("blurg") 
+fn(y cell(:foo)) should signal(Condition Error NoSuchCell) 
+z = y mimic 
+z foo = 123 
+z foo should ==(123) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should stop the cell from showing up with cellOwner <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011351S5_source')" id="l_C0011351S5_source">show source</a> ]</span>
+            <div id="C0011351S5_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = x mimic 
+x foo = "blurg" 
+y foo = "blarg" 
+Reflector other:undefineCell!(y, :foo) 
+fn(y cellOwner(:foo)) should signal(Condition Error NoSuchCell) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should stop the cell from showing up with cellOwner? <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011351S6_source')" id="l_C0011351S6_source">show source</a> ]</span>
+            <div id="C0011351S6_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = x mimic 
+x foo = "blurg" 
+y foo = "blarg" 
+Reflector other:undefineCell!(y, :foo) 
+fn(y cellOwner?(:foo)) should signal(Condition Error NoSuchCell) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to remove the undefine with removeCell! <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011351S7_source')" id="l_C0011351S7_source">show source</a> ]</span>
+            <div id="C0011351S7_source" class="dyn-source">
+<pre>
+x = Origin mimic 
+y = x mimic 
+x foo = "blurg" 
+y foo = "blarg" 
+Reflector other:undefineCell!(y, :foo) 
+y removeCell!(:foo) 
+y foo should ==("blurg") 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001144"></a><b>other:uniqueHexId</b>(other)
+          </div>
+          <div class="description">
+            <p>returns a text hex representation of the receiver in upper case hex literal, starting with 0x. This value is based on System.identityHashCode, and as such is not totally guaranteed to be totally unique. but almost.</p>
+          </div>
+          
+          <div class="specs">
+            <b> Reflector other:uniqueHexId</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return a unique hex id for any object <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0011441S0_source')" id="l_C0011441S0_source">show source</a> ]</span>
+            <div id="C0011441S0_source" class="dyn-source">
+<pre>
+obj = Origin mimic 
+hex = obj uniqueHexId 
+Reflector other:uniqueHexId(obj) should ==(hex) 
+obj removeAllMimics! 
+Reflector other:uniqueHexId(obj) should ==(hex) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </body>
+</html>

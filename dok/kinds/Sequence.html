@@ -1,0 +1,1663 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Kind: DefaultBehavior</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href=".././dokgen-style.css" type="text/css" media="screen" />
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=480,width=750" ).focus();
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+    <table border='0' cellpadding='0' cellspacing='0' width="100%" class='banner'>
+      <tr>
+        <td>
+          <table width="100%" border='0' cellpadding='0' cellspacing='0'>
+            <tr>
+              <td class="file-title" colspan="2">
+                <span class="file-title-prefix">Kind</span>
+                <br />
+                Sequence
+              </td>
+              <td align="right">
+                <table cellspacing="0" cellpadding="2">
+                  <tr>
+                    <td>Main mimic:</td>
+                    <td>
+                      <a href="../kinds/Origin.html">Origin</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <div id="bodyContent">
+      <div id="content">
+        <div class="description">
+          <p>
+The root mimic of all the sequences in the system.
+          </p>
+        </div>
+
+        <div class="sectiontitle">Mimics</div>
+        <ul>
+          <li><a href="../kinds/Origin.html">Origin</a></li><li><a href="../kinds/Mixins/Enumerable.html">Mixins Enumerable</a></li>
+        </ul>
+
+        <div class="sectiontitle">Inactive cells</div>
+        <ul>
+          <li><a href="#C001010">kind</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Active cells</div>
+        <ul>
+          <li><a href="#C001024">%(inbetween)</a></li>
+<li><a href="#C001026">&(right)</a></li>
+<li><a href="#C001022">+(other)</a></li>
+<li><a href="#C001013">collected(...)</a></li>
+<li><a href="#C001019">dropped(howManyToDrop)</a></li>
+<li><a href="#C001020">droppedWhile(...)</a></li>
+<li><a href="#C001011">each(...)</a></li>
+<li><a href="#C001014">filtered(...)</a></li>
+<li><a href="#C001016">grepped(toGrepAgainst)</a></li>
+<li><a href="#C001021">indexed(from: 0, step: 1)</a></li>
+<li><a href="#C001072">infinity(from: 0, step: 1)</a></li>
+<li><a href="#C001025">interleave(right)</a></li>
+<li><a href="#C001023">interpose(inbetween)</a></li>
+<li><a href="#C001012">mapped(...)</a></li>
+<li><a href="#C001017">rejected(...)</a></li>
+<li><a href="#C001015">selected(...)</a></li>
+<li><a href="#C001018">zipped(+toZipAgainst)</a></li>
+<li><a href="#C001074">?()</a></li>
+<li><a href="#C001073">?()</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Specs</div>
+        <div class="specs">
+          
+<b> Sequence Drop</b><br/>
+<ul style="list-style-type: none;">
+<li>- should mimic Sequence <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S0_source')" id="l_C00K01S0_source">show source</a> ]</span>
+            <div id="C00K01S0_source" class="dyn-source">
+<pre>
+Sequence Drop should mimic(Sequence) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return a list without as many elements as requested <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S1_source')" id="l_C00K01S1_source">show source</a> ]</span>
+            <div id="C00K01S1_source" class="dyn-source">
+<pre>
+ss = Sequence Drop create(SequenceTester with(val: [](1, 2, 3), len: 3) seq, Ground, [], 0) 
+ss next should ==(1) 
+ss asList should ==([](2, 3)) 
+ss = Sequence Drop create(SequenceTester with(val: [](1, 2, 3), len: 3) seq, Ground, [], 1) 
+ss next should ==(2) 
+ss asList should ==([](3)) 
+ss = Sequence Drop create(SequenceTester with(val: [](1, 2, 3), len: 3) seq, Ground, [], 2) 
+ss asList should ==([](3)) 
+ss = Sequence Drop create(SequenceTester with(val: [](1, 2, 3), len: 3) seq, Ground, [], 3) 
+ss asList should ==([]) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should not drop more elements than the length of the collection <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K01S2_source')" id="l_C00K01S2_source">show source</a> ]</span>
+            <div id="C00K01S2_source" class="dyn-source">
+<pre>
+ss = Sequence Drop create(SequenceTester with(val: [](1, 2, 3), len: 3) seq, Ground, [], 4) 
+ss asList should ==([]) 
+ss = Sequence Drop create(SequenceTester with(val: [](1, 2, 3), len: 3) seq, Ground, [], 10) 
+ss asList should ==([]) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> Sequence DropWhile</b><br/>
+<ul style="list-style-type: none;">
+<li>- should mimic Sequence <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K02S0_source')" id="l_C00K02S0_source">show source</a> ]</span>
+            <div id="C00K02S0_source" class="dyn-source">
+<pre>
+Sequence DropWhile should mimic(Sequence) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take zero arguments and return everything after the point where a value is true <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K02S1_source')" id="l_C00K02S1_source">show source</a> ]</span>
+            <div id="C00K02S1_source" class="dyn-source">
+<pre>
+ss = Sequence DropWhile create(SequenceTester with(val: [](1, 2, 3), len: 3) seq, Ground, []) 
+ss asList should ==([]) 
+ss = Sequence DropWhile create(SequenceTester with(val: [](1, 2, nil, false), len: 4) seq, Ground, []) 
+ss asList should ==([](nil, false)) 
+ss = Sequence DropWhile create(SequenceTester with(val: [](1, 2, false, 3, 4, nil, false), len: 7) seq, Ground, []) 
+ss asList should ==([](false, 3, 4, nil, false)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take one argument and apply it as a message chain, return a list with all elements after the block returns false <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K02S2_source')" id="l_C00K02S2_source">show source</a> ]</span>
+            <div id="C00K02S2_source" class="dyn-source">
+<pre>
+ss = Sequence DropWhile create(SequenceTester with(val: [](1, 2, 3), len: 3) seq, Ground, []('(&lt;(3)))) 
+ss asList should ==([](3)) 
+ss = Sequence DropWhile create(SequenceTester with(val: [](1, 2, 3), len: 3) seq, Ground, []('(!=(2)))) 
+ss asList should ==([](2, 3)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take two arguments and apply the lexical block created from it, and return a list with all elements after the block returns false <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K02S3_source')" id="l_C00K02S3_source">show source</a> ]</span>
+            <div id="C00K02S3_source" class="dyn-source">
+<pre>
+ss = Sequence DropWhile create(SequenceTester with(val: [](1, 2, 3), len: 3) seq, Ground, []('(x), '(x &lt;(3)))) 
+ss asList should ==([](3)) 
+ss = Sequence DropWhile create(SequenceTester with(val: [](1, 2, 3), len: 3) seq, Ground, []('(x), '(x !=(2)))) 
+ss asList should ==([](2, 3)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> Sequence Filter</b><br/>
+<ul style="list-style-type: none;">
+<li>- should mimic Sequence <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K03S0_source')" id="l_C00K03S0_source">show source</a> ]</span>
+            <div id="C00K03S0_source" class="dyn-source">
+<pre>
+Sequence Filter should mimic(Sequence) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take zero arguments and return a sequence with only the true values <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K03S1_source')" id="l_C00K03S1_source">show source</a> ]</span>
+            <div id="C00K03S1_source" class="dyn-source">
+<pre>
+ss = Sequence Filter create(SequenceTester with(val: [](1, 2, 3), len: 3) seq, Ground, []) 
+ss next should ==(1) 
+ss asList should ==([](2, 3)) 
+ss = Sequence Filter create(SequenceTester with(val: [](nil, false, nil), len: 3) seq, Ground, []) 
+ss next? should be false 
+ss asList should ==([]) 
+ss = Sequence Filter create(SequenceTester with(val: [](nil, false, true), len: 3) seq, Ground, []) 
+ss next? should be true 
+ss asList should ==([](true)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take one argument that ends up being a predicate and return a sequence of the values that is true <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K03S2_source')" id="l_C00K03S2_source">show source</a> ]</span>
+            <div id="C00K03S2_source" class="dyn-source">
+<pre>
+ss = Sequence Filter create(SequenceTester with(val: [](1, 2, 3), len: 3) seq, Ground, []('(&gt;(1)))) 
+ss next should ==(2) 
+ss asList should ==([](3)) 
+ss = Sequence Filter create(SequenceTester with(val: [](nil, false, nil), len: 3) seq, Ground, []('(nil?))) 
+ss asList should ==([](nil, nil)) 
+ss = Sequence Filter create(SequenceTester with(val: [](nil, false, true), len: 3) seq, Ground, []('(==(2)))) 
+ss next? should be false 
+ss asList should ==([]) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take two arguments that ends up being a predicate and return a sequence of the values that is true <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K03S3_source')" id="l_C00K03S3_source">show source</a> ]</span>
+            <div id="C00K03S3_source" class="dyn-source">
+<pre>
+ss = Sequence Filter create(SequenceTester with(val: [](1, 2, 3), len: 3) seq, Ground, []('(x), '(x &gt;(1)))) 
+ss next should ==(2) 
+ss asList should ==([](3)) 
+ss = Sequence Filter create(SequenceTester with(val: [](nil, false, nil), len: 3) seq, Ground, []('(x), '(x nil?))) 
+ss asList should ==([](nil, nil)) 
+ss = Sequence Filter create(SequenceTester with(val: [](nil, false, true), len: 3) seq, Ground, []('(x), '(x ==(2)))) 
+ss next? should be false 
+ss asList should ==([]) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> Sequence Grep</b><br/>
+<ul style="list-style-type: none;">
+<li>- should mimic Sequence <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K04S0_source')" id="l_C00K04S0_source">show source</a> ]</span>
+            <div id="C00K04S0_source" class="dyn-source">
+<pre>
+Sequence Grep should mimic(Sequence) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take one argument and return everything that matches with === <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K04S1_source')" id="l_C00K04S1_source">show source</a> ]</span>
+            <div id="C00K04S1_source" class="dyn-source">
+<pre>
+ss = Sequence Grep create(SequenceTester with(val: [](1, 2, 3, 4, 5, 6, 7, 8, 9), len: 9) seq, Ground, [], 2 ..(5)) 
+ss next should ==(2) 
+ss asList should ==([](3, 4, 5)) 
+customObj = Origin mimic 
+customObj === = method(other, (other &lt;(3)) ||(other &gt;(5))) 
+ss = Sequence Grep create(SequenceTester with(val: [](1, 2, 3, 4, 5, 6, 7, 8, 9), len: 9) seq, Ground, [], customObj) 
+ss next should ==(1) 
+ss next should ==(2) 
+ss asList should ==([](6, 7, 8, 9)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take two arguments where the second argument is a message chain and return the result of calling that chain on everything that matches with === <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K04S2_source')" id="l_C00K04S2_source">show source</a> ]</span>
+            <div id="C00K04S2_source" class="dyn-source">
+<pre>
+ss = Sequence Grep create(SequenceTester with(val: [](1, 2, 3, 4, 5, 6, 7, 8, 9), len: 9) seq, Ground, []('(+(1))), 2 ..(5)) 
+ss next should ==(3) 
+ss asList should ==([](4, 5, 6)) 
+customObj = Origin mimic 
+customObj === = method(other, (other &lt;(3)) ||(other &gt;(5))) 
+ss = Sequence Grep create(SequenceTester with(val: [](1, 2, 3, 4, 5, 6, 7, 8, 9), len: 9) seq, Ground, []('(+(1))), customObj) 
+ss next should ==(2) 
+ss next should ==(3) 
+ss asList should ==([](7, 8, 9, 10)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take three arguments where the second and third arguments gets turned into a lexical block to apply to all that matches with === <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K04S3_source')" id="l_C00K04S3_source">show source</a> ]</span>
+            <div id="C00K04S3_source" class="dyn-source">
+<pre>
+ss = Sequence Grep create(SequenceTester with(val: [](1, 2, 3, 4, 5, 6, 7, 8, 9), len: 9) seq, Ground, []('(x), '((x +(1)) asText)), 2 ..(5)) 
+ss next should ==("3") 
+ss asList should ==([]("4", "5", "6")) 
+customObj = Origin mimic 
+customObj === = method(other, (other &lt;(3)) ||(other &gt;(5))) 
+ss = Sequence Grep create(SequenceTester with(val: [](1, 2, 3, 4, 5, 6, 7, 8, 9), len: 9) seq, Ground, []('(x), '((x +(1)) asText)), customObj) 
+ss next should ==("2") 
+ss next should ==("3") 
+ss asList should ==([]("7", "8", "9", "10")) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> Sequence Index</b><br/>
+<ul style="list-style-type: none;">
+<li>- should mimic Sequence <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K05S0_source')" id="l_C00K05S0_source">show source</a> ]</span>
+            <div id="C00K05S0_source" class="dyn-source">
+<pre>
+Sequence Index should mimic(Sequence) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take zero arguments and just index the elements <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K05S1_source')" id="l_C00K05S1_source">show source</a> ]</span>
+            <div id="C00K05S1_source" class="dyn-source">
+<pre>
+ss = Sequence Index create(SequenceTester with(val: [](1, 2, 3), len: 3) seq, Ground, [], 0, 1) 
+ss next should ==([](0, 1)) 
+ss asList should ==([]([](1, 2), [](2, 3))) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> Sequence Map</b><br/>
+<ul style="list-style-type: none;">
+<li>- should mimic Sequence <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K06S0_source')" id="l_C00K06S0_source">show source</a> ]</span>
+            <div id="C00K06S0_source" class="dyn-source">
+<pre>
+Sequence Map should mimic(Sequence) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be able to take one argument for mapping <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K06S1_source')" id="l_C00K06S1_source">show source</a> ]</span>
+            <div id="C00K06S1_source" class="dyn-source">
+<pre>
+ss = Sequence Map create(SequenceTester seq, Ground, []('(*(2)))) 
+ss next should ==(2) 
+ss next should ==(4) 
+ss asList should ==([](6, 8, 10, 12, 14, 16)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be able to take two arguments for mapping <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K06S2_source')" id="l_C00K06S2_source">show source</a> ]</span>
+            <div id="C00K06S2_source" class="dyn-source">
+<pre>
+ss = Sequence Map create(SequenceTester seq, Ground, []('(x), '(x *(3)))) 
+ss next should ==(3) 
+ss next should ==(6) 
+ss asList should ==([](9, 12, 15, 18, 21, 24)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> Sequence Reject</b><br/>
+<ul style="list-style-type: none;">
+<li>- should mimic Sequence <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K07S0_source')" id="l_C00K07S0_source">show source</a> ]</span>
+            <div id="C00K07S0_source" class="dyn-source">
+<pre>
+Sequence Reject should mimic(Sequence) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take one argument that ends up being a predicate and return a sequence of the values that is false <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K07S1_source')" id="l_C00K07S1_source">show source</a> ]</span>
+            <div id="C00K07S1_source" class="dyn-source">
+<pre>
+ss = Sequence Reject create(SequenceTester with(val: [](1, 2, 3), len: 3) seq, Ground, []('(&gt;(1)))) 
+ss asList should ==([](1)) 
+ss = Sequence Reject create(SequenceTester with(val: [](nil, false, nil), len: 3) seq, Ground, []('(nil?))) 
+ss asList should ==([](false)) 
+ss = Sequence Reject create(SequenceTester with(val: [](nil, false, true), len: 3) seq, Ground, []('(==(2)))) 
+ss next should ==(nil) 
+ss asList should ==([](false, true)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take two arguments that ends up being a predicate and return a sequence of the values that is false <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K07S2_source')" id="l_C00K07S2_source">show source</a> ]</span>
+            <div id="C00K07S2_source" class="dyn-source">
+<pre>
+ss = Sequence Reject create(SequenceTester with(val: [](1, 2, 3), len: 3) seq, Ground, []('(x), '(x &gt;(1)))) 
+ss asList should ==([](1)) 
+ss = Sequence Reject create(SequenceTester with(val: [](nil, false, nil), len: 3) seq, Ground, []('(x), '(x nil?))) 
+ss asList should ==([](false)) 
+ss = Sequence Reject create(SequenceTester with(val: [](nil, false, true), len: 3) seq, Ground, []('(x), '(x ==(2)))) 
+ss next should be nil 
+ss asList should ==([](false, true)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+<b> Sequence Zip</b><br/>
+<ul style="list-style-type: none;">
+<li>- should mimic Sequence <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K08S0_source')" id="l_C00K08S0_source">show source</a> ]</span>
+            <div id="C00K08S0_source" class="dyn-source">
+<pre>
+Sequence Zip should mimic(Sequence) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take zero arguments and just zip the elements <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K08S1_source')" id="l_C00K08S1_source">show source</a> ]</span>
+            <div id="C00K08S1_source" class="dyn-source">
+<pre>
+ss = Sequence Zip create(SequenceTester with(val: [](1, 2, 3), len: 3) seq, Ground, []) 
+ss next should ==([](1)) 
+ss asList should ==([]([](2), [](3))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take one argument as a list and zip the elements together <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K08S2_source')" id="l_C00K08S2_source">show source</a> ]</span>
+            <div id="C00K08S2_source" class="dyn-source">
+<pre>
+ss = Sequence Zip create(SequenceTester with(val: [](1, 2, 3), len: 3) seq, Ground, [], [](5, 6, 7)) 
+ss next should ==([](1, 5)) 
+ss asList should ==([]([](2, 6), [](3, 7))) 
+ss = Sequence Zip create(SequenceTester with(val: [](1, 2, 3), len: 3) seq, Ground, [], [](5, 6, 7, 8)) 
+ss next should ==([](1, 5)) 
+ss asList should ==([]([](2, 6), [](3, 7))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take one argument as a seq and zip the elements together <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K08S3_source')" id="l_C00K08S3_source">show source</a> ]</span>
+            <div id="C00K08S3_source" class="dyn-source">
+<pre>
+ss = Sequence Zip create(SequenceTester with(val: [](1, 2, 3), len: 3) seq, Ground, [], SequenceTester with(val: [](9, 10, 11), len: 3) seq) 
+ss next should ==([](1, 9)) 
+ss asList should ==([]([](2, 10), [](3, 11))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should supply nils if the second list isn't long enough <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K08S4_source')" id="l_C00K08S4_source">show source</a> ]</span>
+            <div id="C00K08S4_source" class="dyn-source">
+<pre>
+ss = Sequence Zip create(SequenceTester with(val: [](1, 2, 3), len: 3) seq, Ground, [], [](5, 6)) 
+ss next should ==([](1, 5)) 
+ss asList should ==([]([](2, 6), [](3, nil))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should zip together several lists <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C00K08S5_source')" id="l_C00K08S5_source">show source</a> ]</span>
+            <div id="C00K08S5_source" class="dyn-source">
+<pre>
+ss = Sequence Zip create(SequenceTester with(val: [](1, 2, 3), len: 3) seq, Ground, [], [](5, 6, 7), [](10, 11, 12), [](15, 16, 17)) 
+ss next should ==([](1, 5, 10, 15)) 
+ss asList should ==([]([](2, 6, 11, 16), [](3, 7, 12, 17))) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+        </div>
+
+        <div class="sectiontitle">Inactive cells (details)</div>
+                <div class="cell">
+          <a name="C001010"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">kind</td>
+              <td>=</td>
+              <td class="cell-value">"Sequence"</td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="sectiontitle">Active cells (details)</div>
+                <div class="cell">
+          <div class="title">
+          <a name="C001024"></a><b>%</b>(inbetween)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C001024_source')" id="l_C001024_source">show source</a> ]</p>
+            <div id="C001024_source" class="dyn-source">
+<pre>
+method(inbetween, 
+  Sequence Interpose create(@, inbetween))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Sequence %</b><br/>
+<ul style="list-style-type: none;">
+<li>- should create a new sequence <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010241S0_source')" id="l_C0010241S0_source">show source</a> ]</span>
+            <div id="C0010241S0_source" class="dyn-source">
+<pre>
+([](1, 2, 3) seq %(42)) should mimic(Sequence) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should interpose the argument inbetween the elements of the original sequence <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010241S1_source')" id="l_C0010241S1_source">show source</a> ]</span>
+            <div id="C0010241S1_source" class="dyn-source">
+<pre>
+([]("foo", "bar", "quux") seq %("|")) asList should ==([]("foo", "|", "bar", "|", "quux")) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001026"></a><b>&</b>(right)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C001026_source')" id="l_C001026_source">show source</a> ]</p>
+            <div id="C001026_source" class="dyn-source">
+<pre>
+method(right, 
+  Sequence Interleave create(@, right))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Sequence &</b><br/>
+<ul style="list-style-type: none;">
+<li>- should create a new sequence <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010261S0_source')" id="l_C0010261S0_source">show source</a> ]</span>
+            <div id="C0010261S0_source" class="dyn-source">
+<pre>
+([](1, 2, 3) seq &(1 ..(5))) should mimic(Sequence) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take an enumerable <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010261S1_source')" id="l_C0010261S1_source">show source</a> ]</span>
+            <div id="C0010261S1_source" class="dyn-source">
+<pre>
+([](1, 2, 3) seq &(5 ..(15))) asList should ==([](1, 5, 2, 6, 3, 7)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take a seq <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010261S2_source')" id="l_C0010261S2_source">show source</a> ]</span>
+            <div id="C0010261S2_source" class="dyn-source">
+<pre>
+([](1, 2, 3) seq &((5 ..(15)) seq)) asList should ==([](1, 5, 2, 6, 3, 7)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should only take as many elements as needed from the self <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010261S3_source')" id="l_C0010261S3_source">show source</a> ]</span>
+            <div id="C0010261S3_source" class="dyn-source">
+<pre>
+([](1, 2, 3, 4, 5, 6) seq &([](10, 11))) asList should ==([](1, 10, 2, 11)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should only take as many elements as needed from the argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010261S4_source')" id="l_C0010261S4_source">show source</a> ]</span>
+            <div id="C0010261S4_source" class="dyn-source">
+<pre>
+([](1, 2) seq &([](10, 11, 12, 13, 14, 15))) asList should ==([](1, 10, 2, 11)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should interleave the elements of the argument with the elements of the sequence <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010261S5_source')" id="l_C0010261S5_source">show source</a> ]</span>
+            <div id="C0010261S5_source" class="dyn-source">
+<pre>
+([]("foo", "bar", "quux") seq &(1 ..(3))) asList should ==([]("foo", 1, "bar", 2, "quux", 3)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001022"></a><b>+</b>(other)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C001022_source')" id="l_C001022_source">show source</a> ]</p>
+            <div id="C001022_source" class="dyn-source">
+<pre>
+method(other, 
+  Sequence Combination create(@, other))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Sequence +</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return a new sequence that first runs the lhs sequence then the rhs sequence <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010221S0_source')" id="l_C0010221S0_source">show source</a> ]</span>
+            <div id="C0010221S0_source" class="dyn-source">
+<pre>
+([](1, 2, 3) seq +([](5, 6, 7, 8) seq)) take(5) should ==([](1, 2, 3, 5, 6)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001013"></a><b>collected</b>(...)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C001013_source')" id="l_C001013_source">show source</a> ]</p>
+            <div id="C001013_source" class="dyn-source">
+<pre>
+macro(
+  Sequence Map create(@, call ground, call arguments))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Sequence collected</b><br/>
+<ul style="list-style-type: none;">
+<li>- should create a new Sequence Map with the arguments sent to it <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010131S0_source')" id="l_C0010131S0_source">show source</a> ]</span>
+            <div id="C0010131S0_source" class="dyn-source">
+<pre>
+ss = SequenceTester with(val: [](1, 2, 3), len: 3) seq 
+val = ss collected(*(2)) 
+val should mimic(Sequence Map) 
+val wrappedSequence should be same(ss) 
+val messages should ==([]('(*(2)))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should map the objects <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010131S1_source')" id="l_C0010131S1_source">show source</a> ]</span>
+            <div id="C0010131S1_source" class="dyn-source">
+<pre>
+ss = SequenceTester with(val: [](1, 2, 3), len: 3) seq 
+ss collected(*(2)) asList should ==([](2, 4, 6)) 
+ss = SequenceTester with(val: [](1, 2, 3), len: 3) seq 
+ss collected(x, x *(2)) asList should ==([](2, 4, 6)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001019"></a><b>dropped</b>(howManyToDrop)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C001019_source')" id="l_C001019_source">show source</a> ]</p>
+            <div id="C001019_source" class="dyn-source">
+<pre>
+method(howManyToDrop, 
+  Sequence Drop create(@, Ground, [], howManyToDrop))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Sequence dropped</b><br/>
+<ul style="list-style-type: none;">
+<li>- should create a new Sequence Drop with the arguments sent to it <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010191S0_source')" id="l_C0010191S0_source">show source</a> ]</span>
+            <div id="C0010191S0_source" class="dyn-source">
+<pre>
+ss = SequenceTester with(val: [](1, 2, 3, 4, 5, 6, 7, 8), len: 8) seq 
+val = ss dropped(3) 
+val should mimic(Sequence Drop) 
+val wrappedSequence should be same(ss) 
+val messages should ==([]) 
+val restArguments should ==([](3)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should drop the objects <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010191S1_source')" id="l_C0010191S1_source">show source</a> ]</span>
+            <div id="C0010191S1_source" class="dyn-source">
+<pre>
+ss = SequenceTester with(val: [](1, 2, 4, 5, 6, 7, 8), len: 7) seq 
+ss dropped(3) asList should ==([](5, 6, 7, 8)) 
+ss = SequenceTester with(val: [](1, 2, 4, 5, 6, 7, 8), len: 7) seq 
+ss dropped(10) asList should ==([]) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001020"></a><b>droppedWhile</b>(...)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C001020_source')" id="l_C001020_source">show source</a> ]</p>
+            <div id="C001020_source" class="dyn-source">
+<pre>
+macro(
+  Sequence DropWhile create(@, call ground, call arguments))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Sequence droppedWhile</b><br/>
+<ul style="list-style-type: none;">
+<li>- should create a new Sequence DropWhile with the arguments sent to it <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010201S0_source')" id="l_C0010201S0_source">show source</a> ]</span>
+            <div id="C0010201S0_source" class="dyn-source">
+<pre>
+ss = SequenceTester with(val: [](1, 2, 3, 4, 5, 6, 7, 8), len: 8) seq 
+val = ss droppedWhile(&lt;(4)) 
+val should mimic(Sequence DropWhile) 
+val wrappedSequence should be same(ss) 
+val messages should ==([]('(&lt;(4)))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should drop the objects <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010201S1_source')" id="l_C0010201S1_source">show source</a> ]</span>
+            <div id="C0010201S1_source" class="dyn-source">
+<pre>
+ss = SequenceTester with(val: [](true, true, 1, false, 2, 3), len: 6) seq 
+ss droppedWhile asList should ==([](false, 2, 3)) 
+ss = SequenceTester with(val: [](1, 2, 4, 5, 6, 7, 8), len: 7) seq 
+ss droppedWhile(&lt;(3)) asList should ==([](4, 5, 6, 7, 8)) 
+ss = SequenceTester with(val: [](1, 2, 4, 5, 6, 7, 8), len: 7) seq 
+ss droppedWhile(x, x &lt;(3)) asList should ==([](4, 5, 6, 7, 8)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001011"></a><b>each</b>(...)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C001011_source')" id="l_C001011_source">show source</a> ]</p>
+            <div id="C001011_source" class="dyn-source">
+<pre>
+macro(
+  argCount = call arguments length 
+  cond(
+    argCount ==(
+      1), 
+    
+    chain = call arguments [](
+        0) 
+    
+    while(next?, 
+      chain evaluateOn(call ground, next) 
+      ) 
+    @, 
+    argCount ==(
+      2), 
+    
+    argumentName = call arguments [](
+        0) 
+    code = call arguments [](
+        1) 
+    
+    lexicalCode = LexicalBlock createFrom(list(argumentName, code), call ground) 
+    while(next?, 
+      lexicalCode call(next) 
+      ) 
+    @, 
+    argCount ==(
+      3), 
+    
+    indexArgumentName = call arguments [](
+        0) 
+    argumentName = call arguments [](
+        1) 
+    code = call arguments [](
+        2) 
+    
+    lexicalCode = LexicalBlock createFrom(list(indexArgumentName, argumentName, code), call ground) 
+    index = 0 
+    while(next?, 
+      lexicalCode call(index, next) 
+      ++(index) 
+      ) 
+    @ 
+    , 
+    error!(Condition Error Invocation NoMatch, message: call message, context: call currentContext)) 
+  )
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Sequence each</b><br/>
+<ul style="list-style-type: none;">
+<li>- should start from the point where the sequence is right now <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010111S0_source')" id="l_C0010111S0_source">show source</a> ]</span>
+            <div id="C0010111S0_source" class="dyn-source">
+<pre>
+xx = SequenceTester seq 
+xx next should ==(1) 
+y = [] 
+xx each(x, y &lt;&lt;(x)) 
+y should ==([](2, 3, 4, 5, 6, 7, 8)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to give it just a message chain <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010111S1_source')" id="l_C0010111S1_source">show source</a> ]</span>
+            <div id="C0010111S1_source" class="dyn-source">
+<pre>
+Ground y = [] 
+Ground xs = method(y &lt;&lt;(self)) 
+SequenceTester seq each(xs) 
+y should ==([](1, 2, 3, 4, 5, 6, 7, 8)) 
+x = 0 
+SequenceTester seq each(nil 
+  ++(x)) 
+x should ==(8) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to give it an argument name and code <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010111S2_source')" id="l_C0010111S2_source">show source</a> ]</span>
+            <div id="C0010111S2_source" class="dyn-source">
+<pre>
+y = [] 
+SequenceTester seq each(x, y &lt;&lt;(x)) 
+y should ==([](1, 2, 3, 4, 5, 6, 7, 8)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return the sequence <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010111S3_source')" id="l_C0010111S3_source">show source</a> ]</span>
+            <div id="C0010111S3_source" class="dyn-source">
+<pre>
+y = SequenceTester seq 
+(y each(x, x)) should be(y) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should establish a lexical context when invoking the methods. this context will be the same for all invocations. <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010111S4_source')" id="l_C0010111S4_source">show source</a> ]</span>
+            <div id="C0010111S4_source" class="dyn-source">
+<pre>
+SequenceTester seq each(x_list, blarg = 32) 
+cell?(:x_list) should be false 
+cell?(:blarg) should be false 
+x = 14 
+SequenceTester seq each(x, blarg = 32) 
+x should ==(14) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to give it an extra argument to get the index <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010111S5_source')" id="l_C0010111S5_source">show source</a> ]</span>
+            <div id="C0010111S5_source" class="dyn-source">
+<pre>
+y = [] 
+SequenceTester seq each(i, x, y &lt;&lt;([](i, x))) 
+y should ==([]([](0, 1), [](1, 2), [](2, 3), [](3, 4), [](4, 5), [](5, 6), [](6, 7), [](7, 8))) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001014"></a><b>filtered</b>(...)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C001014_source')" id="l_C001014_source">show source</a> ]</p>
+            <div id="C001014_source" class="dyn-source">
+<pre>
+macro(
+  Sequence Filter create(@, call ground, call arguments))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Sequence filtered</b><br/>
+<ul style="list-style-type: none;">
+<li>- should create a new Sequence Filter with the arguments sent to it <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010141S0_source')" id="l_C0010141S0_source">show source</a> ]</span>
+            <div id="C0010141S0_source" class="dyn-source">
+<pre>
+ss = SequenceTester with(val: [](1, 2, 3, 4, 5, 6, 7, 8), len: 8) seq 
+val = ss filtered(&gt;(4)) 
+val should mimic(Sequence Filter) 
+val wrappedSequence should be same(ss) 
+val messages should ==([]('(&gt;(4)))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should filter the objects <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010141S1_source')" id="l_C0010141S1_source">show source</a> ]</span>
+            <div id="C0010141S1_source" class="dyn-source">
+<pre>
+ss = SequenceTester with(val: [](true, false, nil, true, false, nil, 1), len: 7) seq 
+ss filtered asList should ==([](true, true, 1)) 
+ss = SequenceTester with(val: [](1, 2, 3, 4, 5, 6, 7, 8), len: 8) seq 
+ss filtered(&gt;(4)) asList should ==([](5, 6, 7, 8)) 
+ss = SequenceTester with(val: [](1, 2, 3, 4, 5, 6, 7, 8), len: 8) seq 
+ss filtered(x, x &gt;(4)) asList should ==([](5, 6, 7, 8)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001016"></a><b>grepped</b>(toGrepAgainst)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C001016_source')" id="l_C001016_source">show source</a> ]</p>
+            <div id="C001016_source" class="dyn-source">
+<pre>
+method(toGrepAgainst, 
+  Sequence Grep create(@, Ground, [], toGrepAgainst))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Sequence grepped</b><br/>
+<ul style="list-style-type: none;">
+<li>- should create a new Sequence Grep with the arguments sent to it <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010161S0_source')" id="l_C0010161S0_source">show source</a> ]</span>
+            <div id="C0010161S0_source" class="dyn-source">
+<pre>
+ss = SequenceTester with(val: [](1, 2, 3, 4, 5, 6, 7, 8), len: 8) seq 
+val = ss grepped(2 ..(4)) 
+val should mimic(Sequence Grep) 
+val wrappedSequence should be same(ss) 
+val messages should ==([]) 
+val restArguments should ==([](2 ..(4))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should grep the objects <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010161S1_source')" id="l_C0010161S1_source">show source</a> ]</span>
+            <div id="C0010161S1_source" class="dyn-source">
+<pre>
+ss = SequenceTester with(val: [](1, 2, 4, 5, 6, 7, 8), len: 7) seq 
+ss grepped(2 ..(4)) asList should ==([](2, 4)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001021"></a><b>indexed</b>(from: 0, step: 1)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C001021_source')" id="l_C001021_source">show source</a> ]</p>
+            <div id="C001021_source" class="dyn-source">
+<pre>
+method(from: 0, step: 1, 
+  Sequence Index create(@, Ground, [], from, step))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Sequence indexed</b><br/>
+<ul style="list-style-type: none;">
+<li>- should create a new Sequence Index with the arguments sent to it <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010211S0_source')" id="l_C0010211S0_source">show source</a> ]</span>
+            <div id="C0010211S0_source" class="dyn-source">
+<pre>
+ss = SequenceTester with(val: [](1, 2, 3, 4, 5, 6, 7, 8), len: 8) seq 
+val = ss indexed 
+val should mimic(Sequence Index) 
+val wrappedSequence should be same(ss) 
+val messages should ==([]) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should index the objects <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010211S1_source')" id="l_C0010211S1_source">show source</a> ]</span>
+            <div id="C0010211S1_source" class="dyn-source">
+<pre>
+ss = SequenceTester with(val: [](1, 2, 4, 5, 6, 7, 8), len: 7) seq 
+ss indexed asList should ==([]([](0, 1), [](1, 2), [](2, 4), [](3, 5), [](4, 6), [](5, 7), [](6, 8))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take an optional from: parameter <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010211S2_source')" id="l_C0010211S2_source">show source</a> ]</span>
+            <div id="C0010211S2_source" class="dyn-source">
+<pre>
+ss = SequenceTester with(val: [](1, 2, 4, 5, 6, 7, 8), len: 7) seq 
+ss indexed(from: 10) asList should ==([]([](10, 1), [](11, 2), [](12, 4), [](13, 5), [](14, 6), [](15, 7), [](16, 8))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take an optional step: parameter <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010211S3_source')" id="l_C0010211S3_source">show source</a> ]</span>
+            <div id="C0010211S3_source" class="dyn-source">
+<pre>
+ss = SequenceTester with(val: [](1, 2, 4, 5, 6, 7, 8), len: 7) seq 
+ss indexed(step: 3) asList should ==([]([](0, 1), [](3, 2), [](6, 4), [](9, 5), [](12, 6), [](15, 7), [](18, 8))) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001072"></a><b>infinity</b>(from: 0, step: 1)
+          </div>
+          <div class="description">
+            <p>Returns a new sequence that starts from zero and steps forever</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C001072_source')" id="l_C001072_source">show source</a> ]</p>
+            <div id="C001072_source" class="dyn-source">
+<pre>
+method(from: 0, step: 1, 
+  fn(n, [](n +(step))) iterate(from) mapped(first))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Sequence infinity</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return a Sequence <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010721S0_source')" id="l_C0010721S0_source">show source</a> ]</span>
+            <div id="C0010721S0_source" class="dyn-source">
+<pre>
+Sequence infinity should mimic(Sequence) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return a new infinity sequence every time called <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010721S1_source')" id="l_C0010721S1_source">show source</a> ]</span>
+            <div id="C0010721S1_source" class="dyn-source">
+<pre>
+Sequence infinity should not be(Sequence infinity) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should default to start from zero <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010721S2_source')" id="l_C0010721S2_source">show source</a> ]</span>
+            <div id="C0010721S2_source" class="dyn-source">
+<pre>
+Sequence infinity next should ==(0) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should default to use step 1 <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010721S3_source')" id="l_C0010721S3_source">show source</a> ]</span>
+            <div id="C0010721S3_source" class="dyn-source">
+<pre>
+xx = Sequence infinity 
+xx next should ==(0) 
+xx next should ==(1) 
+xx next should ==(2) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to define where the sequence starts from <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010721S4_source')" id="l_C0010721S4_source">show source</a> ]</span>
+            <div id="C0010721S4_source" class="dyn-source">
+<pre>
+xx = Sequence infinity(from: 42) 
+xx next should ==(42) 
+xx next should ==(43) 
+xx next should ==(44) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should be possible to define what step the sequence uses <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010721S5_source')" id="l_C0010721S5_source">show source</a> ]</span>
+            <div id="C0010721S5_source" class="dyn-source">
+<pre>
+xx = Sequence infinity(step: 2) 
+xx next should ==(0) 
+xx next should ==(2) 
+xx next should ==(4) 
+xx = Sequence infinity(step: -(1)) 
+xx next should ==(0) 
+xx next should ==(-(1)) 
+xx next should ==(-(2)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001025"></a><b>interleave</b>(right)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C001025_source')" id="l_C001025_source">show source</a> ]</p>
+            <div id="C001025_source" class="dyn-source">
+<pre>
+method(right, 
+  Sequence Interleave create(@, right))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Sequence interleave</b><br/>
+<ul style="list-style-type: none;">
+<li>- should create a new sequence <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010251S0_source')" id="l_C0010251S0_source">show source</a> ]</span>
+            <div id="C0010251S0_source" class="dyn-source">
+<pre>
+[](1, 2, 3) seq interleave(1 ..(5)) should mimic(Sequence) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take an enumerable <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010251S1_source')" id="l_C0010251S1_source">show source</a> ]</span>
+            <div id="C0010251S1_source" class="dyn-source">
+<pre>
+[](1, 2, 3) seq interleave(5 ..(15)) asList should ==([](1, 5, 2, 6, 3, 7)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should take a seq <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010251S2_source')" id="l_C0010251S2_source">show source</a> ]</span>
+            <div id="C0010251S2_source" class="dyn-source">
+<pre>
+[](1, 2, 3) seq interleave((5 ..(15)) seq) asList should ==([](1, 5, 2, 6, 3, 7)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should only take as many elements as needed from the self <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010251S3_source')" id="l_C0010251S3_source">show source</a> ]</span>
+            <div id="C0010251S3_source" class="dyn-source">
+<pre>
+[](1, 2, 3, 4, 5, 6) seq interleave([](10, 11)) asList should ==([](1, 10, 2, 11)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should only take as many elements as needed from the argument <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010251S4_source')" id="l_C0010251S4_source">show source</a> ]</span>
+            <div id="C0010251S4_source" class="dyn-source">
+<pre>
+[](1, 2) seq interleave([](10, 11, 12, 13, 14, 15)) asList should ==([](1, 10, 2, 11)) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should interleave the elements of the argument with the elements of the sequence <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010251S5_source')" id="l_C0010251S5_source">show source</a> ]</span>
+            <div id="C0010251S5_source" class="dyn-source">
+<pre>
+[]("foo", "bar", "quux") seq interleave(1 ..(3)) asList should ==([]("foo", 1, "bar", 2, "quux", 3)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001023"></a><b>interpose</b>(inbetween)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C001023_source')" id="l_C001023_source">show source</a> ]</p>
+            <div id="C001023_source" class="dyn-source">
+<pre>
+method(inbetween, 
+  Sequence Interpose create(@, inbetween))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Sequence interpose</b><br/>
+<ul style="list-style-type: none;">
+<li>- should create a new sequence <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010231S0_source')" id="l_C0010231S0_source">show source</a> ]</span>
+            <div id="C0010231S0_source" class="dyn-source">
+<pre>
+[](1, 2, 3) seq interpose(42) should mimic(Sequence) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should interpose the argument inbetween the elements of the original sequence <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010231S1_source')" id="l_C0010231S1_source">show source</a> ]</span>
+            <div id="C0010231S1_source" class="dyn-source">
+<pre>
+[]("foo", "bar", "quux") seq interpose("|") asList should ==([]("foo", "|", "bar", "|", "quux")) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001012"></a><b>mapped</b>(...)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C001012_source')" id="l_C001012_source">show source</a> ]</p>
+            <div id="C001012_source" class="dyn-source">
+<pre>
+macro(
+  Sequence Map create(@, call ground, call arguments))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Sequence mapped</b><br/>
+<ul style="list-style-type: none;">
+<li>- should create a new Sequence Map with the arguments sent to it <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010121S0_source')" id="l_C0010121S0_source">show source</a> ]</span>
+            <div id="C0010121S0_source" class="dyn-source">
+<pre>
+ss = SequenceTester with(val: [](1, 2, 3), len: 3) seq 
+val = ss mapped(*(2)) 
+val should mimic(Sequence Map) 
+val wrappedSequence should be same(ss) 
+val messages should ==([]('(*(2)))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should map the objects <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010121S1_source')" id="l_C0010121S1_source">show source</a> ]</span>
+            <div id="C0010121S1_source" class="dyn-source">
+<pre>
+ss = SequenceTester with(val: [](1, 2, 3), len: 3) seq 
+ss mapped(*(2)) asList should ==([](2, 4, 6)) 
+ss = SequenceTester with(val: [](1, 2, 3), len: 3) seq 
+ss mapped(x, x *(2)) asList should ==([](2, 4, 6)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001017"></a><b>rejected</b>(...)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C001017_source')" id="l_C001017_source">show source</a> ]</p>
+            <div id="C001017_source" class="dyn-source">
+<pre>
+macro(
+  Sequence Reject create(@, call ground, call arguments))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Sequence rejected</b><br/>
+<ul style="list-style-type: none;">
+<li>- should create a new Sequence Reject with the arguments sent to it <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010171S0_source')" id="l_C0010171S0_source">show source</a> ]</span>
+            <div id="C0010171S0_source" class="dyn-source">
+<pre>
+ss = SequenceTester with(val: [](1, 2, 3, 4, 5, 6, 7, 8), len: 8) seq 
+val = ss rejected(&gt;(4)) 
+val should mimic(Sequence Reject) 
+val wrappedSequence should be same(ss) 
+val messages should ==([]('(&gt;(4)))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should filter the objects <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010171S1_source')" id="l_C0010171S1_source">show source</a> ]</span>
+            <div id="C0010171S1_source" class="dyn-source">
+<pre>
+ss = SequenceTester with(val: [](1, 2, 3, 4, 5, 6, 7, 8), len: 8) seq 
+ss rejected(&gt;(4)) asList should ==([](1, 2, 3, 4)) 
+ss = SequenceTester with(val: [](1, 2, 3, 4, 5, 6, 7, 8), len: 8) seq 
+ss rejected(x, x &gt;(4)) asList should ==([](1, 2, 3, 4)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001015"></a><b>selected</b>(...)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C001015_source')" id="l_C001015_source">show source</a> ]</p>
+            <div id="C001015_source" class="dyn-source">
+<pre>
+macro(
+  Sequence Filter create(@, call ground, call arguments))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Sequence selected</b><br/>
+<ul style="list-style-type: none;">
+<li>- should create a new Sequence Filter with the arguments sent to it <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010151S0_source')" id="l_C0010151S0_source">show source</a> ]</span>
+            <div id="C0010151S0_source" class="dyn-source">
+<pre>
+ss = SequenceTester with(val: [](1, 2, 3, 4, 5, 6, 7, 8), len: 8) seq 
+val = ss selected(&gt;(4)) 
+val should mimic(Sequence Filter) 
+val wrappedSequence should be same(ss) 
+val messages should ==([]('(&gt;(4)))) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should filter the objects <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010151S1_source')" id="l_C0010151S1_source">show source</a> ]</span>
+            <div id="C0010151S1_source" class="dyn-source">
+<pre>
+ss = SequenceTester with(val: [](true, false, nil, true, false, nil, 1), len: 7) seq 
+ss selected asList should ==([](true, true, 1)) 
+ss = SequenceTester with(val: [](1, 2, 3, 4, 5, 6, 7, 8), len: 8) seq 
+ss selected(&gt;(4)) asList should ==([](5, 6, 7, 8)) 
+ss = SequenceTester with(val: [](1, 2, 3, 4, 5, 6, 7, 8), len: 8) seq 
+ss selected(x, x &gt;(4)) asList should ==([](5, 6, 7, 8)) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001018"></a><b>zipped</b>(+toZipAgainst)
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C001018_source')" id="l_C001018_source">show source</a> ]</p>
+            <div id="C001018_source" class="dyn-source">
+<pre>
+method(+toZipAgainst, 
+  Sequence Zip create(@, Ground, [], *(toZipAgainst)))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Sequence zipped</b><br/>
+<ul style="list-style-type: none;">
+<li>- should create a new Sequence Zip with the arguments sent to it <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010181S0_source')" id="l_C0010181S0_source">show source</a> ]</span>
+            <div id="C0010181S0_source" class="dyn-source">
+<pre>
+ss = SequenceTester with(val: [](1, 2, 3, 4, 5, 6, 7, 8), len: 8) seq 
+listSeq = [](1, 2, 3, 4) seq 
+val = ss zipped(listSeq) 
+val should mimic(Sequence Zip) 
+val wrappedSequence should be same(ss) 
+val messages should ==([]) 
+val restArguments [](0) should be same(listSeq) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should zip the objects <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010181S1_source')" id="l_C0010181S1_source">show source</a> ]</span>
+            <div id="C0010181S1_source" class="dyn-source">
+<pre>
+ss = SequenceTester with(val: [](1, 2, 4, 5, 6, 7, 8), len: 7) seq 
+ss zipped([](1, 2, 3, 4), [](55, 66, 77)) asList should ==([]([](1, 1, 55), [](2, 2, 66), 
+    [](4, 3, 77), 
+    [](5, 4, nil), [](6, nil, nil), 
+    [](7, nil, nil), [](8, nil, nil))) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001074"></a><b>?</b>()
+          </div>
+          <div class="description">
+            <p>Returns a new sequence of all the natural numbers</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C001074_source')" id="l_C001074_source">show source</a> ]</p>
+            <div id="C001074_source" class="dyn-source">
+<pre>
+method(
+  fn(n, [](n +(1))) iterate(0) mapped(first))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Sequence ?</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return a Sequence <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010741S0_source')" id="l_C0010741S0_source">show source</a> ]</span>
+            <div id="C0010741S0_source" class="dyn-source">
+<pre>
+Sequence ? should mimic(Sequence) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return a new infinity sequence every time called <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010741S1_source')" id="l_C0010741S1_source">show source</a> ]</span>
+            <div id="C0010741S1_source" class="dyn-source">
+<pre>
+Sequence ? should not be(Sequence ?) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should start from zero <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010741S2_source')" id="l_C0010741S2_source">show source</a> ]</span>
+            <div id="C0010741S2_source" class="dyn-source">
+<pre>
+Sequence ? next should ==(0) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should use step 1 <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010741S3_source')" id="l_C0010741S3_source">show source</a> ]</span>
+            <div id="C0010741S3_source" class="dyn-source">
+<pre>
+xx = Sequence ? 
+xx next should ==(0) 
+xx next should ==(1) 
+xx next should ==(2) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C001073"></a><b>?</b>()
+          </div>
+          <div class="description">
+            <p>Returns a new sequence of all the natural numbers</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C001073_source')" id="l_C001073_source">show source</a> ]</p>
+            <div id="C001073_source" class="dyn-source">
+<pre>
+method(
+  fn(n, [](n +(1))) iterate(0) mapped(first))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            <b> Sequence ?</b><br/>
+<ul style="list-style-type: none;">
+<li>- should return a Sequence <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010731S0_source')" id="l_C0010731S0_source">show source</a> ]</span>
+            <div id="C0010731S0_source" class="dyn-source">
+<pre>
+Sequence ? should mimic(Sequence) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should return a new infinity sequence every time called <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010731S1_source')" id="l_C0010731S1_source">show source</a> ]</span>
+            <div id="C0010731S1_source" class="dyn-source">
+<pre>
+Sequence ? should not be(Sequence ?) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should start from zero <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010731S2_source')" id="l_C0010731S2_source">show source</a> ]</span>
+            <div id="C0010731S2_source" class="dyn-source">
+<pre>
+Sequence ? next should ==(0) 
+
+</pre>
+            </div>
+            </span></li>
+<li>- should use step 1 <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C0010731S3_source')" id="l_C0010731S3_source">show source</a> ]</span>
+            <div id="C0010731S3_source" class="dyn-source">
+<pre>
+xx = Sequence ? 
+xx next should ==(0) 
+xx next should ==(1) 
+xx next should ==(2) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Kind: DefaultBehavior</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href=".././dokgen-style.css" type="text/css" media="screen" />
+    <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+
+        function toggleSource( id )
+        {
+          var elem
+          var link
+
+          if( document.getElementById )
+          {
+            elem = document.getElementById( id )
+            link = document.getElementById( "l_" + id )
+          }
+          else if ( document.all )
+          {
+            elem = eval( "document.all." + id )
+            link = eval( "document.all.l_" + id )
+          }
+          else
+            return false;
+
+          if( elem.style.display == "block" )
+          {
+            elem.style.display = "none"
+            link.innerHTML = "show source"
+          }
+          else
+          {
+            elem.style.display = "block"
+            link.innerHTML = "hide source"
+          }
+        }
+
+        function openCode( url )
+        {
+          window.open( url, "SOURCE_CODE", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=480,width=750" ).focus();
+        }
+      // ]]>
+    </script>
+  </head>
+
+  <body>
+    <table border='0' cellpadding='0' cellspacing='0' width="100%" class='banner'>
+      <tr>
+        <td>
+          <table width="100%" border='0' cellpadding='0' cellspacing='0'>
+            <tr>
+              <td class="file-title" colspan="2">
+                <span class="file-title-prefix">Kind</span>
+                <br />
+                DefaultSyntax
+              </td>
+              <td align="right">
+                <table cellspacing="0" cellpadding="2">
+                  <tr>
+                    <td>Main mimic:</td>
+                    <td>
+                      <a href="../kinds/Origin.html">Origin</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <div id="bodyContent">
+      <div id="content">
+        <div class="description">
+          <p>
+DefaultSyntax is the instance all syntactical macros in the system are derived from.
+          </p>
+        </div>
+
+        <div class="sectiontitle">Mimics</div>
+        <ul>
+          <li><a href="../kinds/Origin.html">Origin</a></li>
+        </ul>
+
+        <div class="sectiontitle">Inactive cells</div>
+        <ul>
+          <li><a href="#C00558">activatable</a></li>
+<li><a href="#C00557">kind</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Active cells</div>
+        <ul>
+          <li><a href="#C00563">argumentsCode()</a></li>
+<li><a href="#C00568">arity()</a></li>
+<li><a href="#C00560">call(+[arguments])</a></li>
+<li><a href="#C00566">code()</a></li>
+<li><a href="#C00561">expand(+[arguments])</a></li>
+<li><a href="#C00567">formattedCode()</a></li>
+<li><a href="#C00564">inspect()</a></li>
+<li><a href="#C00562">message()</a></li>
+<li><a href="#C00559">name()</a></li>
+<li><a href="#C00565">notice()</a></li>
+
+        </ul>
+
+        <div class="sectiontitle">Specs</div>
+        <div class="specs">
+          
+        </div>
+
+        <div class="sectiontitle">Inactive cells (details)</div>
+                <div class="cell">
+          <a name="C00558"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">activatable</td>
+              <td>=</td>
+              <td class="cell-value">true</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cell">
+          <a name="C00557"></a>
+          <table border="0" cellpadding="5">
+            <tr valign="top">
+              <td class="cell-name">kind</td>
+              <td>=</td>
+              <td class="cell-value">"DefaultSyntax"</td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="sectiontitle">Active cells (details)</div>
+                <div class="cell">
+          <div class="title">
+          <a name="C00563"></a><b>argumentsCode</b>()
+          </div>
+          <div class="description">
+            <p>returns the code for the argument definition</p>
+          </div>
+          
+          <div class="specs">
+            <b> DefaultSyntax argumentsCode</b><br/>
+<ul style="list-style-type: none;">
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005631S0_source')" id="l_C005631S0_source">show source</a> ]</span>
+            <div id="C005631S0_source" class="dyn-source">
+<pre>
+syntax should checkReceiverTypeOn(:argumentsCode) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00568"></a><b>arity</b>()
+          </div>
+          <div class="description">
+            <p>nil</p>
+          </div>
+                    <div class="sourcecode">
+          <p class="source-link">[ <a href="javascript:toggleSource('C00568_source')" id="l_C00568_source">show source</a> ]</p>
+            <div id="C00568_source" class="dyn-source">
+<pre>
+method(
+  Arity fromArgumentsCode(argumentsCode))
+</pre>
+            </div>
+            </div>
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00560"></a><b>call</b>(+[arguments])
+          </div>
+          <div class="description">
+            <p>activates this syntax with the arguments given to call</p>
+          </div>
+          
+          <div class="specs">
+            
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00566"></a><b>code</b>()
+          </div>
+          <div class="description">
+            <p>returns the full code of this syntax, as a Text</p>
+          </div>
+          
+          <div class="specs">
+            <b> DefaultSyntax code</b><br/>
+<ul style="list-style-type: none;">
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005661S0_source')" id="l_C005661S0_source">show source</a> ]</span>
+            <div id="C005661S0_source" class="dyn-source">
+<pre>
+syntax should checkReceiverTypeOn(:code) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00561"></a><b>expand</b>(+[arguments])
+          </div>
+          <div class="description">
+            <p>returns the result of activating this syntax without actually doing the replacement or execution part.</p>
+          </div>
+          
+          <div class="specs">
+            <b> DefaultSyntax expand</b><br/>
+<ul style="list-style-type: none;">
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005611S0_source')" id="l_C005611S0_source">show source</a> ]</span>
+            <div id="C005611S0_source" class="dyn-source">
+<pre>
+syntax should checkReceiverTypeOn(:expand) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00567"></a><b>formattedCode</b>()
+          </div>
+          <div class="description">
+            <p>returns idiomatically formatted code for this syntax</p>
+          </div>
+          
+          <div class="specs">
+            <b> DefaultSyntax formattedCode</b><br/>
+<ul style="list-style-type: none;">
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005671S0_source')" id="l_C005671S0_source">show source</a> ]</span>
+            <div id="C005671S0_source" class="dyn-source">
+<pre>
+syntax should checkReceiverTypeOn(:formattedCode) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00564"></a><b>inspect</b>()
+          </div>
+          <div class="description">
+            <p>Returns a text inspection of the object</p>
+          </div>
+          
+          <div class="specs">
+            <b> DefaultSyntax inspect</b><br/>
+<ul style="list-style-type: none;">
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005641S0_source')" id="l_C005641S0_source">show source</a> ]</span>
+            <div id="C005641S0_source" class="dyn-source">
+<pre>
+syntax should checkReceiverTypeOn(:inspect) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00562"></a><b>message</b>()
+          </div>
+          <div class="description">
+            <p>returns the message chain for this syntax</p>
+          </div>
+          
+          <div class="specs">
+            <b> DefaultSyntax message</b><br/>
+<ul style="list-style-type: none;">
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005621S0_source')" id="l_C005621S0_source">show source</a> ]</span>
+            <div id="C005621S0_source" class="dyn-source">
+<pre>
+syntax should checkReceiverTypeOn(:message) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00559"></a><b>name</b>()
+          </div>
+          <div class="description">
+            <p>returns the name of the syntax</p>
+          </div>
+          
+          <div class="specs">
+            <b> DefaultSyntax name</b><br/>
+<ul style="list-style-type: none;">
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005591S0_source')" id="l_C005591S0_source">show source</a> ]</span>
+            <div id="C005591S0_source" class="dyn-source">
+<pre>
+syntax should checkReceiverTypeOn(:name) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+        <div class="cell">
+          <div class="title">
+          <a name="C00565"></a><b>notice</b>()
+          </div>
+          <div class="description">
+            <p>Returns a brief text inspection of the object</p>
+          </div>
+          
+          <div class="specs">
+            <b> DefaultSyntax notice</b><br/>
+<ul style="list-style-type: none;">
+<li>- should validate type of receiver <span class="sourcecode">
+            <span class="source-link">[ <a href="javascript:toggleSource('C005651S0_source')" id="l_C005651S0_source">show source</a> ]</span>
+            <div id="C005651S0_source" class="dyn-source">
+<pre>
+syntax should checkReceiverTypeOn(:notice) 
+
+</pre>
+            </div>
+            </span></li>
+</ul>
+
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </body>
+</html>
