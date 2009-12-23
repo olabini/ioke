@@ -361,7 +361,7 @@ describe(FileSystem,
         fname = "~/.__something_that_should_only_exist_for_file_system_ioke_tests"
         ensure(
           FileSystem withOpenFile(realname, fn(f, f print("hello you are a strange man!")))
-          FileSystem readLines(fname) should == "hello you are a strange man!"
+          FileSystem readLines(fname) should == ["hello you are a strange man!"]
           ,
           bind(rescue(Condition Error, fn(ignored, nil)),
             FileSystem removeFile!(realname))

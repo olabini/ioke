@@ -5,7 +5,7 @@
   <groupId>org.ioke</groupId>
   <artifactId>ioke-lang</artifactId>
   <packaging>jar</packaging>
-  <version>E-0.4.0-1</version>
+  <version>P-0.4.1-SNAPSHOT</version>
   <name>Ioke language runtime ikj</name>
 
   <build>
@@ -25,7 +25,7 @@
             <inherited>false</inherited>
             <configuration>
               <tasks>
-                <copy file="../../lib/ioke.jar" tofile="target/ioke-lang-E-0.4.0-1.jar" overwrite="true"/>
+                <copy file="../../lib/ioke.jar" tofile="target/ioke-lang-P-0.4.1-SNAPSHOT.jar" overwrite="true"/>
               </tasks>
             </configuration>
           </execution>

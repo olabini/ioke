@@ -1,5 +1,5 @@
 
-Struct = fn(+attributes, +:attributesWithDefaultValues,
+IokeGround Struct = fn(+attributes, +:attributesWithDefaultValues,
   attributeNames = attributes + attributesWithDefaultValues map(key)
   val = fn(+values, +:keywordValues,
     Struct internal:createInitial(val, attributeNames, attributes, attributesWithDefaultValues, values, keywordValues)

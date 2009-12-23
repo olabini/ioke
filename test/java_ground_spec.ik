@@ -1675,14 +1675,14 @@ describe("Java Objects",
     it("should be possible to manually coerce into a byte argument",
       ioke:lang:test:StaticMethods overloaded((byte)102) asText should == "overloaded(byte)"
       ioke:lang:test:StaticMethods overloaded((byte)102, false) asText should == "overloaded(byte, boolean)"
-      ioke:lang:test:StaticMethods overloaded(123, (byte)42) asText should == "overloaded(int, byte)"
+      ioke:lang:test:StaticMethods overloaded(false, (byte)42) asText should == "overloaded(boolean, byte)"
       ioke:lang:test:StaticMethods overloaded((byte)123, (byte)42) asText should == "overloaded(byte, byte)"
     )
 
     it("should be possible to manually coerce into a short argument",
       ioke:lang:test:StaticMethods overloaded((short)102) asText should == "overloaded(short)"
       ioke:lang:test:StaticMethods overloaded((short)102, false) asText should == "overloaded(short, boolean)"
-      ioke:lang:test:StaticMethods overloaded(123, (short)42) asText should == "overloaded(int, short)"
+      ioke:lang:test:StaticMethods overloaded(false, (short)42) asText should == "overloaded(boolean, short)"
       ioke:lang:test:StaticMethods overloaded((short)123, (short)42) asText should == "overloaded(short, short)"
     )
 
@@ -1696,45 +1696,45 @@ describe("Java Objects",
     it("should be possible to manually coerce into a char argument",
       ioke:lang:test:StaticMethods overloaded((char)102) asText should == "overloaded(char)"
       ioke:lang:test:StaticMethods overloaded((char)102, false) asText should == "overloaded(char, boolean)"
-      ioke:lang:test:StaticMethods overloaded(123, (char)42) asText should == "overloaded(int, char)"
+      ioke:lang:test:StaticMethods overloaded(false, (char)42) asText should == "overloaded(boolean, char)"
       ioke:lang:test:StaticMethods overloaded((char)123, (char)42) asText should == "overloaded(char, char)"
     )
 
     it("should be possible to manually coerce into a long argument",
       ioke:lang:test:StaticMethods overloaded((long)102) asText should == "overloaded(long)"
       ioke:lang:test:StaticMethods overloaded((long)102, false) asText should == "overloaded(long, boolean)"
-      ioke:lang:test:StaticMethods overloaded(123, (long)42) asText should == "overloaded(int, long)"
+      ioke:lang:test:StaticMethods overloaded(false, (long)42) asText should == "overloaded(boolean, long)"
       ioke:lang:test:StaticMethods overloaded((long)123, (long)42) asText should == "overloaded(long, long)"
     )
 
     it("should be possible to manually coerce into a float argument",
       ioke:lang:test:StaticMethods overloaded((float)102) asText should == "overloaded(float)"
       ioke:lang:test:StaticMethods overloaded((float)102, false) asText should == "overloaded(float, boolean)"
-      ioke:lang:test:StaticMethods overloaded(123, (float)42) asText should == "overloaded(int, float)"
+      ioke:lang:test:StaticMethods overloaded(false, (float)42) asText should == "overloaded(boolean, float)"
       ioke:lang:test:StaticMethods overloaded((float)123, (float)42) asText should == "overloaded(float, float)"
 
       ioke:lang:test:StaticMethods overloaded((float)102.2) asText should == "overloaded(float)"
       ioke:lang:test:StaticMethods overloaded((float)102.3, false) asText should == "overloaded(float, boolean)"
-      ioke:lang:test:StaticMethods overloaded(123, (float)42.4) asText should == "overloaded(int, float)"
+      ioke:lang:test:StaticMethods overloaded(false, (float)42.4) asText should == "overloaded(boolean, float)"
       ioke:lang:test:StaticMethods overloaded((float)123.6, (float)42.5) asText should == "overloaded(float, float)"
     )
 
     it("should be possible to manually coerce into a double argument",
       ioke:lang:test:StaticMethods overloaded((double)102) asText should == "overloaded(double)"
       ioke:lang:test:StaticMethods overloaded((double)102, false) asText should == "overloaded(double, boolean)"
-      ioke:lang:test:StaticMethods overloaded(123, (double)42) asText should == "overloaded(int, double)"
+      ioke:lang:test:StaticMethods overloaded(false, (double)42) asText should == "overloaded(boolean, double)"
       ioke:lang:test:StaticMethods overloaded((double)123, (double)42) asText should == "overloaded(double, double)"
 
       ioke:lang:test:StaticMethods overloaded((double)102.2) asText should == "overloaded(double)"
       ioke:lang:test:StaticMethods overloaded((double)102.3, false) asText should == "overloaded(double, boolean)"
-      ioke:lang:test:StaticMethods overloaded(123, (double)42.4) asText should == "overloaded(int, double)"
+      ioke:lang:test:StaticMethods overloaded(false, (double)42.4) asText should == "overloaded(boolean, double)"
       ioke:lang:test:StaticMethods overloaded((double)123.6, (double)42.5) asText should == "overloaded(double, double)"
     )
 
     it("should be possible to manually coerce into a boolean argument",
       ioke:lang:test:StaticMethods overloaded((boolean)false) asText should == "overloaded(boolean)"
       ioke:lang:test:StaticMethods overloaded((boolean)false, 102) asText should == "overloaded(boolean, int)"
-      ioke:lang:test:StaticMethods overloaded(123, (boolean)true) asText should == "overloaded(int, boolean)"
+      ioke:lang:test:StaticMethods overloaded((int)123, (boolean)true) asText should == "overloaded(int, boolean)"
       ioke:lang:test:StaticMethods overloaded((boolean)true, (boolean)false) asText should == "overloaded(boolean, boolean)"
     )
 
