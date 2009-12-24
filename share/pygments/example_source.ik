@@ -115,6 +115,9 @@ Buz:
 "foo \" bar"
 "this text
 spans multiple lines"
+#[alternative syntax]
+#[this "can" 'deal' with quotes and \escapes]
+
 
 ;regexps
 #//
@@ -269,4 +272,4 @@ sam = method(
 {a: "a", b: 2, c: [1,2,3, {:four => 4}, {five: 5}]}
 
 ;sets
-#(1,2,3,4,5, "six", :seven)
+#{1,2,3,4,5, "six", :seven}
