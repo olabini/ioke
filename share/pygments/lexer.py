@@ -52,6 +52,12 @@ class IokeLexer(RegexLexer):
             (r'[^\]]', String.Regex)
             ],
 
+        'squareText': [
+            (r'(?<!\\)]', String, '#pop'),
+            include('interpolatableText'),
+            (r'[^\]]', String)
+            ],
+
         'root': [
             (r'\n', Text),
             (r'\s+', Text),
@@ -74,6 +80,7 @@ class IokeLexer(RegexLexer):
 
             #Text
             (r'"', String, 'text'),
+            (r'#\[', String, 'squareText'),
 
             #Mimic
             (r'[a-zA-Z0-9_][a-zA-Z0-9!?_:]+(?=\s*=.*mimic\s)', Name.Entity),
