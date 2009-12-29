@@ -1,0 +1,13 @@
+
+DefaultBehavior FlowControl ignoreErrors = dmacro("takes one or two pices of code. runs the first code segment and returns nil if it signals an
+error. If a second argument of code is given, evalautes this only when an error is encountered
+and uses the result to return. if everything works as expected, ignoreErrors will just
+return the result of the first evaluation",
+
+  [protectedCode]
+  bind(rescue(Condition Error, fn(c, nil)),
+    protectedCode evaluateOn(call ground, call ground)),
+
+  [protectedCode, otherwiseCode]
+  bind(rescue(Condition Error, fn(c, otherwiseCode evaluateOn(call ground, call ground))),
+    protectedCode evaluateOn(call ground, call ground)))
