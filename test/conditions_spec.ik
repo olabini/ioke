@@ -3,6 +3,39 @@ use("ispec")
 
 describe(DefaultBehavior,
   describe("FlowControl",
+    describe("ignoreErrors",
+      it("should evaluate the code and return the value",
+        x = 42
+        y = 55
+        ignoreErrors(x+y) should == 97
+      )
+
+      it("should return nil of any kind of error condition is signalled in the code",
+        ignoreErrors(10/0) should be nil
+      )
+
+      it("should not fail when another condition is signalled",
+        ignoreErrors(
+          signal!("Hello World!")
+          42) should == 42
+      )
+
+      it("should be possible to define a value to return when an error is encountered",
+        ignoreErrors(
+          10/0,
+          :failure) should == :failure
+      )
+
+      it("should only evaluate the second part when an error actually happens",
+        called = false
+        ignoreErrors(
+          42,
+          called = true
+          nil) should == 42
+        called should be false
+      )
+    )
+
     describe("ensure",
       it("should work with just main code",
         ensure(10+10) should == 20
