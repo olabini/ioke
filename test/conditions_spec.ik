@@ -609,6 +609,52 @@ describe(Condition,
     Condition should have kind("Condition")
   )
 
+  describe("ignore",
+    it("should evaluate the code and return the value",
+      x = 42
+      y = 55
+      Condition ignore(x+y) should == 97
+    )
+
+    it("should return nil if any kind of condition is signalled in the code",
+      Condition ignore(10/0) should be nil
+      Condition ignore(signal!("blah")) should be nil
+    )
+
+    it("should not fail when another condition is signalled",
+      Condition Error ignore(
+        signal!("Hello World!")
+        42) should == 42
+    )
+
+    it("should be possible to define a value to return when an error is encountered",
+      Condition ignore(
+        10/0,
+        :failure) should == :failure
+    )
+
+    it("should only evaluate the second part when an error actually happens",
+      called = false
+      Condition ignore(
+        42,
+        called = true
+        nil) should == 42
+      called should be false
+    )
+
+    it("should only ignore the specific condition",
+      cc = Condition mimic
+
+      cc ignore(
+        signal!("BLAH")
+        43) should == 43
+
+      cc ignore(
+        signal!(cc)
+        43) should be nil
+    )
+  )
+
   describe(Condition Default,
     it("should have the right kind",
       Condition Default should have kind("Condition Default")
