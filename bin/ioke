@@ -179,9 +179,10 @@ if $cygwin; then
   fi
 fi
 
-if [ "$IOKE_JRUBY" != "" ]; then
+if [ "$VERIFY_IOKE" != "" ]; then
   $JAVA_CMD $PROFILE_ARGS $JAVA_OPTS "${java_args[@]}" -classpath "$IOKE_CP$CP_DELIMETER$CP$CP_DELIMETER$CLASSPATH" \
     "-Dioke.home=$IOKE_HOME" \
+    "-Dfile.encoding=UTF-8" \
     "-Dioke.lib=$IOKE_HOME/lib" -Dioke.script=ioke \
     ioke.lang.Main $IOKE_OPTS "$@"
 
@@ -192,6 +193,7 @@ if [ "$IOKE_JRUBY" != "" ]; then
 else
   exec "$JAVA_CMD" $JAVA_OPTS "${java_args[@]}" -Xbootclasspath/a:"$IOKE_CP" -classpath "$CP$CP_DELIMETER$CLASSPATH" \
     "-Dioke.home=$IOKE_HOME" \
+    "-Dfile.encoding=UTF-8" \
     "-Dioke.lib=$IOKE_HOME/lib" -Dioke.script=ioke \
     ioke.lang.Main $IOKE_OPTS "$@"
 fi

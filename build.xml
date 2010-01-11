@@ -35,7 +35,7 @@
     <filter token="VERSION_RUNTIME" value="0.4.1-SNAPSHOT"/>
     <filter token="VERSION_STRING" value="Ioke P ikj 0.4.1-SNAPSHOT"/>
 
-    <javac destdir="${classes.dir}" debug="true" source="${javac.version}" target="${javac.version}">
+    <javac destdir="${classes.dir}" debug="true" source="${javac.version}" target="${javac.version}" encoding="UTF-8">
       <classpath refid="build.classpath"/>
       <src path="${src.dir}"/>
       <include name="**/*.java"/>
