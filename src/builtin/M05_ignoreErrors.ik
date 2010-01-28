@@ -24,3 +24,23 @@ return the result of the first evaluation",
   [protectedCode, otherwiseCode]
   bind(rescue(self, fn(c, otherwiseCode evaluateOn(call ground, call ground))),
     protectedCode evaluateOn(call ground, call ground)))
+
+
+DefaultBehavior FlowControl passNil = dmacro(
+  [code]
+
+  currentMessage  = code
+  ground = call ground
+  currentReceiver = call ground
+
+  while(currentMessage,
+    currentReceiver = currentMessage sendTo(currentReceiver, ground)
+    if(currentReceiver nil?,
+      return(nil))
+    currentMessage = currentMessage next
+    if(currentMessage && currentMessage terminator?,
+      currentMessage = currentMessage next
+      currentReceiver = ground)
+  )
+  currentReceiver
+)
