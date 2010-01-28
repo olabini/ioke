@@ -1117,4 +1117,71 @@ describe(DefaultBehavior,
       ''(mux ''(abc)) code should == "mux '(abc)"
     )
   )
+
+  describe("passNil",
+    it("should just return nil when given nil",
+      passNil(nil) should be nil
+    )
+
+    it("should not call any methods after a nil has been returned",
+      x = Origin mimic
+      y = Origin mimic
+      z = Origin mimic
+
+      x toReturn = y
+      z meCalled = false
+      x foo = method(@meCalled = true. @toReturn)
+
+      y toReturn = nil
+      z meCalled = false
+      y bar = method(@meCalled = true. @toReturn)
+
+      z meCalled = false
+      z blarg = method(@meCalled = true)
+
+      passNil(x foo bar blarg flux mox moo) should be nil
+
+      x meCalled should be true
+      y meCalled should be true
+      z meCalled should be false
+    )
+
+    it("should not send any more messages after a nil has been found",
+      x = Origin mimic
+      y = Origin mimic
+
+      x foo = y
+      y bar = nil
+
+      passNil(x foo bar blarg flux mox moo) should be nil
+    )
+
+    it("should return the last value returned from the message chain",
+      x = Origin mimic
+      y = Origin mimic
+
+      x foo = y
+      y bar = 42
+
+      passNil(x foo bar) should == 42
+    )
+
+    it("should execute in the outside context",
+      x = Origin mimic
+      x foo = method(val, val)
+      y = Origin mimic
+
+      passNil(x foo(y)) should be same(y)
+    )
+
+    it("should allow terminators in the chain",
+      x = Origin mimic
+      y = Origin mimic
+
+      x foo = y
+      y bar = 42
+
+      passNil(x foo. x foo bar) should == 42
+    )
+  )
 )
