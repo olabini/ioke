@@ -47,8 +47,56 @@ describe(IIk,
       IIk nested?("foo())") should be false
     )
     
-    it("should be false for an escaped paren inside of a string",
+    it("should be false for an paren inside of a string",
       IIk nested?(#["("]) should be false
+    )
+    
+    it("should be true for a message with an unclosed square bracket",
+      IIk nested?("[") should be true
+    )
+
+    it("should be true for a message followed by an unclosed square bracket",
+      IIk nested?("foo [") should be true
+    )
+
+    it("should be true for a message with an unclosed square bracket followed by something",
+      IIk nested?("foo [ bar quux") should be true
+    )
+    
+    it("should be false for a string with a single square bracketed message",
+      IIk nested?("foo [bar]") should be false
+    )
+    
+    it("should be false for an obvious syntax error in square bracket nesting",
+      IIk nested?("foo []]") should be false
+    )
+    
+    it("should be false for a square bracket inside of a string",
+      IIk nested?(#["["]) should be false
+    )
+    
+    it("should return false for a square bracket enclosed in alternate Text syntax",
+      IIk nested?("#[[]") should be false
+    )
+    
+    it("should return false for an empty, lonesome hash",
+      IIk nested?("#") should be false
+    )
+
+    it("should return false for a string with alt text syntax with escape in it",
+      IIk nested?("#[foo bar \\]bax]") should be false
+    )
+
+    it("should return false for a string with alt text syntax ending in an escaped escape",
+      IIk nested?("#[foo bar \\\\]") should be false
+    )
+    
+    it("should return true for a string with alt text syntax without a closing bracket",
+      IIk nested?("#[foo bar") should be true    
+    )
+    
+    it("should return true for a string with alt text syntax with an open string character",
+      IIk nested?("#[foo bar\"") should be true
     )
   )
 )

@@ -15,22 +15,32 @@ IIk = Origin mimic do(
   in  = System in
   
   nested? = method(data,
-    escaped? = false
-    openParens = 0
-    inString? = false
+    escaped? = false. inString? = false. inAltString? = false. couldBeString? = false
+    open = Origin with(parens: 0, squares: 0, anyOpen?: method(parens + squares > 0))
+    checkStringContent = fnx(c,
+      case(c,
+        "\\", escaped? = !escaped?,
+        "\"", if(!escaped?, inString? = false). escaped? = false,
+      ))
 
     data chars each(c,
       if(inString?,
-        case(c,
-          "\\", escaped? = !escaped?,
-          "\"", if(!escaped?, inString? = false). escaped? = false
-        ),
-        case(c,
-          "\"", inString? = true,
-          "(", openParens++,
-          ")", openParens--,
-          )))
-    openParens > 0 || inString?)
+        checkStringContent(c)
+  ,
+          if(inAltString?,
+            case(c,
+              "\\", escaped? = !escaped?,
+              "]", if(!escaped?, inAltString? = false). escaped? = false
+              ),
+              case(c,
+                "\"", inString? = true,
+                "(", open parens++,
+                ")", open parens--,
+                "[", if(couldBeString?, inAltString? = true. couldBeString? = false, open squares++),
+                "]", open squares--,
+                "#", couldBeString? = true
+                ))))
+                open anyOpen? || inString? || inAltString?)
 
   mainLoop = method(
     "Runs the main loop of IIk, continously reading input from 'System in' until the interpreter is quitted in some of the standard ways",
