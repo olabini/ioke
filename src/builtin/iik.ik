@@ -13,6 +13,24 @@ IIk = Origin mimic do(
   out = System out
   err = System err
   in  = System in
+  
+  nested? = method(data,
+    escaped? = false
+    openParens = 0
+    inString? = false
+
+    data chars each(c,
+      if(inString?,
+        case(c,
+          "\\", escaped? = !escaped?,
+          "\"", if(!escaped?, inString? = false). escaped? = false
+        ),
+        case(c,
+          "\"", inString? = true,
+          "(", openParens++,
+          ")", openParens--,
+          )))
+    openParens > 0 || inString?)
 
   mainLoop = method(
     "Runs the main loop of IIk, continously reading input from 'System in' until the interpreter is quitted in some of the standard ways",
@@ -42,6 +60,9 @@ IIk = Origin mimic do(
           restart(abort, fn()),
 
           data = io gets
+          while(nested?(data),
+            data += io gets
+          )
 
           FileSystem withOpenFile("~/.iikhistory", fn(f,
               unless(data empty?, f print(data))))
