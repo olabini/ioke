@@ -1,5 +1,5 @@
 use("ispec")
-use("../src/builtin/iik")
+use("builtin/iik")
 
 describe(IIk,
   describe("nested?",
