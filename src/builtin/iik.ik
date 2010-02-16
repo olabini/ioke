@@ -15,67 +15,77 @@ IIk = Origin mimic do(
   in  = System in
   
   Nesting = Origin mimic do(
-    lastChar = nil
-    lastLastChar = nil
-    
-    lastSpecial? = method(lastChar == "#")
-    lastAltRegexp? = method(lastLastChar == "#" && lastChar == "r")
-    
-    OpenBrackets = Origin with(parens: 0, squares: 0, curlies: 0, anyOpen?: method(parens + squares + curlies > 0))
-    
-    initialize = method(
-      @open = OpenBrackets mimic
-    )
-    
-    DelimitedState = Origin mimic do(
-      escaped? = false
-      nextState = method(c,
-        result = self
-        case(c,
-          "\\", @escaped? = !escaped?,
-          end, if(!escaped?, result = nesting RegularState with(nesting: nesting)). @escaped? = false,
-          else, @escaped? = false)
-        result
-      )
-      open? = true
-    )
-
-    TextState = DelimitedState with(end: "\"")
-    AltTextState = DelimitedState with(end: "]")
-    RegexpState = DelimitedState with(end: "/")
-    AltRegexpState = DelimitedState with(end: "]")
-    
     RegularState = Origin mimic do(
       open? = false
-      nextState = method(c,
-        next = case(c,
-          "\"", nesting TextState with(nesting: nesting),
-          "(", nesting open parens++. self,
-          ")", nesting open parens--. self,
-          "[", cond(
-                nesting lastSpecial?,  nesting AltTextState with(nesting: nesting), 
-                nesting lastAltRegexp?, nesting AltRegexpState with(nesting: nesting),
-                                nesting open squares++. self),
-          "]", nesting open squares--. self,
-          "{", nesting open curlies++. self,
-          "}", nesting open curlies--. self,
-          "/", if(nesting lastSpecial?, nesting RegexpState with(nesting: nesting), self),
-          else, self
-          )
-        nesting lastLastChar = nesting lastChar
-        nesting lastChar = c
-        next
+      next = method(text, nestStack,
+        IIk Nesting AvailableStates some(matchAgainst(text, nestStack))
+      )
+      
+      matchAgainst = method(text, ignored,
+        (text[1..-1], self)
       )
     )
+
+    DelimitedState = Origin mimic do(
+      open? = true
+      escaped? = false
+      startLength = 1
+      next = method(text, ignored,
+        rest = text[1..-1]
+        case(text,
+          #/\A\\/, (rest, with(escaped?: !escaped?)),
+          #/\A#{end}/, if(!escaped?, (rest, IIk Nesting RegularState), (rest, with(escaped?: !escaped?))),
+          else, if(escaped?, (rest, with(escaped?: !escaped?)), (rest, self)))
+      )
+      matchAgainst = method(text, ignored,
+        if(#/\A#{start}/ =~ text, (text[(startLength)..-1], self))      
+      )
+    )
+
+    TextState = DelimitedState with(start: #["], end: #["])
+    AltTextState = DelimitedState with(start: #/\#\[/, end: "]", startLength: 2)
+    RegexpState = DelimitedState with(start: #/\#\//, end: "/", startLength: 2)
+    AltRegexpState = DelimitedState with(start: #/\#r\[/, end: "]", startLength: 3)
+
+    DelimitedMarker = Origin mimic do(
+      startLength = 1
+      matchAgainst = method(text, nestStack,
+        (case(text,
+          #/\A#{start}/, nestStack push!(self). text[(startLength)..-1],
+          #/\A#{end}/, nestStack pop!. text[1..-1],
+          else, return nil
+        ), IIk Nesting RegularState)
+      )      
+    )
+
+    ParenthesisMarker = DelimitedMarker with(start: #/\(/, end: #/\)/)
+    ListMarker = DelimitedMarker with(start: #/\[/, end: #/\]/)
+    DictMarker = DelimitedMarker with(start: #/\{/, end: "}")
+    SetMarker = DelimitedMarker with(start: #/\#\{/, end: "}", startLength: 2)
+
+    AvailableStates = [ParenthesisMarker, ListMarker, DictMarker, SetMarker, TextState, AltTextState, RegexpState, AltRegexpState, RegularState]
     
-    anyOpen? = method(
-      state = data chars fold(RegularState with(nesting: self), state, c, state nextState(c))
-      open anyOpen? || state open?
+    anyOpen? = method(openCount > 0)
+
+    openCount = method(
+      nestStack = []
+      currentState = RegularState
+      textLeft = data
+
+      while(!textLeft empty?,
+        (textLeft, currentState) = currentState next(textLeft, nestStack)
+      )
+
+      nestStack length + if(currentState open?, 1, 0)
     )
   )
   
   nested? = method(data,
     Nesting with(data: data) anyOpen?
+  )
+
+  nesting = method(data,
+    Nesting with(data: data) openCount
   )
 
   mainLoop = method(
