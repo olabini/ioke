@@ -15,11 +15,6 @@ IIk = Origin mimic do(
   in  = System in
   
   Nesting = Origin mimic do(
-    escaped? = false
-    inText? = false
-    inAltText? = false
-    inRegexp? = false
-    inAltRegexp? = false
     lastChar = nil
     lastLastChar = nil
     
@@ -32,42 +27,51 @@ IIk = Origin mimic do(
       @open = OpenBrackets mimic
     )
     
-    checkChar = dmacro(
-      [>c, >endChar, variable]
-      case(c,
-        "\\", @escaped? = !escaped?,
-        endChar, if(!escaped?, @ cell(variable name) = false). @escaped? = false,
-        else, @escaped? = false
-      ))
+    DelimitedState = Origin mimic do(
+      escaped? = false
+      nextState = method(c,
+        result = self
+        case(c,
+          "\\", @escaped? = !escaped?,
+          end, if(!escaped?, result = nesting RegularState with(nesting: nesting)). @escaped? = false,
+          else, @escaped? = false)
+        result
+      )
+      open? = true
+    )
+
+    TextState = DelimitedState with(end: "\"")
+    AltTextState = DelimitedState with(end: "]")
+    RegexpState = DelimitedState with(end: "/")
+    AltRegexpState = DelimitedState with(end: "]")
     
-    checkRegularContent = method(c,
-      case(c,
-        "\"", @inText? = true,
-        "(", open parens++,
-        ")", open parens--,
-        "[", cond(
-              lastSpecial?,   @inAltText? = true, 
-              lastAltRegexp?, @inAltRegexp? = true,
-                              open squares++),
-        "]", open squares--,
-        "{", open curlies++,
-        "}", open curlies--,
-        "/", if(lastSpecial?, @inRegexp? = true),
+    RegularState = Origin mimic do(
+      open? = false
+      nextState = method(c,
+        next = case(c,
+          "\"", nesting TextState with(nesting: nesting),
+          "(", nesting open parens++. self,
+          ")", nesting open parens--. self,
+          "[", cond(
+                nesting lastSpecial?,  nesting AltTextState with(nesting: nesting), 
+                nesting lastAltRegexp?, nesting AltRegexpState with(nesting: nesting),
+                                nesting open squares++. self),
+          "]", nesting open squares--. self,
+          "{", nesting open curlies++. self,
+          "}", nesting open curlies--. self,
+          "/", if(nesting lastSpecial?, nesting RegexpState with(nesting: nesting), self),
+          else, self
+          )
+        nesting lastLastChar = nesting lastChar
+        nesting lastChar = c
+        next
       )
-      @lastLastChar = @lastChar
-      @lastChar = c)
-      
-      anyOpen? = method(
-        data chars each(c,
-          cond(
-            inText?,      checkChar(c, "\"", inText?),
-            inAltText?,   checkChar(c, "]", inAltText?),
-            inAltRegexp?, checkChar(c, "]", inAltRegexp?),
-            inRegexp?,    checkChar(c, "/", inRegexp?),
-                          checkRegularContent(c)
-          ))
-        open anyOpen? || inText? || inAltText? || inRegexp? || inAltRegexp?
-      )
+    )
+    
+    anyOpen? = method(
+      state = data chars fold(RegularState with(nesting: self), state, c, state nextState(c))
+      open anyOpen? || state open?
+    )
   )
   
   nested? = method(data,
