@@ -19,29 +19,23 @@ IIk = Origin mimic do(
     inText? = false
     inAltText? = false
     inRegexp? = false
-    couldBeSpecial? = false    
+    lastChar = nil
+    lastLastChar = nil
+    
+    lastSpecial? = method(lastChar == "#")
     
     OpenBrackets = Origin with(parens: 0, squares: 0, curlies: 0, anyOpen?: method(parens + squares + curlies > 0))
     
     initialize = method(
       @open = OpenBrackets mimic
     )
-
-    checkText = method(c,
+    
+    checkChar = dmacro(
+      [>c, >endChar, variable]
       case(c,
         "\\", @escaped? = !escaped?,
-        "\"", if(!escaped?, @inText? = false). @escaped? = false,
-      ))
-
-    checkRegexp = method(c,
-      case(c,
-        "/", @inRegexp? = false
-      ))
-
-    checkAltText = method(c,
-      case(c,
-        "\\", @escaped? = !escaped?,
-        "]", if(!escaped?, @inAltText? = false). @escaped? = false
+        endChar, if(!escaped?, @ cell(variable name) = false). @escaped? = false,
+        else, @escaped? = false
       ))
     
     checkRegularContent = method(c,
@@ -49,24 +43,28 @@ IIk = Origin mimic do(
         "\"", @inText? = true,
         "(", open parens++,
         ")", open parens--,
-        "[", if(couldBeSpecial?, @inAltText? = true. @couldBeSpecial? = false, open squares++),
+        "[", if(lastSpecial?,
+            @inAltText? = true, 
+            if(lastLastChar == "#" && lastChar == "r",
+              @inAltRegexp? = true,
+              open squares++)),
         "]", open squares--,
         "{", open curlies++,
         "}", open curlies--,
-        "/", if(couldBeSpecial?, @inRegexp? = true. @couldBeSpecial? = false)
-        "#", @couldBeSpecial? = true
-      ))
+        "/", if(lastSpecial?, @inRegexp? = true),
+      )
+      @lastLastChar = @lastChar
+      @lastChar = c)
       
       anyOpen? = method(
         data chars each(c,
-          if(inText?,
-            checkText(c),
-            if(inAltText?,
-              checkAltText(c),
-              if(inRegexp?,
-                checkRegexp(c),
-                checkRegularContent(c)))))
-        open anyOpen? || inText? || inAltText?
+          cond(
+            inText?,    checkChar(c, "\"", inText?),
+            inAltText?, checkChar(c, "]", inAltText?),
+            inRegexp?,  checkChar(c, "/", inRegexp?),
+                        checkRegularContent(c)
+          ))
+        open anyOpen? || inText? || inAltText? || inRegexp?
       )
   )
   
