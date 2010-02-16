@@ -191,36 +191,36 @@ describe(IIk,
       IIk nested?("#r[)]") should be false 
     )
     
-    ; it("should return false for an opening square bracket inside of a regexp literal",
-    ;   IIk nested?("#/[/") should be false 
-    ; )
-    ; 
-    ; it("should return false for a closing square bracket inside of a regexp literal",
-    ;   IIk nested?("#/]/") should be false 
-    ; )
-    ; 
-    ; it("should return false for an opening curly bracket inside of a regexp literal",
-    ;   IIk nested?("#/{/") should be false 
-    ; )
-    ; 
-    ; it("should return false for a closing curly bracket inside of a regexp literal",
-    ;   IIk nested?("#/}/") should be false 
-    ; )
-    ; 
-    ; it("should return true for a simple opened regexp literal",
-    ;   IIk nested?("#/") should be true
-    ; )
-    ; 
-    ; it("should be true for an opened regexp literal as part of a longer message",
-    ;   IIk nested?("foo bar(#/baz\"qux\"") should be true
-    ; )
-    ; 
-    ; it("should false for a regexp with an escaped ending character",
-    ;   IIk nested?("#/foo\\/bar#/") should be false
-    ; )
-    ; 
-    ; it("should be false for a regexp containing something else that is quoted",
-    ;   IIk nested?("#/fo\\so/") should be false
-    ; )
+    it("should return false for an opening square bracket inside of an alt regexp literal",
+      IIk nested?("#r[[]") should be false 
+    )
+    
+    it("should return false for an opening curly bracket inside of an alt regexp literal",
+      IIk nested?("#r[{]") should be false 
+    )
+    
+    it("should return false for a closing curly bracket inside of an alt regexp literal",
+      IIk nested?("#r[}]") should be false 
+    )
+    
+    it("should return true for a simple opened alt regexp literal",
+      IIk nested?("#r[") should be true
+    )
+    
+    it("should be true for an opened alt regexp literal as part of a longer message",
+      IIk nested?("foo bar(#r[baz\"qux\"") should be true
+    )
+    
+    it("should false for an alt regexp with an escaped ending character",
+      IIk nested?("#r[foo\\]bar#]") should be false
+    )
+    
+    it("should be false for an alt regexp containing something else that is quoted",
+      IIk nested?("#r[fo\\so]") should be false
+    )
+    
+    it("should be false for an alt regexp containing a regular regexp literal",
+      IIk nested?("#r[#/foo]") should be false
+    )
   )
 )

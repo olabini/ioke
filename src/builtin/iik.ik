@@ -19,10 +19,12 @@ IIk = Origin mimic do(
     inText? = false
     inAltText? = false
     inRegexp? = false
+    inAltRegexp? = false
     lastChar = nil
     lastLastChar = nil
     
     lastSpecial? = method(lastChar == "#")
+    lastAltRegexp? = method(lastLastChar == "#" && lastChar == "r")
     
     OpenBrackets = Origin with(parens: 0, squares: 0, curlies: 0, anyOpen?: method(parens + squares + curlies > 0))
     
@@ -43,11 +45,10 @@ IIk = Origin mimic do(
         "\"", @inText? = true,
         "(", open parens++,
         ")", open parens--,
-        "[", if(lastSpecial?,
-            @inAltText? = true, 
-            if(lastLastChar == "#" && lastChar == "r",
-              @inAltRegexp? = true,
-              open squares++)),
+        "[", cond(
+              lastSpecial?,   @inAltText? = true, 
+              lastAltRegexp?, @inAltRegexp? = true,
+                              open squares++),
         "]", open squares--,
         "{", open curlies++,
         "}", open curlies--,
@@ -59,12 +60,13 @@ IIk = Origin mimic do(
       anyOpen? = method(
         data chars each(c,
           cond(
-            inText?,    checkChar(c, "\"", inText?),
-            inAltText?, checkChar(c, "]", inAltText?),
-            inRegexp?,  checkChar(c, "/", inRegexp?),
-                        checkRegularContent(c)
+            inText?,      checkChar(c, "\"", inText?),
+            inAltText?,   checkChar(c, "]", inAltText?),
+            inAltRegexp?, checkChar(c, "]", inAltRegexp?),
+            inRegexp?,    checkChar(c, "/", inRegexp?),
+                          checkRegularContent(c)
           ))
-        open anyOpen? || inText? || inAltText? || inRegexp?
+        open anyOpen? || inText? || inAltText? || inRegexp? || inAltRegexp?
       )
   )
   
