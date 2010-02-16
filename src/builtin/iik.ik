@@ -15,32 +15,38 @@ IIk = Origin mimic do(
   in  = System in
   
   nested? = method(data,
-    escaped? = false. inString? = false. inAltString? = false. couldBeString? = false
+    escaped? = false. inText? = false. inAltText? = false. couldBeText? = false
     open = Origin with(parens: 0, squares: 0, anyOpen?: method(parens + squares > 0))
-    checkStringContent = fnx(c,
+
+    checkText = fnx(c,
       case(c,
         "\\", escaped? = !escaped?,
-        "\"", if(!escaped?, inString? = false). escaped? = false,
+        "\"", if(!escaped?, inText? = false). escaped? = false,
+      ))
+
+    checkAltText = fnx(c,
+      case(c,
+        "\\", escaped? = !escaped?,
+        "]", if(!escaped?, inAltText? = false). escaped? = false
+      ))
+    
+    checkRegularContent = fnx(c,
+      case(c,
+        "\"", inText? = true,
+        "(", open parens++,
+        ")", open parens--,
+        "[", if(couldBeText?, inAltText? = true. couldBeText? = false, open squares++),
+        "]", open squares--,
+        "#", couldBeText? = true
       ))
 
     data chars each(c,
-      if(inString?,
-        checkStringContent(c)
-  ,
-          if(inAltString?,
-            case(c,
-              "\\", escaped? = !escaped?,
-              "]", if(!escaped?, inAltString? = false). escaped? = false
-              ),
-              case(c,
-                "\"", inString? = true,
-                "(", open parens++,
-                ")", open parens--,
-                "[", if(couldBeString?, inAltString? = true. couldBeString? = false, open squares++),
-                "]", open squares--,
-                "#", couldBeString? = true
-                ))))
-                open anyOpen? || inString? || inAltString?)
+      if(inText?,
+        checkText(c),
+        if(inAltText?,
+          checkAltText(c),
+          checkRegularContent(c))))
+    open anyOpen? || inText? || inAltText?)
 
   mainLoop = method(
     "Runs the main loop of IIk, continously reading input from 'System in' until the interpreter is quitted in some of the standard ways",
