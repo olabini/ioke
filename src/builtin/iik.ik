@@ -96,7 +96,7 @@ IIk = Origin mimic do(
       ReadlineInputMethod new,
       StdioInputMethod new)
 
-    System currentDebugger = IokeDebugger with(io: io, out: out)
+    System currentDebugger = IokeDebugger with(io: io, out: out)  
 
     FileSystem["~/.iikrc"] each(x, use(x))
 
@@ -116,8 +116,10 @@ IIk = Origin mimic do(
           restart(abort, fn()),
 
           data = io gets
-          while(nested?(data),
-            data += io gets
+          n = nesting(data)
+          while(n > 0,
+            data += io gets("  " * n)
+            n = nesting(data)
           )
 
           FileSystem withOpenFile("~/.iikhistory", fn(f,

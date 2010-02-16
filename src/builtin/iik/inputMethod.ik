@@ -9,7 +9,7 @@ IIk do(
         line = []
     ))
 
-    gets = method(
+    gets = method(ignored nil,
       IIk out print("iik> ")
       line[lineNumber++] = IIk in gets
     )
@@ -36,8 +36,8 @@ IIk do(
           prompt = "iik> "
       ))
 
-      gets = method(
-        if(theString = readline(prompt, false),
+      gets = method(altPrompt nil,
+        if(theString = readline(altPrompt || prompt, false),
           unless(theString empty?, HISTORY << theString)
           line[lineNumber++] = "#{theString}\n",
 
