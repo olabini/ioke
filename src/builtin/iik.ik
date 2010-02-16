@@ -14,39 +14,65 @@ IIk = Origin mimic do(
   err = System err
   in  = System in
   
-  nested? = method(data,
-    escaped? = false. inText? = false. inAltText? = false. couldBeText? = false
-    open = Origin with(parens: 0, squares: 0, anyOpen?: method(parens + squares > 0))
+  Nesting = Origin mimic do(
+    escaped? = false
+    inText? = false
+    inAltText? = false
+    inRegexp? = false
+    couldBeSpecial? = false    
+    
+    OpenBrackets = Origin with(parens: 0, squares: 0, curlies: 0, anyOpen?: method(parens + squares + curlies > 0))
+    
+    initialize = method(
+      @open = OpenBrackets mimic
+    )
 
-    checkText = fnx(c,
+    checkText = method(c,
       case(c,
-        "\\", escaped? = !escaped?,
-        "\"", if(!escaped?, inText? = false). escaped? = false,
+        "\\", @escaped? = !escaped?,
+        "\"", if(!escaped?, @inText? = false). @escaped? = false,
       ))
 
-    checkAltText = fnx(c,
+    checkRegexp = method(c,
       case(c,
-        "\\", escaped? = !escaped?,
-        "]", if(!escaped?, inAltText? = false). escaped? = false
+        "/", @inRegexp? = false
+      ))
+
+    checkAltText = method(c,
+      case(c,
+        "\\", @escaped? = !escaped?,
+        "]", if(!escaped?, @inAltText? = false). @escaped? = false
       ))
     
-    checkRegularContent = fnx(c,
+    checkRegularContent = method(c,
       case(c,
-        "\"", inText? = true,
+        "\"", @inText? = true,
         "(", open parens++,
         ")", open parens--,
-        "[", if(couldBeText?, inAltText? = true. couldBeText? = false, open squares++),
+        "[", if(couldBeSpecial?, @inAltText? = true. @couldBeSpecial? = false, open squares++),
         "]", open squares--,
-        "#", couldBeText? = true
+        "{", open curlies++,
+        "}", open curlies--,
+        "/", if(couldBeSpecial?, @inRegexp? = true. @couldBeSpecial? = false)
+        "#", @couldBeSpecial? = true
       ))
-
-    data chars each(c,
-      if(inText?,
-        checkText(c),
-        if(inAltText?,
-          checkAltText(c),
-          checkRegularContent(c))))
-    open anyOpen? || inText? || inAltText?)
+      
+      anyOpen? = method(
+        data chars each(c,
+          if(inText?,
+            checkText(c),
+            if(inAltText?,
+              checkAltText(c),
+              if(inRegexp?,
+                checkRegexp(c),
+                checkRegularContent(c)))))
+        open anyOpen? || inText? || inAltText?
+      )
+  )
+  
+  nested? = method(data,
+    Nesting with(data: data) anyOpen?
+  )
 
   mainLoop = method(
     "Runs the main loop of IIk, continously reading input from 'System in' until the interpreter is quitted in some of the standard ways",
