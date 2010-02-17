@@ -42,7 +42,7 @@ describe(IIk,
     it("should be true for a message with an unclosed parenthesis followed by something",
       IIk nested?("foo( bar quux") should be true
     )
-    
+
     it("should be false for a string with a single parenthesized message",
       IIk nested?("foo(bar)") should be false
     )
@@ -221,6 +221,102 @@ describe(IIk,
     
     it("should be false for an alt regexp containing a regular regexp literal",
       IIk nested?("#r[#/foo]") should be false
+    )
+
+    it("should report the nesting of an interpolated text element that is closed correctly",
+      IIk nested?("\"foo \#{blah}\"") should be false
+    )
+
+    it("should report the nesting of an interpolated text element as 2",
+      IIk nested?("\"foo \#{blah") should be true
+    )
+
+    it("should report the nesting of an interpolated text element with more nesting inside of it",
+      IIk nested?("\"foo \#{blah([1,2,3") should be true
+    )
+
+    it("should report the nesting of an interpolated text element with even more nesting inside of it",
+      IIk nested?("\"foo \#{blah([1,2,3, {") should be true
+    )
+
+    it("should report the nesting of an escaped interpolation correctly",
+      IIk nested?("\"foo \\\#{\"") should be false
+    )
+
+    it("should report the nesting of an interpolated text element inside of an interpolated text element correctly",
+      IIk nested?("\"foo \#{\"blah \#{foo(") should be true
+    )
+
+    it("should report the nesting of an interpolated alt text element that is closed correctly",
+      IIk nested?("#[foo \#{blah}]") should be false
+    )
+
+    it("should report the nesting of an interpolated alt text element as 2",
+      IIk nested?("#[foo \#{blah") should be true
+    )
+
+    it("should report the nesting of an interpolated alt text element with more nesting inside of it",
+      IIk nested?("#[foo \#{blah([1,2,3") should be true
+    )
+
+    it("should report the nesting of an interpolated alt text element with even more nesting inside of it",
+      IIk nested?("#[foo \#{blah([1,2,3, {") should be true
+    )
+
+    it("should report the nesting of an escaped interpolation in alt text correctly",
+      IIk nested?("#[foo \\\#{]") should be false
+    )
+
+    it("should report the nesting of an interpolated alt text element inside of an interpolated alt text element correctly",
+      IIk nested?("#[foo \#{#[blah \#{foo(") should be true
+    )
+
+    it("should report the nesting of an interpolated regexp element that is closed correctly",
+      IIk nested?("#/foo \#{blah}/") should be false
+    )
+
+    it("should report the nesting of an interpolated regexp element as 2",
+      IIk nested?("#/foo \#{blah") should be true
+    )
+
+    it("should report the nesting of an interpolated regexp element with more nesting inside of it",
+      IIk nested?("#/foo \#{blah([1,2,3") should be true
+    )
+
+    it("should report the nesting of an interpolated regexp element with even more nesting inside of it",
+      IIk nested?("#/foo \#{blah([1,2,3, {") should be true
+    )
+
+    it("should report the nesting of an escaped interpolation in regexp correctly",
+      IIk nested?("#/foo \\\#{/") should be false
+    )
+
+    it("should report the nesting of an interpolated regexp element inside of an interpolated regexp element correctly",
+      IIk nested?("#/foo \#{#/blah \#{foo(") should be true
+    )
+
+    it("should report the nesting of an interpolated alt regexp element that is closed correctly",
+      IIk nested?("#r[foo \#{blah}]") should be false
+    )
+
+    it("should report the nesting of an interpolated alt regexp element as 2",
+      IIk nested?("#r[foo \#{blah") should be true
+    )
+
+    it("should report the nesting of an interpolated alt regexp element with more nesting inside of it",
+      IIk nested?("#r[foo \#{blah([1,2,3") should be true
+    )
+
+    it("should report the nesting of an interpolated alt regexp element with even more nesting inside of it",
+      IIk nested?("#r[foo \#{blah([1,2,3, {") should be true
+    )
+
+    it("should report the nesting of an escaped interpolation in alt regexp correctly",
+      IIk nested?("#r[foo \\\#{]") should be false
+    )
+
+    it("should report the nesting of an interpolated alt regexp element inside of an interpolated alt regexp element correctly",
+      IIk nested?("#r[foo \#{#r[blah \#{foo(") should be true
     )
   )
 
@@ -443,6 +539,102 @@ describe(IIk,
     
     it("should be false for an alt regexp containing a regular regexp literal",
       IIk nesting("#r[#/foo]") should == 0
+    )
+
+    it("should report the nesting of an interpolated text element that is closed correctly",
+      IIk nesting("\"foo \#{blah}\"") should == 0
+    )
+
+    it("should report the nesting of an interpolated text element as 2",
+      IIk nesting("\"foo \#{blah") should == 2
+    )
+
+    it("should report the nesting of an interpolated text element with more nesting inside of it",
+      IIk nesting("\"foo \#{blah([1,2,3") should == 4
+    )
+
+    it("should report the nesting of an interpolated text element with even more nesting inside of it",
+      IIk nesting("\"foo \#{blah([1,2,3, {") should == 5
+    )
+
+    it("should report the nesting of an escaped interpolation correctly",
+      IIk nesting("\"foo \\\#{\"") should == 0
+    )
+
+    it("should report the nesting of an interpolated text element inside of an interpolated text element correctly",
+      IIk nesting("\"foo \#{\"blah \#{foo(") should == 5
+    )
+
+    it("should report the nesting of an interpolated alt text element that is closed correctly",
+      IIk nesting("#[foo \#{blah}]") should == 0
+    )
+
+    it("should report the nesting of an interpolated alt text element as 2",
+      IIk nesting("#[foo \#{blah") should == 2
+    )
+
+    it("should report the nesting of an interpolated alt text element with more nesting inside of it",
+      IIk nesting("#[foo \#{blah([1,2,3") should == 4
+    )
+
+    it("should report the nesting of an interpolated alt text element with even more nesting inside of it",
+      IIk nesting("#[foo \#{blah([1,2,3, {") should == 5
+    )
+
+    it("should report the nesting of an escaped interpolation in alt text correctly",
+      IIk nesting("#[foo \\\#{]") should == 0
+    )
+
+    it("should report the nesting of an interpolated alt text element inside of an interpolated alt text element correctly",
+      IIk nesting("#[foo \#{#[blah \#{foo(") should == 5
+    )
+
+    it("should report the nesting of an interpolated regexp element that is closed correctly",
+      IIk nesting("#/foo \#{blah}/") should == 0
+    )
+
+    it("should report the nesting of an interpolated regexp element as 2",
+      IIk nesting("#/foo \#{blah") should == 2
+    )
+
+    it("should report the nesting of an interpolated regexp element with more nesting inside of it",
+      IIk nesting("#/foo \#{blah([1,2,3") should == 4
+    )
+
+    it("should report the nesting of an interpolated regexp element with even more nesting inside of it",
+      IIk nesting("#/foo \#{blah([1,2,3, {") should == 5
+    )
+
+    it("should report the nesting of an escaped interpolation in regexp correctly",
+      IIk nesting("#/foo \\\#{/") should == 0
+    )
+
+    it("should report the nesting of an interpolated regexp element inside of an interpolated regexp element correctly",
+      IIk nesting("#/foo \#{#/blah \#{foo(") should == 5
+    )
+
+    it("should report the nesting of an interpolated alt regexp element that is closed correctly",
+      IIk nesting("#r[foo \#{blah}]") should == 0
+    )
+
+    it("should report the nesting of an interpolated alt regexp element as 2",
+      IIk nesting("#r[foo \#{blah") should == 2
+    )
+
+    it("should report the nesting of an interpolated alt regexp element with more nesting inside of it",
+      IIk nesting("#r[foo \#{blah([1,2,3") should == 4
+    )
+
+    it("should report the nesting of an interpolated alt regexp element with even more nesting inside of it",
+      IIk nesting("#r[foo \#{blah([1,2,3, {") should == 5
+    )
+
+    it("should report the nesting of an escaped interpolation in alt regexp correctly",
+      IIk nesting("#r[foo \\\#{]") should == 0
+    )
+
+    it("should report the nesting of an interpolated alt regexp element inside of an interpolated alt regexp element correctly",
+      IIk nesting("#r[foo \#{#r[blah \#{foo(") should == 5
     )
   )
 )
