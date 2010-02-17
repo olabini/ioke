@@ -16,28 +16,43 @@ IIk = Origin mimic do(
   
   Nesting = Origin mimic do(
     RegularState = Origin mimic do(
-      open? = false
-      next = method(text, nestStack,
-        IIk Nesting AvailableStates some(matchAgainst(text, nestStack))
+      open = 0
+      next = method(text, nestStack, regular,
+        IIk Nesting AvailableStates some(matchAgainst(text, nestStack, regular))
       )
       
-      matchAgainst = method(text, ignored,
-        (text[1..-1], self)
+      matchAgainst = method(text, ignored, regular,
+        (text[1..-1], regular)
       )
     )
 
+    RecursiveRegularState = RegularState mimic do(
+      next = method(text, nestStack, regular,
+        if(text[0..0] == "}" && nestSize == nestStack length,
+          nestStack pop!. nestStack pop!
+          (text[1..-1], outer),
+          IIk Nesting AvailableStates some(matchAgainst(text, nestStack, self))))
+    )
+
     DelimitedState = Origin mimic do(
-      open? = true
+      open = 1
       escaped? = false
       startLength = 1
-      next = method(text, ignored,
+      next = method(text, nestStack, regular,
         rest = text[1..-1]
         case(text,
           #/\A\\/, (rest, with(escaped?: !escaped?)),
-          #/\A#{end}/, if(!escaped?, (rest, IIk Nesting RegularState), (rest, with(escaped?: !escaped?))),
+          #/\A\#\{/,
+          if(!escaped?,
+            nn = IIk Nesting RecursiveRegularState with(outer: self, nestSize: nestStack size + 2)
+            nestStack push!(self)
+            nestStack push!(nn)
+            (text[2..-1], nn),
+            (rest, with(escaped?: !escaped?))),
+          #/\A#{end}/, if(!escaped?, (rest, regular), (rest, with(escaped?: !escaped?))),
           else, if(escaped?, (rest, with(escaped?: !escaped?)), (rest, self)))
       )
-      matchAgainst = method(text, ignored,
+      matchAgainst = method(text, ignored, regular,
         if(#/\A#{start}/ =~ text, (text[(startLength)..-1], self))      
       )
     )
@@ -49,12 +64,12 @@ IIk = Origin mimic do(
 
     DelimitedMarker = Origin mimic do(
       startLength = 1
-      matchAgainst = method(text, nestStack,
+      matchAgainst = method(text, nestStack, regular,
         (case(text,
           #/\A#{start}/, nestStack push!(self). text[(startLength)..-1],
           #/\A#{end}/, nestStack pop!. text[1..-1],
           else, return nil
-        ), IIk Nesting RegularState)
+        ), regular)
       )      
     )
 
@@ -73,10 +88,10 @@ IIk = Origin mimic do(
       textLeft = data
 
       while(!textLeft empty?,
-        (textLeft, currentState) = currentState next(textLeft, nestStack)
+        (textLeft, currentState) = currentState next(textLeft, nestStack, RegularState)
       )
 
-      nestStack length + if(currentState open?, 1, 0)
+      nestStack length + currentState open
     )
   )
   
