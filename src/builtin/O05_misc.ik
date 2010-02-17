@@ -8,3 +8,9 @@ DefaultBehavior FlowControl tap = dmacro("takes one or two arguments that repres
   LexicalBlock createFrom(list(argName, code), call ground) call(self)
   self
 )
+
+DefaultBehavior FlowControl rap = macro("takes one or more message chains. Will call these on the receiver, then return the receiver",
+  call arguments each(code,
+    code evaluateOn(call ground, self))
+  self
+)
