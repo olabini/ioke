@@ -29,7 +29,7 @@ IIk = Origin mimic do(
     RecursiveRegularState = RegularState mimic do(
       next = method(text, nestStack, regular,
         if(text[0..0] == "}" && nestSize == nestStack length,
-          nestStack pop!. nestStack pop!
+          nestStack rap(pop!, pop!)
           (text[1..-1], outer),
           IIk Nesting AvailableStates some(matchAgainst(text, nestStack, self))))
     )
@@ -45,8 +45,7 @@ IIk = Origin mimic do(
           #/\A\#\{/,
           if(!escaped?,
             nn = IIk Nesting RecursiveRegularState with(outer: self, nestSize: nestStack size + 2)
-            nestStack push!(self)
-            nestStack push!(nn)
+            nestStack rap(push!(self), push!(nn))
             (text[2..-1], nn),
             (rest, with(escaped?: !escaped?))),
           #/\A#{end}/, if(!escaped?, (rest, regular), (rest, with(escaped?: !escaped?))),
