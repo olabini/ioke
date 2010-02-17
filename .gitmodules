@@ -1,3 +1,0 @@
-[submodule "deps"]
-	path = deps
-	url = git@github.com:olabini/ioke-deps.git
