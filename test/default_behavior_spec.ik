@@ -1190,6 +1190,7 @@ describe(DefaultBehavior,
       x = Origin mimic
       x called = false
       x tap(y, x called = true. y should be same(x))
+      x called should be true
     )
 
     it("should establish a new lexical context",
@@ -1208,6 +1209,43 @@ describe(DefaultBehavior,
 
     it("should take two arguments where the first argument is an argument name and the second is a message chain",
       Origin mimic tap(x, x inspect)
+    )
+  )
+
+
+  describe("rap",
+    it("should yield the receiving object",
+      x = Origin mimic
+      x called = false
+      x rap(should be same(x). x called = true)
+      x called should be true
+    )
+
+    it("should establish a new lexical context",
+      Origin mimic rap(. zzz = 42)
+      cell?(:zzz) should be false
+    )
+
+    it("should return the receiver object",
+      x = Origin mimic
+      x rap(. 42) should be same(x)
+    )
+
+    it("should take one argument that is a message chain",
+      Origin mimic rap(inspect)
+    )
+
+    it("should take more than one message argument chains where all will be called on the object",
+      x = Origin mimic
+      x do(called1 = false, called2 = false, called3 = false)
+      x rap(
+        should be same(x). x called1 = true,
+        should be same(x). x called2 = true,
+        should be same(x). x called3 = true)
+
+      x called1 should be true
+      x called2 should be true
+      x called3 should be true
     )
   )
 )
