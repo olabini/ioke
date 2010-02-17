@@ -1184,4 +1184,30 @@ describe(DefaultBehavior,
       passNil(x foo. x foo bar) should == 42
     )
   )
+
+  describe("tap",
+    it("should yield the receiving object",
+      x = Origin mimic
+      x called = false
+      x tap(y, x called = true. y should be same(x))
+    )
+
+    it("should establish a new lexical context",
+      Origin mimic tap(x, zzz = 42)
+      cell?(:zzz) should be false
+    )
+
+    it("should return the receiver object",
+      x = Origin mimic
+      x tap(y, 42) should be same(x)
+    )
+
+    it("should take one argument that is a message chain",
+      Origin mimic tap(inspect)
+    )
+
+    it("should take two arguments where the first argument is an argument name and the second is a message chain",
+      Origin mimic tap(x, x inspect)
+    )
+  )
 )

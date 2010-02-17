@@ -416,6 +416,7 @@ namespace Ioke.Lang {
                 EvaluateString("use(\"builtin/H50_struct\")", Message, Ground);
 
                 EvaluateString("use(\"builtin/M05_ignoreErrors\")", Message, Ground);
+                EvaluateString("use(\"builtin/O05_misc\")", Message, Ground);
             } catch(ControlFlow cf) {
                 Console.Error.WriteLine("Internal problem: " + cf);
             }

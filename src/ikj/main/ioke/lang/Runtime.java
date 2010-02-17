@@ -376,6 +376,7 @@ public class Runtime extends IokeData {
             evaluateString("use(\"builtin/H50_struct\")", message, ground);
 
             evaluateString("use(\"builtin/M05_ignoreErrors\")", message, ground);
+            evaluateString("use(\"builtin/O05_misc\")", message, ground);
 
             evaluateString("use(\"builtin/J05_javaGround\")", message, ground);
         } catch(ControlFlow cf) {
