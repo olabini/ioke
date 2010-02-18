@@ -7,6 +7,7 @@
 
   <property name="src.raw.dir" value="src"/>
   <property name="src.dir" value="src/ikc/main"/>
+  <property name="src.generated.dir" value="src/ikc/generated"/>
   <property name="lib.dir" value="lib"/>
   <property name="lib.build.dir" value="${lib.dir}/build"/>
   <property name="bin.dir" value="bin"/>
@@ -26,7 +27,13 @@
     </exec>
   </target>
 
-  <target name="compile" depends="generate_filters" description="Compile the source files for the project.">
+  <target name="ikil" depends="prepare" description="Runs IKIL to generate C# source files from the IKIL DSL">
+    <exec program="java">
+      <arg line="-cp bootstrap/ioke.jar ioke.lang.Main bin/ikil -c src/ikil ${src.generated.dir}"/>
+    </exec>
+  </target>
+
+  <target name="compile" depends="generate_filters, ikil" description="Compile the source files for the project.">
     <csc target="library" output="${bin.dir}/Ioke.Math.dll" debug="true">
       <sources>
         <include name="${src.dir}/Ioke.Math/**/*.cs" />
@@ -66,6 +73,7 @@ ioke.build.commit=${version::extract-commit()}
 
     <csc target="library" output="${bin.dir}/Ioke.Lang.dll" debug="true">
       <sources>
+        <include name="${src.generated.dir}/Ioke.Lang/**/*.cs" />
         <include name="${src.dir}/getline.cs" />
         <include name="${src.dir}/Ioke.Lang/**/*.cs" />
         <exclude name="${src.dir}/Ioke.Lang/Main.cs"/>
@@ -180,6 +188,7 @@ ioke.build.commit=${version::extract-commit()}
   <target name="dist-notest" depends="compile, dist-bin"/>
 
   <target name="clean" description="clean almost everything">
+    <delete dir="${src.generated.dir}"/>
     <delete file="${bin.dir}/ioke.dll"/>
     <delete file="${bin.dir}/ioke.dll.mdb"/>
     <delete file="${bin.dir}/ioke.exe"/>

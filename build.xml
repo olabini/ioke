@@ -29,7 +29,15 @@
     <exec executable="ruby" input="generate_filter_data.rb" failonerror="false" failifexecutionfails="false"/>
   </target>
 
-  <target name="compile" depends="generate_filters" description="Compile the source files for the project.">
+  <target name="ikil" depends="prepare" description="Runs IKIL to generate Java source files from the IKIL DSL">
+    <java classname="ioke.lang.Main" fork="true" failonerror="true" maxmemory="256m">
+      <classpath path="bootstrap/ioke.jar"/>
+
+      <arg line="bin/ikil -j src/ikil src/ikj/generated"/>
+    </java>
+  </target>
+
+  <target name="compile" depends="generate_filters, ikil" description="Compile the source files for the project.">
     <filter filtersfile="version_data.properties"/>
     <filter token="VERSION" value="P"/>
     <filter token="VERSION_RUNTIME" value="0.4.1-SNAPSHOT"/>
@@ -38,6 +46,7 @@
     <javac destdir="${classes.dir}" debug="true" source="${javac.version}" target="${javac.version}" encoding="UTF-8">
       <classpath refid="build.classpath"/>
       <src path="${src.dir}"/>
+      <src path="${src.generated.dir}"/>
       <include name="**/*.java"/>
     </javac>
 
@@ -183,5 +192,6 @@
     <delete dir="${build.dir}"/>
     <delete file="${lib.dir}/ioke.jar" quiet="true"/>
     <delete file="${lib.dir}/ioke-lib.jar" quiet="true"/>
+    <delete dir="${src.generated.dir}"/>
   </target>
 </project>

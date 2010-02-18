@@ -285,8 +285,6 @@ public class Runtime extends IokeData {
         set.mimicsWithoutCheck(origin);
 
         condition.mimicsWithoutCheck(origin);
-        rescue.mimicsWithoutCheck(origin);
-        handler.mimicsWithoutCheck(origin);
 
         io.mimicsWithoutCheck(origin);
 

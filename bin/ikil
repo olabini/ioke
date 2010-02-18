@@ -1,0 +1,4 @@
+#!/usr/bin/env ioke
+
+use("ikil")
+IKIL generate(*(System programArguments))
