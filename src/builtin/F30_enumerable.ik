@@ -660,6 +660,50 @@ Mixins Enumerable group = method(
   "returns a dict where all the keys are distinct elements in the enumerable, and each value is a list of all the values that are equivalent",
   groupBy)
 
+Mixins Enumerable eachCons = dmacro(
+  "takes one, two or three arguments. if one argument, assumes this to be a message chain and the cons length to be two. if two arguments, expects the first to be the cons length and the second to be the message chain. if three, expects the first to be the cons length, the second to be a variable name and the third to be a message chain. will yield lists of length consLength counting from the beginning of the enumerable",
+  [code]
+  consLength = 2
+  ary = list()
+  
+  self each(n,
+    if(ary length == consLength,
+      ary shift!)
+    ary push!(n)
+    if(ary length == consLength,
+      code evaluateOn(call ground, ary mimic))
+  )  
+  self
+  ,
+  [>consLength, code]
+  ary = list()
+  
+  self each(n,
+    if(ary length == consLength,
+      ary shift!)
+    ary push!(n)
+    if(ary length == consLength,
+      code evaluateOn(call ground, ary mimic))
+  )  
+  self
+  ,
+  [>consLength, argName, code]
+  lexicalCode = LexicalBlock createFrom(list(argName, code), call ground)
+  ary = list()
+  
+  self each(n,
+    if(ary length == consLength,
+      ary shift!)
+    ary push!(n)
+    if(ary length == consLength,
+      lexicalCode call(ary mimic))
+  )  
+  self
+)
+
+
+
+
 Mixins Enumerable aliasMethod("map", "collect")
 Mixins Enumerable aliasMethod("map", "collect:list")
 Mixins Enumerable aliasMethod("map", "map:list")

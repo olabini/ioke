@@ -262,6 +262,14 @@ describe(Mixins,
         seqObj callInfo arguments should == ['foo, '(bar x * 43)]
       )
     )
+
+    describe("consed",
+      it("should have tests")
+    )
+
+    describe("sliced",
+      it("should have tests")
+    )
   )
 )
 
@@ -513,6 +521,14 @@ describe(Sequence,
       ss = SequenceTester with(val: [1,2,3,4,5,6,7,8], len: 8) seq
       ss rejected(x, x>4) asList should == [1,2,3,4]
     )
+  )
+
+  describe("consed",
+    it("should have tests")
+  )
+
+  describe("sliced",
+    it("should have tests")
   )
 
   describe("+",

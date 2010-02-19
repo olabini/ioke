@@ -1643,5 +1643,47 @@ describe(Mixins,
         [1,2,3,2,3,3,5,5,5,5,5] groupBy(x, x%2 == 0) should == {true => [2,2], false => [1,3,3,3,5,5,5,5,5]}
       )
     )
+
+    describe("eachCons",
+      it("should return the original object",
+        x = [1,2,3]
+        x eachCons(inspect) should be same(x)
+      )
+
+      it("should take one message chain argument and yield two items as a list to the message chain given",
+        x = [1,2,3,4,5]
+        res = []
+        x eachCons(tap(y, res << y))
+        res should == [[1,2], [2,3], [3,4], [4,5]]
+      )
+
+      it("should take a number to indicate cons size and yield those as a list to the message chain given",
+        x = [1,2,3,4,5]
+        res = []
+        x eachCons(3, tap(y, res << y))
+        res should == [[1,2,3], [2,3,4], [3,4,5]]
+      )
+
+      it("should take a number, an argument name and a message chain, and bind that argument name to the list and yield that in a new lexical scope",
+        x = [1,2,3,4,5]
+        res = []
+        x eachCons(3, y, res << y)
+        res should == [[1,2,3], [2,3,4], [3,4,5]]
+      )
+
+      it("should be able to destructure on the argument name")
+
+      it("should yield a cons for each index",
+        x = [1,2,3,4,5]
+        res = []
+        x eachCons(2, y, res << y)
+        res should == [[1,2], [2,3], [3,4], [4,5]]
+        
+      )
+    )
+
+    describe("eachSlice",
+      it("should have tests")
+    )
   )
 )
