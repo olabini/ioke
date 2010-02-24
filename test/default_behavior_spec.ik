@@ -1310,6 +1310,58 @@ describe(DefaultBehavior,
       result should == [1,2,3,4]
     )
 
-    it("should destructure on the argument name")
+    it("should destructure on the argument name",
+      x = [[1,2],[2,3],[3,4],[4,5],nil] seq
+      result = []
+      x sap(next, (p, q), result << [p,q])
+      result should == [[1,2],[2,3],[3,4],[4,5]]
+
+      x = [[1,2,3],[2,3,4],[3,4,5],[4,5,6],nil] seq
+      result = []
+      x sap(next, (p, q, r), result << [p,q,r])
+      result should == [[1,2,3],[2,3,4],[3,4,5],[4,5,6]]
+    )
+
+    it("should be able to destructure and ignore the rest of something",
+      x = [[1,2,3,4],[2,3,4,5],[3,4,5,6],[4,5,6,7],nil] seq
+      result = []
+      x sap(next, (p, q, _), result << [p,q]. cell?(:"_") should be false)
+      result should == [[1,2],[2,3],[3,4],[4,5]]
+    )
+
+    it("should be able to destructure and ignore in the middle of the pattern without binding anything",
+      x = [[1,2,3],[2,3,4],[3,4,5],[4,5,6],nil] seq
+      result = []
+      x sap(next, (p, _, q), result << [p,q]. cell?(:"_") should be false)
+      result should == [[1,3],[2,4],[3,5],[4,6]]
+    )
+
+    it("should be able to destructure and ignore several times in the middle of the pattern without binding anything",
+      x = [[1,2,3,4,5],[2,3,4,5,6],[3,4,5,6,7],[4,5,6,7,8],nil] seq
+      result = []
+      x sap(next, (p, _, q, _, r), result << [p,q,r]. cell?(:"_") should be false)
+      result should == [[1,3,5],[2,4,6],[3,5,7],[4,6,8]]
+    )
+
+    it("should be able to destructure recursively",
+      x = [[[1,2,3], [4,5,6]], [[7,8,9], [10,11,12]], [[13,14,15], [16,17,18]], nil] seq
+      result = []
+      x sap(next, (v, (v2, _, v3)), result << [v, v2, v3]. cell?(:"_") should be false)
+      result should == [[[1,2,3], 4, 6], [[7,8,9], 10, 12], [[13,14,15], 16, 18]]
+    )
+
+    it("should report a destructuring match error if destructuring doesn't add upp",
+      x = [[1,2], [2,3], [3,4], [4,5], nil] seq
+      fn(x sap(next, (q,p,r), nil)) should signal(Condition Error DestructuringMismatch)
+      fn(x sap(next, (q), nil)) should signal(Condition Error DestructuringMismatch)
+      fn(x sap(next, (q,_,r), nil)) should signal(Condition Error DestructuringMismatch)
+    )
+
+    it("should report a destructuring match error if recursive destructuring doesn't add upp",
+      x = [[[1,1],[2,2]], [[2,2],[3,3]], [[3,3],[4,4]], [[4,4],[5,5]], nil] seq
+      fn(x sap(next, (q,(p)), nil)) should signal(Condition Error DestructuringMismatch)
+      fn(x sap(next, (q,(p,r,f)), nil)) should signal(Condition Error DestructuringMismatch)
+      fn(x sap(next, (q,(p,_,f)), nil)) should signal(Condition Error DestructuringMismatch)
+    )
   )
 )

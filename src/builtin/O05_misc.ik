@@ -26,11 +26,12 @@ DefaultBehavior FlowControl sap = dmacro(
   self,
 
   [sapCode, argName, iterCode]
-  block = LexicalBlock createFrom(list(argName, iterCode), call ground)
+  destructor = Mixins Enumerable Destructor from(argName)
+  block = LexicalBlock createFrom(destructor argNames + list(iterCode), call ground)
   result = sapCode evaluateOn(call ground, self)
   while(result,
-    block call(result)
+    block call(*(destructor unpack(result)))
     result = sapCode evaluateOn(call ground, self))
-  self,
+  self
 )
 
