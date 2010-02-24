@@ -767,6 +767,48 @@ Mixins Enumerable eachCons = dmacro(
   self
 )
 
+Mixins Enumerable eachSlice = dmacro(
+  "takes one, two or three arguments. if one argument, assumes this to be a message chain and the slice length to be two. if two arguments, expects the first to be the slice length and the second to be the message chain. if three, expects the first to be the slice length, the second to be a variable name and the third to be a message chain. will yield lists of length sliceLength counting from the beginning of the enumerable",
+  [code]
+  sliceLength = 2
+  ary = list()
+  
+  self each(n,
+    ary push!(n)
+    if(ary length == sliceLength,
+      code evaluateOn(call ground, ary)
+      ary = list())
+  )
+  if(ary length > 0, code evaluateOn(call ground, ary))
+  self
+  ,
+  [>sliceLength, code]
+  ary = list()
+  
+  self each(n,
+    ary push!(n)
+    if(ary length == sliceLength,
+      code evaluateOn(call ground, ary)
+      ary = list())
+  )
+  if(ary length > 0, code evaluateOn(call ground, ary))
+  self
+  ,
+  [>sliceLength, argName, code]
+  destructor = Destructor from(argName)
+  lexicalCode = LexicalBlock createFrom(destructor argNames + list(code), call ground)
+  ary = list()
+  
+  self each(n,
+    ary push!(n)
+    if(ary length == sliceLength,
+      lexicalCode call(*(destructor unpack(ary)))
+      ary = list())
+  )
+  if(ary length > 0, lexicalCode call(*(destructor unpack(ary))))
+  self
+)
+
 Mixins Enumerable aliasMethod("map", "collect")
 Mixins Enumerable aliasMethod("map", "collect:list")
 Mixins Enumerable aliasMethod("map", "map:list")

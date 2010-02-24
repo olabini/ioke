@@ -1759,7 +1759,107 @@ describe(Mixins,
     )
 
     describe("eachSlice",
-      it("should have tests")
+      it("should return the original object",
+        x = [1,2,3]
+        x eachSlice(inspect) should be same(x)
+      )
+
+      it("should take one message chain argument and yield two items as a list to the message chain given",
+        x = [1,2,3,4,5,6]
+        res = []
+        x eachSlice(tap(y, res << y))
+        res should == [[1,2], [3,4], [5,6]]
+      )
+
+      it("should take a number to indicate cons size and yield those as a list to the message chain given",
+        x = [1,2,3,4,5,6,7,8,9]
+        res = []
+        x eachSlice(3, tap(y, res << y))
+        res should == [[1,2,3], [4,5,6], [7,8,9]]
+      )
+
+      it("should take a number, an argument name and a message chain, and bind that argument name to the list and yield that in a new lexical scope",
+        x = [1,2,3,4,5,6,7,8,9]
+        res = []
+        x eachSlice(3, y, res << y)
+        res should == [[1,2,3], [4,5,6], [7,8,9]]
+      )
+
+      it("should be able to destructure on the argument name",
+        x = [1,2,3,4,5,6]
+        res = []
+        x eachSlice(2, (p, q), res << [:p, p, :q, q])
+        res should == [[:p, 1, :q, 2], [:p, 3, :q, 4], [:p, 5, :q, 6]]
+
+        x = [1,2,3,4,5,6,7,8,9]
+        res = []
+        x eachSlice(3, (p, q, r), res << [:p, p, :q, q, :r, r])
+        res should == [
+          [:p, 1, :q, 2, :r, 3],
+          [:p, 4, :q, 5, :r, 6],
+          [:p, 7, :q, 8, :r, 9]]
+      )
+
+      it("should be able to destructure and ignore the rest of something",
+        x = [1,2,3,4,5,6,7,8]
+        res = []
+        x eachSlice(4, (p, q, _), res << [:p, p, :q, q]. cell?(:"_") should be false)
+        res should == [
+          [:p, 1, :q, 2],
+          [:p, 5, :q, 6]]
+      )
+
+      it("should be able to destructure and ignore in the middle of the pattern without binding anything",
+        x = [1,2,3,4,5,6,7,8,9]
+        res = []
+        x eachSlice(3, (p, _, q), res << [:p, p, :q, q]. cell?(:"_") should be false)
+        res should == [
+          [:p, 1, :q, 3],
+          [:p, 4, :q, 6],
+          [:p, 7, :q, 9]]
+      )
+
+      it("should be able to destructure and ignore several times in the middle of the pattern without binding anything",
+        x = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
+        res = []
+        x eachSlice(5, (p, _, q, _, r), res << [:p, p, :q, q, :r, r]. cell?(:"_") should be false)
+        res should == [
+          [:p, 1, :q, 3, :r, 5],
+          [:p, 6, :q, 8, :r, 10],
+          [:p, 11, :q, 13, :r, 15]]
+      )
+
+      it("should be able to destructure recursively",
+        x = [[:x, :y, :z], [:q, :r, :p], [:b, :c, :d], [:i, :j, :k]]
+        res = []
+        x eachSlice(2, (v, (v2, _, v3)), res << [v, v2, v3]. cell?(:"_") should be false)
+        res should == [
+          [[:x, :y, :z], :q, :p],
+          [[:b, :c, :d], :i, :k]]
+      )
+
+      it("should report a destructuring match error if destructuring doesn't add upp",
+        x = [1,2,3,4]
+
+        fn(x eachSlice(2, (q,p,r), nil)) should signal(Condition Error DestructuringMismatch)
+        fn(x eachSlice(2, (q), nil)) should signal(Condition Error DestructuringMismatch)
+        fn(x eachSlice(2, (q,_,r), nil)) should signal(Condition Error DestructuringMismatch)
+      )
+
+      it("should report a destructuring match error if recursive destructuring doesn't add upp",
+        x = [[1,2],[2,3],[3,4],[4,5]]
+
+        fn(x eachSlice(2, (q,(p)), nil)) should signal(Condition Error DestructuringMismatch)
+        fn(x eachSlice(2, (q,(p,r,f)), nil)) should signal(Condition Error DestructuringMismatch)
+        fn(x eachSlice(2, (q,(p,_,f)), nil)) should signal(Condition Error DestructuringMismatch)
+      )
+
+      it("should yield a slice for each index",
+        x = [1,2,3,4,5]
+        res = []
+        x eachSlice(2, y, res << y)
+        res should == [[1,2], [3,4], [5]]
+      )
     )
   )
 )
