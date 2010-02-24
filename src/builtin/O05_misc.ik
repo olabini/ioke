@@ -14,3 +14,6 @@ DefaultBehavior FlowControl rap = macro("takes one or more message chains. Will 
     code evaluateOn(call ground, self))
   self
 )
+
+DefaultBehavior FlowControl tapping = DefaultBehavior FlowControl cell(:rap)
+
