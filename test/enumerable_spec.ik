@@ -1733,7 +1733,21 @@ describe(Mixins,
           [[:b, :c, :d], :i, :k]]
       )
 
-      it("should report a destructuring match error if destructuring doesn't add upp")
+      it("should report a destructuring match error if destructuring doesn't add upp",
+        x = [1,2,3,4]
+
+        fn(x eachCons(2, (q,p,r), nil)) should signal(Condition Error DestructuringMismatch)
+        fn(x eachCons(2, (q), nil)) should signal(Condition Error DestructuringMismatch)
+        fn(x eachCons(2, (q,_,r), nil)) should signal(Condition Error DestructuringMismatch)
+      )
+
+      it("should report a destructuring match error if recursive destructuring doesn't add upp",
+        x = [[1,2],[2,3],[3,4],[4,5]]
+
+        fn(x eachCons(2, (q,(p)), nil)) should signal(Condition Error DestructuringMismatch)
+        fn(x eachCons(2, (q,(p,r,f)), nil)) should signal(Condition Error DestructuringMismatch)
+        fn(x eachCons(2, (q,(p,_,f)), nil)) should signal(Condition Error DestructuringMismatch)
+      )
 
       it("should yield a cons for each index",
         x = [1,2,3,4,5]

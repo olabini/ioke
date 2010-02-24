@@ -660,22 +660,21 @@ Mixins Enumerable group = method(
   "returns a dict where all the keys are distinct elements in the enumerable, and each value is a list of all the values that are equivalent",
   groupBy)
 
-Destructor = Origin mimic do(
+Mixins Enumerable Destructor = Origin mimic do(
   Mapper = Origin mimic
   Mapper RegularArgument = Mapper mimic do(
-    assign = method(values, val, values << val. values),
-    arguments = method([arg])
+    assign = method(values, val, values << val. values)
   )
   Mapper Ignore = Mapper with(last?: false, arguments: [])
   Mapper Recursive = Mapper mimic do(
     arguments = method(mappers flatMap(arguments))
     assign = method(values, val,
-      Destructor mapValue(val, mappers, values)
+      Mixins Enumerable Destructor mapValue(val, mappers, values)
       values
     )
 
     from = method(arg,
-      mimic tap(mappers = Destructor createMappersFrom(arg arguments))
+      mimic tap(mappers = Mixins Enumerable Destructor createMappersFrom(arg arguments))
     )
   )
 
@@ -684,16 +683,16 @@ Destructor = Origin mimic do(
     case(arg name,
       :"_", Ignore mimic,
       :"", Recursive from(arg),
-      else, RegularArgument with(arg: arg)))
+      else, RegularArgument with(arg: arg, arguments: [arg])))
 
   createMappersFrom = method(arguments,
     arguments map(x, Mapper from(x)) tap(m, 
       if(m[-1] mimics?(Mapper Ignore),
         m[-1] last? = true)))
 
-  argumentNamesFromMappers = method(
-    mappers flatMap(arguments)
-  )
+  argumentNamesFromMappers = method(mappers flatMap(arguments))
+
+  nested? = false
 
   from = method(arg,
     newD = mimic
@@ -701,28 +700,27 @@ Destructor = Origin mimic do(
     if(arg name == :"",
       newD mappers = createMappersFrom(arg arguments)
       newD argNames = newD argumentNamesFromMappers
-      newD nested? = true
-      ,
-      newD argNames = list(arg)
-      newD nested? = false
+      newD nested? = true,
+      newD argNames = [arg]
     )
 
     newD
   )
 
   mapValue = method(value, ms, result [],
-    ; if(ms length < value length && !(ms[-1] mimics?(Mapper Ignore)),
-      
-    ; )
+    if((ms length < value length && !(ms[-1] mimics?(Mapper Ignore))) || 
+      value length < ms length,
+      error!(Condition Error DestructuringMismatch)
+    )
 
-    ms zip(value) fold(result, values, both,
-      both first assign(values, both second))
+    ms zip(value) fold(result, values, mapperAndValue,
+      mapperAndValue first assign(values, mapperAndValue second))
   )
 
   unpack = method(value,
     if(nested?,
       mapValue(value, mappers),
-      list(value))
+      [value])
   )
 )
 
@@ -768,9 +766,6 @@ Mixins Enumerable eachCons = dmacro(
   )
   self
 )
-
-
-
 
 Mixins Enumerable aliasMethod("map", "collect")
 Mixins Enumerable aliasMethod("map", "collect:list")
