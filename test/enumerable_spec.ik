@@ -1676,11 +1676,64 @@ describe(Mixins,
         res = []
         x eachCons(2, (p, q), res << [:p, p, :q, q])
         res should == [[:p, 1, :q, 2], [:p, 2, :q, 3], [:p, 3, :q, 4], [:p, 4, :q, 5]]
+
+        x = [1,2,3,4,5,6,7,8,9]
+        res = []
+        x eachCons(3, (p, q, r), res << [:p, p, :q, q, :r, r])
+        res should == [
+          [:p, 1, :q, 2, :r, 3],
+          [:p, 2, :q, 3, :r, 4],
+          [:p, 3, :q, 4, :r, 5],
+          [:p, 4, :q, 5, :r, 6],
+          [:p, 5, :q, 6, :r, 7],
+          [:p, 6, :q, 7, :r, 8],
+          [:p, 7, :q, 8, :r, 9]]
       )
 
-      it("should be able to destructure and ignore the rest of something")
-      it("should be able to destructure and ignore in the middle of the pattern without binding anything")
-      it("should be able to destructure recursively")
+      it("should be able to destructure and ignore the rest of something",
+        x = [1,2,3,4,5,6]
+        res = []
+        x eachCons(4, (p, q, _), res << [:p, p, :q, q]. cell?(:"_") should be false)
+        res should == [
+          [:p, 1, :q, 2],
+          [:p, 2, :q, 3],
+          [:p, 3, :q, 4]]
+      )
+
+      it("should be able to destructure and ignore in the middle of the pattern without binding anything",
+        x = [1,2,3,4,5,6]
+        res = []
+        x eachCons(3, (p, _, q), res << [:p, p, :q, q]. cell?(:"_") should be false)
+        res should == [
+          [:p, 1, :q, 3],
+          [:p, 2, :q, 4],
+          [:p, 3, :q, 5],
+          [:p, 4, :q, 6]]
+      )
+
+      it("should be able to destructure and ignore several times in the middle of the pattern without binding anything",
+        x = [1,2,3,4,5,6,7,8,9]
+        res = []
+        x eachCons(5, (p, _, q, _, r), res << [:p, p, :q, q, :r, r]. cell?(:"_") should be false)
+        res should == [
+          [:p, 1, :q, 3, :r, 5],
+          [:p, 2, :q, 4, :r, 6],
+          [:p, 3, :q, 5, :r, 7],
+          [:p, 4, :q, 6, :r, 8],
+          [:p, 5, :q, 7, :r, 9]]
+      )
+
+      it("should be able to destructure recursively",
+        x = [[:x, :y, :z], [:q, :r, :p], [:b, :c, :d], [:i, :j, :k]]
+        res = []
+        x eachCons(2, (v, (v2, _, v3)), res << [v, v2, v3]. cell?(:"_") should be false)
+        res should == [
+          [[:x, :y, :z], :q, :p],
+          [[:q, :r, :p], :b, :d],
+          [[:b, :c, :d], :i, :k]]
+      )
+
+      it("should report a destructuring match error if destructuring doesn't add upp")
 
       it("should yield a cons for each index",
         x = [1,2,3,4,5]

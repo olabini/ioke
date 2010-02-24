@@ -661,12 +661,48 @@ Mixins Enumerable group = method(
   groupBy)
 
 Destructor = Origin mimic do(
+  Mapper = Origin mimic
+  Mapper RegularArgument = Mapper mimic do(
+    assign = method(values, val, values << val. values),
+    arguments = method([arg])
+  )
+  Mapper Ignore = Mapper with(last?: false, arguments: [])
+  Mapper Recursive = Mapper mimic do(
+    arguments = method(mappers flatMap(arguments))
+    assign = method(values, val,
+      Destructor mapValue(val, mappers, values)
+      values
+    )
+
+    from = method(arg,
+      mimic tap(mappers = Destructor createMappersFrom(arg arguments))
+    )
+  )
+
+  Mapper assign = method(values, ignore, values)
+  Mapper from = method(arg,
+    case(arg name,
+      :"_", Ignore mimic,
+      :"", Recursive from(arg),
+      else, RegularArgument with(arg: arg)))
+
+  createMappersFrom = method(arguments,
+    arguments map(x, Mapper from(x)) tap(m, 
+      if(m[-1] mimics?(Mapper Ignore),
+        m[-1] last? = true)))
+
+  argumentNamesFromMappers = method(
+    mappers flatMap(arguments)
+  )
+
   from = method(arg,
     newD = mimic
 
     if(arg name == :"",
-      newD argNames = arg arguments
-      newD nested? = true,
+      newD mappers = createMappersFrom(arg arguments)
+      newD argNames = newD argumentNamesFromMappers
+      newD nested? = true
+      ,
       newD argNames = list(arg)
       newD nested? = false
     )
@@ -674,9 +710,18 @@ Destructor = Origin mimic do(
     newD
   )
 
+  mapValue = method(value, ms, result [],
+    ; if(ms length < value length && !(ms[-1] mimics?(Mapper Ignore)),
+      
+    ; )
+
+    ms zip(value) fold(result, values, both,
+      both first assign(values, both second))
+  )
+
   unpack = method(value,
     if(nested?,
-      value asTuple,
+      mapValue(value, mappers),
       list(value))
   )
 )
