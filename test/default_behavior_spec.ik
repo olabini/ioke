@@ -1283,4 +1283,33 @@ describe(DefaultBehavior,
       x called3 should be true
     )
   )
+
+
+  describe("sap",
+    it("should return the receiving object",
+      x = Origin mimic
+      x sap(nil, inspect) should be same(x)
+    )
+
+    it("should take two arguments where the first argument is the message chain to repeatadly call and the second is a message chain",
+      x = Origin mimic
+      x something = method(@something = nil. 42)
+      x sap(something, should == 42)
+    )
+
+    it("should take three arguments where the first argument is the message chain to repeatadly call, the second is the argument name, and the third is the code",
+      x = Origin mimic
+      x something = method(@something = nil. 42)
+      x sap(something, x, x should == 42)
+    )
+
+    it("should call the first message chain until getting a nil",
+      x = [1,2,3,4,nil] seq
+      result = []
+      x sap(next, v, result << v)
+      result should == [1,2,3,4]
+    )
+
+    it("should destructure on the argument name")
+  )
 )

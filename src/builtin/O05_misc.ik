@@ -17,3 +17,20 @@ DefaultBehavior FlowControl rap = macro("takes one or more message chains. Will 
 
 DefaultBehavior FlowControl tapping = DefaultBehavior FlowControl cell(:rap)
 
+DefaultBehavior FlowControl sap = dmacro(
+  [sapCode, iterCode]
+  result = sapCode evaluateOn(call ground, self)
+  while(result,
+    iterCode evaluateOn(call ground, result)
+    result = sapCode evaluateOn(call ground, self))
+  self,
+
+  [sapCode, argName, iterCode]
+  block = LexicalBlock createFrom(list(argName, iterCode), call ground)
+  result = sapCode evaluateOn(call ground, self)
+  while(result,
+    block call(result)
+    result = sapCode evaluateOn(call ground, self))
+  self,
+)
+
