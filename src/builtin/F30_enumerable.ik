@@ -660,6 +660,28 @@ Mixins Enumerable group = method(
   "returns a dict where all the keys are distinct elements in the enumerable, and each value is a list of all the values that are equivalent",
   groupBy)
 
+Destructor = Origin mimic do(
+  from = method(arg,
+    newD = mimic
+
+    if(arg name == :"",
+      newD argNames = arg arguments
+      newD nested? = true,
+      newD argNames = list(arg)
+      newD nested? = false
+    )
+
+    newD
+  )
+
+  unpack = method(value,
+    if(nested?,
+      value asTuple,
+      list(value))
+  )
+)
+
+
 Mixins Enumerable eachCons = dmacro(
   "takes one, two or three arguments. if one argument, assumes this to be a message chain and the cons length to be two. if two arguments, expects the first to be the cons length and the second to be the message chain. if three, expects the first to be the cons length, the second to be a variable name and the third to be a message chain. will yield lists of length consLength counting from the beginning of the enumerable",
   [code]
@@ -688,7 +710,8 @@ Mixins Enumerable eachCons = dmacro(
   self
   ,
   [>consLength, argName, code]
-  lexicalCode = LexicalBlock createFrom(list(argName, code), call ground)
+  destructor = Destructor from(argName)
+  lexicalCode = LexicalBlock createFrom(destructor argNames + list(code), call ground)
   ary = list()
   
   self each(n,
@@ -696,8 +719,8 @@ Mixins Enumerable eachCons = dmacro(
       ary shift!)
     ary push!(n)
     if(ary length == consLength,
-      lexicalCode call(ary mimic))
-  )  
+      lexicalCode call(*(destructor unpack(ary mimic))))
+  )
   self
 )
 

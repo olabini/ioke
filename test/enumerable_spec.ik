@@ -1671,7 +1671,16 @@ describe(Mixins,
         res should == [[1,2,3], [2,3,4], [3,4,5]]
       )
 
-      it("should be able to destructure on the argument name")
+      it("should be able to destructure on the argument name",
+        x = [1,2,3,4,5]
+        res = []
+        x eachCons(2, (p, q), res << [:p, p, :q, q])
+        res should == [[:p, 1, :q, 2], [:p, 2, :q, 3], [:p, 3, :q, 4], [:p, 4, :q, 5]]
+      )
+
+      it("should be able to destructure and ignore the rest of something")
+      it("should be able to destructure and ignore in the middle of the pattern without binding anything")
+      it("should be able to destructure recursively")
 
       it("should yield a cons for each index",
         x = [1,2,3,4,5]

@@ -242,6 +242,11 @@ namespace Ioke.Lang {
                         foreach(DictionaryEntry me in keys) {
                             givenKeywords[Text.GetText(IokeObject.ConvertToText(me.Key, message, context, true)) + ":"] = me.Value;
                         }
+                    } else if(IokeObject.FindCell(result, message, context, "asTuple") != runtime.nul) {
+                        object tupledValue = ((Message)IokeObject.dataOf(runtime.asTuple)).SendTo(runtime.asTuple, context, result);
+                        object[] values = Tuple.GetElements(tupledValue);
+                        foreach(object val in values) argumentsWithoutKeywords.Add(val);
+                        argCount += values.Length;
                     } else {
                         IokeObject condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition,
                                                                                      message,

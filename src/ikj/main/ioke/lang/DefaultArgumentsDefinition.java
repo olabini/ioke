@@ -254,6 +254,11 @@ public class DefaultArgumentsDefinition {
                     for(Map.Entry<Object, Object> me : keys.entrySet()) {
                         givenKeywords.put(Text.getText(IokeObject.convertToText(me.getKey(), message, context, true)) + ":", me.getValue());
                     }
+                } else if(IokeObject.findCell(result, message, context, "asTuple") != runtime.nul) {
+                    Object tupledValue = ((Message)IokeObject.data(runtime.asTuple)).sendTo(runtime.asTuple, context, result);
+                    Object[] values = Tuple.getElements(tupledValue);
+                    argumentsWithoutKeywords.addAll(Arrays.asList(values));
+                    argCount += values.length;
                 } else {
                     final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition,
                                                                                        message,
