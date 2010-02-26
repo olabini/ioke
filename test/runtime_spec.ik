@@ -42,8 +42,8 @@ describe(Runtime,
       Runtime nodeId should == 1
     )
 
-    it("should return something that is not 1 for the next created runtime",
-      Runtime create nodeId should not == 1
-    )
+    ; it("should return something that is not 1 for the next created runtime",
+    ;   Runtime create nodeId should not == 1
+    ; )
   )
 )

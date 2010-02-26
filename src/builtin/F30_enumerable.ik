@@ -32,9 +32,10 @@ let(enumerableMapMethod,
 
       [argName, theCode]
       'initCode
-      lexicalCode = LexicalBlock createFrom(list(argName, theCode), call ground)
+      destructor = Destructor from(argName)
+      lexicalCode = LexicalBlock createFrom(destructor argNames + list(theCode), call ground)
       self each(n,
-        x = lexicalCode call(cell(:n))
+        x = lexicalCode call(*(destructor unpack(cell(:n))))
         'updateCode)
       result))),
 

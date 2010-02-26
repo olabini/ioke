@@ -92,6 +92,39 @@ describe(Mixins,
         [1, 2, 3] map(x, x+3) should == [4, 5, 6]
         [1, 2, 3] map(x, 1) should == [1, 1, 1]
       )
+
+      it("should be able to destructure on the argument name",
+        [[1,2], [2,3], [4,5]] map((x,y), [x+1, y-1]) should == [[2,1], [3,2], [5,4]]
+      )
+
+      it("should be able to destructure and ignore the rest of something",
+        [[1,2,9,10], [2,3,11,12], [4,5,13,14]] map((x,y,_), cell?(:"_") should not be true. [x, y]) should == [[1,2], [2,3], [4,5]]
+      )
+
+      it("should be able to destructure and ignore in the middle of the pattern without binding anything",
+        [[1,2,9], [2,3,11], [4,5,13]] map((x,_,y), cell?(:"_") should not be true. [x, y]) should == [[1,9], [2,11], [4,13]]
+      )
+
+      it("should be able to destructure and ignore several times in the middle of the pattern without binding anything",
+        [[1,2,9,10,11], [2,3,11,12,13], [4,5,13,14,15]] map((x,_,y,_,q), cell?(:"_") should not be true. [x, y, q]) should == [[1,9,11], [2,11,13], [4,13,15]]
+      )
+
+      it("should be able to destructure recursively",
+        [[[:x, :y, :z], [:q, :r, :p]], [[:b, :c, :d], [:i, :j, :k]], [[:i, :j, :k], [:i2, :j3, :k4]]] map(
+          (v, (v2, _, v3)), cell?(:"_") should be false. [v, v2, v3]) should == [[[:x, :y, :z], :q, :p], [[:b, :c, :d], :i, :k], [[:i, :j, :k], :i2, :k4]]
+      )
+
+      it("should report a destructuring match error if destructuring doesn't add upp",
+        fn([[1,2], [3,4], [4,5]] map((q,p,r), nil)) should signal(Condition Error DestructuringMismatch)
+        fn([[1,2], [3,4], [4,5]] map((q), nil)) should signal(Condition Error DestructuringMismatch)
+        fn([[1,2], [3,4], [4,5]] map((q,_,r), nil)) should signal(Condition Error DestructuringMismatch)
+     )
+
+      it("should report a destructuring match error if recursive destructuring doesn't add upp",
+        fn([[[1,2],[1,2]], [[3,4],[1,2]], [[1,2],[4,5]]] map((q,(p)), nil)) should signal(Condition Error DestructuringMismatch)
+        fn([[[1,2],[1,2]], [[3,4],[1,2]], [[1,2],[4,5]]] map((q,(p,r,f)), nil)) should signal(Condition Error DestructuringMismatch)
+        fn([[[1,2],[1,2]], [[3,4],[1,2]], [[1,2],[4,5]]] map((q,(p,_,f)), nil)) should signal(Condition Error DestructuringMismatch)
+      )
     )
 
     describe("map:set",
@@ -114,6 +147,8 @@ describe(Mixins,
         [1, 2, 3] map:set(x, x+3) should == set(4, 5, 6)
         [1, 2, 3] map:set(x, 1) should == set(1)
       )
+
+      it("should be possible to destructure on the argument name")
     )
 
     describe("map:dict",
@@ -137,6 +172,8 @@ describe(Mixins,
         [1, 2, 3] map:dict(x, x=>1) should == dict(1=>1, 2=>1, 3=>1)
         [1, 2, 3] map:dict(x, x) should == dict(1=>nil, 2=>nil, 3=>nil)
       )
+
+      it("should be possible to destructure on the argument name")
     )
 
     describe("mapFn",
@@ -219,6 +256,8 @@ describe(Mixins,
         [1, 2, 3] collect(x, x+3) should == [4, 5, 6]
         [1, 2, 3] collect(x, 1) should == [1, 1, 1]
       )
+
+      it("should be possible to destructure on the argument name")
     )
 
     describe("collect:set",
@@ -241,6 +280,8 @@ describe(Mixins,
         [1, 2, 3] collect:set(x, x+3) should == set(4, 5, 6)
         [1, 2, 3] collect:set(x, 1) should == set(1)
       )
+
+      it("should be possible to destructure on the argument name")
     )
 
     describe("collect:dict",
@@ -264,6 +305,8 @@ describe(Mixins,
         [1, 2, 3] collect:dict(x, x=>1) should == dict(1=>1, 2=>1, 3=>1)
         [1, 2, 3] collect:dict(x, x) should == dict(1=>nil, 2=>nil, 3=>nil)
       )
+
+      it("should be possible to destructure on the argument name")
     )
 
     describe("collectFn",
@@ -347,6 +390,8 @@ describe(Mixins,
         [nil,false,true] any?(x, x==2) should = =false
         CustomEnumerable any?(x, x != "foo") should be true
       )
+
+      it("should be possible to destructure on the argument name")
     )
 
     describe("none?",
@@ -370,6 +415,8 @@ describe(Mixins,
         [nil,false,true] none?(x, x==2) should be true
         CustomEnumerable none?(x, x != "foo") should be false
       )
+
+      it("should be possible to destructure on the argument name")
     )
 
     describe("some",
@@ -393,6 +440,8 @@ describe(Mixins,
         [nil,false,true] some(x, x==2 && 3) should be false
         CustomEnumerable some(x, x != "foo" && "blarg") should == "blarg"
       )
+
+      it("should be possible to destructure on the argument name")
     )
 
     describe("find",
@@ -416,6 +465,8 @@ describe(Mixins,
         [nil,false,true] find(x, x==2) should be nil
         CustomEnumerable find(x, x != "foo") should == "3first"
       )
+
+      it("should be possible to destructure on the argument name")
     )
 
     describe("detect",
@@ -439,6 +490,8 @@ describe(Mixins,
         [nil,false,true] detect(x, x==2) should be nil
         CustomEnumerable detect(x, x != "foo") should == "3first"
       )
+
+      it("should be possible to destructure on the argument name")
     )
 
 
@@ -474,6 +527,8 @@ describe(Mixins,
         [1,2,3] inject(1, sum, x, sum *(5) - x) should == 87
         CustomEnumerable2 inject(100, sum, x, sum - x) should == 25
       )
+
+      it("should be possible to destructure on the argument name")
     )
 
     describe("reduce",
@@ -508,6 +563,8 @@ describe(Mixins,
         [1,2,3] reduce(1, sum, x, sum *(5) - x) should == 87
         CustomEnumerable2 reduce(100, sum, x, sum - x) should == 25
       )
+
+      it("should be possible to destructure on the argument name")
     )
 
     describe("fold",
@@ -542,6 +599,8 @@ describe(Mixins,
         [1,2,3] fold(1, sum, x, sum *(5) - x) should == 87
         CustomEnumerable2 fold(100, sum, x, sum - x) should == 25
       )
+
+      it("should be possible to destructure on the argument name")
     )
 
     describe("flatMap",
@@ -550,6 +609,8 @@ describe(Mixins,
         [1,2,3] flatMap(x, [x, x+10, x+20]) should == [1,11,21,2,12,22,3,13,23]
         [4,5,6] flatMap(x, [x+20, x+10, x]) should == [24,14,4,25,15,5,26,16,6]
       )
+
+      it("should be possible to destructure on the argument name")
     )
 
     describe("flatMap:set",
@@ -558,6 +619,8 @@ describe(Mixins,
         [1,2,3] flatMap:set(x, set(x, x+10, x+20)) should == set(1,11,21,2,12,22,3,13,23)
         [4,5,6] flatMap:set(x, set(x+20, x+10, x)) should == set(24,14,4,25,15,5,26,16,6)
       )
+
+      it("should be possible to destructure on the argument name")
     )
 
     describe("flatMap:dict",
@@ -566,6 +629,8 @@ describe(Mixins,
         [1,2,3] flatMap:dict(x, dict(x=>nil, (x+10)=>nil, (x+20)=>nil)) should == dict(1=>nil,11=>nil,21=>nil,2=>nil,12=>nil,22=>nil,3=>nil,13=>nil,23=>nil)
         [4,5,6] flatMap:dict(x, dict((x+20)=>nil, (x+10)=>nil, x=>nil)) should == dict(24=>nil,14=>nil,4=>nil,25=>nil,15=>nil,5=>nil,26=>nil,16=>nil,6=>nil)
       )
+
+      it("should be possible to destructure on the argument name")
     )
 
     describe("select",
@@ -589,6 +654,8 @@ describe(Mixins,
         [nil,false,true] select(x, x==2) should == []
         CustomEnumerable select(x, x != "2third") should == ["3first", "1second"]
       )
+
+      it("should be possible to destructure on the argument name")
     )
 
     describe("select:dict",
@@ -615,6 +682,8 @@ describe(Mixins,
         {foo: 42, bar: 2324, quux: 42} select:dict(x, x value == 42) should == {foo: 42, quux: 42}
         CustomEnumerable select:dict(x, x != "2third") should == {"3first" => nil, "1second" => nil}
       )
+
+      it("should be possible to destructure on the argument name")
     )
 
     describe("select:set",
@@ -638,6 +707,8 @@ describe(Mixins,
         [nil,false,true] select:set(x, x==2) should == #{}
         CustomEnumerable select:set(x, x != "2third") should == #{"3first", "1second"}
       )
+
+      it("should be possible to destructure on the argument name")
     )
 
     describe("findAll",
@@ -661,6 +732,8 @@ describe(Mixins,
         [nil,false,true] findAll(x, x==2) should == []
         CustomEnumerable findAll(x, x != "2third") should == ["3first", "1second"]
       )
+
+      it("should be possible to destructure on the argument name")
     )
 
     describe("findAll:dict",
@@ -687,6 +760,8 @@ describe(Mixins,
         {foo: 42, bar: 2324, quux: 42} findAll:dict(x, x value == 42) should == {foo: 42, quux: 42}
         CustomEnumerable findAll:dict(x, x != "2third") should == {"3first" => nil, "1second" => nil}
       )
+
+      it("should be possible to destructure on the argument name")
     )
 
     describe("findAll:set",
@@ -710,6 +785,8 @@ describe(Mixins,
         [nil,false,true] findAll:set(x, x==2) should == #{}
         CustomEnumerable findAll:set(x, x != "2third") should == #{"3first", "1second"}
       )
+
+      it("should be possible to destructure on the argument name")
     )
 
     describe("filter",
@@ -733,6 +810,8 @@ describe(Mixins,
         [nil,false,true] filter(x, x==2) should == []
         CustomEnumerable filter(x, x != "2third") should == ["3first", "1second"]
       )
+
+      it("should be possible to destructure on the argument name")
     )
 
     describe("filter:dict",
@@ -759,6 +838,8 @@ describe(Mixins,
         {foo: 42, bar: 2324, quux: 42} filter:dict(x, x value == 42) should == {foo: 42, quux: 42}
         CustomEnumerable filter:dict(x, x != "2third") should == {"3first" => nil, "1second" => nil}
       )
+
+      it("should be possible to destructure on the argument name")
     )
 
     describe("filter:set",
@@ -782,6 +863,8 @@ describe(Mixins,
         [nil,false,true] filter:set(x, x==2) should == #{}
         CustomEnumerable filter:set(x, x != "2third") should == #{"3first", "1second"}
       )
+
+      it("should be possible to destructure on the argument name")
     )
 
     describe("all?",
@@ -808,6 +891,8 @@ describe(Mixins,
         [nil,false,true] all?(x, x==2) should be false
         CustomEnumerable all?(x, x != "foo") should be true
       )
+
+      it("should be possible to destructure on the argument name")
     )
 
     describe("count",
@@ -831,6 +916,8 @@ describe(Mixins,
         [nil,false,true] count(x, x==2) should == 0
         CustomEnumerable count(x, x != "2third") should == 2
       )
+
+      it("should be possible to destructure on the argument name")
     )
 
     describe("reject",
@@ -847,6 +934,8 @@ describe(Mixins,
         [nil,false,true] reject(x, x==2) should == [nil,false,true]
         CustomEnumerable reject(x, x == "2third") should == ["3first", "1second"]
       )
+
+      it("should be possible to destructure on the argument name")
     )
 
     describe("reject:dict",
@@ -865,6 +954,8 @@ describe(Mixins,
         {:foo => 42, 2 => 55} reject:dict(x, x key == 2) should == {:foo => 42}
         CustomEnumerable reject:dict(x, x == "2third") should == {"3first" => nil, "1second" => nil}
       )
+
+      it("should be possible to destructure on the argument name")
     )
 
     describe("reject:set",
@@ -881,6 +972,8 @@ describe(Mixins,
         [nil,false,true] reject:set(x, x==2) should == #{nil,false,true}
         CustomEnumerable reject:set(x, x == "2third") should == #{"3first", "1second"}
       )
+
+      it("should be possible to destructure on the argument name")
     )
 
     describe("first",
@@ -967,6 +1060,8 @@ describe(Mixins,
         [nil,false,true] one?(x, x==2) should be false
         CustomEnumerable one?(x, x == "3first") should be true
       )
+
+      it("should be possible to destructure on the argument name")
     )
 
     describe("findIndex",
@@ -990,6 +1085,8 @@ describe(Mixins,
         [nil,false,true] findIndex(x, x==2) should be nil
         CustomEnumerable findIndex(x, x != "foo") should == 0
       )
+
+      it("should be possible to destructure on the argument name")
     )
 
     describe("partition",
@@ -1013,6 +1110,8 @@ describe(Mixins,
         [nil,false,true] partition(x, x==2) should == [[], [nil, false, true]]
         CustomEnumerable partition(x, x != "foo") should == [["3first", "1second", "2third"], []]
       )
+
+      it("should be possible to destructure on the argument name")
     )
 
     describe("partition:dict",
@@ -1039,6 +1138,8 @@ describe(Mixins,
         {foo: 42, bar: 55} partition:dict(x, x value == 55) should == [{bar: 55}, {foo: 42}]
         CustomEnumerable partition:dict(x, x != "foo") should == [{"3first"=>nil, "1second"=>nil, "2third"=>nil}, {}]
       )
+
+      it("should be possible to destructure on the argument name")
     )
 
     describe("partition:set",
@@ -1062,6 +1163,8 @@ describe(Mixins,
         [nil,false,true] partition:set(x, x==2) should == [#{}, #{nil, false, true}]
         CustomEnumerable partition:set(x, x != "foo") should == [#{"3first", "1second", "2third"}, #{}]
       )
+
+      it("should be possible to destructure on the argument name")
     )
 
     describe("include?",
@@ -1157,6 +1260,8 @@ describe(Mixins,
         [1,2,3] takeWhile(x, x != 2) should == [1]
         CustomEnumerable takeWhile(x, x != "2third") should == ["3first", "1second"]
       )
+
+      it("should be possible to destructure on the argument name")
     )
 
     describe("takeWhile:dict",
@@ -1181,6 +1286,8 @@ describe(Mixins,
         [:foo => 42, :bar => 55, :quux => 1242] takeWhile:dict(x, x value < 56) should == {foo: 42, bar: 55}
         CustomEnumerable takeWhile:dict(x, x != "2third") should == {"3first"=>nil, "1second"=>nil}
       )
+
+      it("should be possible to destructure on the argument name")
     )
 
     describe("takeWhile:set",
@@ -1202,6 +1309,8 @@ describe(Mixins,
         [1,2,3] takeWhile:set(x, x != 2) should == #{1}
         CustomEnumerable takeWhile:set(x, x != "2third") should == #{"3first", "1second"}
       )
+
+      it("should be possible to destructure on the argument name")
     )
 
     describe("drop",
@@ -1274,6 +1383,8 @@ describe(Mixins,
         [1,2,3] dropWhile(x, x != 2) should == [2,3]
         CustomEnumerable dropWhile(x, x != "2third") should == ["2third"]
       )
+
+      it("should be possible to destructure on the argument name")
     )
 
     describe("dropWhile:dict",
@@ -1298,6 +1409,8 @@ describe(Mixins,
         [:foo => 42, :bar => 55, :quux => 1242] dropWhile:dict(x, x value < 56) should == {quux: 1242}
         CustomEnumerable dropWhile:dict(x, x != "2third") should == {"2third" => nil}
       )
+
+      it("should be possible to destructure on the argument name")
     )
 
     describe("dropWhile:set",
@@ -1319,6 +1432,8 @@ describe(Mixins,
         [1,2,3] dropWhile:set(x, x != 2) should == #{2,3}
         CustomEnumerable dropWhile:set(x, x != "2third") should == #{"2third"}
       )
+
+      it("should be possible to destructure on the argument name")
     )
 
     describe("cycle",
@@ -1378,6 +1493,8 @@ describe(Mixins,
         m1
         Ground res should == [1,2,3,1,2,3,1,2,3,1]
       )
+
+      it("should be possible to destructure on the argument name")
     )
 
     describe("sortBy",
@@ -1388,6 +1505,8 @@ describe(Mixins,
       it("should take two arguments and turn that into a lexical block and use that for sorting",
         {a: 3, b: 2, c: 1} sortBy(x, x value) should == [:c => 1, :b => 2, :a => 3]
       )
+
+      it("should be possible to destructure on the argument name")
     )
 
     describe("zip",
@@ -1471,6 +1590,8 @@ describe(Mixins,
         customObj === = method(other, (other < 3) || (other > 5))
         [1,2,3,4,5,6,7,8,9] grep(customObj, x, (x+1) asText) should == ["2","3","7","8","9","10"]
       )
+
+      it("should be possible to destructure on the argument name")
     )
 
     describe("grep:set",
@@ -1497,6 +1618,8 @@ describe(Mixins,
         customObj === = method(other, (other < 3) || (other > 5))
         [1,2,3,4,5,6,7,8,9] grep:set(customObj, x, (x+1) asText) should == #{"2","3","7","8","9","10"}
       )
+
+      it("should be possible to destructure on the argument name")
     )
 
     describe("max",
@@ -1517,6 +1640,8 @@ describe(Mixins,
         set(5,6,7,153,1) max(x, if(x > 100, -x, x)) should == 7
         ["abc","bfooo","cc"] max(x, x[1]) should == "bfooo"
       )
+
+      it("should be possible to destructure on the argument name")
     )
 
     describe("min",
@@ -1537,6 +1662,8 @@ describe(Mixins,
         set(5,6,7,153,1) min(x, if(x > 100, -x, x)) should == 153
         ["abc","bfooo","cc"] min(x, x[1]) should == "abc"
       )
+
+      it("should be possible to destructure on the argument name")
     )
 
     describe("join",
@@ -1642,6 +1769,8 @@ describe(Mixins,
         [1,2,3,2,3,3,5,5,5,5,5] groupBy(x, x asText) should == {"1" => [1], "2" => [2, 2], "3" => [3, 3, 3], "5" => [5, 5, 5, 5, 5]}
         [1,2,3,2,3,3,5,5,5,5,5] groupBy(x, x%2 == 0) should == {true => [2,2], false => [1,3,3,3,5,5,5,5,5]}
       )
+
+      it("should be possible to destructure on the argument name")
     )
 
     describe("eachCons",
@@ -1844,7 +1973,7 @@ describe(Mixins,
         fn(x eachSlice(2, (q,p,r), nil)) should signal(Condition Error DestructuringMismatch)
         fn(x eachSlice(2, (q), nil)) should signal(Condition Error DestructuringMismatch)
         fn(x eachSlice(2, (q,_,r), nil)) should signal(Condition Error DestructuringMismatch)
-      )
+     )
 
       it("should report a destructuring match error if recursive destructuring doesn't add upp",
         x = [[1,2],[2,3],[3,4],[4,5]]
