@@ -888,7 +888,91 @@ describe(Mixins,
         CustomEnumerable2 inject(100, sum, x, sum - x) should == 25
       )
 
-      it("should be possible to destructure on the argument name")
+      it("should be able to destructure on the argument name",
+        result = []
+        [[1,2], [2,3], [4,5]] inject(fluxie, (x,y), result << [x+1, y-1]. nil)
+        result should == [[3,2], [5,4]]
+      )
+
+      it("should be able to destructure and ignore the rest of something",
+        result = []
+        [[1,2,9,10], [2,3,11,12], [4,5,13,14]] inject(fluxie, (x,y,_), cell?(:"_") should not be true. result << [x, y]. nil)
+        result should == [[2,3], [4,5]]
+      )
+
+      it("should be able to destructure and ignore in the middle of the pattern without binding anything",
+        result = []
+        [[1,2,9], [2,3,11], [4,5,13]] inject(fluxie, (x,_,y), cell?(:"_") should not be true. result << [x, y]. nil) 
+        result should == [[2,11], [4,13]]
+      )
+
+      it("should be able to destructure and ignore several times in the middle of the pattern without binding anything",
+        result = []
+        [[1,2,9,10,11], [2,3,11,12,13], [4,5,13,14,15]] inject(fluxie, (x,_,y,_,q), cell?(:"_") should not be true. result << [x, y, q]. nil) 
+        result should == [[2,11,13], [4,13,15]]
+      )
+
+      it("should be able to destructure recursively",
+        result = []
+        [[[:x, :y, :z], [:q, :r, :p]], [[:b, :c, :d], [:i, :j, :k]], [[:i, :j, :k], [:i2, :j3, :k4]]] inject(fluxie, 
+          (v, (v2, _, v3)), cell?(:"_") should be false. result << [v, v2, v3]. nil) 
+        result should == [[[:b, :c, :d], :i, :k], [[:i, :j, :k], :i2, :k4]]
+      )
+
+      it("should report a destructuring match error if destructuring doesn't add upp",
+        fn([[1,2], [3,4], [4,5]] inject(fluxie, (q,p,r), nil)) should signal(Condition Error DestructuringMismatch)
+        fn([[1,2], [3,4], [4,5]] inject(fluxie, (q), nil)) should signal(Condition Error DestructuringMismatch)
+        fn([[1,2], [3,4], [4,5]] inject(fluxie, (q,_,r), nil)) should signal(Condition Error DestructuringMismatch)
+      )
+
+      it("should report a destructuring match error if recursive destructuring doesn't add upp",
+        fn([[[1,2],[1,2]], [[3,4],[1,2]], [[1,2],[4,5]]] inject(fluxie, (q,(p)), nil)) should signal(Condition Error DestructuringMismatch)
+        fn([[[1,2],[1,2]], [[3,4],[1,2]], [[1,2],[4,5]]] inject(fluxie, (q,(p,r,f)), nil)) should signal(Condition Error DestructuringMismatch)
+        fn([[[1,2],[1,2]], [[3,4],[1,2]], [[1,2],[4,5]]] inject(fluxie, (q,(p,_,f)), nil)) should signal(Condition Error DestructuringMismatch)
+      )
+
+      it("should be able to destructure on the argument name",
+        result = []
+        [[1,2], [2,3], [4,5]] inject(nil, fluxie, (x,y), result << [x+1, y-1]. nil)
+        result should == [[2,1], [3,2], [5,4]]
+      )
+
+      it("should be able to destructure and ignore the rest of something",
+        result = []
+        [[1,2,9,10], [2,3,11,12], [4,5,13,14]] inject(nil, fluxie, (x,y,_), cell?(:"_") should not be true. result << [x, y]. nil)
+        result should == [[1,2], [2,3], [4,5]]
+      )
+
+      it("should be able to destructure and ignore in the middle of the pattern without binding anything",
+        result = []
+        [[1,2,9], [2,3,11], [4,5,13]] inject(nil, fluxie, (x,_,y), cell?(:"_") should not be true. result << [x, y]. nil) 
+        result should == [[1,9], [2,11], [4,13]]
+      )
+
+      it("should be able to destructure and ignore several times in the middle of the pattern without binding anything",
+        result = []
+        [[1,2,9,10,11], [2,3,11,12,13], [4,5,13,14,15]] inject(nil, fluxie, (x,_,y,_,q), cell?(:"_") should not be true. result << [x, y, q]. nil) 
+        result should == [[1,9,11], [2,11,13], [4,13,15]]
+      )
+
+      it("should be able to destructure recursively",
+        result = []
+        [[[:x, :y, :z], [:q, :r, :p]], [[:b, :c, :d], [:i, :j, :k]], [[:i, :j, :k], [:i2, :j3, :k4]]] inject(nil, fluxie, 
+          (v, (v2, _, v3)), cell?(:"_") should be false. result << [v, v2, v3]. nil) 
+        result should == [[[:x, :y, :z], :q, :p], [[:b, :c, :d], :i, :k], [[:i, :j, :k], :i2, :k4]]
+      )
+
+      it("should report a destructuring match error if destructuring doesn't add upp",
+        fn([[1,2], [3,4], [4,5]] inject(nil, fluxie, (q,p,r), nil)) should signal(Condition Error DestructuringMismatch)
+        fn([[1,2], [3,4], [4,5]] inject(nil, fluxie, (q), nil)) should signal(Condition Error DestructuringMismatch)
+        fn([[1,2], [3,4], [4,5]] inject(nil, fluxie, (q,_,r), nil)) should signal(Condition Error DestructuringMismatch)
+      )
+
+      it("should report a destructuring match error if recursive destructuring doesn't add upp",
+        fn([[[1,2],[1,2]], [[3,4],[1,2]], [[1,2],[4,5]]] inject(nil, fluxie, (q,(p)), nil)) should signal(Condition Error DestructuringMismatch)
+        fn([[[1,2],[1,2]], [[3,4],[1,2]], [[1,2],[4,5]]] inject(nil, fluxie, (q,(p,r,f)), nil)) should signal(Condition Error DestructuringMismatch)
+        fn([[[1,2],[1,2]], [[3,4],[1,2]], [[1,2],[4,5]]] inject(nil, fluxie, (q,(p,_,f)), nil)) should signal(Condition Error DestructuringMismatch)
+      )
     )
 
     describe("reduce",
@@ -924,7 +1008,91 @@ describe(Mixins,
         CustomEnumerable2 reduce(100, sum, x, sum - x) should == 25
       )
 
-      it("should be possible to destructure on the argument name")
+      it("should be able to destructure on the argument name",
+        result = []
+        [[1,2], [2,3], [4,5]] reduce(fluxie, (x,y), result << [x+1, y-1]. nil)
+        result should == [[3,2], [5,4]]
+      )
+
+      it("should be able to destructure and ignore the rest of something",
+        result = []
+        [[1,2,9,10], [2,3,11,12], [4,5,13,14]] reduce(fluxie, (x,y,_), cell?(:"_") should not be true. result << [x, y]. nil)
+        result should == [[2,3], [4,5]]
+      )
+
+      it("should be able to destructure and ignore in the middle of the pattern without binding anything",
+        result = []
+        [[1,2,9], [2,3,11], [4,5,13]] reduce(fluxie, (x,_,y), cell?(:"_") should not be true. result << [x, y]. nil) 
+        result should == [[2,11], [4,13]]
+      )
+
+      it("should be able to destructure and ignore several times in the middle of the pattern without binding anything",
+        result = []
+        [[1,2,9,10,11], [2,3,11,12,13], [4,5,13,14,15]] reduce(fluxie, (x,_,y,_,q), cell?(:"_") should not be true. result << [x, y, q]. nil) 
+        result should == [[2,11,13], [4,13,15]]
+      )
+
+      it("should be able to destructure recursively",
+        result = []
+        [[[:x, :y, :z], [:q, :r, :p]], [[:b, :c, :d], [:i, :j, :k]], [[:i, :j, :k], [:i2, :j3, :k4]]] reduce(fluxie, 
+          (v, (v2, _, v3)), cell?(:"_") should be false. result << [v, v2, v3]. nil) 
+        result should == [[[:b, :c, :d], :i, :k], [[:i, :j, :k], :i2, :k4]]
+      )
+
+      it("should report a destructuring match error if destructuring doesn't add upp",
+        fn([[1,2], [3,4], [4,5]] reduce(fluxie, (q,p,r), nil)) should signal(Condition Error DestructuringMismatch)
+        fn([[1,2], [3,4], [4,5]] reduce(fluxie, (q), nil)) should signal(Condition Error DestructuringMismatch)
+        fn([[1,2], [3,4], [4,5]] reduce(fluxie, (q,_,r), nil)) should signal(Condition Error DestructuringMismatch)
+      )
+
+      it("should report a destructuring match error if recursive destructuring doesn't add upp",
+        fn([[[1,2],[1,2]], [[3,4],[1,2]], [[1,2],[4,5]]] reduce(fluxie, (q,(p)), nil)) should signal(Condition Error DestructuringMismatch)
+        fn([[[1,2],[1,2]], [[3,4],[1,2]], [[1,2],[4,5]]] reduce(fluxie, (q,(p,r,f)), nil)) should signal(Condition Error DestructuringMismatch)
+        fn([[[1,2],[1,2]], [[3,4],[1,2]], [[1,2],[4,5]]] reduce(fluxie, (q,(p,_,f)), nil)) should signal(Condition Error DestructuringMismatch)
+      )
+
+      it("should be able to destructure on the argument name",
+        result = []
+        [[1,2], [2,3], [4,5]] reduce(nil, fluxie, (x,y), result << [x+1, y-1]. nil)
+        result should == [[2,1], [3,2], [5,4]]
+      )
+
+      it("should be able to destructure and ignore the rest of something",
+        result = []
+        [[1,2,9,10], [2,3,11,12], [4,5,13,14]] reduce(nil, fluxie, (x,y,_), cell?(:"_") should not be true. result << [x, y]. nil)
+        result should == [[1,2], [2,3], [4,5]]
+      )
+
+      it("should be able to destructure and ignore in the middle of the pattern without binding anything",
+        result = []
+        [[1,2,9], [2,3,11], [4,5,13]] reduce(nil, fluxie, (x,_,y), cell?(:"_") should not be true. result << [x, y]. nil) 
+        result should == [[1,9], [2,11], [4,13]]
+      )
+
+      it("should be able to destructure and ignore several times in the middle of the pattern without binding anything",
+        result = []
+        [[1,2,9,10,11], [2,3,11,12,13], [4,5,13,14,15]] reduce(nil, fluxie, (x,_,y,_,q), cell?(:"_") should not be true. result << [x, y, q]. nil) 
+        result should == [[1,9,11], [2,11,13], [4,13,15]]
+      )
+
+      it("should be able to destructure recursively",
+        result = []
+        [[[:x, :y, :z], [:q, :r, :p]], [[:b, :c, :d], [:i, :j, :k]], [[:i, :j, :k], [:i2, :j3, :k4]]] reduce(nil, fluxie, 
+          (v, (v2, _, v3)), cell?(:"_") should be false. result << [v, v2, v3]. nil) 
+        result should == [[[:x, :y, :z], :q, :p], [[:b, :c, :d], :i, :k], [[:i, :j, :k], :i2, :k4]]
+      )
+
+      it("should report a destructuring match error if destructuring doesn't add upp",
+        fn([[1,2], [3,4], [4,5]] reduce(nil, fluxie, (q,p,r), nil)) should signal(Condition Error DestructuringMismatch)
+        fn([[1,2], [3,4], [4,5]] reduce(nil, fluxie, (q), nil)) should signal(Condition Error DestructuringMismatch)
+        fn([[1,2], [3,4], [4,5]] reduce(nil, fluxie, (q,_,r), nil)) should signal(Condition Error DestructuringMismatch)
+      )
+
+      it("should report a destructuring match error if recursive destructuring doesn't add upp",
+        fn([[[1,2],[1,2]], [[3,4],[1,2]], [[1,2],[4,5]]] reduce(nil, fluxie, (q,(p)), nil)) should signal(Condition Error DestructuringMismatch)
+        fn([[[1,2],[1,2]], [[3,4],[1,2]], [[1,2],[4,5]]] reduce(nil, fluxie, (q,(p,r,f)), nil)) should signal(Condition Error DestructuringMismatch)
+        fn([[[1,2],[1,2]], [[3,4],[1,2]], [[1,2],[4,5]]] reduce(nil, fluxie, (q,(p,_,f)), nil)) should signal(Condition Error DestructuringMismatch)
+      )
     )
 
     describe("fold",
@@ -960,7 +1128,91 @@ describe(Mixins,
         CustomEnumerable2 fold(100, sum, x, sum - x) should == 25
       )
 
-      it("should be possible to destructure on the argument name")
+      it("should be able to destructure on the argument name",
+        result = []
+        [[1,2], [2,3], [4,5]] fold(fluxie, (x,y), result << [x+1, y-1]. nil)
+        result should == [[3,2], [5,4]]
+      )
+
+      it("should be able to destructure and ignore the rest of something",
+        result = []
+        [[1,2,9,10], [2,3,11,12], [4,5,13,14]] fold(fluxie, (x,y,_), cell?(:"_") should not be true. result << [x, y]. nil)
+        result should == [[2,3], [4,5]]
+      )
+
+      it("should be able to destructure and ignore in the middle of the pattern without binding anything",
+        result = []
+        [[1,2,9], [2,3,11], [4,5,13]] fold(fluxie, (x,_,y), cell?(:"_") should not be true. result << [x, y]. nil) 
+        result should == [[2,11], [4,13]]
+      )
+
+      it("should be able to destructure and ignore several times in the middle of the pattern without binding anything",
+        result = []
+        [[1,2,9,10,11], [2,3,11,12,13], [4,5,13,14,15]] fold(fluxie, (x,_,y,_,q), cell?(:"_") should not be true. result << [x, y, q]. nil) 
+        result should == [[2,11,13], [4,13,15]]
+      )
+
+      it("should be able to destructure recursively",
+        result = []
+        [[[:x, :y, :z], [:q, :r, :p]], [[:b, :c, :d], [:i, :j, :k]], [[:i, :j, :k], [:i2, :j3, :k4]]] fold(fluxie, 
+          (v, (v2, _, v3)), cell?(:"_") should be false. result << [v, v2, v3]. nil) 
+        result should == [[[:b, :c, :d], :i, :k], [[:i, :j, :k], :i2, :k4]]
+      )
+
+      it("should report a destructuring match error if destructuring doesn't add upp",
+        fn([[1,2], [3,4], [4,5]] fold(fluxie, (q,p,r), nil)) should signal(Condition Error DestructuringMismatch)
+        fn([[1,2], [3,4], [4,5]] fold(fluxie, (q), nil)) should signal(Condition Error DestructuringMismatch)
+        fn([[1,2], [3,4], [4,5]] fold(fluxie, (q,_,r), nil)) should signal(Condition Error DestructuringMismatch)
+      )
+
+      it("should report a destructuring match error if recursive destructuring doesn't add upp",
+        fn([[[1,2],[1,2]], [[3,4],[1,2]], [[1,2],[4,5]]] fold(fluxie, (q,(p)), nil)) should signal(Condition Error DestructuringMismatch)
+        fn([[[1,2],[1,2]], [[3,4],[1,2]], [[1,2],[4,5]]] fold(fluxie, (q,(p,r,f)), nil)) should signal(Condition Error DestructuringMismatch)
+        fn([[[1,2],[1,2]], [[3,4],[1,2]], [[1,2],[4,5]]] fold(fluxie, (q,(p,_,f)), nil)) should signal(Condition Error DestructuringMismatch)
+      )
+
+      it("should be able to destructure on the argument name",
+        result = []
+        [[1,2], [2,3], [4,5]] fold(nil, fluxie, (x,y), result << [x+1, y-1]. nil)
+        result should == [[2,1], [3,2], [5,4]]
+      )
+
+      it("should be able to destructure and ignore the rest of something",
+        result = []
+        [[1,2,9,10], [2,3,11,12], [4,5,13,14]] fold(nil, fluxie, (x,y,_), cell?(:"_") should not be true. result << [x, y]. nil)
+        result should == [[1,2], [2,3], [4,5]]
+      )
+
+      it("should be able to destructure and ignore in the middle of the pattern without binding anything",
+        result = []
+        [[1,2,9], [2,3,11], [4,5,13]] fold(nil, fluxie, (x,_,y), cell?(:"_") should not be true. result << [x, y]. nil) 
+        result should == [[1,9], [2,11], [4,13]]
+      )
+
+      it("should be able to destructure and ignore several times in the middle of the pattern without binding anything",
+        result = []
+        [[1,2,9,10,11], [2,3,11,12,13], [4,5,13,14,15]] fold(nil, fluxie, (x,_,y,_,q), cell?(:"_") should not be true. result << [x, y, q]. nil) 
+        result should == [[1,9,11], [2,11,13], [4,13,15]]
+      )
+
+      it("should be able to destructure recursively",
+        result = []
+        [[[:x, :y, :z], [:q, :r, :p]], [[:b, :c, :d], [:i, :j, :k]], [[:i, :j, :k], [:i2, :j3, :k4]]] fold(nil, fluxie, 
+          (v, (v2, _, v3)), cell?(:"_") should be false. result << [v, v2, v3]. nil) 
+        result should == [[[:x, :y, :z], :q, :p], [[:b, :c, :d], :i, :k], [[:i, :j, :k], :i2, :k4]]
+      )
+
+      it("should report a destructuring match error if destructuring doesn't add upp",
+        fn([[1,2], [3,4], [4,5]] fold(nil, fluxie, (q,p,r), nil)) should signal(Condition Error DestructuringMismatch)
+        fn([[1,2], [3,4], [4,5]] fold(nil, fluxie, (q), nil)) should signal(Condition Error DestructuringMismatch)
+        fn([[1,2], [3,4], [4,5]] fold(nil, fluxie, (q,_,r), nil)) should signal(Condition Error DestructuringMismatch)
+      )
+
+      it("should report a destructuring match error if recursive destructuring doesn't add upp",
+        fn([[[1,2],[1,2]], [[3,4],[1,2]], [[1,2],[4,5]]] fold(nil, fluxie, (q,(p)), nil)) should signal(Condition Error DestructuringMismatch)
+        fn([[[1,2],[1,2]], [[3,4],[1,2]], [[1,2],[4,5]]] fold(nil, fluxie, (q,(p,r,f)), nil)) should signal(Condition Error DestructuringMismatch)
+        fn([[[1,2],[1,2]], [[3,4],[1,2]], [[1,2],[4,5]]] fold(nil, fluxie, (q,(p,_,f)), nil)) should signal(Condition Error DestructuringMismatch)
+      )
     )
 
     describe("flatMap",

@@ -386,20 +386,22 @@ Mixins Enumerable inject = dmacro(
 
 
   [sumArgName, argName, theCode]
-  lexicalCode = LexicalBlock createFrom(list(sumArgName, argName, theCode), call ground)
+  destructor = Destructor from(argName)
+  lexicalCode = LexicalBlock createFrom(list(sumArgName) + destructor argNames + list(theCode), call ground)
   sum = nil
   self each(i, n,
     if(i == 0,
       sum = cell(:n),
-      sum = lexicalCode call(cell(:sum), cell(:n))))
+      sum = lexicalCode call(cell(:sum), *(destructor unpack(cell(:n))))))
 
   return(cell(:sum)),
 
 
   [>sum, sumArgName, argName, theCode]
-  lexicalCode = LexicalBlock createFrom(list(sumArgName, argName, theCode), call ground)
+  destructor = Destructor from(argName)
+  lexicalCode = LexicalBlock createFrom(list(sumArgName) + destructor argNames + list(theCode), call ground)
   self each(n,
-    sum = lexicalCode call(cell(:sum), cell(:n)))
+    sum = lexicalCode call(cell(:sum), *(destructor unpack(cell(:n)))))
   return(cell(:sum)))
 
 Mixins Enumerable flatMap = macro(
