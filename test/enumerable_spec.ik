@@ -148,7 +148,38 @@ describe(Mixins,
         [1, 2, 3] map:set(x, 1) should == set(1)
       )
 
-      it("should be possible to destructure on the argument name")
+      it("should be able to destructure on the argument name",
+        [[1,2], [2,3], [4,5]] map:set((x,y), [x+1, y-1]) should == set([2,1], [3,2], [5,4])
+      )
+
+      it("should be able to destructure and ignore the rest of something",
+        [[1,2,9,10], [2,3,11,12], [4,5,13,14]] map:set((x,y,_), cell?(:"_") should not be true. [x, y]) should == set([1,2], [2,3], [4,5])
+      )
+
+      it("should be able to destructure and ignore in the middle of the pattern without binding anything",
+        [[1,2,9], [2,3,11], [4,5,13]] map:set((x,_,y), cell?(:"_") should not be true. [x, y]) should == set([1,9], [2,11], [4,13])
+      )
+
+      it("should be able to destructure and ignore several times in the middle of the pattern without binding anything",
+        [[1,2,9,10,11], [2,3,11,12,13], [4,5,13,14,15]] map:set((x,_,y,_,q), cell?(:"_") should not be true. [x, y, q]) should == set([1,9,11], [2,11,13], [4,13,15])
+      )
+
+      it("should be able to destructure recursively",
+        [[[:x, :y, :z], [:q, :r, :p]], [[:b, :c, :d], [:i, :j, :k]], [[:i, :j, :k], [:i2, :j3, :k4]]] map:set(
+          (v, (v2, _, v3)), cell?(:"_") should be false. [v, v2, v3]) should == set([[:x, :y, :z], :q, :p], [[:b, :c, :d], :i, :k], [[:i, :j, :k], :i2, :k4])
+      )
+
+      it("should report a destructuring match error if destructuring doesn't add upp",
+        fn([[1,2], [3,4], [4,5]] map:set((q,p,r), nil)) should signal(Condition Error DestructuringMismatch)
+        fn([[1,2], [3,4], [4,5]] map:set((q), nil)) should signal(Condition Error DestructuringMismatch)
+        fn([[1,2], [3,4], [4,5]] map:set((q,_,r), nil)) should signal(Condition Error DestructuringMismatch)
+     )
+
+      it("should report a destructuring match error if recursive destructuring doesn't add upp",
+        fn([[[1,2],[1,2]], [[3,4],[1,2]], [[1,2],[4,5]]] map:set((q,(p)), nil)) should signal(Condition Error DestructuringMismatch)
+        fn([[[1,2],[1,2]], [[3,4],[1,2]], [[1,2],[4,5]]] map:set((q,(p,r,f)), nil)) should signal(Condition Error DestructuringMismatch)
+        fn([[[1,2],[1,2]], [[3,4],[1,2]], [[1,2],[4,5]]] map:set((q,(p,_,f)), nil)) should signal(Condition Error DestructuringMismatch)
+      )
     )
 
     describe("map:dict",
@@ -173,7 +204,38 @@ describe(Mixins,
         [1, 2, 3] map:dict(x, x) should == dict(1=>nil, 2=>nil, 3=>nil)
       )
 
-      it("should be possible to destructure on the argument name")
+      it("should be able to destructure on the argument name",
+        [[1,2], [2,3], [4,5]] map:dict((x,y), [x+1, y-1]) should == {[2,1] => nil, [3,2] => nil, [5,4] => nil}
+      )
+
+      it("should be able to destructure and ignore the rest of something",
+        [[1,2,9,10], [2,3,11,12], [4,5,13,14]] map:dict((x,y,_), cell?(:"_") should not be true. [x, y]) should == {[1,2] => nil, [2,3] => nil, [4,5] => nil}
+      )
+
+      it("should be able to destructure and ignore in the middle of the pattern without binding anything",
+        [[1,2,9], [2,3,11], [4,5,13]] map:dict((x,_,y), cell?(:"_") should not be true. [x, y]) should == {[1,9] => nil, [2,11] => nil, [4,13] => nil}
+      )
+
+      it("should be able to destructure and ignore several times in the middle of the pattern without binding anything",
+        [[1,2,9,10,11], [2,3,11,12,13], [4,5,13,14,15]] map:dict((x,_,y,_,q), cell?(:"_") should not be true. [x, y, q]) should == {[1,9,11] => nil, [2,11,13] => nil, [4,13,15] => nil}
+      )
+
+      it("should be able to destructure recursively",
+        [[[:x, :y, :z], [:q, :r, :p]], [[:b, :c, :d], [:i, :j, :k]], [[:i, :j, :k], [:i2, :j3, :k4]]] map:dict(
+          (v, (v2, _, v3)), cell?(:"_") should be false. [v, v2, v3]) should == {[[:x, :y, :z], :q, :p] => nil, [[:b, :c, :d], :i, :k] => nil, [[:i, :j, :k], :i2, :k4] => nil}
+      )
+
+      it("should report a destructuring match error if destructuring doesn't add upp",
+        fn([[1,2], [3,4], [4,5]] map:dict((q,p,r), nil)) should signal(Condition Error DestructuringMismatch)
+        fn([[1,2], [3,4], [4,5]] map:dict((q), nil)) should signal(Condition Error DestructuringMismatch)
+        fn([[1,2], [3,4], [4,5]] map:dict((q,_,r), nil)) should signal(Condition Error DestructuringMismatch)
+     )
+
+      it("should report a destructuring match error if recursive destructuring doesn't add upp",
+        fn([[[1,2],[1,2]], [[3,4],[1,2]], [[1,2],[4,5]]] map:dict((q,(p)), nil)) should signal(Condition Error DestructuringMismatch)
+        fn([[[1,2],[1,2]], [[3,4],[1,2]], [[1,2],[4,5]]] map:dict((q,(p,r,f)), nil)) should signal(Condition Error DestructuringMismatch)
+        fn([[[1,2],[1,2]], [[3,4],[1,2]], [[1,2],[4,5]]] map:dict((q,(p,_,f)), nil)) should signal(Condition Error DestructuringMismatch)
+      )
     )
 
     describe("mapFn",
