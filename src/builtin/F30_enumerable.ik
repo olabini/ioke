@@ -118,9 +118,10 @@ let(enumerableDefaultMethod,
 
         [argName, theCode]
         'initCode
-        lexicalCode = LexicalBlock createFrom(list(argName, theCode), call ground)
+        destructor = Destructor from(argName)
+        lexicalCode = LexicalBlock createFrom(destructor argNames + list(theCode), call ground)
         self each(n,
-          x = lexicalCode call(cell(:n))
+          x = lexicalCode call(*(destructor unpack(cell(:n))))
           'repCode)
         'returnCode))),
 
@@ -335,8 +336,9 @@ Mixins Enumerable findIndex = dmacro("takes zero, one or two arguments. if zero 
   nil,
 
   [argName, theCode]
-  lexicalCode = LexicalBlock createFrom(list(argName, theCode), call ground)
-  self each(ix, n, if(lexicalCode call(cell(:n)), return(ix)))
+  destructor = Destructor from(argName)
+  lexicalCode = LexicalBlock createFrom(destructor argNames + list(theCode), call ground)
+  self each(ix, n, if(lexicalCode call(*(destructor unpack(cell(:n)))), return(ix)))
   nil)
 
 Mixins Enumerable sortBy = dmacro(
@@ -346,8 +348,9 @@ Mixins Enumerable sortBy = dmacro(
   map(x, list(theCode evaluateOn(call ground, cell(:x)), cell(:x))) sort map(second),
 
   [argName, theCode]
-  lexicalCode = LexicalBlock createFrom(list(argName, theCode), call ground)
-  map(x, list(lexicalCode call(cell(:x)), cell(:x))) sort map(second))
+  destructor = Destructor from(argName)
+  lexicalCode = LexicalBlock createFrom(destructor argNames + list(theCode), call ground)
+  map(x, list(lexicalCode call(*(destructor unpack(cell(:x)))), cell(:x))) sort map(second))
 
 Mixins Enumerable inject = dmacro(
   "takes one, two, three or four arguments. all versions need an initial sum, code to execute, a place to put the current sum in the code, and a place to stick the current element of the enumerable. if one argument, it has to be a message chain. this message chain will be applied on the current sum. the element will be appended to the argument list of the last message send in the chain. the initial sum is the first element, and the code will be executed once less than the size of the enumerable due to this. if two arguments given, the first argument is the name of the variable to put the current element in, and the message will still be sent to the sum - and the initial sum works the same way as for one argument. when three arguments are given, the whole thing will be turned into a lexical closure, where the first argument is the name of the sum variable, the second argument is the name of the element variable, and the last argument is the code. when given four arguments, the only difference is that the first argument will be evaluated as the initial sum.",
