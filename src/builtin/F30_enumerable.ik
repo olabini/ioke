@@ -540,12 +540,13 @@ Mixins Enumerable cycle = dmacro(
 
   [argName, theCode]
   internal = list()
-  lexicalCode = LexicalBlock createFrom(list(argName, theCode), call ground)
+  destructor = Destructor from(argName)
+  lexicalCode = LexicalBlock createFrom(destructor argNames + list(theCode), call ground)
   self each(n,
     internal << cell(:n)
-    lexicalCode call(cell(:n)))
+    lexicalCode call(*(destructor unpack(cell(:n)))))
   if(internal empty?, return(nil))
-  loop(internal each(x, lexicalCode call(cell(:x)))))
+  loop(internal each(x, lexicalCode call(*(destructor unpack(cell(:x)))))))
 
 Mixins Enumerable zip = method(
   "takes zero or more arguments, where all arguments should be a list, except that the last might also be a lexical block. zip will create a list of lists, where each internal list is a combination of the current element, and the corresponding elements from all the lists. if the lists are shorter than this collection, nils will be supplied. if a lexical block is provided, it will be called with each list created, and if that's the case nil will be returned from zip",
@@ -614,11 +615,12 @@ Mixins Enumerable grep = dmacro(
   result,
 
   [>matchingAgainst, argName, theCode]
+  destructor = Destructor from(argName)
   result = list()
-  lexicalCode = LexicalBlock createFrom(list(argName, theCode), call ground)
+  lexicalCode = LexicalBlock createFrom(destructor argNames + list(theCode), call ground)
   self each(n,
     if(matchingAgainst === cell(:n),
-      result << lexicalCode call(cell(:n))))
+      result << lexicalCode call(*(destructor unpack(cell(:n))))))
   result)
 
 
@@ -640,11 +642,12 @@ Mixins Enumerable grep:set = dmacro(
   result,
 
   [>matchingAgainst, argName, theCode]
+  destructor = Destructor from(argName)
   result = set()
-  lexicalCode = LexicalBlock createFrom(list(argName, theCode), call ground)
+  lexicalCode = LexicalBlock createFrom(destructor argNames + list(theCode), call ground)
   self each(n,
     if(matchingAgainst === cell(:n),
-      result << lexicalCode call(cell(:n))))
+      result << lexicalCode call(*(destructor unpack(cell(:n))))))
   result)
 
 

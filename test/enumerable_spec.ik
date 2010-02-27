@@ -3224,7 +3224,48 @@ describe(Mixins,
         Ground res should == [1,2,3,1,2,3,1,2,3,1]
       )
 
-      it("should be possible to destructure on the argument name")
+      it("should be able to destructure on the argument name",
+        Ground result = []
+        method([[1,2], [2,3], [4,5]] cycle((x,y), Ground result << [x+1, y-1]. if(Ground result length == 4, return))) call
+        result should == [[2,1], [3,2], [5,4], [2,1]]
+      )
+
+      it("should be able to destructure and ignore the rest of something",
+        Ground result = []
+        method([[1,2,9,10], [2,3,11,12], [4,5,13,14]] cycle((x,y,_), cell?(:"_") should not be true. Ground result << [x, y]. if(Ground result length == 4, return))) call
+        result should == [[1,2], [2,3], [4,5],[1,2]]
+      )
+
+      it("should be able to destructure and ignore in the middle of the pattern without binding anything",
+        Ground result = []
+        method([[1,2,9], [2,3,11], [4,5,13]] cycle((x,_,y), cell?(:"_") should not be true. Ground result << [x, y]. if(Ground result length == 4, return))) call
+        result should == [[1,9], [2,11], [4,13],[1,9]]
+      )
+
+      it("should be able to destructure and ignore several times in the middle of the pattern without binding anything",
+        Ground result = []
+        method([[1,2,9,10,11], [2,3,11,12,13], [4,5,13,14,15]] cycle((x,_,y,_,q), cell?(:"_") should not be true. Ground result << [x, y, q]. if(Ground result length == 4, return))) call
+        result should == [[1,9,11], [2,11,13], [4,13,15],[1,9,11]]
+      )
+
+      it("should be able to destructure recursively",
+        Ground result = []
+        method([[[:x, :y, :z], [:q, :r, :p]], [[:b, :c, :d], [:i, :j, :k]], [[:i, :j, :k], [:i2, :j3, :k4]]] cycle(
+            (v, (v2, _, v3)), cell?(:"_") should be false. Ground result << [v, v2, v3]. if(Ground result length == 4, return))) call
+        result should == [[[:x, :y, :z], :q, :p], [[:b, :c, :d], :i, :k], [[:i, :j, :k], :i2, :k4], [[:x, :y, :z], :q, :p]]
+      )
+
+      it("should report a destructuring match error if destructuring doesn't add upp",
+        fn([[1,2], [3,4], [4,5]] cycle((q,p,r), nil)) should signal(Condition Error DestructuringMismatch)
+        fn([[1,2], [3,4], [4,5]] cycle((q), nil)) should signal(Condition Error DestructuringMismatch)
+        fn([[1,2], [3,4], [4,5]] cycle((q,_,r), nil)) should signal(Condition Error DestructuringMismatch)
+      )
+
+      it("should report a destructuring match error if recursive destructuring doesn't add upp",
+        fn([[[1,2],[1,2]], [[3,4],[1,2]], [[1,2],[4,5]]] cycle((q,(p)), nil)) should signal(Condition Error DestructuringMismatch)
+        fn([[[1,2],[1,2]], [[3,4],[1,2]], [[1,2],[4,5]]] cycle((q,(p,r,f)), nil)) should signal(Condition Error DestructuringMismatch)
+        fn([[[1,2],[1,2]], [[3,4],[1,2]], [[1,2],[4,5]]] cycle((q,(p,_,f)), nil)) should signal(Condition Error DestructuringMismatch)
+      )
     )
 
     describe("sortBy",
@@ -3362,7 +3403,48 @@ describe(Mixins,
         [1,2,3,4,5,6,7,8,9] grep(customObj, x, (x+1) asText) should == ["2","3","7","8","9","10"]
       )
 
-      it("should be possible to destructure on the argument name")
+      it("should be able to destructure on the argument name",
+        result = []
+        [[1,2], [2,3], [4,5]] grep(Origin, (x,y), result << [x+1, y-1]. nil)
+        result should == [[2,1], [3,2], [5,4]]
+      )
+
+      it("should be able to destructure and ignore the rest of something",
+        result = []
+        [[1,2,9,10], [2,3,11,12], [4,5,13,14]] grep(Origin, (x,y,_), cell?(:"_") should not be true. result << [x, y]. nil)
+        result should == [[1,2], [2,3], [4,5]]
+      )
+
+      it("should be able to destructure and ignore in the middle of the pattern without binding anything",
+        result = []
+        [[1,2,9], [2,3,11], [4,5,13]] grep(Origin, (x,_,y), cell?(:"_") should not be true. result << [x, y]. nil) 
+        result should == [[1,9], [2,11], [4,13]]
+      )
+
+      it("should be able to destructure and ignore several times in the middle of the pattern without binding anything",
+        result = []
+        [[1,2,9,10,11], [2,3,11,12,13], [4,5,13,14,15]] grep(Origin, (x,_,y,_,q), cell?(:"_") should not be true. result << [x, y, q]. nil) 
+        result should == [[1,9,11], [2,11,13], [4,13,15]]
+      )
+
+      it("should be able to destructure recursively",
+        result = []
+        [[[:x, :y, :z], [:q, :r, :p]], [[:b, :c, :d], [:i, :j, :k]], [[:i, :j, :k], [:i2, :j3, :k4]]] grep(Origin, 
+          (v, (v2, _, v3)), cell?(:"_") should be false. result << [v, v2, v3]. nil) 
+        result should == [[[:x, :y, :z], :q, :p], [[:b, :c, :d], :i, :k], [[:i, :j, :k], :i2, :k4]]
+      )
+
+      it("should report a destructuring match error if destructuring doesn't add upp",
+        fn([[1,2], [3,4], [4,5]] grep(Origin, (q,p,r), nil)) should signal(Condition Error DestructuringMismatch)
+        fn([[1,2], [3,4], [4,5]] grep(Origin, (q), nil)) should signal(Condition Error DestructuringMismatch)
+        fn([[1,2], [3,4], [4,5]] grep(Origin, (q,_,r), nil)) should signal(Condition Error DestructuringMismatch)
+      )
+
+      it("should report a destructuring match error if recursive destructuring doesn't add upp",
+        fn([[[1,2],[1,2]], [[3,4],[1,2]], [[1,2],[4,5]]] grep(Origin, (q,(p)), nil)) should signal(Condition Error DestructuringMismatch)
+        fn([[[1,2],[1,2]], [[3,4],[1,2]], [[1,2],[4,5]]] grep(Origin, (q,(p,r,f)), nil)) should signal(Condition Error DestructuringMismatch)
+        fn([[[1,2],[1,2]], [[3,4],[1,2]], [[1,2],[4,5]]] grep(Origin, (q,(p,_,f)), nil)) should signal(Condition Error DestructuringMismatch)
+      )
     )
 
     describe("grep:set",
@@ -3390,7 +3472,48 @@ describe(Mixins,
         [1,2,3,4,5,6,7,8,9] grep:set(customObj, x, (x+1) asText) should == #{"2","3","7","8","9","10"}
       )
 
-      it("should be possible to destructure on the argument name")
+      it("should be able to destructure on the argument name",
+        result = []
+        [[1,2], [2,3], [4,5]] grep:set(Origin, (x,y), result << [x+1, y-1]. nil)
+        result should == [[2,1], [3,2], [5,4]]
+      )
+
+      it("should be able to destructure and ignore the rest of something",
+        result = []
+        [[1,2,9,10], [2,3,11,12], [4,5,13,14]] grep:set(Origin, (x,y,_), cell?(:"_") should not be true. result << [x, y]. nil)
+        result should == [[1,2], [2,3], [4,5]]
+      )
+
+      it("should be able to destructure and ignore in the middle of the pattern without binding anything",
+        result = []
+        [[1,2,9], [2,3,11], [4,5,13]] grep:set(Origin, (x,_,y), cell?(:"_") should not be true. result << [x, y]. nil) 
+        result should == [[1,9], [2,11], [4,13]]
+      )
+
+      it("should be able to destructure and ignore several times in the middle of the pattern without binding anything",
+        result = []
+        [[1,2,9,10,11], [2,3,11,12,13], [4,5,13,14,15]] grep:set(Origin, (x,_,y,_,q), cell?(:"_") should not be true. result << [x, y, q]. nil) 
+        result should == [[1,9,11], [2,11,13], [4,13,15]]
+      )
+
+      it("should be able to destructure recursively",
+        result = []
+        [[[:x, :y, :z], [:q, :r, :p]], [[:b, :c, :d], [:i, :j, :k]], [[:i, :j, :k], [:i2, :j3, :k4]]] grep:set(Origin, 
+          (v, (v2, _, v3)), cell?(:"_") should be false. result << [v, v2, v3]. nil) 
+        result should == [[[:x, :y, :z], :q, :p], [[:b, :c, :d], :i, :k], [[:i, :j, :k], :i2, :k4]]
+      )
+
+      it("should report a destructuring match error if destructuring doesn't add upp",
+        fn([[1,2], [3,4], [4,5]] grep:set(Origin, (q,p,r), nil)) should signal(Condition Error DestructuringMismatch)
+        fn([[1,2], [3,4], [4,5]] grep:set(Origin, (q), nil)) should signal(Condition Error DestructuringMismatch)
+        fn([[1,2], [3,4], [4,5]] grep:set(Origin, (q,_,r), nil)) should signal(Condition Error DestructuringMismatch)
+      )
+
+      it("should report a destructuring match error if recursive destructuring doesn't add upp",
+        fn([[[1,2],[1,2]], [[3,4],[1,2]], [[1,2],[4,5]]] grep:set(Origin, (q,(p)), nil)) should signal(Condition Error DestructuringMismatch)
+        fn([[[1,2],[1,2]], [[3,4],[1,2]], [[1,2],[4,5]]] grep:set(Origin, (q,(p,r,f)), nil)) should signal(Condition Error DestructuringMismatch)
+        fn([[[1,2],[1,2]], [[3,4],[1,2]], [[1,2],[4,5]]] grep:set(Origin, (q,(p,_,f)), nil)) should signal(Condition Error DestructuringMismatch)
+      )
     )
 
     describe("max",
