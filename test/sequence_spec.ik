@@ -36,6 +36,8 @@ SequenceHelper = Origin mimic do(
   dropped = macro(@called = true. @callInfo = call. 42)
   droppedWhile = macro(@called = true. @callInfo = call. 42)
   rejected = macro(@called = true. @callInfo = call. 42)
+  consed = macro(@called = true. @callInfo = call. 42)
+  sliced = macro(@called = true. @callInfo = call. 42)
 )
 
 describe(Mixins,
@@ -264,11 +266,31 @@ describe(Mixins,
     )
 
     describe("consed",
-      it("should have tests")
+      it("should resend the call with all arguments to the result of calling seq",
+        x = Origin mimic
+        x mimic!(Mixins Sequenced)
+        seqObj = SequenceHelper mimic
+        x mock!(:seq) andReturn(seqObj)
+
+        x consed(3) should == 42
+
+        seqObj called should be true
+        seqObj callInfo arguments should == ['3]
+      )
     )
 
     describe("sliced",
-      it("should have tests")
+      it("should resend the call with all arguments to the result of calling seq",
+        x = Origin mimic
+        x mimic!(Mixins Sequenced)
+        seqObj = SequenceHelper mimic
+        x mock!(:seq) andReturn(seqObj)
+
+        x sliced(3) should == 42
+
+        seqObj called should be true
+        seqObj callInfo arguments should == ['3]
+      )
     )
   )
 )
@@ -990,6 +1012,10 @@ describe(Sequence,
   )
 
   describe("Cons",
+    it("should have tests")
+  )
+
+  describe("Slice",
     it("should have tests")
   )
 )
