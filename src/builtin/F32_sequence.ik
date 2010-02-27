@@ -85,6 +85,8 @@ Sequence interpose    = method(inbetween, Sequence Interpose create(@, inbetween
 Sequence cell("%")    = method(inbetween, Sequence Interpose create(@, inbetween))
 Sequence interleave   = method(right, Sequence Interleave create(@, right))
 Sequence cell("&")    = method(right, Sequence Interleave create(@, right))
+Sequence consed       = method(consSize 2, Sequence Cons create(@, Ground, [], consSize))
+Sequence sliced       = method(sliceSize 2, Sequence Slice create(@, Ground, [], sliceSize))
 
 let(
   generateNextPMethod, method(takeCurrentObject, returnObject,
@@ -176,6 +178,57 @@ let(
           x seq)
       )
       myNewSelf
+    )
+  )
+
+  Sequence Cons      = Sequence mimic do(
+    create = method(wrappedSequence, context, messages, +rest,
+      res = mimic
+      res wrappedSequence = wrappedSequence
+      res context = context
+      res messages = messages
+      res restArguments = rest
+      res ary = list()
+      res
+    )
+
+    next? = method(
+      while((ary length + 2 < restArguments[0]) && wrappedSequence next?,
+        ary push!(wrappedSequence next))
+      ((ary length + 2) >= restArguments[0]) && wrappedSequence next?
+    )
+
+    next = method(
+      while(wrappedSequence next?,
+        if(ary length == restArguments[0],
+          ary shift!)
+        ary push!(wrappedSequence next)
+        if(ary length == restArguments[0],
+          return(ary mimic)))
+    )
+  )
+
+  Sequence Slice      = Sequence mimic do(
+    create = method(wrappedSequence, context, messages, +rest,
+      res = mimic
+      res wrappedSequence = wrappedSequence
+      res context = context
+      res messages = messages
+      res restArguments = rest
+      res ary = list()
+      res
+    )
+
+    next? = method(wrappedSequence next? || ary length > 0)
+
+    next = method(
+      while(wrappedSequence next?,
+        ary push!(wrappedSequence next)
+        if(ary length == restArguments[0],
+          yieldAry = ary mimic
+          @ary = list()
+          return(yieldAry)))
+      if(ary length > 0, ary)
     )
   )
 

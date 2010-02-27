@@ -360,6 +360,8 @@ describe(Sequence,
       ss = SequenceTester with(val: [1,2,3], len: 3) seq
       ss collected(x, x*2) asList should == [2,4,6]
     )
+
+    it("should be possible to destructure on the argument names")
   )
 
   describe("filtered",
@@ -381,6 +383,8 @@ describe(Sequence,
       ss = SequenceTester with(val: [1,2,3,4,5,6,7,8], len: 8) seq
       ss filtered(x, x>4) asList should == [5,6,7,8]
     )
+
+    it("should be possible to destructure on the argument names")
   )
 
   describe("selected",
@@ -402,6 +406,8 @@ describe(Sequence,
       ss = SequenceTester with(val: [1,2,3,4,5,6,7,8], len: 8) seq
       ss selected(x, x>4) asList should == [5,6,7,8]
     )
+
+    it("should be possible to destructure on the argument names")
   )
 
   describe("grepped",
@@ -418,6 +424,8 @@ describe(Sequence,
       ss = SequenceTester with(val: [1,2,4,5,6,7,8], len: 7) seq
       ss grepped(2..4) asList should == [2,4]
     )
+
+    it("should be possible to destructure on the argument names")
   )
 
   describe("zipped",
@@ -503,6 +511,8 @@ describe(Sequence,
       ss = SequenceTester with(val: [1,2,4,5,6,7,8], len: 7) seq
       ss droppedWhile(x, x < 3) asList should == [4,5,6,7,8]
     )
+
+    it("should be possible to destructure on the argument names")
   )
 
   describe("rejected",
@@ -521,14 +531,46 @@ describe(Sequence,
       ss = SequenceTester with(val: [1,2,3,4,5,6,7,8], len: 8) seq
       ss rejected(x, x>4) asList should == [1,2,3,4]
     )
+
+    it("should be possible to destructure on the argument names")
   )
 
   describe("consed",
-    it("should have tests")
+    it("should create a new Sequence Cons with the arguments sent to it",
+      ss = SequenceTester with(val: [1,2,3,4,5,6,7,8], len: 8) seq
+      val = ss consed(3)
+      val should mimic(Sequence Cons)
+      val wrappedSequence should be same(ss)
+      val messages should == []
+      val restArguments should == [3]
+    )
+
+    it("should cons the objects",
+      ss = SequenceTester with(val: [1,2,4,5,6,7,8], len: 7) seq
+      ss consed asList should == [[1,2], [2,4], [4,5], [5,6], [6,7], [7,8]]
+
+      ss = SequenceTester with(val: [1,2,4,5,6,7,8], len: 7) seq
+      ss consed(3) asList should == [[1,2,4], [2,4,5], [4,5,6], [5,6,7], [6,7,8]]
+    )
   )
 
   describe("sliced",
-    it("should have tests")
+    it("should create a new Sequence Slice with the arguments sent to it",
+      ss = SequenceTester with(val: [1,2,3,4,5,6,7,8], len: 8) seq
+      val = ss sliced(3)
+      val should mimic(Sequence Slice)
+      val wrappedSequence should be same(ss)
+      val messages should == []
+      val restArguments should == [3]
+    )
+
+    it("should slice the objects",
+      ss = SequenceTester with(val: [1,2,4,5,6,7], len: 6) seq
+      ss sliced asList should == [[1,2], [4,5], [6,7]]
+
+      ss = SequenceTester with(val: [1,2,3,4,5,6,7,8,9], len: 9) seq
+      ss sliced(3) asList should == [[1,2,3], [4,5,6], [7,8,9]]
+    )
   )
 
   describe("+",
@@ -557,7 +599,6 @@ describe(Sequence,
     )
   )
 
-  ; TODO add "interleave" on Enumerable too
   describe("interleave",
     it("should create a new sequence",
       [1,2,3] seq interleave(1..5) should mimic(Sequence)
@@ -946,5 +987,9 @@ describe(Sequence,
       ss next should be nil
       ss asList should == [false, true]
     )
+  )
+
+  describe("Cons",
+    it("should have tests")
   )
 )
