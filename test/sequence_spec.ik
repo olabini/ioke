@@ -364,6 +364,46 @@ describe(Sequence,
       ss = SequenceTester with(val: [1,2,3], len: 3) seq
       ss mapped(x, x*2) asList should == [2,4,6]
     )
+
+    it("should be able to destructure on the argument name",
+      ss = SequenceTester with(val: [[1,2], [2,3], [4,5]], len: 3) seq
+      ss mapped((x,y), [x+1, y-1]) asList should == [[2,1], [3,2], [5,4]]
+    )
+      
+    it("should be able to destructure and ignore the rest of something",
+      ss = SequenceTester with(val: [[1,2,9,10], [2,3,11,12], [4,5,13,14]], len: 3) seq
+      ss mapped((x,y,_), cell?(:"_") should not be true. [x, y]) asList  should == [[1,2], [2,3], [4,5]]
+    )
+
+    it("should be able to destructure and ignore in the middle of the pattern without binding anything",
+      ss = SequenceTester with(val: [[1,2,9], [2,3,11], [4,5,13]], len: 3) seq
+      ss mapped((x,_,y), cell?(:"_") should not be true. [x, y]) asList should == [[1,9], [2,11], [4,13]]
+    )
+
+    it("should be able to destructure and ignore several times in the middle of the pattern without binding anything",
+      ss = SequenceTester with(val: [[1,2,9,10,11], [2,3,11,12,13], [4,5,13,14,15]], len: 3) seq
+      ss mapped((x,_,y,_,q), cell?(:"_") should not be true. [x, y, q]) asList should == [[1,9,11], [2,11,13], [4,13,15]]
+    )
+
+    it("should be able to destructure recursively",
+      ss = SequenceTester with(val: [[[:x, :y, :z], [:q, :r, :p]], [[:b, :c, :d], [:i, :j, :k]], [[:i, :j, :k], [:i2, :j3, :k4]]], len: 3) seq
+      ss mapped(
+        (v, (v2, _, v3)), cell?(:"_") should be false. [v, v2, v3]) asList should == [[[:x, :y, :z], :q, :p], [[:b, :c, :d], :i, :k], [[:i, :j, :k], :i2, :k4]]
+    )
+
+    it("should report a destructuring match error if destructuring doesn't add upp",
+      ss = SequenceTester with(val: [[1,2], [2,3], [4,5]], len: 3)
+      fn(ss seq mapped((q,p,r), nil) asList) should signal(Condition Error DestructuringMismatch)
+      fn(ss seq mapped((q), nil) asList) should signal(Condition Error DestructuringMismatch)
+      fn(ss seq mapped((q,_,r), nil) asList) should signal(Condition Error DestructuringMismatch)
+    )
+
+    it("should report a destructuring match error if recursive destructuring doesn't add upp",
+      ss = SequenceTester with(val: [[[1,2],[1,2]], [[3,4],[1,2]], [[1,2],[4,5]]], len: 3)
+      fn(ss seq mapped((q,(p)), nil) asList) should signal(Condition Error DestructuringMismatch)
+      fn(ss seq mapped((q,(p,r,f)), nil) asList) should signal(Condition Error DestructuringMismatch)
+      fn(ss seq mapped((q,(p,_,f)), nil) asList) should signal(Condition Error DestructuringMismatch)
+    )
   )
 
   describe("collected",
@@ -383,7 +423,45 @@ describe(Sequence,
       ss collected(x, x*2) asList should == [2,4,6]
     )
 
-    it("should be possible to destructure on the argument names")
+    it("should be able to destructure on the argument name",
+      ss = SequenceTester with(val: [[1,2], [2,3], [4,5]], len: 3) seq
+      ss collected((x,y), [x+1, y-1]) asList should == [[2,1], [3,2], [5,4]]
+    )
+      
+    it("should be able to destructure and ignore the rest of something",
+      ss = SequenceTester with(val: [[1,2,9,10], [2,3,11,12], [4,5,13,14]], len: 3) seq
+      ss collected((x,y,_), cell?(:"_") should not be true. [x, y]) asList  should == [[1,2], [2,3], [4,5]]
+    )
+
+    it("should be able to destructure and ignore in the middle of the pattern without binding anything",
+      ss = SequenceTester with(val: [[1,2,9], [2,3,11], [4,5,13]], len: 3) seq
+      ss collected((x,_,y), cell?(:"_") should not be true. [x, y]) asList should == [[1,9], [2,11], [4,13]]
+    )
+
+    it("should be able to destructure and ignore several times in the middle of the pattern without binding anything",
+      ss = SequenceTester with(val: [[1,2,9,10,11], [2,3,11,12,13], [4,5,13,14,15]], len: 3) seq
+      ss collected((x,_,y,_,q), cell?(:"_") should not be true. [x, y, q]) asList should == [[1,9,11], [2,11,13], [4,13,15]]
+    )
+
+    it("should be able to destructure recursively",
+      ss = SequenceTester with(val: [[[:x, :y, :z], [:q, :r, :p]], [[:b, :c, :d], [:i, :j, :k]], [[:i, :j, :k], [:i2, :j3, :k4]]], len: 3) seq
+      ss collected(
+        (v, (v2, _, v3)), cell?(:"_") should be false. [v, v2, v3]) asList should == [[[:x, :y, :z], :q, :p], [[:b, :c, :d], :i, :k], [[:i, :j, :k], :i2, :k4]]
+    )
+
+    it("should report a destructuring match error if destructuring doesn't add upp",
+      ss = SequenceTester with(val: [[1,2], [2,3], [4,5]], len: 3)
+      fn(ss seq collected((q,p,r), nil) asList) should signal(Condition Error DestructuringMismatch)
+      fn(ss seq collected((q), nil) asList) should signal(Condition Error DestructuringMismatch)
+      fn(ss seq collected((q,_,r), nil) asList) should signal(Condition Error DestructuringMismatch)
+    )
+
+    it("should report a destructuring match error if recursive destructuring doesn't add upp",
+      ss = SequenceTester with(val: [[[1,2],[1,2]], [[3,4],[1,2]], [[1,2],[4,5]]], len: 3)
+      fn(ss seq collected((q,(p)), nil) asList) should signal(Condition Error DestructuringMismatch)
+      fn(ss seq collected((q,(p,r,f)), nil) asList) should signal(Condition Error DestructuringMismatch)
+      fn(ss seq collected((q,(p,_,f)), nil) asList) should signal(Condition Error DestructuringMismatch)
+    )
   )
 
   describe("filtered",
@@ -406,7 +484,55 @@ describe(Sequence,
       ss filtered(x, x>4) asList should == [5,6,7,8]
     )
 
-    it("should be possible to destructure on the argument names")
+    it("should be able to destructure on the argument name",
+      ss = SequenceTester with(val: [[1,2], [2,3], [4,5]], len: 3) seq
+      result = []
+      ss filtered((x,y), result << [x+1, y-1]) asList
+      result should == [[2,1], [3,2], [5,4]]
+    )
+
+    it("should be able to destructure and ignore the rest of something",
+      ss = SequenceTester with(val: [[1,2,9,10], [2,3,11,12], [4,5,13,14]], len: 3) seq
+      result = []
+      ss filtered((x,y,_), cell?(:"_") should not be true. result << [x, y]) asList
+      result should == [[1,2], [2,3], [4,5]]
+    )
+
+    it("should be able to destructure and ignore in the middle of the pattern without binding anything",
+      ss = SequenceTester with(val: [[1,2,9], [2,3,11], [4,5,13]], len: 3) seq
+      result = []
+      ss filtered((x,_,y), cell?(:"_") should not be true. result << [x, y]) asList
+      result should == [[1,9], [2,11], [4,13]]
+    )
+
+    it("should be able to destructure and ignore several times in the middle of the pattern without binding anything",
+      ss = SequenceTester with(val: [[1,2,9,10,11], [2,3,11,12,13], [4,5,13,14,15]], len: 3) seq
+      result = []
+      ss filtered((x,_,y,_,q), cell?(:"_") should not be true. result << [x, y, q]) asList
+      result should == [[1,9,11], [2,11,13], [4,13,15]]
+    )
+
+    it("should be able to destructure recursively",
+      ss = SequenceTester with(val: [[[:x, :y, :z], [:q, :r, :p]], [[:b, :c, :d], [:i, :j, :k]], [[:i, :j, :k], [:i2, :j3, :k4]]], len: 3) seq
+      result = []
+      ss filtered(
+        (v, (v2, _, v3)), cell?(:"_") should be false. result << [v, v2, v3]) asList
+      result should == [[[:x, :y, :z], :q, :p], [[:b, :c, :d], :i, :k], [[:i, :j, :k], :i2, :k4]]
+    )
+    
+    it("should report a destructuring match error if destructuring doesn't add upp",
+      ss = SequenceTester with(val: [[1,2], [2,3], [4,5]], len: 3)
+      fn(ss seq filtered((q,p,r), nil) asList) should signal(Condition Error DestructuringMismatch)
+      fn(ss seq filtered((q), nil) asList) should signal(Condition Error DestructuringMismatch)
+      fn(ss seq filtered((q,_,r), nil) asList) should signal(Condition Error DestructuringMismatch)
+    )
+
+    it("should report a destructuring match error if recursive destructuring doesn't add upp",
+      ss = SequenceTester with(val: [[[1,2],[1,2]], [[3,4],[1,2]], [[1,2],[4,5]]], len: 3)
+      fn(ss seq filtered((q,(p)), nil) asList) should signal(Condition Error DestructuringMismatch)
+      fn(ss seq filtered((q,(p,r,f)), nil) asList) should signal(Condition Error DestructuringMismatch)
+      fn(ss seq filtered((q,(p,_,f)), nil) asList) should signal(Condition Error DestructuringMismatch)
+    )
   )
 
   describe("selected",
@@ -429,7 +555,55 @@ describe(Sequence,
       ss selected(x, x>4) asList should == [5,6,7,8]
     )
 
-    it("should be possible to destructure on the argument names")
+    it("should be able to destructure on the argument name",
+      ss = SequenceTester with(val: [[1,2], [2,3], [4,5]], len: 3) seq
+      result = []
+      ss selected((x,y), result << [x+1, y-1]) asList
+      result should == [[2,1], [3,2], [5,4]]
+    )
+
+    it("should be able to destructure and ignore the rest of something",
+      ss = SequenceTester with(val: [[1,2,9,10], [2,3,11,12], [4,5,13,14]], len: 3) seq
+      result = []
+      ss selected((x,y,_), cell?(:"_") should not be true. result << [x, y]) asList
+      result should == [[1,2], [2,3], [4,5]]
+    )
+
+    it("should be able to destructure and ignore in the middle of the pattern without binding anything",
+      ss = SequenceTester with(val: [[1,2,9], [2,3,11], [4,5,13]], len: 3) seq
+      result = []
+      ss selected((x,_,y), cell?(:"_") should not be true. result << [x, y]) asList
+      result should == [[1,9], [2,11], [4,13]]
+    )
+
+    it("should be able to destructure and ignore several times in the middle of the pattern without binding anything",
+      ss = SequenceTester with(val: [[1,2,9,10,11], [2,3,11,12,13], [4,5,13,14,15]], len: 3) seq
+      result = []
+      ss selected((x,_,y,_,q), cell?(:"_") should not be true. result << [x, y, q]) asList
+      result should == [[1,9,11], [2,11,13], [4,13,15]]
+    )
+
+    it("should be able to destructure recursively",
+      ss = SequenceTester with(val: [[[:x, :y, :z], [:q, :r, :p]], [[:b, :c, :d], [:i, :j, :k]], [[:i, :j, :k], [:i2, :j3, :k4]]], len: 3) seq
+      result = []
+      ss selected(
+        (v, (v2, _, v3)), cell?(:"_") should be false. result << [v, v2, v3]) asList
+      result should == [[[:x, :y, :z], :q, :p], [[:b, :c, :d], :i, :k], [[:i, :j, :k], :i2, :k4]]
+    )
+    
+    it("should report a destructuring match error if destructuring doesn't add upp",
+      ss = SequenceTester with(val: [[1,2], [2,3], [4,5]], len: 3)
+      fn(ss seq selected((q,p,r), nil) asList) should signal(Condition Error DestructuringMismatch)
+      fn(ss seq selected((q), nil) asList) should signal(Condition Error DestructuringMismatch)
+      fn(ss seq selected((q,_,r), nil) asList) should signal(Condition Error DestructuringMismatch)
+    )
+
+    it("should report a destructuring match error if recursive destructuring doesn't add upp",
+      ss = SequenceTester with(val: [[[1,2],[1,2]], [[3,4],[1,2]], [[1,2],[4,5]]], len: 3)
+      fn(ss seq selected((q,(p)), nil) asList) should signal(Condition Error DestructuringMismatch)
+      fn(ss seq selected((q,(p,r,f)), nil) asList) should signal(Condition Error DestructuringMismatch)
+      fn(ss seq selected((q,(p,_,f)), nil) asList) should signal(Condition Error DestructuringMismatch)
+    )
   )
 
   describe("grepped",
@@ -447,7 +621,55 @@ describe(Sequence,
       ss grepped(2..4) asList should == [2,4]
     )
 
-    it("should be possible to destructure on the argument names")
+    it("should be able to destructure on the argument name",
+      ss = SequenceTester with(val: [[1,2], [2,3], [4,5]], len: 3) seq
+      result = []
+      ss grepped(Origin, (x,y), result << [x+1, y-1]. nil) asList
+      result should == [[2,1], [3,2], [5,4]]
+    )
+
+    it("should be able to destructure and ignore the rest of something",
+      ss = SequenceTester with(val: [[1,2,9,10], [2,3,11,12], [4,5,13,14]], len: 3) seq
+      result = []
+      ss grepped(Origin, (x,y,_), cell?(:"_") should not be true. result << [x, y]. nil) asList
+      result should == [[1,2], [2,3], [4,5]]
+    )
+
+    it("should be able to destructure and ignore in the middle of the pattern without binding anything",
+      ss = SequenceTester with(val: [[1,2,9], [2,3,11], [4,5,13]], len: 3) seq
+      result = []
+      ss grepped(Origin, (x,_,y), cell?(:"_") should not be true. result << [x, y]. nil) asList
+      result should == [[1,9], [2,11], [4,13]]
+    )
+
+    it("should be able to destructure and ignore several times in the middle of the pattern without binding anything",
+      ss = SequenceTester with(val: [[1,2,9,10,11], [2,3,11,12,13], [4,5,13,14,15]], len: 3) seq
+      result = []
+      ss grepped(Origin, (x,_,y,_,q), cell?(:"_") should not be true. result << [x, y, q]. nil) asList
+      result should == [[1,9,11], [2,11,13], [4,13,15]]
+    )
+
+    it("should be able to destructure recursively",
+      ss = SequenceTester with(val: [[[:x, :y, :z], [:q, :r, :p]], [[:b, :c, :d], [:i, :j, :k]], [[:i, :j, :k], [:i2, :j3, :k4]]], len: 3) seq
+      result = []
+      ss grepped(Origin, 
+        (v, (v2, _, v3)), cell?(:"_") should be false. result << [v, v2, v3]. nil) asList
+      result should == [[[:x, :y, :z], :q, :p], [[:b, :c, :d], :i, :k], [[:i, :j, :k], :i2, :k4]]
+    )
+
+    it("should report a destructuring match error if destructuring doesn't add upp",
+      ss = SequenceTester with(val: [[1,2], [2,3], [4,5]], len: 3)
+      fn(ss seq grepped(Origin, (q,p,r), nil) asList) should signal(Condition Error DestructuringMismatch)
+      fn(ss seq grepped(Origin, (q), nil) asList) should signal(Condition Error DestructuringMismatch)
+      fn(ss seq grepped(Origin, (q,_,r), nil) asList) should signal(Condition Error DestructuringMismatch)
+    )
+
+    it("should report a destructuring match error if recursive destructuring doesn't add upp",
+      ss = SequenceTester with(val: [[[1,2],[1,2]], [[3,4],[1,2]], [[1,2],[4,5]]], len: 3)
+      fn(ss seq grepped(Origin, (q,(p)), nil) asList) should signal(Condition Error DestructuringMismatch)
+      fn(ss seq grepped(Origin, (q,(p,r,f)), nil) asList) should signal(Condition Error DestructuringMismatch)
+      fn(ss seq grepped(Origin, (q,(p,_,f)), nil) asList) should signal(Condition Error DestructuringMismatch)
+    )
   )
 
   describe("zipped",
@@ -534,7 +756,55 @@ describe(Sequence,
       ss droppedWhile(x, x < 3) asList should == [4,5,6,7,8]
     )
 
-    it("should be possible to destructure on the argument names")
+    it("should be able to destructure on the argument name",
+      ss = SequenceTester with(val: [[1,2], [2,3], [4,5]], len: 3) seq
+      result = []
+      ss droppedWhile((x,y), result << [x+1, y-1]) asList
+      result should == [[2,1], [3,2], [5,4]]
+    )
+
+    it("should be able to destructure and ignore the rest of something",
+      ss = SequenceTester with(val: [[1,2,9,10], [2,3,11,12], [4,5,13,14]], len: 3) seq
+      result = []
+      ss droppedWhile((x,y,_), cell?(:"_") should not be true. result << [x, y]) asList
+      result should == [[1,2], [2,3], [4,5]]
+    )
+
+    it("should be able to destructure and ignore in the middle of the pattern without binding anything",
+      ss = SequenceTester with(val: [[1,2,9], [2,3,11], [4,5,13]], len: 3) seq
+      result = []
+      ss droppedWhile((x,_,y), cell?(:"_") should not be true. result << [x, y]) asList
+      result should == [[1,9], [2,11], [4,13]]
+    )
+
+    it("should be able to destructure and ignore several times in the middle of the pattern without binding anything",
+      ss = SequenceTester with(val: [[1,2,9,10,11], [2,3,11,12,13], [4,5,13,14,15]], len: 3) seq
+      result = []
+      ss droppedWhile((x,_,y,_,q), cell?(:"_") should not be true. result << [x, y, q]) asList
+      result should == [[1,9,11], [2,11,13], [4,13,15]]
+    )
+
+    it("should be able to destructure recursively",
+      ss = SequenceTester with(val: [[[:x, :y, :z], [:q, :r, :p]], [[:b, :c, :d], [:i, :j, :k]], [[:i, :j, :k], [:i2, :j3, :k4]]], len: 3) seq
+      result = []
+      ss droppedWhile(
+        (v, (v2, _, v3)), cell?(:"_") should be false. result << [v, v2, v3]) asList
+      result should == [[[:x, :y, :z], :q, :p], [[:b, :c, :d], :i, :k], [[:i, :j, :k], :i2, :k4]]
+    )
+    
+    it("should report a destructuring match error if destructuring doesn't add upp",
+      ss = SequenceTester with(val: [[1,2], [2,3], [4,5]], len: 3)
+      fn(ss seq droppedWhile((q,p,r), nil) asList) should signal(Condition Error DestructuringMismatch)
+      fn(ss seq droppedWhile((q), nil) asList) should signal(Condition Error DestructuringMismatch)
+      fn(ss seq droppedWhile((q,_,r), nil) asList) should signal(Condition Error DestructuringMismatch)
+    )
+
+    it("should report a destructuring match error if recursive destructuring doesn't add upp",
+      ss = SequenceTester with(val: [[[1,2],[1,2]], [[3,4],[1,2]], [[1,2],[4,5]]], len: 3)
+      fn(ss seq droppedWhile((q,(p)), nil) asList) should signal(Condition Error DestructuringMismatch)
+      fn(ss seq droppedWhile((q,(p,r,f)), nil) asList) should signal(Condition Error DestructuringMismatch)
+      fn(ss seq droppedWhile((q,(p,_,f)), nil) asList) should signal(Condition Error DestructuringMismatch)
+    )
   )
 
   describe("rejected",
@@ -554,7 +824,55 @@ describe(Sequence,
       ss rejected(x, x>4) asList should == [1,2,3,4]
     )
 
-    it("should be possible to destructure on the argument names")
+    it("should be able to destructure on the argument name",
+      ss = SequenceTester with(val: [[1,2], [2,3], [4,5]], len: 3) seq
+      result = []
+      ss rejected((x,y), result << [x+1, y-1]) asList
+      result should == [[2,1], [3,2], [5,4]]
+    )
+
+    it("should be able to destructure and ignore the rest of something",
+      ss = SequenceTester with(val: [[1,2,9,10], [2,3,11,12], [4,5,13,14]], len: 3) seq
+      result = []
+      ss rejected((x,y,_), cell?(:"_") should not be true. result << [x, y]) asList
+      result should == [[1,2], [2,3], [4,5]]
+    )
+
+    it("should be able to destructure and ignore in the middle of the pattern without binding anything",
+      ss = SequenceTester with(val: [[1,2,9], [2,3,11], [4,5,13]], len: 3) seq
+      result = []
+      ss rejected((x,_,y), cell?(:"_") should not be true. result << [x, y]) asList
+      result should == [[1,9], [2,11], [4,13]]
+    )
+
+    it("should be able to destructure and ignore several times in the middle of the pattern without binding anything",
+      ss = SequenceTester with(val: [[1,2,9,10,11], [2,3,11,12,13], [4,5,13,14,15]], len: 3) seq
+      result = []
+      ss rejected((x,_,y,_,q), cell?(:"_") should not be true. result << [x, y, q]) asList
+      result should == [[1,9,11], [2,11,13], [4,13,15]]
+    )
+
+    it("should be able to destructure recursively",
+      ss = SequenceTester with(val: [[[:x, :y, :z], [:q, :r, :p]], [[:b, :c, :d], [:i, :j, :k]], [[:i, :j, :k], [:i2, :j3, :k4]]], len: 3) seq
+      result = []
+      ss rejected(
+        (v, (v2, _, v3)), cell?(:"_") should be false. result << [v, v2, v3]) asList
+      result should == [[[:x, :y, :z], :q, :p], [[:b, :c, :d], :i, :k], [[:i, :j, :k], :i2, :k4]]
+    )
+
+    it("should report a destructuring match error if destructuring doesn't add upp",
+      ss = SequenceTester with(val: [[1,2], [2,3], [4,5]], len: 3)
+      fn(ss seq rejected((q,p,r), nil) asList) should signal(Condition Error DestructuringMismatch)
+      fn(ss seq rejected((q), nil) asList) should signal(Condition Error DestructuringMismatch)
+      fn(ss seq rejected((q,_,r), nil) asList) should signal(Condition Error DestructuringMismatch)
+    )
+
+    it("should report a destructuring match error if recursive destructuring doesn't add upp",
+      ss = SequenceTester with(val: [[[1,2],[1,2]], [[3,4],[1,2]], [[1,2],[4,5]]], len: 3)
+      fn(ss seq rejected((q,(p)), nil) asList) should signal(Condition Error DestructuringMismatch)
+      fn(ss seq rejected((q,(p,r,f)), nil) asList) should signal(Condition Error DestructuringMismatch)
+      fn(ss seq rejected((q,(p,_,f)), nil) asList) should signal(Condition Error DestructuringMismatch)
+    )
   )
 
   describe("consed",
@@ -1012,10 +1330,34 @@ describe(Sequence,
   )
 
   describe("Cons",
-    it("should have tests")
+    it("should mimic Sequence",
+      Sequence Cons should mimic(Sequence)
+    )
+
+    it("should return a consed list with the given length",
+      ss = Sequence Cons create(SequenceTester with(val: [1,2,3,4], len: 4) seq, Ground, [], 2)
+      ss next should == [1,2]
+      ss asList should == [[2,3], [3,4]]
+
+      ss = Sequence Cons create(SequenceTester with(val: [1,2,3,4,6], len: 5) seq, Ground, [], 3)
+      ss next should == [1,2,3]
+      ss asList should == [[2,3,4], [3,4,6]]
+    )
   )
 
   describe("Slice",
-    it("should have tests")
+    it("should mimic Sequence",
+      Sequence Slice should mimic(Sequence)
+    )
+
+    it("should return a sliced list with the given length",
+      ss = Sequence Slice create(SequenceTester with(val: [1,2,3,4,5,6], len: 6) seq, Ground, [], 2)
+      ss next should == [1,2]
+      ss asList should == [[3,4], [5,6]]
+
+      ss = Sequence Slice create(SequenceTester with(val: [1,2,3,4,5,6,7,8,9], len: 9) seq, Ground, [], 3)
+      ss next should == [1,2,3]
+      ss asList should == [[4,5,6], [7,8,9]]
+    )
   )
 )

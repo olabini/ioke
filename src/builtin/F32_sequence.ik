@@ -76,7 +76,13 @@ Sequence mapped       = macro(Sequence Map create(@, call ground, call arguments
 Sequence collected    = macro(Sequence Map create(@, call ground, call arguments))
 Sequence filtered     = macro(Sequence Filter create(@, call ground, call arguments))
 Sequence selected     = macro(Sequence Filter create(@, call ground, call arguments))
-Sequence grepped      = method(toGrepAgainst, Sequence Grep create(@, Ground, [], toGrepAgainst))
+Sequence grepped      = dmacro(
+  [>toGrepAgainst]
+  Sequence Grep create(@, Ground, [], toGrepAgainst),
+
+  [>toGrepAgainst, argName, theCode]
+  Sequence Grep create(@, call ground, [argName, theCode], toGrepAgainst)
+)
 Sequence rejected     = macro(Sequence Reject create(@, call ground, call arguments))
 Sequence zipped       = method(+toZipAgainst, Sequence Zip create(@, Ground, [], *toZipAgainst))
 Sequence dropped      = method(howManyToDrop, Sequence Drop create(@, Ground, [], howManyToDrop))
@@ -138,7 +144,8 @@ let(
     res messages = messages
     res restArguments = rest
     if(messages length == 2,
-      res lexicalBlock = LexicalBlock createFrom(messages, context)
+      res destructor = Mixins Enumerable Destructor from(messages[0])
+      res lexicalBlock = LexicalBlock createFrom(res destructor argNames + list(messages[1]), context)
     )
     res
   )
@@ -148,7 +155,7 @@ let(
       cell(:inputValue),
       if(messages length == 1,
         messages[0] evaluateOn(context, cell(:inputValue)),
-        lexicalBlock call(cell(:inputValue)))
+        lexicalBlock call(*(destructor unpack(cell(:inputValue)))))
     )
   )
 
