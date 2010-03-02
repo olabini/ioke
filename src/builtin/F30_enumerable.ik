@@ -717,6 +717,7 @@ Mixins Enumerable Destructor = Origin mimic do(
   )
 
   mapValue = method(value, ms, result [],
+    value = value asTuple asList
     if((ms length < value length && !(ms[-1] mimics?(Mapper Ignore))) || 
       value length < ms length,
       error!(Condition Error DestructuringMismatch)
