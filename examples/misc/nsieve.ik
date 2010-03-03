@@ -1,5 +1,5 @@
 nsieve = method(n,
-  primes = (0..n) collect(true)
+  primes = [true] * n
   count = 0
 
   (2...n) each(i,

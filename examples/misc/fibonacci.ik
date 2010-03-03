@@ -6,22 +6,18 @@ recursiveFib = method(n,
 )
 
 iterativeFib = method(n,
-  curr = 0
-  succ = 1
+  (curr, succ) = (0, 1)
   (0...n) each(i,
-    old = curr
-    curr = succ
+    (old, curr) = (curr, succ)
     succ += old
   )
   curr
 )
 
 generativeFib = method(
-  curr = 0
-  succ = 1
+  (curr, succ) = (0, 1)
   fn(
-    old = curr
-    curr = succ
+    (old, curr) = (curr, succ)
     succ += old
     old
   )

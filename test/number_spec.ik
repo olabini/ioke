@@ -97,6 +97,62 @@ describe(Number,
       -353654645676451123345674 abs should == 353654645676451123345674)
   )
 
+  describe("sqrt",
+    it("should work for simple natural number 1",
+      1 sqrt should == 1
+    )
+
+    it("should work for simple natural number 4",
+      4 sqrt should == 2
+    )
+
+    it("should work for simple natural number 9",
+      9 sqrt should == 3
+    )
+
+    it("should work for simple natural number 16",
+      16 sqrt should == 4
+    )
+
+    it("should work for simple natural number 25",
+      25 sqrt should == 5
+    )
+
+    it("should work for simple natural number 36",
+      36 sqrt should == 6
+    )
+
+    it("should work for simple natural number 49",
+      49 sqrt should == 7
+    )
+
+    it("should work for simple natural number 64",
+      64 sqrt should == 8
+    )
+
+    it("should work for simple natural number 81",
+      81 sqrt should == 9
+    )
+
+    it("should work for simple natural number 100",
+      100 sqrt should == 10
+    )
+
+    it("should work for a simple natural number that doesn't have an even square root",
+      11 sqrt should be close(3.3166247903554)
+    )      
+
+    it("should work for decimal numbers",
+      6.25 sqrt should be close(2.5)
+      10060.09 sqrt should be close(100.3)
+    )
+
+    it("should work for really large natural numbers")
+    it("should work for really large decimal numbers")
+    it("should work for really small ratios")
+    it("should work for really large ratios")
+  )
+
   describe("===",
     it("should check for mimicness if receiver is Number",
       Number should === Number

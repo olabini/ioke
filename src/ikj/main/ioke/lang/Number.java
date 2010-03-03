@@ -11,9 +11,11 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
+import gnu.math.Complex;
 import gnu.math.BitOps;
 import gnu.math.IntNum;
 import gnu.math.RatNum;
+import gnu.math.RealNum;
 import gnu.math.IntFraction;
 
 import ioke.lang.exceptions.ControlFlow;
@@ -187,6 +189,21 @@ public class Number extends IokeData {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return context.runtime.newNumber(((Number)IokeObject.data(on)).value.hashCode());
+                }
+            }));
+
+        rational.registerMethod(runtime.newNativeMethod("returns the square root of the receiver. this should return the same result as calling ** with 0.5", new NativeMethod.WithNoArguments("sqrt") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+
+                    Complex result = ((Number)IokeObject.data(on)).value.sqrt();
+                    
+                    if(result instanceof RealNum) {
+                        return context.runtime.newDecimal(((RealNum)result).asBigDecimal());
+                    } else {
+                        return context.runtime.newNumber(-1);
+                    }
                 }
             }));
 

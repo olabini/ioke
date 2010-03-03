@@ -18,6 +18,7 @@ import java.util.Map;
 import ioke.lang.exceptions.ControlFlow;
 
 import gnu.math.RatNum;
+import gnu.math.BigSquareRoot;
 
 /**
  *
@@ -93,6 +94,14 @@ public class Decimal extends IokeData {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
                     return context.runtime.newNumber(((Decimal)IokeObject.data(on)).value.hashCode());
+                }
+            }));
+
+        obj.registerMethod(runtime.newNativeMethod("returns the square root of the receiver. this should return the same result as calling ** with 0.5", new NativeMethod.WithNoArguments("sqrt") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                    return context.runtime.newDecimal(new BigSquareRoot().get(((Decimal)IokeObject.data(on)).value));
                 }
             }));
 
