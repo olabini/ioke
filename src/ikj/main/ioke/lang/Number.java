@@ -17,6 +17,7 @@ import gnu.math.IntNum;
 import gnu.math.RatNum;
 import gnu.math.RealNum;
 import gnu.math.IntFraction;
+import gnu.math.BigSquareRoot;
 
 import ioke.lang.exceptions.ControlFlow;
 
@@ -197,13 +198,21 @@ public class Number extends IokeData {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
 
-                    Complex result = ((Number)IokeObject.data(on)).value.sqrt();
-                    
-                    if(result instanceof RealNum) {
-                        return context.runtime.newDecimal(((RealNum)result).asBigDecimal());
-                    } else {
-                        return context.runtime.newNumber(-1);
+                    RatNum value = ((Number)IokeObject.data(on)).value;
+                    if(value instanceof IntFraction) {
+                        IntNum num = value.numerator();
+                        IntNum den = value.denominator();
+                        BigDecimal nums = new BigSquareRoot().get(num.asBigDecimal());
+                        BigDecimal dens = new BigSquareRoot().get(den.asBigDecimal());
+                        try {
+                            num = IntNum.valueOf(nums.toBigIntegerExact().toString());
+                            den = IntNum.valueOf(dens.toBigIntegerExact().toString());
+                            return context.runtime.newNumber(new IntFraction(num, den));
+                        } catch(ArithmeticException e) {
+                            // Ignore and fall through
+                        }
                     }
+                    return context.runtime.newDecimal(new BigSquareRoot().get(value.asBigDecimal()));
                 }
             }));
 
