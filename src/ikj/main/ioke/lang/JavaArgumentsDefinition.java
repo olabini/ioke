@@ -544,8 +544,16 @@ public class JavaArgumentsDefinition {
                         if(obj == runtime.nil) {
                             args.add(null);
                         } else if(!isIokeObject) {
-                            args.add(obj);
+                            if(clz.isInstance(obj)) {
+                                args.add(obj);
+                            } else {
+                                args.clear();
+                                continue nextMethod;
+                            }
                         } else if(isWrapper) {
+
+                            // Check here for instanceof before adding
+
                             args.add(JavaWrapper.getObject(obj));
                         } else if(jad.associatedCode && clzIsAbstract) {
                             try {

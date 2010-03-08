@@ -1621,8 +1621,8 @@ describe("Java Objects",
     )
 
     it("should disambiguate between two method with the same arg count",
-      ioke:lang:test:StaticMethods overloaded(true, 123) asText should == "overloaded(boolean, int)"
-      ioke:lang:test:StaticMethods overloaded(true, 123.3) asText should == "overloaded(boolean, double)"
+      ioke:lang:test:StaticMethods overloaded2(true, 123) asText should == "overloaded(boolean, int)"
+      ioke:lang:test:StaticMethods overloaded2(true, 123.3) asText should == "overloaded(boolean, double)"
     )
 
     it("should be possible to call a method that requests IokeObjects",
@@ -1733,7 +1733,7 @@ describe("Java Objects",
 
     it("should be possible to manually coerce into a boolean argument",
       ioke:lang:test:StaticMethods overloaded((boolean)false) asText should == "overloaded(boolean)"
-      ioke:lang:test:StaticMethods overloaded((boolean)false, 102) asText should == "overloaded(boolean, int)"
+      ioke:lang:test:StaticMethods overloaded((boolean)false, (int)102) asText should == "overloaded(boolean, int)"
       ioke:lang:test:StaticMethods overloaded((int)123, (boolean)true) asText should == "overloaded(int, boolean)"
       ioke:lang:test:StaticMethods overloaded((boolean)true, (boolean)false) asText should == "overloaded(boolean, boolean)"
     )
@@ -1776,6 +1776,14 @@ describe("Java Objects",
 
     it("should signal a condition if it can't find a matching method",
       fn(ioke:lang:test:StaticMethods overloaded("sending", "in", "wrong", "args")) should signal(Condition Error Java NoMatch)
+    )
+
+    it("should be possible to disambiguate between overloaded methods based on first matching instanceof",
+      val = ioke:lang:test:Test1 new
+      ioke:lang:test:StaticMethods overloaded_object(val) asText should == "overloaded_object(Test1)"
+
+      val = ioke:lang:test:Test2 new
+      ioke:lang:test:StaticMethods overloaded_object(val) asText should == "overloaded_object(Test2)"
     )
   )
 
@@ -1989,7 +1997,6 @@ describe("Java Objects",
       val barValue? should be false
     )
 
-
     it("should be possible to call a method that is overloaded in super classes and direct classes",
       date = java:util:Date new
       formatter = java:text:SimpleDateFormat new("dd/MM/yyyy")
@@ -2000,6 +2007,8 @@ describe("Java Objects",
       i = ioke:lang:test:InstanceMethods new
       fn(i overloaded("sending", "in", "wrong", "args")) should signal(Condition Error Java NoMatch)
     )
+
+    it("should be possible to disambiguate between overloaded methods based on first matching instanceof")
   )
 
   describe("constructors",
@@ -2109,7 +2118,7 @@ describe("Java Objects",
       fn(ioke:lang:test:Constructors new("sending", "in", "wrong", "args")) should signal(Condition Error Java NoMatch)
     )
 
-;     it("should be possible to supply arguments by name")
+    it("should be possible to disambiguate between overloaded constructors based on first matching instanceof")
   )
 
   describe("arrays",

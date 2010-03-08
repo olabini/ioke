@@ -286,6 +286,10 @@ public class StaticMethods {
         return "overloaded(boolean, int)";
     }
 
+    public static String overloaded2(boolean x, int i) {
+        return "overloaded(boolean, int)";
+    }
+
     public static String overloaded(boolean x, char i) {
         return "overloaded(boolean, char)";
     }
@@ -306,7 +310,19 @@ public class StaticMethods {
         return "overloaded(boolean, double)";
     }
 
+    public static String overloaded2(boolean x, double i) {
+        return "overloaded(boolean, double)";
+    }
+
     public static String overloaded(boolean x, boolean i) {
         return "overloaded(boolean, boolean)";
+    }
+
+    public static String overloaded_object(Test1 t) {
+        return "overloaded_object(Test1)";
+    }
+
+    public static String overloaded_object(Test2 t) {
+        return "overloaded_object(Test2)";
     }
 }// StaticMethods

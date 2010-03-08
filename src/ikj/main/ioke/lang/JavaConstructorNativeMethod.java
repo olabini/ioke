@@ -43,7 +43,6 @@ public class JavaConstructorNativeMethod extends ioke.lang.Method implements Nat
     public Object activate(IokeObject self, Object on, List<Object> args, Constructor ctor, IokeObject context, IokeObject message) throws ControlFlow {
         try {
             if(!special) {
-                //             System.err.println("invoking: " + ctor);
                 return ctor.newInstance(args.toArray());
             } else {
                 IokeObject other = IokeObject.mimic(on, message, context);
