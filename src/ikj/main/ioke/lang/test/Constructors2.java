@@ -12,6 +12,14 @@ import ioke.lang.IokeObject;
 public class Constructors2 {
     private Object data;
 
+    public Constructors2(Test1 obj) {
+        this.data = "Constructor(Test1)";
+    }
+
+    public Constructors2(Test2 obj) {
+        this.data = "Constructor(Test2)";
+    }
+
     public Constructors2(IokeObject obj) {
         this.data = obj;
     }

@@ -1808,8 +1808,8 @@ describe("Java Objects",
 
     it("should disambiguate between two method with the same arg count",
       i = ioke:lang:test:InstanceMethods new
-      i overloaded(true, 123) asText should == "overloaded(boolean, int)"
-      i overloaded(true, 123.3) asText should == "overloaded(boolean, double)"
+      i overloaded2(true, 123) asText should == "overloaded(boolean, int)"
+      i overloaded2(true, 123.3) asText should == "overloaded(boolean, double)"
     )
 
     it("should be possible to call a method that requests IokeObjects",
@@ -1882,7 +1882,7 @@ describe("Java Objects",
       i = ioke:lang:test:InstanceMethods new
       i overloaded((short)102) asText should == "overloaded(short)"
       i overloaded((short)102, false) asText should == "overloaded(short, boolean)"
-      i overloaded(123, (short)42) asText should == "overloaded(int, short)"
+      i overloaded(false, (short)42) asText should == "overloaded(boolean, short)"
       i overloaded((short)123, (short)42) asText should == "overloaded(short, short)"
     )
 
@@ -1898,7 +1898,7 @@ describe("Java Objects",
       i = ioke:lang:test:InstanceMethods new
       i overloaded((char)102) asText should == "overloaded(char)"
       i overloaded((char)102, false) asText should == "overloaded(char, boolean)"
-      i overloaded(123, (char)42) asText should == "overloaded(int, char)"
+      i overloaded(false, (char)42) asText should == "overloaded(boolean, char)"
       i overloaded((char)123, (char)42) asText should == "overloaded(char, char)"
     )
 
@@ -1906,7 +1906,7 @@ describe("Java Objects",
       i = ioke:lang:test:InstanceMethods new
       i overloaded((long)102) asText should == "overloaded(long)"
       i overloaded((long)102, false) asText should == "overloaded(long, boolean)"
-      i overloaded(123, (long)42) asText should == "overloaded(int, long)"
+      i overloaded(false, (long)42) asText should == "overloaded(boolean, long)"
       i overloaded((long)123, (long)42) asText should == "overloaded(long, long)"
     )
 
@@ -1939,8 +1939,8 @@ describe("Java Objects",
     it("should be possible to manually coerce into a boolean argument",
       i = ioke:lang:test:InstanceMethods new
       i overloaded((boolean)false) asText should == "overloaded(boolean)"
-      i overloaded((boolean)false, 102) asText should == "overloaded(boolean, int)"
-      i overloaded(123, (boolean)true) asText should == "overloaded(int, boolean)"
+      i overloaded((boolean)false, false) asText should == "overloaded(boolean, boolean)"
+      i overloaded(false, (boolean)true) asText should == "overloaded(boolean, boolean)"
       i overloaded((boolean)true, (boolean)false) asText should == "overloaded(boolean, boolean)"
     )
 
@@ -2008,7 +2008,14 @@ describe("Java Objects",
       fn(i overloaded("sending", "in", "wrong", "args")) should signal(Condition Error Java NoMatch)
     )
 
-    it("should be possible to disambiguate between overloaded methods based on first matching instanceof")
+    it("should be possible to disambiguate between overloaded methods based on first matching instanceof",
+      i = ioke:lang:test:InstanceMethods new
+      val = ioke:lang:test:Test1 new
+      i overloaded_object(val) asText should == "overloaded_object(Test1)"
+
+      val = ioke:lang:test:Test2 new
+      i overloaded_object(val) asText should == "overloaded_object(Test2)"
+    )
   )
 
   describe("constructors",
@@ -2118,7 +2125,13 @@ describe("Java Objects",
       fn(ioke:lang:test:Constructors new("sending", "in", "wrong", "args")) should signal(Condition Error Java NoMatch)
     )
 
-    it("should be possible to disambiguate between overloaded constructors based on first matching instanceof")
+    it("should be possible to disambiguate between overloaded constructors based on first matching instanceof",
+      val = ioke:lang:test:Test1 new
+      ioke:lang:test:Constructors2 new(val) getData asText should == "Constructor(Test1)"
+
+      val = ioke:lang:test:Test2 new
+      ioke:lang:test:Constructors2 new(val) getData asText should == "Constructor(Test2)"
+    )
   )
 
   describe("arrays",

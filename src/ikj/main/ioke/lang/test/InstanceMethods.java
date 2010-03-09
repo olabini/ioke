@@ -326,4 +326,20 @@ public class InstanceMethods {
     public String overloaded(boolean x, boolean i) {
         return "overloaded(boolean, boolean)";
     }
+
+    public String overloaded_object(Test1 obj) {
+        return "overloaded_object(Test1)";
+    }
+
+    public String overloaded_object(Test2 obj) {
+        return "overloaded_object(Test2)";
+    }
+
+    public String overloaded2(boolean x, int i) {
+        return "overloaded(boolean, int)";
+    }
+
+    public String overloaded2(boolean x, double i) {
+        return "overloaded(boolean, double)";
+    }
 }// InstanceMethods
