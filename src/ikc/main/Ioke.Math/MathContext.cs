@@ -1,108 +1,116 @@
 
 namespace Ioke.Math {
+    using System;
+    using System.Text;
+
     public sealed class MathContext {
-        public const int PLAIN=0; // [no exponent]
-        public const int SCIENTIFIC=1; // 1 digit before .
-        public const int ENGINEERING=2; // 1-3 digits before .
-        public const int ROUND_CEILING=2;
-        public const int ROUND_DOWN=1;
-        public const int ROUND_FLOOR=3;
-        public const int ROUND_HALF_DOWN=5;
-        public const int ROUND_HALF_EVEN=6;
-        public const int ROUND_HALF_UP=4;
-        public const int ROUND_UNNECESSARY=7;
-        public const int ROUND_UP=0;
-        internal int digits;
-        internal int form; // values for this must fit in a byte
-        internal bool lostDigits;
-        internal int roundingMode;
+        public static readonly MathContext DECIMAL128 = new MathContext(34, RoundingMode.HALF_EVEN);
+        public static readonly MathContext DECIMAL32 = new MathContext(7, RoundingMode.HALF_EVEN);
+        public static readonly MathContext DECIMAL64 = new MathContext(16, RoundingMode.HALF_EVEN);
+        public static readonly MathContext UNLIMITED = new MathContext(0, RoundingMode.HALF_UP);
 
-        private const int DEFAULT_FORM=SCIENTIFIC;
-        private const int DEFAULT_DIGITS=9;
-        private const bool DEFAULT_LOSTDIGITS=false;
-        private const int DEFAULT_ROUNDINGMODE=ROUND_HALF_UP;
+        private int precision;
+        private RoundingMode roundingMode;
 
-        private const int MIN_DIGITS=0;
-        private const int MAX_DIGITS=999999999;
-        private static readonly int[] ROUNDS=new int[]{ROUND_HALF_UP,ROUND_UNNECESSARY,ROUND_CEILING,ROUND_DOWN,ROUND_FLOOR,ROUND_HALF_DOWN,ROUND_HALF_EVEN,ROUND_UP};
+        private readonly static char[] chPrecision = { 'p', 'r', 'e', 'c', 'i', 's', 'i', 'o', 'n', '=' };
+        private readonly static char[] chRoundingMode = { 'r', 'o', 'u', 'n', 'd', 'i', 'n', 'g', 'M', 'o', 'd', 'e', '=' };
 
-        private static readonly string[] ROUNDWORDS = new string[] {"ROUND_HALF_UP","ROUND_UNNECESSARY","ROUND_CEILING","ROUND_DOWN","ROUND_FLOOR","ROUND_HALF_DOWN","ROUND_HALF_EVEN","ROUND_UP"};
-        public static readonly MathContext DEFAULT = new MathContext(DEFAULT_DIGITS,DEFAULT_FORM,DEFAULT_LOSTDIGITS,DEFAULT_ROUNDINGMODE);
-        public static readonly MathContext DECIMAL128 = new MathContext(34, DEFAULT_FORM, DEFAULT_LOSTDIGITS, ROUND_HALF_EVEN);
+        public MathContext(int precision) : this(precision, RoundingMode.HALF_UP) {
+        }
 
-        public MathContext(int setdigits) : this(setdigits,DEFAULT_FORM,DEFAULT_LOSTDIGITS,DEFAULT_ROUNDINGMODE) {}
-        public MathContext(int setdigits, int setform) : this(setdigits,setform,DEFAULT_LOSTDIGITS,DEFAULT_ROUNDINGMODE) {}
-        public MathContext(int setdigits, int setform, bool setlostdigits) : this(setdigits,setform,setlostdigits,DEFAULT_ROUNDINGMODE) {}
-        public MathContext(int setdigits, int setform, bool setlostdigits, int setroundingmode) {
-            if (setdigits!=DEFAULT_DIGITS)
-                {
-                    if (setdigits<MIN_DIGITS)
-                        throw new System.ArgumentException("Digits too small:"+" "+setdigits);
-                    if (setdigits>MAX_DIGITS)
-                        throw new System.ArgumentException("Digits too large:"+" "+setdigits);
-                }
-            {
-                if (setform==SCIENTIFIC){
-                    // [most common]
-                }else if (setform==ENGINEERING){
-                }else if (setform==PLAIN){
-                }else{
-                    throw new System.ArgumentException("Bad form value:"+" "+setform);
-                }
+        public MathContext(int precision, RoundingMode roundingMode) {
+            if(precision < 0) {
+                throw new System.ArgumentException("Digits < 0");
             }
-            if ((!(isValidRound(setroundingmode))))
-                throw new System.ArgumentException("Bad roundingMode value:"+" "+setroundingmode);
-            digits=setdigits;
-            form=setform;
-            lostDigits=setlostdigits; // [no bad value possible]
-            roundingMode=setroundingmode;
+            this.precision = precision;
+            this.roundingMode = roundingMode;
         }
 
-        public int getDigits(){
-            return digits;
+        // public MathContext(String val) {
+        //     char[] charVal = val.ToCharArray();
+        //     int i; // Index of charVal
+        //     int j; // Index of chRoundingMode
+        //     int digit; // It will contain the digit parsed
+
+        //     if ((charVal.Length < 27) || (charVal.Length > 45)) {
+        //         throw new System.ArgumentException("bad string format");
+        //     }
+        //     // Parsing "precision=" String
+        //     for (i = 0; (i < chPrecision.Length) && (charVal[i] == chPrecision[i]); i++) {
+        //         ;
+        //     }
+
+        //     if (i < chPrecision.Length) {
+        //         throw new System.ArgumentException("bad string format");
+        //     }
+        //     // Parsing the value for "precision="...
+        //     if(!Char.IsDigit(charVal[i])) {
+        //         throw new System.ArgumentException("bad string format");
+        //     }
+        //     digit = charVal[i] - '0';
+        //     this.precision = this.precision * 10 + digit;
+        //     i++;
+
+        //     do {
+        //         if(!Char.IsDigit(charVal[i])) {
+        //             if (charVal[i] == ' ') {
+        //                 // It parsed all the digits
+        //                 i++;
+        //                 break;
+        //             }
+        //             // It isn't  a valid digit, and isn't a white space
+        //             throw new System.ArgumentException("bad string format");
+        //         }
+        //         digit = charVal[i] - '0';
+        //         // Accumulating the value parsed
+        //         this.precision = this.precision * 10 + digit;
+        //         if (this.precision < 0) {
+        //             throw new System.ArgumentException("bad string format");
+        //         }
+        //         i++;
+        //     } while (true);
+        //     // Parsing "roundingMode="
+        //     for (j = 0; (j < chRoundingMode.Length)
+        //              && (charVal[i] == chRoundingMode[j]); i++, j++) {
+        //         ;
+        //     }
+
+        //     if (j < chRoundingMode.Length) {
+        //         throw new System.ArgumentException("bad string format");
+        //     }
+        //     // Parsing the value for "roundingMode"...
+        //     this.roundingMode = RoundingModeS.valueOf(new String(charVal, i,
+        //                                                         charVal.Length - i));
+        // }
+
+        public int getPrecision() {
+            return precision;
         }
 
-        public int getForm(){
-            return form;
-        }
-
-        public bool getLostDigits(){
-            return lostDigits;
-        }
-
-        public int getRoundingMode(){
+        public RoundingMode getRoundingMode() {
             return roundingMode;
         }
 
-        public override string ToString() {
-            string formstr=null;
-            int r=0;
-            string roundword=null;
-            {/*select*/
-                if (form==SCIENTIFIC)
-                    formstr="SCIENTIFIC";
-                else if (form==ENGINEERING)
-                    formstr="ENGINEERING";
-                else{
-                    formstr="PLAIN";/* form=PLAIN */
-                }
-            }
-            for(int i = ROUNDS.Length; i>0; i--, r++) {
-                if(roundingMode == ROUNDS[r]) {
-                    roundword = ROUNDWORDS[r];
-                    break;
-                }
-            }
-            return "digits="+digits+" "+"form="+formstr+" "+"lostDigits="+(lostDigits?"1":"0")+" "+"roundingMode="+roundword;
+        public override bool Equals(object x) {
+            return ((x is MathContext)
+                    && (((MathContext) x).getPrecision() == precision) && (((MathContext) x)
+                                                                           .getRoundingMode() == roundingMode));
         }
 
-        private static bool isValidRound(int testround){
-            for(int i = ROUNDS.Length, r=0; i>0; i--, r++) {
-                if(testround == ROUNDS[r]) {
-                    return true;
-                }
-            }
-            return false;
+        public override int GetHashCode() {
+            // Make place for the necessary bits to represent 8 rounding modes
+            return ((precision << 3) | RoundingModeS.ordinal(roundingMode));
+        }
+
+        public override string ToString() {
+            StringBuilder sb = new StringBuilder(45);
+
+            sb.Append(chPrecision);
+            sb.Append(precision);
+            sb.Append(' ');
+            sb.Append(chRoundingMode);
+            sb.Append(roundingMode);
+            return sb.ToString();
         }
     }
 }

@@ -277,7 +277,7 @@ namespace Ioke.Math {
         }
 
         public virtual BigDecimal AsBigDecimal() {
-            return new BigDecimal(doubleValue().ToString());
+            return new BigDecimal(doubleValue().ToString(System.Globalization.CultureInfo.InvariantCulture));
         }
     }
 }

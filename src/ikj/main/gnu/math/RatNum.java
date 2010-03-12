@@ -82,7 +82,7 @@ public abstract class RatNum extends RealNum
 
   public static RatNum divide (RatNum x, RatNum y)
   {
-    return RatNum.make (IntNum.times (x.numerator(), y.denominator()),
+      return RatNum.make (IntNum.times (x.numerator(), y.denominator()),
 			IntNum.times (x.denominator(), y.numerator()));
   }
 

@@ -6,13 +6,13 @@ import java.math.*;
  * Taken from public domain implementation found at http://www.merriampark.com/bigsqrt.htm
  */
 public class BigSquareRoot {
-    private static BigDecimal ZERO = new BigDecimal ("0");
-    private static BigDecimal ONE = new BigDecimal ("1");
-    private static BigDecimal TWO = new BigDecimal ("2");
+    private static java.math.BigDecimal ZERO = new java.math.BigDecimal ("0");
+    private static java.math.BigDecimal ONE = new java.math.BigDecimal ("1");
+    private static java.math.BigDecimal TWO = new java.math.BigDecimal ("2");
     public static final int DEFAULT_MAX_ITERATIONS = 50;
     public static final int DEFAULT_SCALE = 10;
 
-    private BigDecimal error;
+    private java.math.BigDecimal error;
     private final int scale;
     private final int maxIterations;
     
@@ -25,26 +25,26 @@ public class BigSquareRoot {
         this.scale = scale;
     }
 
-    public BigDecimal get(BigInteger n) {
-        return get(new BigDecimal(n));
+    public java.math.BigDecimal get(java.math.BigInteger n) {
+        return get(new java.math.BigDecimal(n));
     }
 
-    public BigDecimal get(BigDecimal n) {
+    public java.math.BigDecimal get(java.math.BigDecimal n) {
         if (n.compareTo(ZERO) <= 0) {
             throw new IllegalArgumentException ();
         }
 
-        BigDecimal initialGuess = getInitialApproximation(n);
-        BigDecimal lastGuess = ZERO;
-        BigDecimal guess = new BigDecimal(initialGuess.toString());
+        java.math.BigDecimal initialGuess = getInitialApproximation(n);
+        java.math.BigDecimal lastGuess = ZERO;
+        java.math.BigDecimal guess = new java.math.BigDecimal(initialGuess.toString());
 
         int iterations = 0;
         boolean more = true;
         while(more) {
             lastGuess = guess;
-            guess = n.divide(guess, scale, BigDecimal.ROUND_HALF_UP);
+            guess = n.divide(guess, scale, java.math.BigDecimal.ROUND_HALF_UP);
             guess = guess.add(lastGuess);
-            guess = guess.divide(TWO, scale, BigDecimal.ROUND_HALF_UP);
+            guess = guess.divide(TWO, scale, java.math.BigDecimal.ROUND_HALF_UP);
             error = n.subtract(guess.multiply(guess));
             if(++iterations >= maxIterations) {
                 more = false;
@@ -55,23 +55,14 @@ public class BigSquareRoot {
         return guess;
     }
 
-    private static BigDecimal getInitialApproximation(BigDecimal n) {
-        BigInteger integerPart = n.toBigInteger();
+    private static java.math.BigDecimal getInitialApproximation(java.math.BigDecimal n) {
+        java.math.BigInteger integerPart = n.toBigInteger();
         int length = integerPart.toString().length();
         if((length % 2) == 0) {
             length--;
         }
         length /= 2;
-        BigDecimal guess = ONE.movePointRight(length);
+        java.math.BigDecimal guess = ONE.movePointRight(length);
         return guess;
-    }
-
-    private static BigInteger getRandomBigInteger(int nDigits) {
-        StringBuilder sb = new StringBuilder();
-        java.util.Random r = new java.util.Random();
-        for (int i = 0; i < nDigits; i++) {
-            sb.append(r.nextInt(10));
-        }
-        return new BigInteger(sb.toString());
     }
 }

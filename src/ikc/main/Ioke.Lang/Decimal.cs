@@ -12,7 +12,7 @@ namespace Ioke.Lang {
         }
 
         public Decimal(string textRepresentation) {
-            this.value = new BigDecimal(textRepresentation);
+            this.value = new BigDecimal(textRepresentation).stripTrailingZeros();
         }
 
         public Decimal(BigDecimal value) {
@@ -32,12 +32,18 @@ namespace Ioke.Lang {
         }
 
         public string AsNativeString() {
-            string s = value.ToString(MathContext.PLAIN);
-            if(s[s.Length-1] == '0' && s.IndexOf('.') != -1 && s.IndexOf('e') == -1 && s.IndexOf('E') == -1) {
-                int end = s.Length-1;
-                while(s[end] == '0' && s[end-1] != '.') end--;
-                if(s[end-1] == '.') end++;
-                return s.Substring(0, end);
+            string s = value.toPlainString();
+            if(s.IndexOf('.') != -1) {
+                if(s[s.Length-1] == '0' && s.IndexOf('e') == -1 && s.IndexOf('E') == -1) {
+                    int end = s.Length-1;
+                    while(s[end] == '0' && s[end-1] != '.') end--;
+                    if(s[end-1] == '.') end++;
+                    return s.Substring(0, end);
+                }
+            } else {
+                if(s.IndexOf('e') == -1 && s.IndexOf('E') == -1) {
+                    return s + ".0";
+                }
             }
             return s;
         }
@@ -91,6 +97,12 @@ namespace Ioke.Lang {
                                                        new TypeCheckingNativeMethod.WithNoArguments("asText", obj,
                                                                                                     (method, on, args, keywords, context, message) => {
                                                                                                         return runtime.NewText(on.ToString());
+                                                                                                    })));
+
+            obj.RegisterMethod(runtime.NewNativeMethod("returns the square root of the receiver. this should return the same result as calling ** with 0.5",
+                                                       new TypeCheckingNativeMethod.WithNoArguments("sqrt", obj,
+                                                                                                    (method, on, args, keywords, context, message) => {
+                                                                                                        return runtime.NewDecimal(new BigSquareRoot().Get(((Decimal)IokeObject.dataOf(on)).value));
                                                                                                     })));
 
             obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns a text inspection of the object",

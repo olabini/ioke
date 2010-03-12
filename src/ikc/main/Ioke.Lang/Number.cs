@@ -152,6 +152,27 @@ namespace Ioke.Lang {
                                                                    return context.runtime.NewNumber(Number.GetValue(on).GetHashCode());
                                                                })));
 
+            number.RegisterMethod(runtime.NewNativeMethod("returns the square root of the receiver. this should return the same result as calling ** with 0.5",
+                                                           new NativeMethod.WithNoArguments("sqrt", (method, context, message, on, outer) => {
+                                                                   outer.ArgumentsDefinition.CheckArgumentCount(context, message, on);
+
+                                                                   RatNum value = Number.GetValue(on);
+                                                                   if(value is IntFraction) {
+                                                                       IntNum num = value.numerator();
+                                                                       IntNum den = value.denominator();
+                                                                       BigDecimal nums = new BigSquareRoot().Get(num.AsBigDecimal());
+                                                                       BigDecimal dens = new BigSquareRoot().Get(den.AsBigDecimal());
+                                                                       try {
+                                                                           num = IntNum.valueOf(nums.toBigIntegerExact().ToString());
+                                                                           den = IntNum.valueOf(dens.toBigIntegerExact().ToString());
+                                                                           return context.runtime.NewNumber(new IntFraction(num, den));
+                                                                       } catch(ArithmeticException e) {
+                                                                           // Ignore and fall through
+                                                                       }
+                                                                   }
+                                                                   return context.runtime.NewDecimal(new BigSquareRoot().Get(value.AsBigDecimal()));
+                                                               })));
+
             number.RegisterMethod(runtime.NewNativeMethod("returns true if the left hand side number is equal to the right hand side number.",
                                                        new TypeCheckingNativeMethod("==", TypeCheckingArgumentsDefinition.builder()
                                                                                     .ReceiverMustMimic(runtime.Number)

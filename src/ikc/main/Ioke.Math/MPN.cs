@@ -1,5 +1,19 @@
 namespace Ioke.Math {
+    using System;
+
     public class MPN {
+        internal static string arrToString(int[] arr) {
+            var sb = new System.Text.StringBuilder();
+            sb.Append("[");
+            var sep = "";
+            foreach(int x in arr) {
+                sb.Append(sep).Append(x);
+                sep = ", ";
+            }
+            sb.Append("]");
+            return sb.ToString();
+        }
+
         /** Add x[0:size-1] and y, and write the size least
          * significant words of the result to dest.
          * Return carry, either 0 or 1.
@@ -52,9 +66,9 @@ namespace Ioke.Math {
                     y += cy;	/* add previous carry to subtrahend */
                     // Invert the high-order bit, because: (unsigned) X > (unsigned) Y
                     // iff: (int) (X^0x80000000) > (int) (Y^0x80000000).
-                    cy = (y^0x80000000) < (cy^0x80000000) ? 1 : 0;
+                    cy = (int)((uint)y^0x80000000) < (int)((uint)cy^0x80000000) ? 1 : 0;
                     y = x - y;
-                    cy += (y^0x80000000) > (x ^ 0x80000000) ? 1 : 0;
+                    cy += (int)((uint)y^0x80000000) > (int)((uint)x ^ 0x80000000) ? 1 : 0;
                     dest[i] = y;
                 }
             return cy;
@@ -578,8 +592,7 @@ namespace Ioke.Math {
          * Leaves result in x, and returns len of result.
          * Also destroys y (actually sets it to a copy of the result). */
 
-        public static int gcd (int[] x, int[] y, int len)
-        {
+        public static int gcd (int[] x, int[] y, int len) {
             int i, word;
             // Find sh such that both x and y are divisible by 2**sh.
             for (i = 0; ; i++)
@@ -599,7 +612,6 @@ namespace Ioke.Math {
             len -= initShiftWords;
             MPN.rshift0 (x, x, initShiftWords, len, initShiftBits);
             MPN.rshift0 (y, y, initShiftWords, len, initShiftBits);
-
             int[] odd_arg; /* One of x or y which is odd. */
             int[] other_arg; /* The other one can be even or odd. */
             if ((x[0] & 1) != 0)

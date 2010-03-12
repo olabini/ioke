@@ -921,8 +921,7 @@ namespace Ioke.Math {
                 }
         }
 
-        public static IntNum gcd (IntNum x, IntNum y)
-        {
+        public static IntNum gcd (IntNum x, IntNum y) {
             int xval = x.ival;
             int yval = y.ival;
             if (x.words == null)

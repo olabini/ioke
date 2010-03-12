@@ -930,42 +930,41 @@ public class IntNum extends RatNum implements Externalizable
       }
   }
 
-  public static IntNum gcd (IntNum x, IntNum y)
-  {
-    int xval = x.ival;
-    int yval = y.ival;
-    if (x.words == null)
-      {
-	if (xval == 0)
-	  return IntNum.abs(y);
-	if (y.words == null
-	    && xval != Integer.MIN_VALUE && yval != Integer.MIN_VALUE)
-	  {
-	    if (xval < 0)
-	      xval = -xval;
-	    if (yval < 0)
-	      yval = -yval;
-	    return IntNum.make (IntNum.gcd (xval, yval));
-	  }
-	xval = 1;
-      }
-    if (y.words == null)
-      {
-	if (yval == 0)
-	  return IntNum.abs(x);
-	yval = 1;
-      }
-    int len = (xval > yval ? xval : yval) + 1;
-    int[] xwords = new int[len];
-    int[] ywords = new int[len];
-    x.getAbsolute (xwords);
-    y.getAbsolute (ywords);
-    len = MPN.gcd (xwords, ywords, len);
-    IntNum result = new IntNum (0);
-    result.ival = len;
-    result.words = xwords;
-    return result.canonicalize ();
-  }
+    public static IntNum gcd (IntNum x, IntNum y) {
+        int xval = x.ival;
+        int yval = y.ival;
+        if (x.words == null)
+            {
+                if (xval == 0)
+                    return IntNum.abs(y);
+                if (y.words == null
+                    && xval != Integer.MIN_VALUE && yval != Integer.MIN_VALUE)
+                    {
+                        if (xval < 0)
+                            xval = -xval;
+                        if (yval < 0)
+                            yval = -yval;
+                        return IntNum.make (IntNum.gcd (xval, yval));
+                    }
+                xval = 1;
+            }
+        if (y.words == null)
+            {
+                if (yval == 0)
+                    return IntNum.abs(x);
+                yval = 1;
+            }
+        int len = (xval > yval ? xval : yval) + 1;
+        int[] xwords = new int[len];
+        int[] ywords = new int[len];
+        x.getAbsolute (xwords);
+        y.getAbsolute (ywords);
+        len = MPN.gcd (xwords, ywords, len);
+        IntNum result = new IntNum (0);
+        result.ival = len;
+        result.words = xwords;
+        return result.canonicalize ();
+    }
 
   public static IntNum lcm (IntNum x, IntNum y)
   {
