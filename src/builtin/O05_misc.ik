@@ -35,3 +35,6 @@ DefaultBehavior FlowControl sap = dmacro(
   self
 )
 
+cell(:use) reload = method("will take the same kind of arguments as use, but will make sure that the code will be reloaded every time called.", 
+  filename,
+  use(filename))
