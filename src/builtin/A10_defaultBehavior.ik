@@ -137,7 +137,7 @@ DefaultBehavior FlowControl with = macro(
   call arguments each(arg,
     if(arg keyword?,
       Reflector other:cell(newObject, arg name asText[0..0-2]) = arg next evaluateOn(call ground),
-      newObject doMessage(arg)))
+      arg evaluateOn(call ground, newObject)))
   newObject)
 
 DefaultBehavior Conditions warn! = method(

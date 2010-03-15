@@ -602,6 +602,11 @@ describe(DefaultBehavior,
       Origin with(foo: 13, bar: 14) cellNames should == [:foo, :bar]
       Origin with(foo: 13, bar: 14) cells should == {foo: 13, bar: 14}
     )
+
+    it("should handle assignments inside of with correctly",
+      x = Origin mimic
+      x with(foo = 32) foo should == 32
+    )
   )
 
   describe("!",
