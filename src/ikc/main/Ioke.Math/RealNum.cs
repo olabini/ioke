@@ -81,7 +81,9 @@ namespace Ioke.Math {
             return toExactInt(doubleValue(), rounding_mode);
         }
 
-        public abstract RealNum toInt (int rounding_mode);
+        public virtual RealNum toInt(int rounding_mode) {
+            return new DFloNum(toInt(doubleValue(), rounding_mode));
+        }
 
         /** Converts real to an exact integer, with specified rounding mode. */
         public static IntNum toExactInt (double value, int rounding_mode)

@@ -56,11 +56,6 @@ namespace Ioke.Lang {
             return AsNativeString();
         }
 
-        public override IokeObject ConvertToRational(IokeObject self, IokeObject m, IokeObject context, bool signalCondition) {
-            System.Console.Error.WriteLine("convertorational should be implemented");
-            throw new Exception("TODO: implement");
-        }
-
         public override IokeObject ConvertToDecimal(IokeObject self, IokeObject m, IokeObject context, bool signalCondition) {
             return self;
         }

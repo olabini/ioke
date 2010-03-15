@@ -416,7 +416,11 @@ namespace Ioke.Lang {
                                                                                              IokeData data = IokeObject.dataOf(arg);
 
                                                                                              if(!(data is Number)) {
-                                                                                                 arg = IokeObject.ConvertToRational(arg, message, context, true);
+                                                                                                 if(data is Decimal) {
+                                                                                                     return context.runtime.NewDecimal(((RealNum)(Complex.power(Number.GetValue(on), new DFloNum(Decimal.GetValue(arg).ToString())))).AsBigDecimal());
+                                                                                                 } else {
+                                                                                                     arg = IokeObject.ConvertToRational(arg, message, context, true);
+                                                                                                 }
                                                                                              }
 
                                                                                              return context.runtime.NewNumber((RatNum)Number.GetValue(on).power(Number.IntValue(arg)));
