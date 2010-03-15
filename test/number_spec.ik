@@ -456,6 +456,11 @@ describe(Number,
         (2 ** 40) should == 1099511627776
       )
 
+      it("should be able to raise a number to a decimal number",
+        (4 ** 0.5) should == 2
+        (124 ** 2.3) should be close(65293.4889760738)
+      )
+
       it("should convert its argument to a rational if its not a number or a decimal",
         x = Origin mimic
         x asRational = method(3)

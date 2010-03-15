@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import gnu.math.Complex;
+import gnu.math.DFloNum;
 import gnu.math.BitOps;
 import gnu.math.IntNum;
 import gnu.math.RatNum;
@@ -536,7 +537,11 @@ public class Number extends IokeData {
                     IokeData data = IokeObject.data(arg);
 
                     if(!(data instanceof Number)) {
-                        arg = IokeObject.convertToRational(arg, message, context, true);
+                        if(data instanceof Decimal) {
+                            return context.runtime.newDecimal(((RealNum)(Complex.power(Number.value(on), new DFloNum(Decimal.value(arg).toString())))).asBigDecimal());
+                        } else {
+                            arg = IokeObject.convertToRational(arg, message, context, true);
+                        }
                     }
 
                     return context.runtime.newNumber((RatNum)Number.value(on).power(Number.intValue(arg)));
