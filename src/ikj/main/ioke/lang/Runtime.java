@@ -338,6 +338,7 @@ public class Runtime extends IokeData {
             });
 
         try {
+            evaluateString("System lowLevelLoad!(\"builtin/A01_use\", false)", message, ground);
             evaluateString("use(\"builtin/A05_conditions\")", message, ground);
             evaluateString("use(\"builtin/A10_defaultBehavior\")", message, ground);
             evaluateString("use(\"builtin/A15_dmacro\")", message, ground);

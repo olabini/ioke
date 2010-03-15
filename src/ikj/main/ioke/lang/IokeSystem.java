@@ -104,16 +104,18 @@ public class IokeSystem extends IokeData {
         }
     }
 
-    public boolean use(IokeObject self, IokeObject context, IokeObject message, String name) throws ControlFlow {
+    public boolean use(IokeObject self, IokeObject context, IokeObject message, String name, boolean forceReload) throws ControlFlow {
         final Runtime runtime = context.runtime;
         Builtin b = context.runtime.getBuiltin(name);
         if(b != null) {
-            if(loaded.contains(name)) {
+            if(!forceReload && loaded.contains(name)) {
                 return false;
             } else {
                 try {
                     b.load(context.runtime, context, message);
-                    loaded.add(name);
+                    if(!forceReload) {
+                        loaded.add(name);
+                    }
                     return true;
                 } catch(Throwable e) {
                     final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition,
@@ -184,7 +186,7 @@ public class IokeSystem extends IokeData {
                 File f = new File(name + suffix);
 
                 if(f.exists() && f.isFile()) {
-                    if(loaded.contains(f.getCanonicalPath())) {
+                    if(!forceReload && loaded.contains(f.getCanonicalPath())) {
                         return false;
                     } else {
                         if(f.getCanonicalPath().endsWith(".jar")) {
@@ -193,13 +195,15 @@ public class IokeSystem extends IokeData {
                             context.runtime.evaluateFile(f, message, context);
                         }
 
-                        loaded.add(f.getCanonicalPath());
+                        if(!forceReload) {
+                            loaded.add(f.getCanonicalPath());
+                        }
                         return true;
                     }
                 }
 
                 if(null != is) {
-                    if(loaded.contains(name+suffix)) {
+                    if(!forceReload && loaded.contains(name+suffix)) {
                         return false;
                     } else {
                         if((name+suffix).endsWith(".jar")) {
@@ -207,7 +211,9 @@ public class IokeSystem extends IokeData {
                         } else {
                             context.runtime.evaluateStream(name+suffix, new InputStreamReader(is, "UTF-8"), message, context);
                         }
-                        loaded.add(name+suffix);
+                        if(!forceReload) {
+                            loaded.add(name+suffix);
+                        }
                         return true;
                     }
                 }
@@ -288,7 +294,7 @@ public class IokeSystem extends IokeData {
 //                     System.err.println("trying: " + f);
 
                     if(f.exists() && f.isFile()) {
-                        if(loaded.contains(f.getCanonicalPath())) {
+                        if(!forceReload && loaded.contains(f.getCanonicalPath())) {
                             return false;
                         } else {
                             if(f.getCanonicalPath().endsWith(".jar")) {
@@ -297,13 +303,16 @@ public class IokeSystem extends IokeData {
                                 context.runtime.evaluateFile(f, message, context);
                             }
 
-                            loaded.add(f.getCanonicalPath());
+                            if(!forceReload) {
+                                loaded.add(f.getCanonicalPath());
+                            }
+
                             return true;
                         }
                     }
 
                     if(null != is) {
-                        if(loaded.contains(name+suffix)) {
+                        if(!forceReload && loaded.contains(name+suffix)) {
                             return false;
                         } else {
                             if((name+suffix).endsWith(".jar")) {
@@ -311,7 +320,11 @@ public class IokeSystem extends IokeData {
                             } else {
                                 context.runtime.evaluateStream(name+suffix, new InputStreamReader(is, "UTF-8"), message, context);
                             }
-                            loaded.add(name+suffix);
+
+                            if(!forceReload) {
+                                loaded.add(name+suffix);
+                            }
+
                             return true;
                         }
                     }
@@ -580,6 +593,33 @@ public class IokeSystem extends IokeData {
                     getArguments().checkArgumentCount(context, message, on);
                     getAtExits(on).add(new AtExitInfo(context, IokeObject.as(message.getArguments().get(0), context)));
                     return context.runtime.nil;
+                }
+            }));
+
+        obj.registerMethod(runtime.newNativeMethod("takes one evaluated string argument and a boolean of whether loading should be forced or not. will import the file corresponding to the string based on the Ioke loading behavior", new NativeMethod("lowLevelLoad!") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("module")
+                    .withRequiredPositional("forceReload")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+                    boolean forceReload = IokeObject.isTrue(args.get(1));
+
+                    String name = Text.getText(((Message)IokeObject.data(runtime.asText)).sendTo(runtime.asText, context, args.get(0)));
+                    if(((IokeSystem)IokeObject.data(runtime.system)).use(IokeObject.as(on, context), context, message, name, forceReload)) {
+                        return runtime._true;
+                    } else {
+                        return runtime._false;
+                    }
                 }
             }));
     }

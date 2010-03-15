@@ -39,7 +39,7 @@ describe(DefaultBehavior,
     )
 
     it("should just return a use object if called without arguments",
-      cell(:use) should == use()
+      cell(:use) should be same(use())
     )
 
     describe("reload",
@@ -71,9 +71,28 @@ describe(DefaultBehavior,
         fn(use reload("blarg")) should signal(Condition Error Load)
       )
 
-      it("should be possible to load something that has been loaded by use")
-      it("should be possible to load something that has been loaded by reload before")
-      it("should be possible to load something that hasn't been loaded before")
+      it("should be possible to load something that has been loaded by use",
+        use("test/reload_x")
+        Ground reload_count_x should == 0
+        use reload("test/reload_x")
+        Ground reload_count_x should == 1
+      )
+
+      it("should be possible to load something that has been loaded by reload before",
+        use("test/reload_y")
+        Ground reload_count_y should == 0
+        use reload("test/reload_y")
+        Ground reload_count_x should == 1
+        use reload("test/reload_y")
+        Ground reload_count_y should == 2
+      )
+
+      it("should be possible to load something that hasn't been loaded before",
+        use reload("test/reload_z")
+        Ground reload_count_z should == 0
+        use reload("test/reload_z")
+        Ground reload_count_z should == 1
+      )
     )
   )
 )

@@ -99,33 +99,5 @@ public class DefaultBehavior {
         aspects.setKind("DefaultBehavior Aspects");
         obj.mimicsWithoutCheck(aspects);
         obj.registerCell("Aspects", aspects);
-
-        obj.registerMethod(runtime.newNativeMethod("takes one or more evaluated string argument. will import the files corresponding to each of the strings named based on the Ioke loading behavior that can be found in the documentation for the loadBehavior cell on System.", new NativeMethod("use") {
-                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
-                    .builder()
-                    .withOptionalPositional("module", "false")
-                    .getArguments();
-
-                @Override
-                public DefaultArgumentsDefinition getArguments() {
-                    return ARGUMENTS;
-                }
-
-                @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    List<Object> args = new ArrayList<Object>();
-                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
-                    if(args.size() == 0) {
-                        return method;
-                    }
-
-                    String name = Text.getText(((Message)IokeObject.data(runtime.asText)).sendTo(runtime.asText, context, args.get(0)));
-                    if(((IokeSystem)IokeObject.data(runtime.system)).use(IokeObject.as(on, context), context, message, name)) {
-                        return runtime._true;
-                    } else {
-                        return runtime._false;
-                    }
-                }
-            }));
     }
 }// DefaultBehavior
