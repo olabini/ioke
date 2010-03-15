@@ -378,6 +378,7 @@ namespace Ioke.Lang {
                     }));
 
             try {
+                EvaluateString("System lowLevelLoad!(\"builtin/A01_use\", false)", Message, Ground);
                 EvaluateString("use(\"builtin/A05_conditions\")", Message, Ground);
                 EvaluateString("use(\"builtin/A10_defaultBehavior\")", Message, Ground);
                 EvaluateString("use(\"builtin/A15_dmacro\")", Message, Ground);

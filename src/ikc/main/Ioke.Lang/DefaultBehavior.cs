@@ -86,25 +86,6 @@ namespace Ioke.Lang {
             aspects.Kind = "DefaultBehavior Aspects";
             obj.MimicsWithoutCheck(aspects);
             obj.RegisterCell("Aspects", aspects);
-
-            obj.RegisterMethod(runtime.NewNativeMethod("takes one or more evaluated string argument. will import the files corresponding to each of the strings named based on the Ioke loading behavior that can be found in the documentation for the loadBehavior cell on System.",
-                                                       new NativeMethod("use", DefaultArgumentsDefinition.builder()
-                                                                        .WithOptionalPositional("module", "false")
-                                                                        .Arguments,
-                                                                        (method, context, message, on, outer) => {
-                                                                            IList args = new SaneArrayList();
-                                                                            outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, args, new SaneDictionary<string, object>());
-                                                                            if(args.Count == 0) {
-                                                                                return method;
-                                                                            }
-
-                                                                            string name = Text.GetText(((Message)IokeObject.dataOf(runtime.asText)).SendTo(runtime.asText, context, args[0]));
-                                                                            if(((IokeSystem)IokeObject.dataOf(runtime.System)).Use(IokeObject.As(on, context), context, message, name)) {
-                                                                                return runtime.True;
-                                                                            } else {
-                                                                                return runtime.False;
-                                                                            }
-                                                                        })));
         }
     }
 }

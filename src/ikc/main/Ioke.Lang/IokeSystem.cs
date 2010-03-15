@@ -240,6 +240,25 @@ namespace Ioke.Lang {
                                                                             GetAtExits(on).Add(new AtExitInfo(context, IokeObject.As(message.Arguments[0], context)));
                                                                             return context.runtime.nil;
                                                                         })));
+
+            obj.RegisterMethod(runtime.NewNativeMethod("takes one evaluated string argument and a boolean of whether loading should be forced or not. will import the file corresponding to the string based on the Ioke loading behavior",
+                                                       new NativeMethod("lowLevelLoad!", DefaultArgumentsDefinition.builder()
+                                                                        .WithRequiredPositional("module")
+                                                                        .WithRequiredPositional("forceReload")
+                                                                        .Arguments,
+                                                                        (method, context, message, on, outer) => {
+                                                                            IList args = new SaneArrayList();
+                                                                            outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, args, new SaneDictionary<string, object>());
+
+                                                                            bool forceReload = IokeObject.IsObjectTrue(args[1]);
+
+                                                                            string name = Text.GetText(((Message)IokeObject.dataOf(runtime.asText)).SendTo(runtime.asText, context, args[0]));
+                                                                            if(((IokeSystem)IokeObject.dataOf(runtime.System)).Use(IokeObject.As(on, context), context, message, name, forceReload)) {
+                                                                                return runtime.True;
+                                                                            } else {
+                                                                                return runtime.False;
+                                                                            }
+                                                                        })));
         }
 
         private static readonly string[] SUFFIXES = {".ik"};
@@ -269,16 +288,18 @@ namespace Ioke.Lang {
             }
         }
 
-        public bool Use(IokeObject self, IokeObject context, IokeObject message, string name) {
+        public bool Use(IokeObject self, IokeObject context, IokeObject message, string name, bool forceReload) {
             Runtime runtime = context.runtime;
             Builtin b = context.runtime.GetBuiltin(name);
             if(b != null) {
-                if(loaded.Contains(name)) {
+                if(!forceReload && loaded.Contains(name)) {
                     return false;
                 } else {
                     try {
                         b.Load(context.runtime, context, message);
-                        loaded.Add(name);
+                        if(!forceReload) {
+                            loaded.Add(name);
+                        }
                         return true;
                     } catch(Exception e) {
                         IokeObject condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition,
@@ -326,12 +347,14 @@ namespace Ioke.Lang {
                 try {
                     FileInfo f = new FileInfo(name + suffix);
                     if(f.Exists) {
-                        if(loaded.Contains(f.FullName)) {
+                        if(!forceReload && loaded.Contains(f.FullName)) {
                             return false;
                         } else {
                             context.runtime.EvaluateFile(f, message, context);
                         }
-                        loaded.Add(f.FullName);
+                        if(!forceReload) {
+                            loaded.Add(f.FullName);
+                        }
                         return true;
                     }
 
@@ -340,12 +363,14 @@ namespace Ioke.Lang {
                         xname = xname.Substring(1);
                     Stream s = typeof(IokeSystem).Assembly.GetManifestResourceStream(xname);
                     if(s != null) {
-                        if(loaded.Contains(name + suffix)) {
+                        if(!forceReload && loaded.Contains(name + suffix)) {
                             return false;
                         } else {
                             context.runtime.EvaluateStream(name+suffix, new StreamReader(s, System.Text.Encoding.UTF8), message, context);
                         }
-                        loaded.Add(name + suffix);
+                        if(!forceReload) {
+                            loaded.Add(name + suffix);
+                        }
                         return true;
                     }
                 } catch(FileNotFoundException) {
@@ -399,11 +424,13 @@ namespace Ioke.Lang {
                         }
 
                         if(f.Exists) {
-                            if(loaded.Contains(f.FullName)) {
+                            if(!forceReload && loaded.Contains(f.FullName)) {
                                 return false;
                             } else {
                                 context.runtime.EvaluateFile(f, message, context);
-                                loaded.Add(f.FullName);
+                                if(!forceReload) {
+                                    loaded.Add(f.FullName);
+                                }
                                 return true;
                             }
                         }
@@ -414,12 +441,14 @@ namespace Ioke.Lang {
 
                         Stream ss = typeof(IokeSystem).Assembly.GetManifestResourceStream(yname);
                         if(ss != null) {
-                            if(loaded.Contains(name + suffix)) {
+                            if(!forceReload && loaded.Contains(name + suffix)) {
                                 return false;
                             } else {
                                 context.runtime.EvaluateStream(name+suffix, new StreamReader(ss, System.Text.Encoding.UTF8), message, context);
                             }
-                            loaded.Add(name + suffix);
+                            if(!forceReload) {
+                                loaded.Add(name + suffix);
+                            }
                             return true;
                         }
                     } catch(FileNotFoundException) {
