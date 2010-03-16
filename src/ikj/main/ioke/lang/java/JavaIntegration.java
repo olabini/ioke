@@ -179,6 +179,9 @@ public class JavaIntegration {
         } else if(parameterType == Double.TYPE) {
             mv.visitVarInsn(DLOAD, position);
             mv.visitMethodInsn(INVOKESTATIC, "java/lang/Double", "valueOf", "(D)Ljava/lang/Double;");
+        } else if(parameterType == Boolean.TYPE) {
+            mv.visitVarInsn(ILOAD, position);
+            mv.visitMethodInsn(INVOKESTATIC, "java/lang/Boolean", "valueOf", "(Z)Ljava/lang/Boolean;");
         } else {
             mv.visitVarInsn(ALOAD, position);
         }
