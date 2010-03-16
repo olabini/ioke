@@ -166,6 +166,50 @@ describe(DefaultBehavior,
         foo(abc foo, murgicox, 42+17) should == [59]
       )
 
+      it("should destructure a simple repeated sequence of destructurings",
+        foo = dmacro(
+          [[>first, second] all]
+          all
+        )
+        
+        foo(42 + 5, megalon) should == [[47, 'megalon]]
+      )
+
+      it("should destructure a repeated sequence of destructurings",
+        foo = dmacro(
+          [[>first, second] all]
+          all
+        )
+        
+        foo() should == []
+        foo(42 + 5, megalon, 64*2, aba) should == [[47, 'megalon], [128, 'aba]]
+        foo(42 + 5, megalon, 64*2, aba, 10+10, 10+10) should == [[47, 'megalon], [128, 'aba], [20, '(10 +(10))]]
+      )
+
+      it("should destructure a repeated sequence of destructurings with only code",
+        foo = dmacro(
+          [[first, second, third] all]
+          all
+        )
+        
+        foo() should == []
+        foo(bla bu, blerg, blixi) should == [['(bla bu), 'blerg, 'blixi]]
+        foo(bla bu, blerg, blixi, humma, dumma(foo), bar) should == [['(bla bu), 'blerg, 'blixi], ['humma, 'dumma(foo), 'bar]]
+      )
+
+      it("should generate an error of nested sequence of destructuring doesn't match",
+        foo = dmacro(
+          [[first, second, third] all]
+          all
+        )
+        
+        fn(foo(1)) should signal(Condition Error Invocation NoMatch)
+        fn(foo(1,2)) should signal(Condition Error Invocation NoMatch)
+        fn(foo(1,2,3,4)) should signal(Condition Error Invocation NoMatch)
+        fn(foo(1,2,3,4,5)) should signal(Condition Error Invocation NoMatch)
+        fn(foo(1,2,3,4,5,6,7)) should signal(Condition Error Invocation NoMatch)
+      )
+
       it("should generate an error if not matching could happen",
         foo = dmacro(
           [] nil)

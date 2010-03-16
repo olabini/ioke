@@ -126,28 +126,60 @@ DefaultBehavior Definitions dsyntax = syntax("works exactly the same as dmacro, 
 )
 
 DefaultBehavior Definitions destructuring generatePatternMatch = method(thePattern, where,
-  minAndMax = patternMinAndMax(thePattern)
+  all = patternMinAndMax(thePattern)
+  min = all[0]
+  max = all[1]
+  period = all[2]
 
-  if(minAndMax first == minAndMax second,
-    where << ''(argCount == `(minAndMax first)),
+  if(min == max && period == nil,
+    where << ''(argCount == `(min)),
 
-    if(minAndMax second == -1,
-      if(minAndMax first == 0,
-        where << 'true,
-        where << ''(argCount >= `(minAndMax first))),
-      where << ''((argCount >= `(minAndMax first)) && (argCount <= `(minAndMax second))))))
+    if(period,
+      where << ''((argCount >= `(period first)) && ((argCount - `(period first)) % `(period second)) == 0),
+      if(max == -1,
+        if(min == 0,
+          where << 'true,
+          where << ''(argCount >= `(min))),
+        where << ''((argCount >= `(min)) && (argCount <= `(max)))))))
 
 DefaultBehavior Definitions destructuring patternMinAndMax = method(pattern,
   min = 0
   max = 0
-  pattern each(p,
-    if((p name == :"+") || (p name == :"+>"),
-      max = -1,
-      max++
-      optional = ((p name == :">") && (p arguments[0] next)) || p next
-      unless(((p name == :">") && (p arguments[0] next)) || p next,
-        min++)))
-  min => max
+  period = nil
+  pattern each(i, p,
+    if(p name == :"[]",
+      max = -1
+      period = [i, p arguments length],
+
+      if((p name == :"+") || (p name == :"+>"),
+        max = -1,
+        max++
+        optional = ((p name == :">") && (p arguments[0] next)) || p next
+        unless(((p name == :">") && (p arguments[0] next)) || p next,
+          min++))))
+  [min, max, period]
+)
+
+DefaultBehavior Definitions destructuring generateRepeatedMatch = method(arg, where, current, index,
+  bindName = arg next name
+  assgn = message(:"=")
+  assgn << message(bindName)
+  
+  pattern = arg arguments map(aa,
+    if(aa name == :">",
+      :evaluate,
+      :code))
+
+  argname = message(genSym)
+  insertPart = 'list
+  pattern each(i, pp,
+    if(pp == :evaluate,
+      insertPart << ''('(argname) [](`(i)) evaluateOn(call ground, call ground)),
+      insertPart << ''('(argname) [](`(i)))))
+  
+  assgn << ''(call arguments [`index..(-1)] sliced(`(pattern length)) map('(argname), '(insertPart)))
+  current = ((current -> assgn) -> '.)
+  [current, index + 1]
 )
 
 DefaultBehavior Definitions destructuring generateAssigns = method(thePattern, where,
@@ -157,53 +189,58 @@ DefaultBehavior Definitions destructuring generateAssigns = method(thePattern, w
   index = 0
   thePattern each(arg,
     name = arg name
-    evaluateArg = false
-    restArg = false
-    optional = false
-    if(arg arguments length > 0,
-      if(name == :">",
-        evaluateArg = true
-        if(arg arguments[0] next,
-          optional = it),
-        if(name == :"+",
-          restArg = true,
+    if(name == :"[]",
+      res = generateRepeatedMatch(arg, where, current, index)
+      current = res[0]
+      index = res[1],
 
+      evaluateArg = false
+      restArg = false
+      optional = false
+      if(arg arguments length > 0,
+        if(name == :">",
           evaluateArg = true
-          restArg = true))
-      name = arg arguments[0] name,
-      if(arg next,
-        optional = it))
+          if(arg arguments[0] next,
+            optional = it),
+          if(name == :"+",
+            restArg = true,
 
-    assgn = message(:"=")
-    assgn << message(name)
-    if(restArg,
-      assgnPart = ''(call arguments [`index..(-1)])
-      if(evaluateArg,
-        assgnPart last -> '(map(evaluateOn(call ground, call ground))))
-      assgn << assgnPart,
+            evaluateArg = true
+            restArg = true))
+        name = arg arguments[0] name,
+        if(arg next,
+          optional = it))
 
-      if(optional,
-        useOpt = ''(argCount <=(`index))
-        theTest = ''(if(`useOpt))
+      assgn = message(:"=")
+      assgn << message(name)
+      if(restArg,
+        assgnPart = ''(call arguments [`index..(-1)])
+        if(evaluateArg,
+          assgnPart last -> '(map(evaluateOn(call ground, call ground))))
+        assgn << assgnPart,
 
-        assgnPart = if(evaluateArg,
-          optional,
-          message(:"'") << optional)
-        theTest << assgnPart
+        if(optional,
+          useOpt = ''(argCount <=(`index))
+          theTest = ''(if(`useOpt))
+          
+          assgnPart = if(evaluateArg,
+            optional,
+            message(:"'") << optional)
+          theTest << assgnPart
 
-        assgnPart = if(evaluateArg,
-          ''(call argAt(`index)),
-          ''(call arguments[`index]))
-        theTest << assgnPart
-        assgn << theTest,
+          assgnPart = if(evaluateArg,
+            ''(call argAt(`index)),
+            ''(call arguments[`index]))
+          theTest << assgnPart
+          assgn << theTest,
 
-        assgnPart = if(evaluateArg,
-          ''(call argAt(`index)),
-          ''(call arguments[`index]))
-        assgn << assgnPart))
+          assgnPart = if(evaluateArg,
+            ''(call argAt(`index)),
+            ''(call arguments[`index]))
+          assgn << assgnPart))
 
-    current = ((current -> assgn) -> '.)
-    index++
+      current = ((current -> assgn) -> '.)
+      index++)
   )
   current last
 )
