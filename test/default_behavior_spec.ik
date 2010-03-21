@@ -1369,4 +1369,21 @@ describe(DefaultBehavior,
       fn(x sap(next, (q,(p,_,f)), nil)) should signal(Condition Error DestructuringMismatch)
     )
   )
+
+  describe("dip",
+    it("should call the code given as a lexical block",
+      x = Origin with(marked?: false)
+      Origin dip(_, x marked? = true)
+      x should be marked
+    )
+
+    it("should yield the receiver as the argument",
+      x = Origin mimic
+      x dip(vv, vv should be same(x))
+    )
+
+    it("should return the result of the block",
+      Origin mimic dip(_, :blah) should == :blah
+    )
+  )
 )

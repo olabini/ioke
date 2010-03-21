@@ -41,3 +41,8 @@ cell(:use) reload = method("will take the same kind of arguments as use, but wil
   filename,
   System lowLevelLoad!(filename, true)
 )
+
+DefaultBehavior FlowControl dip = dmacro("takes one argument name and one piece of code that will get the receiver as argument and return the result of calling the code",
+  [argName, code]
+  LexicalBlock createFrom(list(argName, code), call ground) call(self)
+)
