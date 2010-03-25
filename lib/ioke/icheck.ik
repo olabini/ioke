@@ -6,7 +6,8 @@ ICheck Generators = Origin mimic
 ICheck forAll = macro("takes zero or more generator arguments, zero or more guard arguments and zero or more classifier arguments. All of this is followed by one required code argument that will be wrapped in a lexical context. the method returns a Property with everything set correctly to execute the ICheck code",
   
   (generatorAndGuardCode, code) = (call arguments[0..-2], call arguments[-1])
-  (generatorCode, guardCode) = generatorAndGuardCode partition(first, first name != :"where" && first name != :"where:")
+  (generatorCode, guardCode) = generatorAndGuardCode partition(first, 
+    first name != :"where" && first name != :"where:")
 
   argNames = generatorCode map(last)
 
