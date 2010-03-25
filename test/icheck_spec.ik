@@ -83,6 +83,13 @@ describe(ICheck,
       allValuesGiven should == (41..100) asList
     )
 
+    it("executes the guards in the lexical scope of where it was created",
+      outsideVal = [] 
+      ICheck forAll(integer x, where . outsideVal << 42. true,
+        true) check!(count: 2)
+      outsideVal should == [42, 42]
+    )
+
     it("takes zero or more classifiers")
 
     it("works when creating a new valid property and testing it",
