@@ -7,11 +7,29 @@ describe(ICheck,
   it("mixes in itself and makes the property creators available")
 
   describe("forAll",
-    it("should have tests")
+    it("returns a newly created property",
+      prop = ICheck forAll(1 should == 1)
+      prop should mimic(ICheck Property)
+      prop should not be(ICheck Property)
+    )
 
-    it("returns a newly created property")
-    it("takes one code argument")
-    it("will wrap the code argument in a lexical block")
+    it("takes one code argument",
+      ICheck forAll(1 should == 1)
+    )
+
+    it("will wrap the code argument in a lexical block",
+      thisVariableShouldBeVisibleInsideTheBlock = 25
+      prop = ICheck forAll(
+        thisVariableShouldBeVisibleInsideTheBlock should == 25
+        thisVariableShouldNotBeVisibleOutsideOfThisLexicalBlock = 42
+      )
+      prop check!
+                      cell?(:thisVariableShouldNotBeVisibleOutsideOfThisLexicalBlock) should be false
+      ICheck          cell?(:thisVariableShouldNotBeVisibleOutsideOfThisLexicalBlock) should be false
+      ICheck Property cell?(:thisVariableShouldNotBeVisibleOutsideOfThisLexicalBlock) should be false
+      prop            cell?(:thisVariableShouldNotBeVisibleOutsideOfThisLexicalBlock) should be false
+    )
+
     it("takes zero or more generator arguments")
     it("will add the generator argument names as arguments to the lexical block")
     it("executes the generator statements in the lexical context mainly, and with generator macros added to it")
