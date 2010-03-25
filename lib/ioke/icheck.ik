@@ -18,6 +18,8 @@ ICheck forAll = macro("takes zero or more generator arguments, zero or more guar
   Property with(block: block, generators: generators, guards: guards)
 )
 
+ICheck aliasMethod("forAll", "forEvery")
+
 ICheck Property valuesFromGenerators = method(
   result = generators map(next)
   while(!(guards all?(call(*result))),
