@@ -52,16 +52,21 @@ describe(ICheck,
     )
 
     it("will use a specific generator and call that to get values to the block",
-      ICheck Generators basicSetOfCreatedValues = Origin with(create: [42, 55, 12, 42425, 7756] seq)
+      ICheck Generators basicSetOfCreatedValues = fnx([42, 55, 12, 42425, 7756] seq)
       allValuesGiven = []
       ICheck forAll(basicSetOfCreatedValues blarg,
         allValuesGiven << blarg) check!(count: 5)
       allValuesGiven should == [42, 55, 12, 42425, 7756]
     )
 
-    it("executes the generator statements in the lexical context mainly, and with generator macros added to it")
+    it("executes the generator statements in the lexical context mainly, and with generator macros added to it",
+      ICheck Generators anotherSetOfCreatedValues = fnx(inp, Origin with(next: inp + 42))
+      bladiBlaTest = 55
+      ICheck forAll(anotherSetOfCreatedValues(bladiBlaTest) x,
+        x should == 97) check!(count: 1)
+    )
+
     it("takes zero or more guard statements")
-    it("uses the generators to create arguments to the block")
     it("will use the guards to reject the valeus that fails the guard")
     it("takes zero or more classifiers")
 

@@ -9,7 +9,9 @@ ICheck forAll = macro("takes zero or more generator arguments, zero or more guar
   argNames = generators map(last)
 
   block = LexicalBlock createFrom(argNames + [code], call ground)
-  Property with(block: block, generators: generators map(sendTo(ICheck Generators, ICheck Generators) create))
+  lexicalScope = ICheck Generators mimic
+  lexicalScope mimic!(call ground)
+  Property with(block: block, generators: generators map(sendTo(lexicalScope, lexicalScope)))
 )
 
 ICheck Property valuesFromGenerators = method(
@@ -20,4 +22,4 @@ ICheck Property check! = method(count: 100,
   count times(block call(*(valuesFromGenerators)))
 )
 
-ICheck Generators integer = Origin with(create: Origin with(next: 42))
+ICheck Generators integer = fnx(Origin with(next: 42))
