@@ -30,8 +30,27 @@ describe(ICheck,
       prop            cell?(:thisVariableShouldNotBeVisibleOutsideOfThisLexicalBlock) should be false
     )
 
-    it("takes zero or more generator arguments")
-    it("will add the generator argument names as arguments to the lexical block")
+    it("takes zero or more generator arguments",
+      ICheck forAll(integer x,
+        42 should == 42) check!
+
+      ICheck forAll(integer x, integer y,
+        42 should == 42) check!
+
+      ICheck forAll(integer x, integer y, integer z,
+        42 should == 42) check!
+    )
+
+    it("will add the generator argument names as arguments to the lexical block",
+      ICheck forAll(integer x,
+        (x + x) should == (x*2)) check!
+
+      ICheck forAll(integer thisNameIsNotReallyVisibleOutsideEither,
+        thisNameIsNotReallyVisibleOutsideEither should mimic(Number Rational)
+        ) check!
+      cell?(:thisNameIsNotReallyVisibleOutsideEither) should be false
+    )
+
     it("executes the generator statements in the lexical context mainly, and with generator macros added to it")
     it("takes zero or more guard statements")
     it("uses the generators to create arguments to the block")
