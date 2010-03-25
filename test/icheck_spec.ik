@@ -3,7 +3,6 @@ use("ispec")
 use("icheck")
 
 describe(ICheck,
-  it("should have tests")
   it("mixes in itself and makes the property creators available")
 
   describe("forAll",
@@ -66,8 +65,24 @@ describe(ICheck,
         x should == 97) check!(count: 1)
     )
 
-    it("takes zero or more guard statements")
-    it("will use the guards to reject the valeus that fails the guard")
+    it("takes zero or more guard statements",
+      ICheck forAll(integer x, where x > 40,
+        nil) check!(count: 1)
+    )
+
+    it("should allow a guard statement with keyword syntax too",
+      ICheck forAll(integer x, where: x > 40,
+        nil) check!(count: 1)
+    )
+
+    it("will use the guards to reject the values that fails the guard",
+      ICheck Generators testData = fnx((1..100) seq)
+      allValuesGiven = []
+      ICheck forAll(testData x, where x > 40,
+        allValuesGiven << x) check!(count: 60)
+      allValuesGiven should == (41..100) asList
+    )
+
     it("takes zero or more classifiers")
 
     it("works when creating a new valid property and testing it",
