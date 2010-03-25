@@ -59,8 +59,8 @@ propReverse = forAll(list(int) xs,
 a_one = forAll([] sort should == [])
 a_two = forAll(int x, [x] sort should == [x])
 
-a_two.check!
-a_two.check!(verbose: true)
+a_two check!
+a_two check!(verbose: true)
 
 
 
