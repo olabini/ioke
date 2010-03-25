@@ -90,7 +90,39 @@ describe(ICheck,
       outsideVal should == [42, 42]
     )
 
-    it("takes zero or more classifiers")
+    it("takes zero or more classifiers with syntax 1",
+      ICheck Generators testData = fnx((1..100) seq)
+      result = ICheck forAll(testData x,
+        classify(one) x < 40,
+        true) check!
+
+      result classifier[:one] should == 39
+
+      result = ICheck forAll(testData x,
+        classify(one) x < 40,
+        classify(two) x > 30,
+        true) check!
+
+      result classifier[:one] should == 39
+      result classifier[:two] should == 70
+    )
+
+    it("takes zero or more classifiers with syntax 2",
+      ICheck Generators testData = fnx((1..100) seq)
+      result = ICheck forAll(testData x,
+        classifyAs(one) x < 40,
+        true) check!
+
+      result classifier[:one] should == 39
+
+      result = ICheck forAll(testData x,
+        classifyAs(one) x < 40,
+        classifyAs(two) x > 30,
+        true) check!
+
+      result classifier[:one] should == 39
+      result classifier[:two] should == 70
+    )
 
     it("works when creating a new valid property and testing it",
       Ground testCount = 0
@@ -210,7 +242,39 @@ describe(ICheck,
       outsideVal should == [42, 42]
     )
 
-    it("takes zero or more classifiers")
+    it("takes zero or more classifiers with syntax 1",
+      ICheck Generators testData = fnx((1..100) seq)
+      result = ICheck forEvery(testData x,
+        classify(one) x < 40,
+        true) check!
+
+      result classifier[:one] should == 39
+
+      result = ICheck forEvery(testData x,
+        classify(one) x < 40,
+        classify(two) x > 30,
+        true) check!
+
+      result classifier[:one] should == 39
+      result classifier[:two] should == 70
+    )
+
+    it("takes zero or more classifiers with syntax 2",
+      ICheck Generators testData = fnx((1..100) seq)
+      result = ICheck forEvery(testData x,
+        classifyAs(one) x < 40,
+        true) check!
+
+      result classifier[:one] should == 39
+
+      result = ICheck forEvery(testData x,
+        classifyAs(one) x < 40,
+        classifyAs(two) x > 30,
+        true) check!
+
+      result classifier[:one] should == 39
+      result classifier[:two] should == 70
+    )
 
     it("works when creating a new valid property and testing it",
       Ground testCount = 0
@@ -254,10 +318,6 @@ describe(ICheck,
       it("takes a flag whether it should print verbosely or not")
       it("returns a data structure with results from the run")
     )
-   )
-
-  describe("Classifiers",
-    it("should have tests")
   )
   
   describe("Generators",
@@ -410,7 +470,7 @@ describe(ICheck,
       it("should have tests")
     )
 
-    describe("#{}",
+    describe("\#{}",
       it("should have tests")
     )
   )
