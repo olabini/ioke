@@ -81,12 +81,6 @@ forAll(int x, y, trivial: x == y,
            [x,y] sort should == [y,x] sort)
 
 forAll(int x, y, 
-           classify(simple): x == y,
-           classifyAs(close): (x - y) abs < 2,
-
-           [x,y] sort should == [y,x] sort)
-
-forAll(int x, y, 
            classify(simple) x == y,
            classifyAs(close) (x - y) abs < 2,
 

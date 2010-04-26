@@ -39,7 +39,14 @@ ICheck Property classify = method(values, result,
     result classifier[cl name] += 1)
 )
 
-ICheck Property check! = method(count: 100,
+ICheck Property computeSize = method(maxSuccess, maxSize, successful, discarded,
+  maxMod = maxSuccess % maxSize
+  if((successful div(maxSize) * maxSize + maxSize) <= maxSuccess ||
+    successful >= maxSuccess ||
+    maxMod == 0, (successful % maxSize),
+    (successful % maxSize) * (maxSize div(maxMod))) + discarded div(10))
+
+ICheck Property check! = method(count: 100, maxSuccess: 100, maxDiscard: 500, maxSize: 100,
   result = Origin with(classifier: {} withDefault(0))
   count times(
     values = valuesFromGenerators
@@ -48,4 +55,13 @@ ICheck Property check! = method(count: 100,
   result
 )
 
-ICheck Generators integer = fnx(Origin with(next: 42))
+ICheck Generator = Origin mimic
+ICheck Generators do(
+  choose = method(start, end, 42)
+  sized = dmacro(
+    [argName, code]
+    block = LexicalBlock createFrom([argName, code], call ground)
+    Origin with(next: fnx(block(0))))
+  int = sized(n, choose(-n, n))
+  integer = cell(:int)
+)

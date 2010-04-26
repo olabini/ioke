@@ -325,53 +325,26 @@ describe(ICheck,
 
     describe("int",
       it("returns a new generator when called",
-        g1 = ISpec Generators int
-        g1 should mimic(ISpec Generator)
-        g1 should not be(ISpec Generator)
+        g1 = ICheck Generators int
+        g1 should mimic(ICheck Generator)
+        g1 should not be(ICheck Generator)
       )
 
       it("gives new number every time next is called, both negative and positive",
-        g1 = ISpec Generators int
+        g1 = ICheck Generators int
+        atLeastOnePositive = false
+        atLeastOneNegative = false
         50 times(
-          g1 next should not == g1 next
+          x = g1 next
+          y = g1 next
+          if(x < 0 || y < 0,
+            atLeastOneNegative = true,
+            atLeastOnePositive = true)
+          x should not == y
         )
       )
 
-      it("starts out with smaller numbers",
-        g1 = ISpec Generators int
-        g1 next should == 0
-        g1 next should == 1
-        g1 next should == -1
-        g1 next should == 9
-        g1 next should == 10
-        g1 next should == 11
-        g1 next should == -4
-        g1 next should == -5
-        g1 next should == -6
-      )
-
-      it("gives some larger numbers that are useful border values",
-        g1 = ISpec Generators int
-        9 times(g1 next)
-        [
-          (2**6)-1, (2**6), (2**6)+1, 
-          (2**7)-1, (2**7), (2**7)+1, 
-          (2**8)-1, (2**8), (2**8)+1, 
-          (2**9)-1, (2**9), (2**9)+1, 
-          (2**10)-1, (2**10), (2**10)+1, 
-          (2**14)-1, (2**14), (2**14)+1, 
-          (2**15)-1, (2**15), (2**15)+1, 
-          (2**16)-1, (2**16), (2**16)+1,
-          (2**31)-1, (2**31), (2**31)+1,
-          (2**32)-1, (2**32), (2**32)+1,
-          (2**63)-1, (2**63), (2**63)+1,
-          (2**64)-1, (2**64), (2**64)+1,
-          (2**127)-1, (2**127), (2**127)+1,
-          (2**128)-1, (2**128), (2**128)+1,
-          ] each(v, g1 next should == v)
-      )
-
-      it("gives randomized numbers from a larger and larger selection")
+      it("gives new number every time next is called, both negative and positive, based on the size given")
     )
 
     describe("integer",
