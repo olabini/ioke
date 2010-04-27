@@ -550,6 +550,14 @@ namespace Ioke.Lang {
             obj.Data = new Range(from, to, inclusive, inverted);
             return obj;
         }
+        
+        public IokeObject NewTuple(object one, object two) {
+            IokeObject tp = (IokeObject)this.Tuple.Cells["Two"];
+            IokeObject obj = tp.AllocateCopy(null, null);
+            obj.MimicsWithoutCheck(tp);
+            obj.Data = new Tuple(new object[]{one, two});
+            return obj;
+        }
 
         public IokeObject NewFile(IokeObject context, FileInfo eff)  {
             IokeObject fileMimic = IokeObject.As(((Message)IokeObject.dataOf(FileMessage)).SendTo(FileMessage, context, this.FileSystem), context);

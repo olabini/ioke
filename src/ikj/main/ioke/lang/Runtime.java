@@ -840,6 +840,14 @@ public class Runtime extends IokeData {
         return obj;
     }
 
+    public IokeObject newTuple(Object one, Object two) {
+        IokeObject tp = (IokeObject)this.tuple.getCells().get("Two");
+        IokeObject obj = tp.allocateCopy(null, null);
+        obj.mimicsWithoutCheck(tp);
+        obj.setData(new Tuple(new Object[]{one, two}));
+        return obj;
+    }
+
     public IokeObject newFile(IokeObject context, File eff) throws ControlFlow {
         IokeObject fileMimic = IokeObject.as(((Message)IokeObject.data(FileMessage)).sendTo(FileMessage, context, this.fileSystem), context);
         IokeObject obj = fileMimic.allocateCopy(null, null);

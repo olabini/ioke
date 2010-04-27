@@ -1006,6 +1006,55 @@ describe(Number,
       0xFFF should have kind("Number Integer")
     )
 
+    describe("div",
+      it("returns zero when called on zero, no matter what the argument",
+        0 div(1) should == 0
+        0 div(2) should == 0
+        0 div(3) should == 0
+        0 div(7) should == 0
+        0 div(134253453434535464363456345634736745) should == 0
+      )
+
+      it("returns the number of times the receiver can be divided fully by the argument",
+        1 div(1) should == 1
+        2 div(1) should == 2
+        3 div(1) should == 3
+        10 div(2) should == 5
+        11 div(2) should == 5
+        10 div(3) should == 3
+        100000000000000 div(3) should == 33333333333333
+      )
+
+      it("signals an error when given zero",
+        fn(10 div(0)) should signal(Condition Error Arithmetic DivisionByZero)
+      )
+    )
+
+    describe("divmod",
+      it("returns zero and zero  when called on zero, no matter what the argument",
+        0 divmod(1) should == (0, 0)
+        0 divmod(2) should == (0, 0)
+        0 divmod(3) should == (0, 0)
+        0 divmod(7) should == (0, 0)
+        0 divmod(134253453434535464363456345634736745) should == (0, 0)
+      )
+
+      it("returns the number of times the receiver can be divided fully by the argument, and the modulus",
+        1 divmod(1) should == (1, 0)
+        2 divmod(1) should == (2, 0)
+        3 divmod(1) should == (3, 0)
+        10 divmod(2) should == (5, 0)
+        11 divmod(2) should == (5, 1)
+        10 divmod(3) should == (3, 1)
+        100000000000000 divmod(3) should == (33333333333333, 1)
+        4 divmod(13) should == (0, 4)
+      )
+
+      it("signals an error when given zero",
+        fn(10 divmod(0)) should signal(Condition Error Arithmetic DivisionByZero)
+      )
+    )
+
     describe("%",
       it("should return the number when taking the modulo of 0",
         (0%0) should == 0
