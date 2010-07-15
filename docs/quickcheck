@@ -98,3 +98,20 @@ list, set and dict generators can also use [], {} and #{}.
 generators need to specify shrinking behavior as well as generating behavior.
 
 Constants as generators for themselves
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
