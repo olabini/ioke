@@ -169,6 +169,12 @@ describe(Number,
     it("should work for really large ratios",
       (3159803832942555119747712975368011382422678109641771880258007572750675641958633180227329439781444876167603185602206996733866292642174592263242297049991869079281455546604929/11909401) sqrt should == 56212132435467657854674787445634576536846867585678567823124534634787695689689565231423/3451
     )
+
+    it("signals a condition if trying to take the square root of zero or negative numbers",
+        fn(0 sqrt) should signal(Condition Error Arithmetic)
+        fn(-1 sqrt) should signal(Condition Error Arithmetic)
+        fn(-13525352352.1234 sqrt) should signal(Condition Error Arithmetic)
+    )
   )
 
   describe("===",

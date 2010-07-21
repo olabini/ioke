@@ -101,7 +101,24 @@ public class Decimal extends IokeData {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
-                    return context.runtime.newDecimal(new BigSquareRoot().get(((Decimal)IokeObject.data(on)).value));
+
+
+                    BigDecimal value = ((Decimal)IokeObject.data(on)).value;
+
+                    if(value.compareTo(BigDecimal.ZERO) < 1) {
+                        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition,
+                                                                                           message,
+                                                                                           context,
+                                                                                           "Error",
+                                                                                           "Arithmetic"), context).mimic(message, context);
+                        condition.setCell("message", message);
+                        condition.setCell("context", context);
+                        condition.setCell("receiver", on);
+
+                        context.runtime.errorCondition(condition);
+                    }
+
+                    return context.runtime.newDecimal(new BigSquareRoot().get(value));
                 }
             }));
 

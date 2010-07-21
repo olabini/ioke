@@ -213,6 +213,20 @@ public class Number extends IokeData {
                             // Ignore and fall through
                         }
                     }
+                    
+                    if(RatNum.compare(value, IntNum.zero()) < 1) {
+                        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition,
+                                                                                           message,
+                                                                                           context,
+                                                                                           "Error",
+                                                                                           "Arithmetic"), context).mimic(message, context);
+                        condition.setCell("message", message);
+                        condition.setCell("context", context);
+                        condition.setCell("receiver", on);
+
+                        context.runtime.errorCondition(condition);
+                    }
+
                     return context.runtime.newDecimal(new BigSquareRoot().get(value.asBigDecimal()));
                 }
             }));
