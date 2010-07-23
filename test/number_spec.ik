@@ -451,11 +451,13 @@ describe(Number,
 
       it("should return the number when raising to 1",
         (2**1) should == 2
+        (2.0**1) should == 2
       )
 
       it("should raise a number",
         (2**2) should == 4
         (2**3) should == 8
+        (2.5**2) should == 6.25
       )
 
       it("should raise a number to a large number",

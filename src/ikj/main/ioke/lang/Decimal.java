@@ -323,6 +323,32 @@ public class Decimal extends IokeData {
                 }
             }));
 
+        decimal.registerMethod(runtime.newNativeMethod("returns this number to the power of the argument (which has to be an integer", new TypeCheckingNativeMethod("**") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
+                    .builder()
+                    .receiverMustMimic(decimal)
+                    .withRequiredPositional("exponent")
+                    .getArguments();
+
+                @Override
+                public TypeCheckingArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    Object arg = args.get(0);
+
+                    IokeData data = IokeObject.data(arg);
+
+                    if(!(data instanceof Number)) {
+                        arg = IokeObject.convertToRational(arg, message, context, true);
+                    }
+
+                    return context.runtime.newDecimal(Decimal.value(on).pow(Number.intValue(arg).intValue()));
+                }
+            }));
+
         decimal.registerMethod(runtime.newNativeMethod("returns the quotient of this number and the argument.", new TypeCheckingNativeMethod("/") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
