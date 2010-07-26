@@ -128,7 +128,6 @@ public class Runtime extends IokeData {
     public IokeObject closeMessage = newMessage("close");
     public IokeObject code = newMessage("code");
     public IokeObject each = newMessage("each");
-    public IokeObject opShuffle = newMessage("shuffleOperators");
     public IokeObject textMessage = newMessage("text");
     public IokeObject conditionsMessage = newMessage("conditions");
     public IokeObject handlerMessage = newMessage("handler");

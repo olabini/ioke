@@ -2949,11 +2949,6 @@ describe("operator",
         m = parse("20 * -10")
         m should == "20 *(-(10))"
       )
-
-      it("should work correctly for unary plus",
-        m = parse("20 * +10")
-        m should == "20 *(+(10))"
-      )
     )
   )
 

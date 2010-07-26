@@ -37,7 +37,6 @@ public class Parsing {
             for(int i=0;i<100;i++) {
                 IokeParser parser = new IokeParser(runtime, new InputStreamReader(new ByteArrayInputStream(result)), null, null);
                 IokeObject m = parser.parseFully();
-                ((Message)IokeObject.data(m.runtime.opShuffle)).sendTo(m.runtime.opShuffle, m.runtime.ground, m);
             }
             after = System.currentTimeMillis();
             time = after-before;

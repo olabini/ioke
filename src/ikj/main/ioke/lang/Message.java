@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 
-import ioke.lang.parser.Levels;
 import ioke.lang.parser.IokeParser;
 
 import ioke.lang.exceptions.ControlFlow;
@@ -698,33 +697,6 @@ public class Message extends IokeData {
                 }
             }));
 
-        message.registerMethod(message.runtime.newNativeMethod("Will rearrange this message and all submessages to follow regular C style operator precedence rules. Will use Message OperatorTable to guide this operation. The operation is mutating, but should not change anything if done twice.", new NativeMethod.WithNoArguments("shuffleOperators") {
-                @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    Levels levels = new Levels(IokeObject.as(on, context), context, message);
-                    List<IokeObject> expressions = new ArrayList<IokeObject>();
-                    if(on instanceof IokeObject) {
-                        expressions.add(0, IokeObject.as(on, context));
-
-                        while(expressions.size() > 0) {
-                            IokeObject n = expressions.remove(0);
-                            do {
-                                levels.attach(n, expressions);
-                                for(Object o : n.getArguments()) {
-                                    if(o instanceof IokeObject) { //Otherwise a pure String parameter to internal:createText
-                                        expressions.add(0, IokeObject.as(o, context));
-                                    }
-                                }
-                            } while((n = Message.next(n)) != null);
-
-                            levels.nextMessage(expressions);
-                        }
-                    }
-
-                    return on;
-                }
-            }));
-
         message.registerMethod(message.runtime.newNativeMethod("Takes one evaluated argument and returns the message resulting from parsing and operator shuffling the resulting message.", new TypeCheckingNativeMethod("fromText") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
@@ -915,35 +887,29 @@ public class Message extends IokeData {
         this.next = next;
     }
 
-    public static void opShuffle(IokeObject self) throws ControlFlow {
-        // TODO: Should handle stuff that's not been inited at this point...
-        if(self != null) {
-            ((Message)IokeObject.data(self.runtime.opShuffle)).sendTo(self.runtime.opShuffle, self.runtime.ground, self);
-        }
-    }
-
     public static IokeObject newFromStream(Runtime runtime, Reader reader, IokeObject message, IokeObject context) throws ControlFlow {
         try {
             IokeParser parser = new IokeParser(runtime, reader, context, message);
             IokeObject m = parser.parseFully();
+            // System.out.println();
+            // System.out.println("==================================================================================================");
+            // System.out.println(m);
+            // System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+            // System.out.println();
 
             if(m == null) {
                 Message mx = new Message(runtime, ".", null, true);
                 mx.setLine(0);
                 mx.setPosition(0);
-                return runtime.createMessage(mx);
+                m = runtime.createMessage(mx);
             }
-
-            // System.err.println("m:  " + m);
-            opShuffle(m);
-            // System.out.println("m: " + m);
 
             return m;
         } catch(Exception e) {
             // System.err.println(e);
             // System.err.println(e.getMessage());
             // e.printStackTrace();
-                       runtime.reportNativeException(e, message, context);
+            runtime.reportNativeException(e, message, context);
             return null;
         }
     }
