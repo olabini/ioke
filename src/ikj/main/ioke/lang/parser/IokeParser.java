@@ -57,7 +57,7 @@ public class IokeParser {
     public final static Map<String, OpEntry> DEFAULT_OPERATORS;
     public final static Map<String, OpArity> DEFAULT_ASSIGNMENT_OPERATORS;
     public final static Map<String, OpEntry> DEFAULT_INVERTED_OPERATORS;
-    public final static Set<String> DEFAULT_UNARY_OPERATORS = new HashSet(Arrays.asList("-","+","~","$"));
+    public final static Set<String> DEFAULT_UNARY_OPERATORS = new HashSet(Arrays.asList("-","~","$"));
     public final static Set<String> DEFAULT_ONLY_UNARY_OPERATORS = new HashSet(Arrays.asList("'","''","`",":"));
 
 
@@ -217,16 +217,24 @@ public class IokeParser {
         public final IokeObject operatorMessage;
         public final Level parent;
         public final boolean unary;
+        public final boolean assignment;
+        public final boolean inverted;
 
-        public Level(int precedence, IokeObject op, Level parent, boolean unary) {
+        public Level(int precedence, IokeObject op, Level parent, boolean unary, boolean assignment, boolean inverted) {
             this.precedence = precedence;
             this.operatorMessage = op;
             this.parent = parent;
             this.unary = unary;
+            this.assignment = assignment;
+            this.inverted = inverted;
         }
 
         public String toString() {
-            return "Level<p=" + precedence + ", op=" + (operatorMessage == null ? (String)null : Message.name(operatorMessage)) + ", parent=" + parent + ", " + unary + ">";
+            try {
+                return "Level<p: " + precedence + ", op: " + ChainContext.msg(operatorMessage) + ", parent: " + parent + ", unary: " + unary + ">";
+            } catch(Throwable e) {
+            }
+            return "";
         }
     }
 
@@ -243,7 +251,12 @@ public class IokeParser {
 
 
         public String toString() {
-            return "Chain<parent=" + parent + ", last=" + (last == null ? (String)null : Message.name(last)) + ", head=" + (head == null ? (String)null : Message.name(head)) + ">";
+            try {
+                return "Chain<parent: " + parent + ", last: " + ChainContext.msg(last) + ", head: " + ChainContext.msg(head) + ">";
+
+            } catch(Throwable e) {
+            }
+            return "";
         }
     }
 
@@ -255,27 +268,88 @@ public class IokeParser {
         public IokeObject last = null;
         public IokeObject head = null;
 
-        private Level currentLevel = new Level(-1, null, null, false);
+        private Level currentLevel = new Level(-1, null, null, false, false, false);
 
         public ChainContext(ChainContext parent) {
             this.parent = parent;
         }
 
         public void debug() {
-            try {
-                System.err.println("removeLastMessage()");
-                System.err.println(" head: " + (head == null ? (String)null : Message.name(head)));
-                System.err.println(" last: " + (last == null ? (String)null : Message.name(last)));
-                System.err.println(" chains: " + chains);
-                System.err.println(" currentLevel: " + currentLevel);
-            } catch(Throwable e) {
+            debug("debug");
+        }
+
+        public static String msg(IokeObject msg) throws ControlFlow {
+            if(null == msg) {
+                return null;
+            }
+            String s = Message.name(msg);
+            String sep = "";
+            if(msg.getArguments().size() > 0) {
+                s = s + "(";
+                for(Object o : msg.getArguments()) {
+                    s = s + sep + msg((IokeObject)o);
+                    sep = ", ";
+                }
+                s = s + ")";
+            }
+
+            if(Message.next(msg) != null) {
+                s = s + " " + msg(Message.next(msg));
+            }
+
+            return s;
+        }
+
+        public void debug(String tag) {
+            debug(tag, false);
+        }
+
+        public void debug(String tag, boolean doit) {
+            if(doit) {
+                try {
+                    System.err.println(tag + ":");
+                    System.err.println("  head: " + msg(head));
+                    System.err.println("  last: " + msg(last));
+                    System.err.println("  chains: " + chains);
+                    System.err.println("  currentLevel: " + currentLevel);
+                } catch(Throwable e) {
+                }
             }
         }
 
-        public IokeObject removeLastMessage() throws ControlFlow {
+        public IokeObject prepareAssignmentMessage() throws ControlFlow {
+            debug("+prepareAssignmentMessage");
             if(chains.last != null && chains.last == currentLevel.operatorMessage) {
-                pop();
-                currentLevel = currentLevel.parent;
+                if(currentLevel.assignment && head == null) {
+                    debug("+assgn assgn");
+                    IokeObject assgn = currentLevel.operatorMessage;
+                    IokeObject prev = (IokeObject)assgn.getArguments().get(0);
+                    assgn.getArguments().clear();
+                    pop();
+                    currentLevel = currentLevel.parent;
+
+                    IokeObject realPrev = Message.prev(assgn);
+                    if(realPrev != null) {
+                        Message.setNext(realPrev, prev);
+                        if(prev != null) {
+                            Message.setPrev(prev, realPrev);
+                        }
+                        Message.setPrev(assgn, null);
+                    }
+                    if(head == last) {
+                        head = prev;
+                    }
+                    last = prev;
+                    debug("-assgn assgn");
+                    return assgn;
+                } else if(!currentLevel.assignment) {
+                    pop();
+                    currentLevel = currentLevel.parent;
+                }
+            }
+
+            if(last == null) {
+                return null;
             }
 
             IokeObject l = last;
@@ -289,18 +363,20 @@ public class IokeParser {
             Message.setPrev(l, null);
             Message.setNext(l, null);
             
-            return withoutSurroundingBlankMessage(l);
+            debug("-prepareAssignmentMessage");
+            return l;
         }
         
         private IokeObject withoutSurroundingBlankMessage(IokeObject inp) throws ControlFlow {
-            if(inp != null && Message.name(inp).equals("") && Message.next(inp) == null && inp.getArguments().size() == 1) {
-                return (IokeObject)inp.getArguments().get(0);
-            }
+            // if(inp != null && Message.name(inp).equals("") && Message.next(inp) == null && inp.getArguments().size() == 1) {
+            //     return (IokeObject)inp.getArguments().get(0);
+            // }
             return inp;
         }
 
         public void add(IokeObject msg) throws ControlFlow {
-            // System.err.println("adding: " + Message.name(msg));
+            // System.err.println("+add(" + Message.name(msg) + ")");
+            debug("+add(" + Message.name(msg) + ")");
             if(head == null) {
                 head = last = msg;
             } else {
@@ -313,15 +389,19 @@ public class IokeParser {
                 currentLevel.operatorMessage.getArguments().add(pop());
                 currentLevel = currentLevel.parent;
             }
+            debug("-add");
         }
 
-        public void push(int precedence, IokeObject op, boolean unary) {
-            currentLevel = new Level(precedence, op, currentLevel, unary);
+        public void push(int precedence, IokeObject op, boolean unary, boolean assignment, boolean inverted) {
+            debug("+push");
+            currentLevel = new Level(precedence, op, currentLevel, unary, assignment, inverted);
             chains = new BufferedChain(chains, last, head);
             last = head = null;
+            debug("-push");
         }
 
         public IokeObject pop() throws ControlFlow {
+            debug("+pop");
             if(head != null) {
                 while(Message.isTerminator(head) && Message.next(head) != null) {
                     head = Message.next(head);
@@ -335,16 +415,32 @@ public class IokeParser {
             last = chains.last;
             chains = chains.parent;
 
+            debug("-pop");
             return headToReturn;
         }
 
         public void popOperatorsTo(int precedence) throws ControlFlow {
             while((currentLevel.precedence != -1 || currentLevel.unary) && currentLevel.precedence <= precedence) {
+                debug("+popOperatorsTo");
                 IokeObject arg = pop();
-                if(arg != null) {
-                    currentLevel.operatorMessage.getArguments().add(arg);
+                if(arg != null && Message.isTerminator(arg) && Message.next(arg) == null) {
+                    arg = null;
+                }
+
+                IokeObject op = currentLevel.operatorMessage;
+                if(currentLevel.inverted && Message.prev(op) != null) {
+                    Message.setNext(Message.prev(op), null);
+                    op.getArguments().add(head);
+                    head = arg;
+                    Message.setNextOfLast(head, op);
+                    last = op;
+                } else {
+                    if(arg != null) {
+                        op.getArguments().add(arg);
+                    }
                 }
                 currentLevel = currentLevel.parent;
+                debug("-popOperatorsTo");
             }
         }
     }
@@ -422,6 +518,7 @@ public class IokeParser {
     }
 
     public IokeParser(Runtime runtime, Reader reader, IokeObject context, IokeObject message) throws ControlFlow {
+        // System.err.println("--------------------------------------------------------------------------");
         this.runtime = runtime;
         this.reader = reader;
         this.context = context;
@@ -764,36 +861,43 @@ public class IokeParser {
 
         if(isUnary(name) || onlyUnaryOperators.contains(name)) {
             top.add(mx);
-            top.push(-1, mx, true);
+            top.push(-1, mx, true, false, false);
             return;
         }
 
-        OpEntry op = (OpEntry)operatorTable.get(name);
+        OpEntry op = operatorTable.get(name);
         if(op != null) {
             top.popOperatorsTo(op.precedence);
             top.add(mx);
-            top.push(op.precedence, mx, false);
+            top.push(op.precedence, mx, false, false, false);
         } else {
             OpArity opa = trinaryOperatorTable.get(name);
             if(opa != null) {
                 if(opa.arity == 2) {
-                    IokeObject last = top.removeLastMessage();
-                    top.add(mx);
+                    IokeObject last = top.prepareAssignmentMessage();
                     mx.getArguments().add(last);
-                    top.push(13, mx, false);
+                    top.add(mx);
+                    top.push(13, mx, false, true, false);
                 } else {
-                    IokeObject last = top.removeLastMessage();
-                    top.add(mx);
+                    IokeObject last = top.prepareAssignmentMessage();
                     mx.getArguments().add(last);
+                    top.add(mx);
                 }
             } else {
-                int possible = possibleOperatorPrecedence(name);
-                if(possible != -1) {
-                    top.popOperatorsTo(possible);
+                op = invertedOperatorTable.get(name);
+                if(op != null) {
+                    top.popOperatorsTo(op.precedence);
                     top.add(mx);
-                    top.push(possible, mx, false);
+                    top.push(op.precedence, mx, false, false, true);
                 } else {
-                    top.add(mx);
+                    int possible = possibleOperatorPrecedence(name);
+                    if(possible != -1) {
+                        top.popOperatorsTo(possible);
+                        top.add(mx);
+                        top.push(possible, mx, false, false, false);
+                    } else {
+                        top.add(mx);
+                    }
                 }
             }
         }
@@ -1615,39 +1719,9 @@ public class IokeParser {
 
     public static void main(String[] args) throws Exception, ControlFlow {
         Runtime r = new Runtime();
-        // r.init();
+        r.init();
         IokeParser p = new IokeParser(r, new StringReader(args[0]), r.ground, r.message);
-        print(p.parseFully());
+        System.out.println(ChainContext.msg(p.parseFully()));
         System.out.println();
-    }
-
-    private static void print(IokeObject msg) throws Exception, ControlFlow {
-        System.out.print(Message.name(msg));
-        if(Message.isTerminator(msg)) {
-            System.out.println();
-        } else {
-            boolean hasArgs = msg.getArguments().size() > 0;
-
-            if(hasArgs) {
-                System.out.print("(");
-            }
-
-            String sep = "";
-            for(Object arg : msg.getArguments()) {
-                System.out.print(sep);
-                print((IokeObject)arg);
-                sep = ", ";
-            }
-
-            if(hasArgs) {
-                System.out.print(")");
-            }
-
-            System.out.print(" ");
-
-            if(Message.next(msg) != null) {
-                print(Message.next(msg));
-            }
-        }
     }
 }

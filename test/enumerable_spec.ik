@@ -542,7 +542,7 @@ describe(Mixins,
       it("should take two arguments that will be turned into a lexical block and applied",
         [1,2,3] any?(x, x==2) should be true
         [nil,false,nil] any?(x, x nil?) should be true
-        [nil,false,true] any?(x, x==2) should = =false
+        [nil,false,true] any?(x, x==2) should be false
         CustomEnumerable any?(x, x != "foo") should be true
       )
 
