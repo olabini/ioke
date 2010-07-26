@@ -892,6 +892,11 @@ public class Message extends IokeData {
         try {
             IokeParser parser = new IokeParser(runtime, reader, context, message);
             IokeObject m = parser.parseFully();
+            // System.out.println();
+            // System.out.println("==================================================================================================");
+            // System.out.println(m);
+            // System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+            // System.out.println();
 
             if(m == null) {
                 Message mx = new Message(runtime, ".", null, true);

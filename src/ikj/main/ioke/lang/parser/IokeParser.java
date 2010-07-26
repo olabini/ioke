@@ -4,8 +4,10 @@
 package ioke.lang.parser;
 
 import java.io.Reader;
+import java.io.StringReader;
 import java.io.IOException;
 
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
@@ -55,6 +57,9 @@ public class IokeParser {
     public final static Map<String, OpEntry> DEFAULT_OPERATORS;
     public final static Map<String, OpArity> DEFAULT_ASSIGNMENT_OPERATORS;
     public final static Map<String, OpEntry> DEFAULT_INVERTED_OPERATORS;
+    public final static Set<String> DEFAULT_UNARY_OPERATORS = new HashSet(Arrays.asList("-","+","~","$"));
+    public final static Set<String> DEFAULT_ONLY_UNARY_OPERATORS = new HashSet(Arrays.asList("'","''","`",":"));
+
 
     private final static void addOpEntry(String name, int precedence, Map<String, OpEntry> current){
         current.put(name, new OpEntry(name, precedence));
@@ -161,24 +166,11 @@ public class IokeParser {
 		addOpEntry("$>",  12, operators);
 		addOpEntry("$>>",  12, operators);
 
-		addOpEntry("+=",  13, operators);
-		addOpEntry("-=",  13, operators);
-		addOpEntry("**=",  13, operators);
-		addOpEntry("*=",  13, operators);
-		addOpEntry("/=",  13, operators);
-		addOpEntry("%=",  13, operators);
 		addOpEntry("and",  13, operators);
 		addOpEntry("nand",  13, operators);
-		addOpEntry("&=",  13, operators);
-		addOpEntry("&&=",  13, operators);
-		addOpEntry("^=",  13, operators);
 		addOpEntry("or",  13, operators);
 		addOpEntry("xor",  13, operators);
 		addOpEntry("nor",  13, operators);
-		addOpEntry("|=",  13, operators);
-		addOpEntry("||=",  13, operators);
-		addOpEntry("<<=", 13, operators);
-		addOpEntry(">>=", 13, operators);
 
 		addOpEntry("<-",  14, operators);
 
@@ -232,14 +224,36 @@ public class IokeParser {
             this.parent = parent;
             this.unary = unary;
         }
+
+        public String toString() {
+            return "Level<p=" + precedence + ", op=" + (operatorMessage == null ? (String)null : Message.name(operatorMessage)) + ", parent=" + parent + ", " + unary + ">";
+        }
+    }
+
+    private final static class BufferedChain {
+        public final BufferedChain parent;
+        public final IokeObject last;
+        public final IokeObject head;
+
+        public BufferedChain(BufferedChain parent, IokeObject last, IokeObject head) {
+            this.parent = parent;
+            this.last = last;
+            this.head = head;
+        }
+
+
+        public String toString() {
+            return "Chain<parent=" + parent + ", last=" + (last == null ? (String)null : Message.name(last)) + ", head=" + (head == null ? (String)null : Message.name(head)) + ">";
+        }
     }
 
     private final static class ChainContext {
         public final ChainContext parent;
 
-        private IokeObject c = null;
-        private IokeObject last = null;
-        private IokeObject head = null;
+        public BufferedChain chains = new BufferedChain(null, null, null);;
+
+        public IokeObject last = null;
+        public IokeObject head = null;
 
         private Level currentLevel = new Level(-1, null, null, false);
 
@@ -247,18 +261,67 @@ public class IokeParser {
             this.parent = parent;
         }
 
-        public void add(IokeObject msg) {
-            if(head == null) {
-                head = c;
-                last = c;
-            } else {
-                Message.setNext(last, c);
-                Message.setPrev(c, last);
-                last = c;
+        public void debug() {
+            try {
+                System.err.println("removeLastMessage()");
+                System.err.println(" head: " + (head == null ? (String)null : Message.name(head)));
+                System.err.println(" last: " + (last == null ? (String)null : Message.name(last)));
+                System.err.println(" chains: " + chains);
+                System.err.println(" currentLevel: " + currentLevel);
+            } catch(Throwable e) {
             }
         }
 
-        public IokeObject pop() {
+        public IokeObject removeLastMessage() throws ControlFlow {
+            if(chains.last != null && chains.last == currentLevel.operatorMessage) {
+                pop();
+                currentLevel = currentLevel.parent;
+            }
+
+            IokeObject l = last;
+            if(head == l) {
+                head = last = null;
+            } else {
+                last = Message.prev(l);
+                Message.setNext(last, null);
+            }
+
+            Message.setPrev(l, null);
+            Message.setNext(l, null);
+            
+            return withoutSurroundingBlankMessage(l);
+        }
+        
+        private IokeObject withoutSurroundingBlankMessage(IokeObject inp) throws ControlFlow {
+            if(inp != null && Message.name(inp).equals("") && Message.next(inp) == null && inp.getArguments().size() == 1) {
+                return (IokeObject)inp.getArguments().get(0);
+            }
+            return inp;
+        }
+
+        public void add(IokeObject msg) throws ControlFlow {
+            // System.err.println("adding: " + Message.name(msg));
+            if(head == null) {
+                head = last = msg;
+            } else {
+                Message.setNext(last, msg);
+                Message.setPrev(msg, last);
+                last = msg;
+            }
+
+            if(currentLevel.unary) {
+                currentLevel.operatorMessage.getArguments().add(pop());
+                currentLevel = currentLevel.parent;
+            }
+        }
+
+        public void push(int precedence, IokeObject op, boolean unary) {
+            currentLevel = new Level(precedence, op, currentLevel, unary);
+            chains = new BufferedChain(chains, last, head);
+            last = head = null;
+        }
+
+        public IokeObject pop() throws ControlFlow {
             if(head != null) {
                 while(Message.isTerminator(head) && Message.next(head) != null) {
                     head = Message.next(head);
@@ -266,25 +329,105 @@ public class IokeParser {
                 }
             }
 
-            return head;
+            IokeObject headToReturn = withoutSurroundingBlankMessage(head);
+
+            head = chains.head;
+            last = chains.last;
+            chains = chains.parent;
+
+            return headToReturn;
+        }
+
+        public void popOperatorsTo(int precedence) throws ControlFlow {
+            while((currentLevel.precedence != -1 || currentLevel.unary) && currentLevel.precedence <= precedence) {
+                IokeObject arg = pop();
+                if(arg != null) {
+                    currentLevel.operatorMessage.getArguments().add(arg);
+                }
+                currentLevel = currentLevel.parent;
+            }
         }
     }
 
     private ChainContext top = new ChainContext(null);
 
-    private final Map<String, OpEntry> operatorTable;
-    private final Map<String, OpArity> trinaryOperatorTable;
-    private final Map<String, OpEntry> invertedOperatorTable;
+    private final Map<String, OpEntry> operatorTable = new HashMap<String, OpEntry>();
+    private final Map<String, OpArity> trinaryOperatorTable = new HashMap<String, OpArity>();
+    private final Map<String, OpEntry> invertedOperatorTable = new HashMap<String, OpEntry>();
+    private final Set<String> unaryOperators = DEFAULT_UNARY_OPERATORS;
+    private final Set<String> onlyUnaryOperators = DEFAULT_ONLY_UNARY_OPERATORS;
 
-    public IokeParser(Runtime runtime, Reader reader, IokeObject context, IokeObject message) {
+    public static interface OpTableCreator {
+        Map<Object, Object> create(Runtime runtime);
+    }
+
+    public Map<Object, Object> getOpTable(IokeObject opTable, String name, OpTableCreator creator) throws ControlFlow {
+        IokeObject operators = IokeObject.as(opTable.findCell(message, context, name), null);
+        if(operators != runtime.nul && (IokeObject.data(operators) instanceof Dict)) {
+            return Dict.getMap(operators);
+        } else {
+            Map<Object, Object> result = creator.create(runtime);
+            opTable.setCell(name, runtime.newDict(result));
+            return result;
+        }
+    }
+
+    private final void createOrGetOpTables() throws ControlFlow {
+        IokeObject opTable = IokeObject.as(runtime.message.findCell(message, context, "OperatorTable"), null);
+        if(opTable == runtime.nul) {
+            opTable = runtime.newFromOrigin();
+            opTable.setKind("Message OperatorTable");
+            runtime.message.setCell("OperatorTable", opTable);
+        }
+
+        Map<Object, Object> tmpOperatorTable = getOpTable(opTable, "operators", new OpTableCreator() {
+                public Map<Object, Object> create(Runtime runtime) {
+                    Map<Object, Object> table = new HashMap<Object, Object>();
+                    for(OpEntry ot : DEFAULT_OPERATORS.values()) {
+                        table.put(runtime.getSymbol(ot.name), runtime.newNumber(ot.precedence));
+                    }
+                    return table;
+                }
+            });
+        
+        Map<Object, Object> tmpTrinaryOperatorTable = getOpTable(opTable, "trinaryOperators", new OpTableCreator() {
+                public Map<Object, Object> create(Runtime runtime) {
+                    Map<Object, Object> table = new HashMap<Object, Object>();
+                    for(OpArity ot : DEFAULT_ASSIGNMENT_OPERATORS.values()) {
+                        table.put(runtime.getSymbol(ot.name), runtime.newNumber(ot.arity));
+                    }
+                    return table;
+                }
+            });
+
+        Map<Object, Object> tmpInvertedOperatorTable = getOpTable(opTable, "invertedOperators", new OpTableCreator() {
+                public Map<Object, Object> create(Runtime runtime) {
+                    Map<Object, Object> table = new HashMap<Object, Object>();
+                    for(OpEntry ot : DEFAULT_INVERTED_OPERATORS.values()) {
+                        table.put(runtime.getSymbol(ot.name), runtime.newNumber(ot.precedence));
+                    }
+                    return table;
+                }
+            });
+
+        for(Map.Entry<Object, Object> entry : tmpOperatorTable.entrySet()) {
+            addOpEntry(Symbol.getText(entry.getKey()), Number.intValue(entry.getValue()).intValue(), operatorTable);
+        }
+        for(Map.Entry<Object, Object> entry : tmpTrinaryOperatorTable.entrySet()) {
+            addOpArity(Symbol.getText(entry.getKey()), Number.intValue(entry.getValue()).intValue(), trinaryOperatorTable);
+        }
+        for(Map.Entry<Object, Object> entry : tmpInvertedOperatorTable.entrySet()) {
+            addOpEntry(Symbol.getText(entry.getKey()), Number.intValue(entry.getValue()).intValue(), invertedOperatorTable);
+        }
+    }
+
+    public IokeParser(Runtime runtime, Reader reader, IokeObject context, IokeObject message) throws ControlFlow {
         this.runtime = runtime;
         this.reader = reader;
         this.context = context;
         this.message = message;
 
-        operatorTable = DEFAULT_OPERATORS;
-        trinaryOperatorTable = DEFAULT_ASSIGNMENT_OPERATORS;
-        invertedOperatorTable = DEFAULT_INVERTED_OPERATORS;
+        createOrGetOpTables();
     }
 
     public IokeObject parseFully() throws IOException, ControlFlow {
@@ -294,9 +437,8 @@ public class IokeParser {
 
     private IokeObject parseMessageChain() throws IOException, ControlFlow {
         top = new ChainContext(top);
-
         while(parseMessage());
-
+        top.popOperatorsTo(999999);
         IokeObject ret = top.pop();
         top = top.parent;
         return ret;
@@ -581,6 +723,82 @@ public class IokeParser {
         }
     }
 
+
+    private boolean isUnary(String name) {
+        return unaryOperators.contains(name) && (top.head == null || Message.isTerminator(top.last));
+    }
+
+    private int possibleOperatorPrecedence(String name) {
+        if(name.length() > 0) {
+            char first = name.charAt(0);
+            switch(first) {
+            case '|':
+                return 9;
+            case '^':
+                return 8;
+            case '&':
+                return 7;
+            case '<':
+            case '>':
+                return 5;
+            case '=':
+            case '!':
+            case '?':
+            case '~':
+            case '$':
+                return 6;
+            case '+':
+            case '-':
+                return 3;
+            case '*':
+            case '/':
+            case '%':
+                return 2;
+            }
+        }
+        return -1;
+    }
+
+    private void possibleOperator(IokeObject mx) throws ControlFlow {
+        String name = Message.name(mx);
+
+        if(isUnary(name) || onlyUnaryOperators.contains(name)) {
+            top.add(mx);
+            top.push(-1, mx, true);
+            return;
+        }
+
+        OpEntry op = (OpEntry)operatorTable.get(name);
+        if(op != null) {
+            top.popOperatorsTo(op.precedence);
+            top.add(mx);
+            top.push(op.precedence, mx, false);
+        } else {
+            OpArity opa = trinaryOperatorTable.get(name);
+            if(opa != null) {
+                if(opa.arity == 2) {
+                    IokeObject last = top.removeLastMessage();
+                    top.add(mx);
+                    mx.getArguments().add(last);
+                    top.push(13, mx, false);
+                } else {
+                    IokeObject last = top.removeLastMessage();
+                    top.add(mx);
+                    mx.getArguments().add(last);
+                }
+            } else {
+                int possible = possibleOperatorPrecedence(name);
+                if(possible != -1) {
+                    top.popOperatorsTo(possible);
+                    top.add(mx);
+                    top.push(possible, mx, false);
+                } else {
+                    top.add(mx);
+                }
+            }
+        }
+    }
+
     private void parseEmptyMessageSend() throws IOException, ControlFlow {
         int l = lineNumber; int cc = currentCharacter-1;
         List<Object> args = parseCommaSeparatedMessageChains();
@@ -693,12 +911,13 @@ public class IokeParser {
             List<Object> args = parseCommaSeparatedMessageChains();
             parseCharacter(')');
             Message.setArguments(mx, args);
+            top.add(mx);
+        } else {
+            possibleOperator(mx);
         }
-
-        top.add(mx);
     }
 
-    private void parseTerminator(int indicator) throws IOException {
+    private void parseTerminator(int indicator) throws IOException, ControlFlow  {
         int l = lineNumber; int cc = currentCharacter-1;
 
         int rr;
@@ -721,6 +940,10 @@ public class IokeParser {
             } else {
                 break;
             }
+        }
+        
+        if(!(top.last == null && top.currentLevel.operatorMessage != null)) {
+            top.popOperatorsTo(999999);
         }
 
         Message m = new Message(runtime, ".", null, true);
@@ -1181,8 +1404,11 @@ public class IokeParser {
                     List<Object> args = parseCommaSeparatedMessageChains();
                     parseCharacter(')');
                     Message.setArguments(mx, args);
+                    top.add(mx);
+                } else {
+                    possibleOperator(mx);
                 }
-                top.add(mx);
+                return;
             }
         }
     }
@@ -1334,9 +1560,10 @@ public class IokeParser {
             List<Object> args = parseCommaSeparatedMessageChains();
             parseCharacter(')');
             Message.setArguments(mx, args);
+            top.add(mx);
+        } else {
+            possibleOperator(mx);
         }
-
-        top.add(mx);
     }
 
     private boolean isLetter(int c) {
@@ -1383,6 +1610,44 @@ public class IokeParser {
             return "EOL";
         } else {
             return "'" + (char)c + "'";
+        }
+    }
+
+    public static void main(String[] args) throws Exception, ControlFlow {
+        Runtime r = new Runtime();
+        // r.init();
+        IokeParser p = new IokeParser(r, new StringReader(args[0]), r.ground, r.message);
+        print(p.parseFully());
+        System.out.println();
+    }
+
+    private static void print(IokeObject msg) throws Exception, ControlFlow {
+        System.out.print(Message.name(msg));
+        if(Message.isTerminator(msg)) {
+            System.out.println();
+        } else {
+            boolean hasArgs = msg.getArguments().size() > 0;
+
+            if(hasArgs) {
+                System.out.print("(");
+            }
+
+            String sep = "";
+            for(Object arg : msg.getArguments()) {
+                System.out.print(sep);
+                print((IokeObject)arg);
+                sep = ", ";
+            }
+
+            if(hasArgs) {
+                System.out.print(")");
+            }
+
+            System.out.print(" ");
+
+            if(Message.next(msg) != null) {
+                print(Message.next(msg));
+            }
         }
     }
 }
