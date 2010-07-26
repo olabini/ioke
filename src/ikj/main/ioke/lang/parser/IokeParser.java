@@ -392,7 +392,7 @@ public class IokeParser {
 
         if(isUnary(name) || onlyUnaryOperators.contains(name)) {
             top.add(mx);
-            top.push(-1, mx, true, false, false);
+            top.push(-1, mx, Level.Type.UNARY);
             return;
         }
 
@@ -400,7 +400,7 @@ public class IokeParser {
         if(op != null) {
             top.popOperatorsTo(op.precedence);
             top.add(mx);
-            top.push(op.precedence, mx, false, false, false);
+            top.push(op.precedence, mx, Level.Type.REGULAR);
         } else {
             OpArity opa = trinaryOperatorTable.get(name);
             if(opa != null) {
@@ -408,7 +408,7 @@ public class IokeParser {
                     IokeObject last = top.prepareAssignmentMessage();
                     mx.getArguments().add(last);
                     top.add(mx);
-                    top.push(13, mx, false, true, false);
+                    top.push(13, mx, Level.Type.ASSIGNMENT);
                 } else {
                     IokeObject last = top.prepareAssignmentMessage();
                     mx.getArguments().add(last);
@@ -419,13 +419,13 @@ public class IokeParser {
                 if(op != null) {
                     top.popOperatorsTo(op.precedence);
                     top.add(mx);
-                    top.push(op.precedence, mx, false, false, true);
+                    top.push(op.precedence, mx, Level.Type.INVERTED);
                 } else {
                     int possible = possibleOperatorPrecedence(name);
                     if(possible != -1) {
                         top.popOperatorsTo(possible);
                         top.add(mx);
-                        top.push(possible, mx, false, false, false);
+                        top.push(possible, mx, Level.Type.REGULAR);
                     } else {
                         top.add(mx);
                     }

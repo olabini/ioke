@@ -18,7 +18,7 @@ final class ChainContext {
     IokeObject last = null;
     IokeObject head = null;
 
-    Level currentLevel = new Level(-1, null, null, false, false, false);
+    Level currentLevel = new Level(-1, null, null, Level.Type.REGULAR);
 
     ChainContext(ChainContext parent) {
         this.parent = parent;
@@ -26,7 +26,7 @@ final class ChainContext {
 
     IokeObject prepareAssignmentMessage() throws ControlFlow {
         if(chains.last != null && chains.last == currentLevel.operatorMessage) {
-            if(currentLevel.assignment && head == null) {
+            if(currentLevel.type == Level.Type.ASSIGNMENT && head == null) {
                 IokeObject assgn = currentLevel.operatorMessage;
                 IokeObject prev = (IokeObject)assgn.getArguments().get(0);
                 assgn.getArguments().clear();
@@ -46,7 +46,7 @@ final class ChainContext {
                 }
                 last = prev;
                 return assgn;
-            } else if(!currentLevel.assignment) {
+            } else if(currentLevel.type != Level.Type.ASSIGNMENT) {
                 pop();
                 currentLevel = currentLevel.parent;
             }
@@ -79,14 +79,14 @@ final class ChainContext {
             last = msg;
         }
 
-        if(currentLevel.unary) {
+        if(currentLevel.type == Level.Type.UNARY) {
             currentLevel.operatorMessage.getArguments().add(pop());
             currentLevel = currentLevel.parent;
         }
     }
 
-    void push(int precedence, IokeObject op, boolean unary, boolean assignment, boolean inverted) {
-        currentLevel = new Level(precedence, op, currentLevel, unary, assignment, inverted);
+    void push(int precedence, IokeObject op, Level.Type type) {
+        currentLevel = new Level(precedence, op, currentLevel, type);
         chains = new BufferedChain(chains, last, head);
         last = head = null;
     }
@@ -109,14 +109,14 @@ final class ChainContext {
     }
 
     void popOperatorsTo(int precedence) throws ControlFlow {
-        while((currentLevel.precedence != -1 || currentLevel.unary) && currentLevel.precedence <= precedence) {
+        while((currentLevel.precedence != -1 || currentLevel.type == Level.Type.UNARY) && currentLevel.precedence <= precedence) {
             IokeObject arg = pop();
             if(arg != null && Message.isTerminator(arg) && Message.next(arg) == null) {
                 arg = null;
             }
 
             IokeObject op = currentLevel.operatorMessage;
-            if(currentLevel.inverted && Message.prev(op) != null) {
+            if(currentLevel.type == Level.Type.INVERTED && Message.prev(op) != null) {
                 Message.setNext(Message.prev(op), null);
                 op.getArguments().add(head);
                 head = arg;

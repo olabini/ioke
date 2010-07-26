@@ -9,19 +9,19 @@ import ioke.lang.IokeObject;
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
 final class Level {
+    public static enum Type {
+        REGULAR, UNARY, ASSIGNMENT, INVERTED
+    }
+
     final int precedence;
     final IokeObject operatorMessage;
     final Level parent;
-    final boolean unary;
-    final boolean assignment;
-    final boolean inverted;
+    final Type type;
 
-    Level(int precedence, IokeObject op, Level parent, boolean unary, boolean assignment, boolean inverted) {
+    Level(int precedence, IokeObject op, Level parent, Type type) {
         this.precedence = precedence;
         this.operatorMessage = op;
         this.parent = parent;
-        this.unary = unary;
-        this.assignment = assignment;
-        this.inverted = inverted;
+        this.type = type;
     }
 }// Level
