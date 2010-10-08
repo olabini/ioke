@@ -48,7 +48,7 @@ public class IokeSystem extends IokeData {
 
     private final static String userHome = System.getProperty("user.home");
     public static String withReplacedHomeDirectory(String input) {
-        return input.replaceAll("^~", userHome);
+        return input.contains("^~") && WINDOWS_SEVEN ? userHome + input.replaceAll("^~", "") : input.replaceAll("^~", userHome);
     }
 
     public void pushCurrentFile(String filename) {
@@ -95,6 +95,7 @@ public class IokeSystem extends IokeData {
     private static final String[] SUFFIXES_WITH_BLANK = {"", ".ik", ".jar"};
 
     public final static boolean DOSISH = System.getProperty("os.name").indexOf("Windows") != -1;
+    public final static boolean WINDOWS_SEVEN = System.getProperty("os.name").equals("Windows 7");
 
     public static boolean isAbsoluteFileName(String name) {
         if(DOSISH) {
@@ -474,6 +475,15 @@ public class IokeSystem extends IokeData {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
 
                     return DOSISH ? runtime._true : runtime._false;
+                }
+            }));
+            
+        obj.registerMethod(runtime.newNativeMethod("returns true if running on windows seven, otherwise false", new NativeMethod.WithNoArguments("windowsSeven?") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+
+                    return WINDOWS_SEVEN ? runtime._true : runtime._false;
                 }
             }));
 

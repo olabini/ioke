@@ -888,9 +888,9 @@ public class Message extends IokeData {
     }
 
     public static IokeObject newFromStream(Runtime runtime, Reader reader, IokeObject message, IokeObject context) throws ControlFlow {
-        try {
-            IokeParser parser = new IokeParser(runtime, reader, context, message);
-            IokeObject m = parser.parseFully();
+      try {          
+            IokeParser parser = new IokeParser(runtime, reader, context, message);            
+            IokeObject m = parser.parseFully();            
             // System.out.println();
             // System.out.println("==================================================================================================");
             // System.out.println(m);
@@ -1018,10 +1018,10 @@ public class Message extends IokeData {
         Object current = ctx;
         Object tmp = null;
         Object lastReal = self.runtime.getNil();
-        IokeObject m = self;
+        IokeObject m = self;        
         while(m != null) {
             String name = m.getName();
-
+            
             if(name.equals(".")) {
                 current = ctx;
             } else if(name.length() > 0 && m.getArguments().size() == 0 && name.charAt(0) == ':') {

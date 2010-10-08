@@ -40,7 +40,7 @@ public class Main {
         boolean debug = false;
         String cwd = null;
         List<String> scripts = new ArrayList<String>();
-        List<String> loadDirs = new ArrayList<String>();
+        List<String> loadDirs = new ArrayList<String>();        
         try {
             int start = 0;
             boolean done = false;
@@ -49,6 +49,7 @@ public class Main {
 
             for(;!done && start<args.length;start++) {
                 String arg = args[start];
+                System.out.println(arg);
                 if(arg.length() > 0) {
                     if(arg.charAt(0) != '-') {
                         done = true;
@@ -103,9 +104,8 @@ public class Main {
                         }
                     }
                 }
-            }
-
-            if(cwd != null) {
+              }            
+              if(cwd != null) {              
                 r.setCurrentWorkingDirectory(cwd);
             }
 
@@ -133,7 +133,7 @@ public class Main {
                         r.addArgument(args[i]);
                     }
                 }
-                String file = args[start];
+                String file = args[start];                
                 if(file.startsWith("\"")) {
                     file = file.substring(1, file.length());
                 }

@@ -1914,12 +1914,12 @@ describe("Java Objects",
       i = ioke:lang:test:InstanceMethods new
       i overloaded((float)102) asText should == "overloaded(float)"
       i overloaded((float)102, false) asText should == "overloaded(float, boolean)"
-      i overloaded(123, (float)42) asText should == "overloaded(int, float)"
+      i overloaded((int)123, (float)42) asText should == "overloaded(int, float)"
       i overloaded((float)123, (float)42) asText should == "overloaded(float, float)"
 
       i overloaded((float)102.2) asText should == "overloaded(float)"
       i overloaded((float)102.3, false) asText should == "overloaded(float, boolean)"
-      i overloaded(123, (float)42.4) asText should == "overloaded(int, float)"
+      i overloaded((int)123, (float)42.4) asText should == "overloaded(int, float)"
       i overloaded((float)123.6, (float)42.5) asText should == "overloaded(float, float)"
     )
 
@@ -1927,12 +1927,12 @@ describe("Java Objects",
       i = ioke:lang:test:InstanceMethods new
       i overloaded((double)102) asText should == "overloaded(double)"
       i overloaded((double)102, false) asText should == "overloaded(double, boolean)"
-      i overloaded(123, (double)42) asText should == "overloaded(int, double)"
+      i overloaded((int)123, (double)42) asText should == "overloaded(int, double)"
       i overloaded((double)123, (double)42) asText should == "overloaded(double, double)"
 
       i overloaded((double)102.2) asText should == "overloaded(double)"
       i overloaded((double)102.3, false) asText should == "overloaded(double, boolean)"
-      i overloaded(123, (double)42.4) asText should == "overloaded(int, double)"
+      i overloaded((int)123, (double)42.4) asText should == "overloaded(int, double)"
       i overloaded((double)123.6, (double)42.5) asText should == "overloaded(double, double)"
     )
 

@@ -518,14 +518,14 @@ public class IokeObject implements TypeChecker {
     }
 
     public static Object perform(Object obj, IokeObject ctx, IokeObject message) throws ControlFlow {
-        if((obj instanceof IokeObject) || IokeRegistry.isWrapped(obj, ctx)) {
+        if((obj instanceof IokeObject) || IokeRegistry.isWrapped(obj, ctx)) {          
             return as(obj, ctx).perform(ctx, message);
         } else {
             return performJava(obj, ctx, message);
         }
     }
 
-    private static Object performJava(Object obj, IokeObject ctx, IokeObject message) throws ControlFlow {
+    private static Object performJava(Object obj, IokeObject ctx, IokeObject message) throws ControlFlow {      
         final IokeObject clz = IokeRegistry.wrap(obj.getClass(), ctx);
         final Runtime runtime = ctx.runtime;
         final String name = message.getName();
@@ -816,7 +816,7 @@ public class IokeObject implements TypeChecker {
     public static IokeObject as(Object on, IokeObject context) {
         if(on instanceof IokeObject) {
             return ((IokeObject)on);
-        } else {
+          } else {
             return IokeRegistry.wrap(on, context);
         }
     }
