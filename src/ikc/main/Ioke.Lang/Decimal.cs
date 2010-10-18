@@ -97,7 +97,22 @@ namespace Ioke.Lang {
             obj.RegisterMethod(runtime.NewNativeMethod("returns the square root of the receiver. this should return the same result as calling ** with 0.5",
                                                        new TypeCheckingNativeMethod.WithNoArguments("sqrt", obj,
                                                                                                     (method, on, args, keywords, context, message) => {
-                                                                                                        return runtime.NewDecimal(new BigSquareRoot().Get(((Decimal)IokeObject.dataOf(on)).value));
+                                                                                                        BigDecimal value = ((Decimal)IokeObject.dataOf(on)).value;
+
+                                                                                                        if(value.CompareTo(BigDecimal.ZERO) < 1) {
+                                                                                                            IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition,
+                                                                                                                                                                               message,
+                                                                                                                                                                               context,
+                                                                                                                                                                               "Error",
+                                                                                                                                                                               "Arithmetic"), context).Mimic(message, context);
+                                                                                                            condition.SetCell("message", message);
+                                                                                                            condition.SetCell("context", context);
+                                                                                                            condition.SetCell("receiver", on);
+                                                                                                            
+                                                                                                            context.runtime.ErrorCondition(condition);
+                                                                                                        }
+
+                                                                                                        return runtime.NewDecimal(new BigSquareRoot().Get(value));
                                                                                                     })));
 
             obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns a text inspection of the object",
@@ -225,6 +240,21 @@ namespace Ioke.Lang {
 
                                                                                             return context.runtime.NewDecimal(Decimal.GetValue(on).multiply(Decimal.GetValue(arg)));
                                                                                         }
+                                                                                    })));
+
+            obj.RegisterMethod(runtime.NewNativeMethod("returns this number to the power of the argument (which has to be an integer)",
+                                                       new TypeCheckingNativeMethod("**", TypeCheckingArgumentsDefinition.builder()
+                                                                                    .ReceiverMustMimic(obj)
+                                                                                    .WithRequiredPositional("exponent")
+                                                                                    .Arguments,
+                                                                                    (method, on, args, keywords, context, message) => {
+                                                                                        object arg = args[0];
+                                                                                        IokeData data = IokeObject.dataOf(arg);
+
+                                                                                        if(!(data is Number)) {
+                                                                                            arg = IokeObject.ConvertToRational(arg, message, context, true);
+                                                                                        }
+                                                                                        return context.runtime.NewDecimal(Decimal.GetValue(on).pow(Number.IntValue(arg).intValue()));
                                                                                     })));
 
             obj.RegisterMethod(runtime.NewNativeMethod("returns the quotient of this number and the argument.",

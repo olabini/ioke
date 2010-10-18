@@ -170,6 +170,19 @@ namespace Ioke.Lang {
                                                                            // Ignore and fall through
                                                                        }
                                                                    }
+
+                                                                   if(RatNum.compare(value, IntNum.zero()) < 1) {
+                                                                       IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition,
+                                                                                                                                          message,
+                                                                                                                                          context,
+                                                                                                                                          "Error",
+                                                                                                                                          "Arithmetic"), context).Mimic(message, context);
+                                                                       condition.SetCell("message", message);
+                                                                       condition.SetCell("context", context);
+                                                                       condition.SetCell("receiver", on);
+
+                                                                       context.runtime.ErrorCondition(condition);
+                                                                   }
                                                                    return context.runtime.NewDecimal(new BigSquareRoot().Get(value.AsBigDecimal()));
                                                                })));
 

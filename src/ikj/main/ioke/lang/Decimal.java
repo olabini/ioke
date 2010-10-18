@@ -323,7 +323,7 @@ public class Decimal extends IokeData {
                 }
             }));
 
-        decimal.registerMethod(runtime.newNativeMethod("returns this number to the power of the argument (which has to be an integer", new TypeCheckingNativeMethod("**") {
+        decimal.registerMethod(runtime.newNativeMethod("returns this number to the power of the argument (which has to be an integer)", new TypeCheckingNativeMethod("**") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
                     .receiverMustMimic(decimal)
