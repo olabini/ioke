@@ -46,7 +46,7 @@ final class ChainContext {
                 }
                 last = prev;
                 return assgn;
-            } else if(currentLevel.type != Level.Type.ASSIGNMENT) {
+            } else if(last == null && currentLevel.type != Level.Type.ASSIGNMENT) {
                 pop();
                 currentLevel = currentLevel.parent;
             }

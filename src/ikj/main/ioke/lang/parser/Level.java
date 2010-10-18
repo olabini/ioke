@@ -24,4 +24,8 @@ final class Level {
         this.parent = parent;
         this.type = type;
     }
+
+    public String toString() {
+        return "Level<" + precedence + ", " + operatorMessage + ", " + type + ", " + parent + ">";
+    }
 }// Level

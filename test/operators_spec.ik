@@ -1036,6 +1036,10 @@ describe("operator",
         m = parse("\"foo\" && \"bar\" && \"quux\"")
         m should == "\"foo\" &&(\"bar\") &&(\"quux\")"
       )
+
+      it("shuffles correctly with assignment",
+        parse("foo && bar = baz") should == "foo &&(=(bar, baz))"
+      )
     )
 
     describe("||",
@@ -1075,6 +1079,10 @@ describe("operator",
 
         m = parse("\"foo\" || \"bar\" || \"quux\"")
         m should == "\"foo\" ||(\"bar\") ||(\"quux\")"
+      )
+
+      it("shuffles correctly with assignment",
+        parse("foo || bar = baz") should == "foo ||(=(bar, baz))"
       )
     )
 
@@ -1207,6 +1215,10 @@ describe("operator",
 
         m = parse("\"foo\" and \"bar\" and \"quux\"")
         m should == "\"foo\" and(\"bar\") and(\"quux\")"
+      )
+
+      it("shuffles correctly with assignment",
+        parse("foo and bar = baz") should == "foo and(=(bar, baz))"
       )
     )
 
