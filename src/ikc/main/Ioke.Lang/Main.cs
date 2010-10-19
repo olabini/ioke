@@ -4,7 +4,6 @@ namespace Ioke.Lang {
     using System.Collections.Generic;
     using System.IO;
     using Ioke.Lang.Parser;
-    using Ioke.Lang.Parser.Functional;
     using Ioke.Lang.Util;
 
     public class IokeMain {
@@ -24,7 +23,7 @@ namespace Ioke.Lang {
             string iokeHome = new FileInfo(current).Directory.Parent.FullName;
             string iokeLib = Path.Combine(iokeHome, "lib");
 
-            Runtime r = new Runtime(new FunctionalOperatorShufflerFactory());
+            Runtime r = new Runtime();
             r.Init();
 
             IokeObject context = r.Ground;

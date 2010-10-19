@@ -28,7 +28,6 @@ namespace Ioke.Lang {
         }
         private readonly int id;
 
-        public IOperatorShufflerFactory operatorShufflerFactory;
         public Globber globber = new Ioke.Lang.Util.DefaultGlobber();
 
         public TextWriter Out;
@@ -82,7 +81,6 @@ namespace Ioke.Lang {
 
         public IokeObject asText;
         public IokeObject asTuple;
-        public IokeObject opShuffle;
         public IokeObject printlnMessage;
         public IokeObject outMessage;
         public IokeObject nilMessage;
@@ -148,12 +146,11 @@ namespace Ioke.Lang {
         public IokeObject Ratio = null;
         public IokeObject Infinity = null;
 
-        public Runtime(IOperatorShufflerFactory shuffler) : this(shuffler, Console.Out, Console.In, Console.Error) {
+        public Runtime() : this(Console.Out, Console.In, Console.Error) {
         }
 
-        public Runtime(IOperatorShufflerFactory shuffler, TextWriter Out, TextReader In, TextWriter Error) {
+        public Runtime(TextWriter Out, TextReader In, TextWriter Error) {
             this.id = getNextId();
-            this.operatorShufflerFactory = shuffler;
             this.Out = Out;
             this.In = In;
             this.Error = Error;
@@ -205,7 +202,6 @@ namespace Ioke.Lang {
 
             asText = NewMessage("asText");
             asTuple = NewMessage("asTuple");
-            opShuffle = NewMessage("shuffleOperators");
             printlnMessage = NewMessage("println");
             outMessage = NewMessage("out");
             nilMessage = NewMessage("nil");
@@ -1079,7 +1075,7 @@ namespace Ioke.Lang {
             obj.RegisterMethod(obj.runtime.NewNativeMethod("creates a new runtime and returns that. be careful using this since it will result in some fairly strange behavior if used incorrectly. it will not copy the state of this runtime, but just create a new one from scratch.",
                                                            new TypeCheckingNativeMethod.WithNoArguments("create", obj,
                                                                                                         (method, on, args, keywords, context, message) => {
-                                                                                                            Runtime r = new Runtime(method.runtime.operatorShufflerFactory, method.runtime.Out, method.runtime.In, method.runtime.Error);
+                                                                                                            Runtime r = new Runtime(method.runtime.Out, method.runtime.In, method.runtime.Error);
                                                                                                             r.Init();
                                                                                                             IokeObject o = method.runtime._Runtime.AllocateCopy(null, null);
                                                                                                             o.MimicsWithoutCheck(method.runtime._Runtime);

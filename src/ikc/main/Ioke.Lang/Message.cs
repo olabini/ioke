@@ -280,12 +280,6 @@ namespace Ioke.Lang {
             return m;
         }
 
-        public static void OpShuffle(IokeObject self) {
-            if(self != null) {
-                ((Message)IokeObject.dataOf(self.runtime.opShuffle)).SendTo(self.runtime.opShuffle, self.runtime.Ground, self);
-            }
-        }
-
         public static IokeObject NewFromStream(Runtime runtime, TextReader reader, IokeObject message, IokeObject context) {
             try {
                 IokeParser parser = new IokeParser(runtime, reader, context, message);
@@ -298,7 +292,6 @@ namespace Ioke.Lang {
                     return runtime.CreateMessage(mx);
                 }
 
-                OpShuffle(m);
                 return m;
             } catch(ControlFlow cf) {
                 // Pass through!
@@ -673,30 +666,6 @@ namespace Ioke.Lang {
         public override void Init(IokeObject obj) {
             obj.Kind = "Message";
             obj.Mimics(IokeObject.As(obj.runtime.Mixins.GetCell(null, null, "Enumerable"), null), obj.runtime.nul, obj.runtime.nul);
-
-            obj.RegisterMethod(obj.runtime.NewNativeMethod("Will rearrange this message and all submessages to follow regular C style operator precedence rules. Will use Message OperatorTable to guide this operation. The operation is mutating, but should not change anything if done twice.", new NativeMethod.WithNoArguments("shuffleOperators", (method, context, message, on, outer) => {
-                            IOperatorShuffler levels = method.runtime.operatorShufflerFactory.Create(IokeObject.As(on, context), context, message);
-                            var expressions = new SaneList<IokeObject>();
-                            if(on is IokeObject) {
-                                expressions.Insert(0, IokeObject.As(on, context));
-                                while(expressions.Count > 0) {
-                                    IokeObject n = expressions[0];
-                                    expressions.RemoveAt(0);
-                                    do {
-                                        levels.Attach(n, expressions);
-                                        foreach(object o in n.Arguments) {
-                                            if(o is IokeObject) {
-                                                expressions.Insert(0, IokeObject.As(o, context));
-                                            }
-                                        }
-                                    } while((n = Message.GetNext(n)) != null);
-
-                                    levels.NextMessage(expressions);
-                                }
-                            }
-
-                            return on;
-                        })));
 
             obj.RegisterMethod(obj.runtime.NewNativeMethod("Takes one or more evaluated arguments and sends this message chain to where the first argument is ground, and if there are more arguments, the second is the receiver, and the rest will be the arguments",
                                                                new NativeMethod("evaluateOn", DefaultArgumentsDefinition.builder()

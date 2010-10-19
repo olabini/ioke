@@ -12,66 +12,56 @@ namespace Ioke.Lang.Parser
     public class IokeParser
     {
         internal readonly Runtime runtime;
-        private readonly TextReader reader;
+        internal readonly TextReader reader;
 
         internal readonly IokeObject context;
         internal readonly IokeObject message;
 
+        internal ChainContext top = new ChainContext(null);
+
         internal readonly Dictionary<string, Operators.OpEntry> operatorTable = new SaneDictionary<string, Operators.OpEntry>();
         internal readonly Dictionary<string, Operators.OpArity> trinaryOperatorTable = new SaneDictionary<string, Operators.OpArity>();
         internal readonly Dictionary<string, Operators.OpEntry> invertedOperatorTable = new SaneDictionary<string, Operators.OpEntry>();
+        internal readonly ICollection<string> unaryOperators = Operators.DEFAULT_UNARY_OPERATORS;
+        internal readonly ICollection<string> onlyUnaryOperators = Operators.DEFAULT_ONLY_UNARY_OPERATORS;
 
         public IokeParser(Runtime runtime, TextReader reader, IokeObject context, IokeObject message) {
             this.runtime = runtime;
             this.reader = reader;
             this.context = context;
             this.message = message;
+
+            Operators.CreateOrGetOpTables(this);
         }
 
+
         public IokeObject ParseFully() {
-            IokeObject result = parseExpressions();
+            IokeObject result = ParseMessageChain();
             return result;
         }
 
-        private IokeObject parseExpressions() {
-            IokeObject c = null;
-            IokeObject last = null;
-            IokeObject head = null;
-
-            while((c = parseExpression()) != null) {
-                if(head == null) {
-                    head = c;
-                    last = c;
-                } else {
-                    Message.SetNext(last, c);
-                    Message.SetPrev(c, last);
-                    last = c;
-                }
-            }
-
-            if(head != null) {
-                while(Message.IsTerminator(head) && Message.GetNext(head) != null) {
-                    head = Message.GetNext(head);
-                    Message.SetPrev(head, null);
-                }
-            }
-
-            return head;
+        private IokeObject ParseMessageChain() {
+            top = new ChainContext(top);
+            while(ParseMessage());
+            top.PopOperatorsTo(999999);
+            IokeObject ret = top.Pop();
+            top = top.parent;
+            return ret;
         }
 
-        private IList parseExpressionChain() {
+        private IList ParseCommaSeparatedMessageChains() {
             ArrayList chain = new SaneArrayList();
 
-            IokeObject curr = parseExpressions();
+            IokeObject curr = ParseMessageChain();
             while(curr != null) {
                 chain.Add(curr);
-                readWhiteSpace();
-                int rr = peek();
+                ReadWhiteSpace();
+                int rr = Peek();
                 if(rr == ',') {
-                    read();
-                    curr = parseExpressions();
+                    Read();
+                    curr = ParseMessageChain();
                     if(curr == null) {
-                        fail("Expected expression following comma");
+                        Fail("Expected expression following comma");
                     }
                 } else {
                     if(curr != null && Message.IsTerminator(curr) && Message.GetNext(curr) == null) {
@@ -91,7 +81,7 @@ namespace Ioke.Lang.Parser
         private int saved2 = -2;
         private int saved = -2;
 
-        private int read() {
+        private int Read() {
             if(saved > -2) {
                 int x = saved;
                 saved = saved2;
@@ -143,7 +133,7 @@ namespace Ioke.Lang.Parser
             return xx;
         }
 
-        private int peek() {
+        private int Peek() {
             if(saved == -2) {
                 if(saved2 != -2) {
                     saved = saved2;
@@ -155,7 +145,7 @@ namespace Ioke.Lang.Parser
             return saved;
         }
 
-        private int peek2() {
+        private int Peek2() {
             if(saved == -2) {
                 saved = reader.Read();
             }
@@ -165,14 +155,14 @@ namespace Ioke.Lang.Parser
             return saved2;
         }
 
-        private IokeObject parseExpression() {
+        private bool ParseMessage() {
             int rr;
             while(true) {
-                rr = peek();
+                rr = Peek();
                 switch(rr) {
                 case -1:
-                    read();
-                    return null;
+                    Read();
+                    return false;
                 case ',':
                     goto case '}';
                 case ')':
@@ -180,37 +170,46 @@ namespace Ioke.Lang.Parser
                 case ']':
                     goto case '}';
                 case '}':
-                    return null;
+                    return false;
                 case '(':
-                    read();
-                    return parseEmptyMessageSend();
+                    Read();
+                    ParseEmptyMessageSend();
+                    return true;
                 case '[':
-                    read();
-                    return parseSquareMessageSend();
+                    Read();
+                    ParseOpenCloseMessageSend(']', "[]");
+                    return true;
                 case '{':
-                    read();
-                    return parseCurlyMessageSend();
+                    Read();
+                    ParseOpenCloseMessageSend('}', "{}");
+                    return true;
                 case '#':
-                    read();
-                    switch(peek()) {
+                    Read();
+                    switch(Peek()) {
                     case '{':
-                        return parseSetMessageSend();
+                        ParseSimpleOpenCloseMessageSend('}', "set");
+                        return true;
                     case '/':
-                        return parseRegexpLiteral('/');
+                        ParseRegexpLiteral('/');
+                        return true;
                     case '[':
-                        return parseText('[');
+                        ParseText('[');
+                        return true;
                     case 'r':
-                        return parseRegexpLiteral('r');
+                        ParseRegexpLiteral('r');
+                        return true;
                     case '!':
-                        parseComment();
+                        ParseComment();
                         break;
                     default:
-                        return parseOperatorChars('#');
+                        ParseOperatorChars('#');
+                        return true;
                     }
                     break;
                 case '"':
-                    read();
-                    return parseText('"');
+                    Read();
+                    ParseText('"');
+                    return true;
                 case '0':
                     goto case '9';
                 case '1':
@@ -230,18 +229,20 @@ namespace Ioke.Lang.Parser
                 case '8':
                     goto case '9';
                 case '9':
-                    read();
-                    return parseNumber(rr);
+                    Read();
+                    ParseNumber(rr);
+                    return true;
                 case '.':
-                    read();
-                    if((rr = peek()) == '.') {
-                        return parseRange();
+                    Read();
+                    if((rr = Peek()) == '.') {
+                        ParseRange();
                     } else {
-                        return parseTerminator('.');
+                        ParseTerminator('.');
                     }
+                    return true;
                 case ';':
-                    read();
-                    parseComment();
+                    Read();
+                    ParseComment();
                     break;
                 case ' ':
                     goto case '\u000c';
@@ -250,23 +251,24 @@ namespace Ioke.Lang.Parser
                 case '\u000b':
                     goto case '\u000c';
                 case '\u000c':
-                    read();
-                    readWhiteSpace();
+                    Read();
+                    ReadWhiteSpace();
                     break;
                 case '\\':
-                    read();
-                    if((rr = peek()) == '\n') {
-                        read();
+                    Read();
+                    if((rr = Peek()) == '\n') {
+                        Read();
                         break;
                     } else {
-                        fail("Expected newline after free-floating escape character");
+                        Fail("Expected newline after free-floating escape character");
+                        break;
                     }
-                    break;
                 case '\r':
                     goto case '\n';
                 case '\n':
-                    read();
-                    return parseTerminator(rr);
+                    Read();
+                    ParseTerminator(rr);
+                    return true;
                 case '+':
                     goto case '/';
                 case '-':
@@ -302,23 +304,26 @@ namespace Ioke.Lang.Parser
                 case '`':
                     goto case '/';
                 case '/':
-                    read();
-                    return parseOperatorChars(rr);
+                    Read();
+                    ParseOperatorChars(rr);
+                    return true;
                 case ':':
-                    read();
-                    if(isLetter(rr = peek()) || isIDDigit(rr)) {
-                        return parseRegularMessageSend(':');
+                    Read();
+                    if(IsLetter(rr = Peek()) || IsIDDigit(rr)) {
+                        ParseRegularMessageSend(':');
                     } else {
-                        return parseOperatorChars(':');
+                        ParseOperatorChars(':');
                     }
+                    return true;
                 default:
-                    read();
-                    return parseRegularMessageSend(rr);
+                    Read();
+                    ParseRegularMessageSend(rr);
+                    return true;
                 }
             }
         }
-
-        private void fail(int l, int c, string message, string expected, string got) {
+        
+        private void Fail(int l, int c, string message, string expected, string got) {
             string file = ((IokeSystem)IokeObject.dataOf(runtime.System)).CurrentFile;
 
             IokeObject condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition,
@@ -346,25 +351,114 @@ namespace Ioke.Lang.Parser
             runtime.ErrorCondition(condition);
         }
 
-        private void fail(string message) {
-            fail(lineNumber, currentCharacter, message, null, null);
+        private void Fail(string message) {
+            Fail(lineNumber, currentCharacter, message, null, null);
         }
 
-        private void parseCharacter(int c) {
+        private void ParseCharacter(int c) {
             int l = lineNumber;
             int cc = currentCharacter;
 
-            readWhiteSpace();
-            int rr = read();
+            ReadWhiteSpace();
+            int rr = Read();
             if(rr != c) {
-                fail(l, cc, "Expected: '" + (char)c + "' got: " + charDesc(rr), "" + (char)c, charDesc(rr));
+                Fail(l, cc, "Expected: '" + (char)c + "' got: " + CharDesc(rr), "" + (char)c, CharDesc(rr));
             }
         }
 
-        private IokeObject parseEmptyMessageSend() {
+        private bool IsUnary(string name) {
+            return unaryOperators.Contains(name) && (top.head == null || Message.IsTerminator(top.last));
+        }
+
+        private static int PossibleOperatorPrecedence(string name) {
+            if(name.Length > 0) {
+                switch(name[0]) {
+                case '|':
+                    return 9;
+                case '^':
+                    return 8;
+                case '&':
+                    return 7;
+                case '<':
+                    return 5;
+                case '>':
+                    return 5;
+                case '=':
+                    return 6;
+                case '!':
+                    return 6;
+                case '?':
+                    return 6;
+                case '~':
+                    return 6;
+                case '$':
+                    return 6;
+                case '+':
+                    return 3;
+                case '-':
+                    return 3;
+                case '*':
+                    return 2;
+                case '/':
+                    return 2;
+                case '%':
+                    return 2;
+                }
+            }
+            return -1;
+        }
+
+        private void PossibleOperator(IokeObject mx) {
+            string name = Message.GetName(mx);
+
+            if(IsUnary(name) || onlyUnaryOperators.Contains(name)) {
+                top.Add(mx);
+                top.Push(-1, mx, Level.Type.UNARY);
+                return;
+            }
+
+            if(operatorTable.ContainsKey(name)) {
+                var op = operatorTable[name];
+                top.PopOperatorsTo(op.precedence);
+                top.Add(mx);
+                top.Push(op.precedence, mx, Level.Type.REGULAR);
+            } else {
+                if(trinaryOperatorTable.ContainsKey(name)) {
+                    var opa = trinaryOperatorTable[name];
+                    if(opa.arity == 2) {
+                        IokeObject last = top.PrepareAssignmentMessage();
+                        mx.Arguments.Add(last);
+                        top.Add(mx);
+                        top.Push(13, mx, Level.Type.ASSIGNMENT);
+                    } else {
+                        IokeObject last = top.PrepareAssignmentMessage();
+                        mx.Arguments.Add(last);
+                        top.Add(mx);
+                    }
+                } else {
+                    if(invertedOperatorTable.ContainsKey(name)) {
+                        var op = invertedOperatorTable[name];
+                        top.PopOperatorsTo(op.precedence);
+                        top.Add(mx);
+                        top.Push(op.precedence, mx, Level.Type.INVERTED);
+                    } else {
+                        int possible = PossibleOperatorPrecedence(name);
+                        if(possible != -1) {
+                            top.PopOperatorsTo(possible);
+                            top.Add(mx);
+                            top.Push(possible, mx, Level.Type.REGULAR);
+                        } else {
+                            top.Add(mx);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void ParseEmptyMessageSend() {
             int l = lineNumber; int cc = currentCharacter-1;
-            IList args = parseExpressionChain();
-            parseCharacter(')');
+            IList args = ParseCommaSeparatedMessageChains();
+            ParseCharacter(')');
 
             Message m = new Message(runtime, "");
             m.Line = l;
@@ -372,82 +466,56 @@ namespace Ioke.Lang.Parser
 
             IokeObject mx = runtime.CreateMessage(m);
             Message.SetArguments(mx, args);
-            return mx;
+            top.Add(mx);
         }
 
-        private IokeObject parseSquareMessageSend() {
+        private void ParseOpenCloseMessageSend(char end, string name) {
             int l = lineNumber; int cc = currentCharacter-1;
 
-            int rr = peek();
-            int r2 = peek2();
+            int rr = Peek();
+            int r2 = Peek2();
 
-            Message m = new Message(runtime, "[]");
+            Message m = new Message(runtime, name);
             m.Line = l;
             m.Position = cc;
 
             IokeObject mx = runtime.CreateMessage(m);
-            if(rr == ']' && r2 == '(') {
-                read();
-                read();
-                IList args = parseExpressionChain();
-                parseCharacter(')');
+            if(rr == end && r2 == '(') {
+                Read();
+                Read();
+                IList args = ParseCommaSeparatedMessageChains();
+                ParseCharacter(')');
                 Message.SetArguments(mx, args);
             } else {
-                IList args = parseExpressionChain();
-                parseCharacter(']');
+                IList args = ParseCommaSeparatedMessageChains();
+                ParseCharacter(end);
                 Message.SetArguments(mx, args);
             }
 
-            return mx;
+            top.Add(mx);
         }
 
-        private IokeObject parseCurlyMessageSend() {
-
+        private void ParseSimpleOpenCloseMessageSend(char end, string name) {
             int l = lineNumber; int cc = currentCharacter-1;
 
-            int rr = peek();
-            int r2 = peek2();
+            Read();
+            IList args = ParseCommaSeparatedMessageChains();
+            ParseCharacter(end);
 
-            Message m = new Message(runtime, "{}");
-            m.Line = l;
-            m.Position = cc;
-
-            IokeObject mx = runtime.CreateMessage(m);
-            if(rr == '}' && r2 == '(') {
-                read();
-                read();
-                IList args = parseExpressionChain();
-                parseCharacter(')');
-                Message.SetArguments(mx, args);
-            } else {
-                IList args = parseExpressionChain();
-                parseCharacter('}');
-                Message.SetArguments(mx, args);
-            }
-
-            return mx;
-        }
-
-        private IokeObject parseSetMessageSend() {
-            int l = lineNumber; int cc = currentCharacter-1;
-
-            parseCharacter('{');
-            IList args = parseExpressionChain();
-            parseCharacter('}');
-
-            Message m = new Message(runtime, "set");
+            Message m = new Message(runtime, name);
             m.Line = l;
             m.Position = cc;
 
             IokeObject mx = runtime.CreateMessage(m);
             Message.SetArguments(mx, args);
-            return mx;
+
+            top.Add(mx);
         }
 
-        private void parseComment() {
+        private void ParseComment() {
             int rr;
-            while((rr = peek()) != '\n' && rr != '\r' && rr != -1) {
-                read();
+            while((rr = Peek()) != '\n' && rr != '\r' && rr != -1) {
+                Read();
             }
         }
 
@@ -467,15 +535,15 @@ namespace Ioke.Lang.Parser
             "............"
         };
 
-
-        private IokeObject parseRange() {
+        private void ParseRange() {
             int l = lineNumber; int cc = currentCharacter-1;
 
             int count = 2;
-            read();
-            while(peek() == '.') {
+            Read();
+            int rr;
+            while((rr = Peek()) == '.') {
                 count++;
-                read();
+                Read();
             }
             string result = null;
             if(count < 13) {
@@ -491,60 +559,74 @@ namespace Ioke.Lang.Parser
             Message m = new Message(runtime, result);
             m.Line = l;
             m.Position = cc;
-            return runtime.CreateMessage(m);
+            IokeObject mx = runtime.CreateMessage(m);
+
+            if(rr == '(') {
+                Read();
+                IList args = ParseCommaSeparatedMessageChains();
+                ParseCharacter(')');
+                Message.SetArguments(mx, args);
+                top.Add(mx);
+            } else {
+                PossibleOperator(mx);
+            }
         }
 
-        private IokeObject parseTerminator(int indicator) {
+        private void ParseTerminator(int indicator) {
             int l = lineNumber; int cc = currentCharacter-1;
 
             int rr;
             int rr2;
             if(indicator == '\r') {
-                rr = peek();
+                rr = Peek();
                 if(rr == '\n') {
-                    read();
+                    Read();
                 }
             }
 
             while(true) {
-                rr = peek();
-                rr2 = peek2();
+                rr = Peek();
+                rr2 = Peek2();
                 if((rr == '.' && rr2 != '.') ||
                    (rr == '\n')) {
-                    read();
+                    Read();
                 } else if(rr == '\r' && rr2 == '\n') {
-                    read(); read();
+                    Read(); Read();
                 } else {
                     break;
                 }
+            }
+        
+            if(!(top.last == null && top.currentLevel.operatorMessage != null)) {
+                top.PopOperatorsTo(999999);
             }
 
             Message m = new Message(runtime, ".", null, true);
             m.Line = l;
             m.Position = cc;
-            return runtime.CreateMessage(m);
+            top.Add(runtime.CreateMessage(m));
         }
 
-        private void readWhiteSpace() {
+        private void ReadWhiteSpace() {
             int rr;
-            while((rr = peek()) == ' ' ||
+            while((rr = Peek()) == ' ' ||
                   rr == '\u0009' ||
                   rr == '\u000b' ||
                   rr == '\u000c') {
-                read();
+                Read();
             }
         }
 
-        private IokeObject parseRegexpLiteral(int indicator) {
+        private void ParseRegexpLiteral(int indicator) {
             StringBuilder sb = new StringBuilder();
             bool slash = indicator == '/';
 
             int l = lineNumber; int cc = currentCharacter-1;
 
-            read();
+            Read();
 
             if(!slash) {
-                parseCharacter('[');
+                ParseCharacter('[');
             }
 
             int rr;
@@ -552,12 +634,12 @@ namespace Ioke.Lang.Parser
             ArrayList args = new SaneArrayList();
 
             while(true) {
-                switch(rr = peek()) {
+                switch(rr = Peek()) {
                 case -1:
-                    fail("Expected end of regular expression, found EOF");
+                    Fail("Expected end of regular expression, found EOF");
                     break;
                 case '/':
-                    read();
+                    Read();
                     if(slash) {
                         args.Add(sb.ToString());
                         Message m = new Message(runtime, "internal:createRegexp");
@@ -571,18 +653,19 @@ namespace Ioke.Lang.Parser
 
                         sb = new StringBuilder();
                         while(true) {
-                            switch(rr = peek()) {
-                            case 'x':
-                            case 'i':
-                            case 'u':
-                            case 'm':
+                            switch(rr = Peek()) {
+                            case 'x': goto case 's';
+                            case 'i': goto case 's';
+                            case 'u': goto case 's';
+                            case 'm': goto case 's';
                             case 's':
-                                read();
-                            sb.Append((char)rr);
-                            break;
+                                Read();
+                                sb.Append((char)rr);
+                                break;
                             default:
                                 args.Add(sb.ToString());
-                                return mm;
+                                top.Add(mm);
+                                return;
                             }
                         }
                     } else {
@@ -590,7 +673,7 @@ namespace Ioke.Lang.Parser
                     }
                     break;
                 case ']':
-                    read();
+                    Read();
                     if(!slash) {
                         args.Add(sb.ToString());
                         Message m = new Message(runtime, "internal:createRegexp");
@@ -603,19 +686,19 @@ namespace Ioke.Lang.Parser
                         Message.SetArguments(mm, args);
                         sb = new StringBuilder();
                         while(true) {
-                            switch(rr = peek()) {
-                            case 'x':
-                            case 'i':
-                            case 'u':
-                            case 'm':
+                            switch(rr = Peek()) {
+                            case 'x': goto case 's';
+                            case 'i': goto case 's';
+                            case 'u': goto case 's';
+                            case 'm': goto case 's';
                             case 's':
-                                read();
-                            sb.Append((char)rr);
-                            break;
+                                Read();
+                                sb.Append((char)rr);
+                                break;
                             default:
                                 args.Add(sb.ToString());
-                                //System.err.println("-parseRegexpLiteral()");
-                                return mm;
+                                top.Add(mm);
+                                return;
                             }
                         }
                     } else {
@@ -623,39 +706,39 @@ namespace Ioke.Lang.Parser
                     }
                     break;
                 case '#':
-                    read();
-                    if((rr = peek()) == '{') {
-                        read();
+                    Read();
+                    if((rr = Peek()) == '{') {
+                        Read();
                         args.Add(sb.ToString());
                         sb = new StringBuilder();
                         name = "internal:compositeRegexp";
-                        args.Add(parseExpressions());
-                        readWhiteSpace();
-                        parseCharacter('}');
+                        args.Add(ParseMessageChain());
+                        ReadWhiteSpace();
+                        ParseCharacter('}');
                     } else {
                         sb.Append((char)'#');
                     }
                     break;
                 case '\\':
-                    read();
-                    parseRegexpEscape(sb);
+                    Read();
+                    ParseRegexpEscape(sb);
                     break;
                 default:
-                    read();
+                    Read();
                     sb.Append((char)rr);
                     break;
                 }
             }
         }
 
-        private IokeObject parseText(int indicator) {
+        private void ParseText(int indicator) {
             StringBuilder sb = new StringBuilder();
             bool dquote = indicator == '"';
 
             int l = lineNumber; int cc = currentCharacter-1;
 
             if(!dquote) {
-                read();
+                Read();
             }
 
             int rr;
@@ -663,12 +746,12 @@ namespace Ioke.Lang.Parser
             ArrayList args = new SaneArrayList();
 
             while(true) {
-                switch(rr = peek()) {
+                switch(rr = Peek()) {
                 case -1:
-                    fail("Expected end of text, found EOF");
+                    Fail("Expected end of text, found EOF");
                     break;
                 case '"':
-                    read();
+                    Read();
                     if(dquote) {
                         args.Add(sb.ToString());
                         Message m = new Message(runtime, "internal:createText");
@@ -689,13 +772,14 @@ namespace Ioke.Lang.Parser
                             Message.SetName(mm, name);
                         }
                         Message.SetArguments(mm, args);
-                        return mm;
+                        top.Add(mm);
+                        return;
                     } else {
                         sb.Append((char)rr);
                     }
                     break;
                 case ']':
-                    read();
+                    Read();
                     if(!dquote) {
                         args.Add(sb.ToString());
                         Message m = new Message(runtime, "internal:createText");
@@ -716,441 +800,409 @@ namespace Ioke.Lang.Parser
                             Message.SetName(mm, name);
                         }
                         Message.SetArguments(mm, args);
-                        return mm;
+                        top.Add(mm);
+                        return;
                     } else {
                         sb.Append((char)rr);
                     }
                     break;
                 case '#':
-                    read();
-                    if((rr = peek()) == '{') {
-                        read();
+                    Read();
+                    if((rr = Peek()) == '{') {
+                        Read();
                         args.Add(sb.ToString());
                         sb = new StringBuilder();
                         name = "internal:concatenateText";
-                        args.Add(parseExpressions());
-                        readWhiteSpace();
-                        parseCharacter('}');
+                        args.Add(ParseMessageChain());
+                        ReadWhiteSpace();
+                        ParseCharacter('}');
                     } else {
                         sb.Append((char)'#');
                     }
                     break;
                 case '\\':
-                    read();
-                    parseDoubleQuoteEscape(sb);
+                    Read();
+                    ParseDoubleQuoteEscape(sb);
                     break;
                 default:
-                    read();
+                    Read();
                     sb.Append((char)rr);
                     break;
                 }
             }
         }
 
-        private void parseRegexpEscape(StringBuilder sb) {
+        private void ParseRegexpEscape(StringBuilder sb) {
             sb.Append('\\');
-            int rr = peek();
+            int rr = Peek();
             switch(rr) {
             case 'u':
-                read();
+                Read();
                 sb.Append((char)rr);
                 for(int i = 0; i < 4; i++) {
-                    rr = peek();
+                    rr = Peek();
                     if((rr >= '0' && rr <= '9') ||
                        (rr >= 'a' && rr <= 'f') ||
                        (rr >= 'A' && rr <= 'F')) {
-                        read();
+                        Read();
                         sb.Append((char)rr);
                     } else {
-                        fail("Expected four hexadecimal characters in unicode escape - got: " + charDesc(rr));
+                        Fail("Expected four hexadecimal characters in unicode escape - got: " + CharDesc(rr));
                     }
                 }
                 break;
-            case '0':
-            case '1':
-            case '2':
-            case '3':
-            case '4':
-            case '5':
-            case '6':
+            case '0': goto case '7';
+            case '1': goto case '7';
+            case '2': goto case '7';
+            case '3': goto case '7';
+            case '4': goto case '7';
+            case '5': goto case '7';
+            case '6': goto case '7';
             case '7':
-                read();
-            sb.Append((char)rr);
-            if(rr <= '3') {
-                rr = peek();
-                if(rr >= '0' && rr <= '7') {
-                    read();
-                    sb.Append((char)rr);
-                    rr = peek();
+                Read();
+                sb.Append((char)rr);
+                if(rr <= '3') {
+                    rr = Peek();
                     if(rr >= '0' && rr <= '7') {
-                        read();
+                        Read();
+                        sb.Append((char)rr);
+                        rr = Peek();
+                        if(rr >= '0' && rr <= '7') {
+                            Read();
+                            sb.Append((char)rr);
+                        }
+                    }
+                } else {
+                    rr = Peek();
+                    if(rr >= '0' && rr <= '7') {
+                        Read();
                         sb.Append((char)rr);
                     }
                 }
-            } else {
-                rr = peek();
-                if(rr >= '0' && rr <= '7') {
-                    read();
-                    sb.Append((char)rr);
-                }
-            }
-            break;
-            case 't':
-            case 'n':
-            case 'f':
-            case 'r':
-            case '/':
-            case '\\':
-            case '\n':
-            case '#':
-            case 'A':
-            case 'd':
-            case 'D':
-            case 's':
-            case 'S':
-            case 'w':
-            case 'W':
-            case 'b':
-            case 'B':
-            case 'z':
-            case 'Z':
-            case '<':
-            case '>':
-            case 'G':
-            case 'p':
-            case 'P':
-            case '{':
-            case '}':
-            case '[':
-            case ']':
-            case '*':
-            case '(':
-            case ')':
-            case '$':
-            case '^':
-            case '+':
-            case '?':
-            case '.':
+                break;
+            case 't': goto case '|';
+            case 'n': goto case '|';
+            case 'f': goto case '|';
+            case 'r': goto case '|';
+            case '/': goto case '|';
+            case '\\': goto case '|';
+            case '\n': goto case '|';
+            case '#': goto case '|';
+            case 'A': goto case '|';
+            case 'd': goto case '|';
+            case 'D': goto case '|';
+            case 's': goto case '|';
+            case 'S': goto case '|';
+            case 'w': goto case '|';
+            case 'W': goto case '|';
+            case 'b': goto case '|';
+            case 'B': goto case '|';
+            case 'z': goto case '|';
+            case 'Z': goto case '|';
+            case '<': goto case '|';
+            case '>': goto case '|';
+            case 'G': goto case '|';
+            case 'p': goto case '|';
+            case 'P': goto case '|';
+            case '{': goto case '|';
+            case '}': goto case '|';
+            case '[': goto case '|';
+            case ']': goto case '|';
+            case '*': goto case '|';
+            case '(': goto case '|';
+            case ')': goto case '|';
+            case '$': goto case '|';
+            case '^': goto case '|';
+            case '+': goto case '|';
+            case '?': goto case '|';
+            case '.': goto case '|';
             case '|':
-                read();
-            sb.Append((char)rr);
-            break;
-            case '\r':
-                read();
+                Read();
                 sb.Append((char)rr);
-                if((rr = peek()) == '\n') {
-                    read();
+                break;
+            case '\r':
+                Read();
+                sb.Append((char)rr);
+                if((rr = Peek()) == '\n') {
+                    Read();
                     sb.Append((char)rr);
                 }
                 break;
             default:
-                fail("Undefined regular expression escape character: " + charDesc(rr));
+                Fail("Undefined regular expression escape character: " + CharDesc(rr));
                 break;
             }
         }
 
-        private void parseDoubleQuoteEscape(StringBuilder sb) {
+        private void ParseDoubleQuoteEscape(StringBuilder sb) {
             sb.Append('\\');
-            int rr = peek();
+            int rr = Peek();
             switch(rr) {
             case 'u':
-                read();
+                Read();
                 sb.Append((char)rr);
                 for(int i = 0; i < 4; i++) {
-                    rr = peek();
+                    rr = Peek();
                     if((rr >= '0' && rr <= '9') ||
                        (rr >= 'a' && rr <= 'f') ||
                        (rr >= 'A' && rr <= 'F')) {
-                        read();
+                        Read();
                         sb.Append((char)rr);
                     } else {
-                        fail("Expected four hexadecimal characters in unicode escape - got: " + charDesc(rr));
+                        Fail("Expected four hexadecimal characters in unicode escape - got: " + CharDesc(rr));
                     }
                 }
                 break;
-            case '0':
-            case '1':
-            case '2':
-            case '3':
-            case '4':
-            case '5':
-            case '6':
+            case '0': goto case '7';
+            case '1': goto case '7';
+            case '2': goto case '7';
+            case '3': goto case '7';
+            case '4': goto case '7';
+            case '5': goto case '7';
+            case '6': goto case '7';
             case '7':
-                read();
-            sb.Append((char)rr);
-            if(rr <= '3') {
-                rr = peek();
-                if(rr >= '0' && rr <= '7') {
-                    read();
-                    sb.Append((char)rr);
-                    rr = peek();
+                Read();
+                sb.Append((char)rr);
+                if(rr <= '3') {
+                    rr = Peek();
                     if(rr >= '0' && rr <= '7') {
-                        read();
+                        Read();
+                        sb.Append((char)rr);
+                        rr = Peek();
+                        if(rr >= '0' && rr <= '7') {
+                            Read();
+                            sb.Append((char)rr);
+                        }
+                    }
+                } else {
+                    rr = Peek();
+                    if(rr >= '0' && rr <= '7') {
+                        Read();
                         sb.Append((char)rr);
                     }
                 }
-            } else {
-                rr = peek();
-                if(rr >= '0' && rr <= '7') {
-                    read();
-                    sb.Append((char)rr);
-                }
-            }
-            break;
-            case 'b':
-            case 't':
-            case 'n':
-            case 'f':
-            case 'r':
-            case '"':
-            case ']':
-            case '\\':
-            case '\n':
-            case '#':
+                break;
+            case 'b': goto case 'e';
+            case 't': goto case 'e';
+            case 'n': goto case 'e';
+            case 'f': goto case 'e';
+            case 'r': goto case 'e';
+            case '"': goto case 'e';
+            case ']': goto case 'e';
+            case '\\': goto case 'e';
+            case '\n': goto case 'e';
+            case '#': goto case 'e';
             case 'e':
-                read();
-            sb.Append((char)rr);
-            break;
-            case '\r':
-                read();
+                Read();
                 sb.Append((char)rr);
-                if((rr = peek()) == '\n') {
-                    read();
+                break;
+            case '\r':
+                Read();
+                sb.Append((char)rr);
+                if((rr = Peek()) == '\n') {
+                    Read();
                     sb.Append((char)rr);
                 }
                 break;
             default:
-                fail("Undefined text escape character: " + charDesc(rr));
+                Fail("Undefined text escape character: " + CharDesc(rr));
                 break;
             }
         }
 
-        private IokeObject parseOperatorChars(int indicator) {
+        private void ParseOperatorChars(int indicator) {
             int l = lineNumber; int cc = currentCharacter-1;
 
             StringBuilder sb = new StringBuilder();
             sb.Append((char)indicator);
             int rr;
-            if(indicator == '#') {
-                while(true) {
-                    rr = peek();
-                    switch(rr) {
-                    case '+':
-                    case '-':
-                    case '*':
-                    case '%':
-                    case '<':
-                    case '>':
-                    case '!':
-                    case '?':
-                    case '~':
-                    case '&':
-                    case '|':
-                    case '^':
-                    case '$':
-                    case '=':
-                    case '@':
-                    case '\'':
-                    case '`':
-                    case ':':
-                    case '#':
-                        read();
+            while(true) {
+                rr = Peek();
+                switch(rr) {
+                case '+': goto case '#';
+                case '-': goto case '#';
+                case '*': goto case '#';
+                case '%': goto case '#';
+                case '<': goto case '#';
+                case '>': goto case '#';
+                case '!': goto case '#';
+                case '?': goto case '#';
+                case '~': goto case '#';
+                case '&': goto case '#';
+                case '|': goto case '#';
+                case '^': goto case '#';
+                case '$': goto case '#';
+                case '=': goto case '#';
+                case '@': goto case '#';
+                case '\'': goto case '#';
+                case '`': goto case '#';
+                case ':': goto case '#';
+                case '#':
+                    Read();
                     sb.Append((char)rr);
                     break;
-                    default:
-                        Message m = new Message(runtime, sb.ToString());
-                        m.Line = l;
-                        m.Position = cc;
-                        IokeObject mx = runtime.CreateMessage(m);
-                        if(rr == '(') {
-                            read();
-                            IList args = parseExpressionChain();
-                            parseCharacter(')');
-                            Message.SetArguments(mx, args);
-                        }
-                        return mx;
+                case '/':
+                    if(indicator != '#') {
+                        Read();
+                        sb.Append((char)rr);
+                        break;
                     }
-                }
-            } else {
-                while(true) {
-                    rr = peek();
-                    switch(rr) {
-                    case '+':
-                    case '-':
-                    case '*':
-                    case '%':
-                    case '<':
-                    case '>':
-                    case '!':
-                    case '?':
-                    case '~':
-                    case '&':
-                    case '|':
-                    case '^':
-                    case '$':
-                    case '=':
-                    case '@':
-                    case '\'':
-                    case '`':
-                    case '/':
-                    case ':':
-                    case '#':
-                        read();
-                    sb.Append((char)rr);
-                    break;
-                    default:
-                        Message m = new Message(runtime, sb.ToString());
-                        m.Line = l;
-                        m.Position = cc;
-                        IokeObject mx = runtime.CreateMessage(m);
+                    goto default;
+                default:
+                    Message m = new Message(runtime, sb.ToString());
+                    m.Line = l;
+                    m.Position = cc;
+                    IokeObject mx = runtime.CreateMessage(m);
 
-                        if(rr == '(') {
-                            read();
-                            IList args = parseExpressionChain();
-                            parseCharacter(')');
-                            Message.SetArguments(mx, args);
-                        }
-                        return mx;
+                    if(rr == '(') {
+                        Read();
+                        IList args = ParseCommaSeparatedMessageChains();
+                        ParseCharacter(')');
+                        Message.SetArguments(mx, args);
+                        top.Add(mx);
+                    } else {
+                        PossibleOperator(mx);
                     }
+                    return;
                 }
             }
         }
 
-        private IokeObject parseNumber(int indicator) {
+        private void ParseNumber(int indicator) {
             int l = lineNumber; int cc = currentCharacter-1;
-            bool isdecimal = false;
+            bool dcimal = false;
             StringBuilder sb = new StringBuilder();
             sb.Append((char)indicator);
             int rr = -1;
             if(indicator == '0') {
-                rr = peek();
+                rr = Peek();
                 if(rr == 'x' || rr == 'X') {
-                    read();
+                    Read();
                     sb.Append((char)rr);
-                    rr = peek();
+                    rr = Peek();
                     if((rr >= '0' && rr <= '9') ||
                        (rr >= 'a' && rr <= 'f') ||
                        (rr >= 'A' && rr <= 'F')) {
-                        read();
+                        Read();
                         sb.Append((char)rr);
-                        rr = peek();
+                        rr = Peek();
                         while((rr >= '0' && rr <= '9') ||
                               (rr >= 'a' && rr <= 'f') ||
                               (rr >= 'A' && rr <= 'F')) {
-                            read();
+                            Read();
                             sb.Append((char)rr);
-                            rr = peek();
+                            rr = Peek();
                         }
                     } else {
-                        fail("Expected at least one hexadecimal characters in hexadecimal number literal - got: " + charDesc(rr));
+                        Fail("Expected at least one hexadecimal characters in hexadcimal number literal - got: " + CharDesc(rr));
                     }
                 } else {
-                    int r2 = peek2();
+                    int r2 = Peek2();
                     if(rr == '.' && (r2 >= '0' && r2 <= '9')) {
-                        isdecimal = true;
+                        dcimal = true;
                         sb.Append((char)rr);
                         sb.Append((char)r2);
-                        read(); read();
-                        while((rr = peek()) >= '0' && rr <= '9') {
-                            read();
+                        Read(); Read();
+                        while((rr = Peek()) >= '0' && rr <= '9') {
+                            Read();
                             sb.Append((char)rr);
                         }
                         if(rr == 'e' || rr == 'E') {
-                            read();
+                            Read();
                             sb.Append((char)rr);
-                            if((rr = peek()) == '-' || rr == '+') {
-                                read();
+                            if((rr = Peek()) == '-' || rr == '+') {
+                                Read();
                                 sb.Append((char)rr);
-                                rr = peek();
+                                rr = Peek();
                             }
 
                             if(rr >= '0' && rr <= '9') {
-                                read();
+                                Read();
                                 sb.Append((char)rr);
-                                while((rr = peek()) >= '0' && rr <= '9') {
-                                    read();
+                                while((rr = Peek()) >= '0' && rr <= '9') {
+                                    Read();
                                     sb.Append((char)rr);
                                 }
                             } else {
-                                fail("Expected at least one decimal character following exponent specifier in number literal - got: " + charDesc(rr));
+                                Fail("Expected at least one decimal character following exponent specifier in number literal - got: " + CharDesc(rr));
                             }
                         }
                     }
                 }
             } else {
-                while((rr = peek()) >= '0' && rr <= '9') {
-                    read();
+                while((rr = Peek()) >= '0' && rr <= '9') {
+                    Read();
                     sb.Append((char)rr);
                 }
-                int r2 = peek2();
+                int r2 = Peek2();
                 if(rr == '.' && r2 >= '0' && r2 <= '9') {
-                    isdecimal = true;
+                    dcimal = true;
                     sb.Append((char)rr);
                     sb.Append((char)r2);
-                    read(); read();
+                    Read(); Read();
 
-                    while((rr = peek()) >= '0' && rr <= '9') {
-                        read();
+                    while((rr = Peek()) >= '0' && rr <= '9') {
+                        Read();
                         sb.Append((char)rr);
                     }
                     if(rr == 'e' || rr == 'E') {
-                        read();
+                        Read();
                         sb.Append((char)rr);
-                        if((rr = peek()) == '-' || rr == '+') {
-                            read();
+                        if((rr = Peek()) == '-' || rr == '+') {
+                            Read();
                             sb.Append((char)rr);
-                            rr = peek();
+                            rr = Peek();
                         }
 
                         if(rr >= '0' && rr <= '9') {
-                            read();
+                            Read();
                             sb.Append((char)rr);
-                            while((rr = peek()) >= '0' && rr <= '9') {
-                                read();
+                            while((rr = Peek()) >= '0' && rr <= '9') {
+                                Read();
                                 sb.Append((char)rr);
                             }
                         } else {
-                            fail("Expected at least one decimal character following exponent specifier in number literal - got: " + charDesc(rr));
+                            Fail("Expected at least one decimal character following exponent specifier in number literal - got: " + CharDesc(rr));
                         }
                     }
                 } else if(rr == 'e' || rr == 'E') {
-                    isdecimal = true;
-                    read();
+                    dcimal = true;
+                    Read();
                     sb.Append((char)rr);
-                    if((rr = peek()) == '-' || rr == '+') {
-                        read();
+                    if((rr = Peek()) == '-' || rr == '+') {
+                        Read();
                         sb.Append((char)rr);
-                        rr = peek();
+                        rr = Peek();
                     }
 
                     if(rr >= '0' && rr <= '9') {
-                        read();
+                        Read();
                         sb.Append((char)rr);
-                        while((rr = peek()) >= '0' && rr <= '9') {
-                            read();
+                        while((rr = Peek()) >= '0' && rr <= '9') {
+                            Read();
                             sb.Append((char)rr);
                         }
                     } else {
-                        fail("Expected at least one decimal character following exponent specifier in number literal - got: " + charDesc(rr));
+                        Fail("Expected at least one decimal character following exponent specifier in number literal - got: " + CharDesc(rr));
                     }
                 }
             }
 
             // TODO: add unit specifier here
 
-            Message m = isdecimal ? new Message(runtime, "internal:createDecimal", sb.ToString()) : new Message(runtime, "internal:createNumber", sb.ToString());
+            Message m = dcimal ? new Message(runtime, "internal:createDecimal", sb.ToString()) : new Message(runtime, "internal:createNumber", sb.ToString());
             m.Line = l;
             m.Position = cc;
-            return runtime.CreateMessage(m);
+            top.Add(runtime.CreateMessage(m));
         }
 
-        private IokeObject parseRegularMessageSend(int indicator) {
+        private void ParseRegularMessageSend(int indicator) {
             int l = lineNumber; int cc = currentCharacter-1;
             StringBuilder sb = new StringBuilder();
             sb.Append((char)indicator);
             int rr = -1;
-            while(isLetter(rr = peek()) || isIDDigit(rr) || rr == ':' || rr == '!' || rr == '?' || rr == '$') {
-                read();
+            while(IsLetter(rr = Peek()) || IsIDDigit(rr) || rr == ':' || rr == '!' || rr == '?' || rr == '$') {
+                Read();
                 sb.Append((char)rr);
             }
             Message m = new Message(runtime, sb.ToString());
@@ -1159,16 +1211,17 @@ namespace Ioke.Lang.Parser
             IokeObject mx = runtime.CreateMessage(m);
 
             if(rr == '(') {
-                read();
-                IList args = parseExpressionChain();
-                parseCharacter(')');
+                Read();
+                IList args = ParseCommaSeparatedMessageChains();
+                ParseCharacter(')');
                 Message.SetArguments(mx, args);
+                top.Add(mx);
+            } else {
+                PossibleOperator(mx);
             }
-
-            return mx;
         }
 
-        private bool isLetter(int c) {
+        private bool IsLetter(int c) {
             return ((c>='A' && c<='Z') ||
                     c=='_' ||
                     (c>='a' && c<='z') ||
@@ -1185,7 +1238,7 @@ namespace Ioke.Lang.Parser
                     (c>='\uF900' && c<='\uFAFF'));
         }
 
-        private bool isIDDigit(int c) {
+        private bool IsIDDigit(int c) {
             return ((c>='0' && c<='9') ||
                     (c>='\u0660' && c<='\u0669') ||
                     (c>='\u06F0' && c<='\u06F9') ||
@@ -1203,7 +1256,7 @@ namespace Ioke.Lang.Parser
                     (c>='\u1040' && c<='\u1049'));
         }
 
-        private static string charDesc(int c) {
+        private static string CharDesc(int c) {
             if(c == -1) {
                 return "EOF";
             } else if(c == 9) {
@@ -1214,6 +1267,5 @@ namespace Ioke.Lang.Parser
                 return "'" + (char)c + "'";
             }
         }
-
     }
 }
