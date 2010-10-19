@@ -3,6 +3,7 @@ namespace Ioke.Lang.Parser
 {
     using System.IO;
     using System.Collections;
+    using System.Collections.Generic;
     using System.Text;
 
     using Ioke.Lang;
@@ -10,11 +11,15 @@ namespace Ioke.Lang.Parser
 
     public class IokeParser
     {
-        private readonly Runtime runtime;
+        internal readonly Runtime runtime;
         private readonly TextReader reader;
 
-        private readonly IokeObject context;
-        private readonly IokeObject message;
+        internal readonly IokeObject context;
+        internal readonly IokeObject message;
+
+        internal readonly Dictionary<string, Operators.OpEntry> operatorTable = new SaneDictionary<string, Operators.OpEntry>();
+        internal readonly Dictionary<string, Operators.OpArity> trinaryOperatorTable = new SaneDictionary<string, Operators.OpArity>();
+        internal readonly Dictionary<string, Operators.OpEntry> invertedOperatorTable = new SaneDictionary<string, Operators.OpEntry>();
 
         public IokeParser(Runtime runtime, TextReader reader, IokeObject context, IokeObject message) {
             this.runtime = runtime;
