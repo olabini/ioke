@@ -47,8 +47,8 @@ public class IokeSystem extends IokeData {
     private Random random = new Random();
 
     private final static String userHome = System.getProperty("user.home");
-    public static String withReplacedHomeDirectory(String input) {
-        return input.replaceAll("^~", userHome);
+    public static String withReplacedHomeDirectory(String input) {      
+        return WINDOWS_SEVEN && input.contains("~/") ? userHome+"\\"+input.replaceAll("~/", "") : input.replaceAll("^~", userHome);
     }
 
     public void pushCurrentFile(String filename) {
@@ -95,6 +95,7 @@ public class IokeSystem extends IokeData {
     private static final String[] SUFFIXES_WITH_BLANK = {"", ".ik", ".jar"};
 
     public final static boolean DOSISH = System.getProperty("os.name").indexOf("Windows") != -1;
+    public final static boolean WINDOWS_SEVEN = System.getProperty("os.name").equals("Windows 7");
 
     public static boolean isAbsoluteFileName(String name) {
         if(DOSISH) {
