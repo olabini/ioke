@@ -321,7 +321,9 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
             }
             Message.setPrev(newObj, prev);
 
-            return ((Message)IokeObject.data(message)).sendTo(message, context, context);
+            // We need to distinguish explicit calls to self, and calls through a local context.
+            Object receiver = (prev == null || Message.isTerminator(prev)) ? context : on;
+            return ((Message)IokeObject.data(message)).sendTo(message, context, receiver);
         }
     }
 
@@ -379,7 +381,9 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
             }
             Message.setPrev(newObj, prev);
 
-            return ((Message)IokeObject.data(message)).sendTo(message, context, context);
+            // We need to distinguish explicit calls to self, and calls through a local context.
+            Object receiver = (prev == null || Message.isTerminator(prev)) ? context : on;
+            return ((Message)IokeObject.data(message)).sendTo(message, context, receiver);
         }
     }
 }// DefaultSyntax

@@ -279,7 +279,9 @@ namespace Ioke.Lang {
                 }
                 Message.SetPrev(newObj, prev);
 
-                return ((Message)IokeObject.dataOf(message)).SendTo(message, context, context);
+                // We need to distinguish explicit calls to self, and calls through a local context.
+                object receiver = (prev == null || Message.IsTerminator(prev)) ? context : on;
+                return ((Message)IokeObject.dataOf(message)).SendTo(message, context, receiver);
             }
         }
 
@@ -332,8 +334,10 @@ namespace Ioke.Lang {
                     Message.SetPrev(next, last);
                 }
                 Message.SetPrev(newObj, prev);
-
-                return ((Message)IokeObject.dataOf(message)).SendTo(message, context, context);
+                
+                // We need to distinguish explicit calls to self, and calls through a local context.
+                object receiver = (prev == null || Message.IsTerminator(prev)) ? context : on;
+                return ((Message)IokeObject.dataOf(message)).SendTo(message, context, receiver);
             }
         }
     }

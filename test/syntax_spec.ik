@@ -129,6 +129,36 @@ describe("DefaultSyntax",
     x_syntax_spec should == 43
   )
 
+  it("executes in the right scope the first time",
+    f = Origin mimic
+
+    f synt = syntax('x)
+    f x = "outer"
+
+    f meth = method(
+      x = "inner"
+      self synt
+    )
+
+    f meth should == "outer"
+    f meth should == "outer"
+  )
+
+  it("executes in the right scope the first time for local variables",
+    f = Origin mimic
+
+    f synt = syntax('x)
+    f x = "outer"
+
+    f meth = method(
+      x = "inner"
+      synt
+    )
+
+    f meth should == "inner"
+    f meth should == "inner"
+  )
+
   describe("name",
     it("should validate type of receiver",
       syntax should checkReceiverTypeOn(:name)
