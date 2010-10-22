@@ -2,6 +2,8 @@
 ICheck = Origin mimic
 ICheck Property = Origin mimic
 ICheck Generators = Origin mimic
+ICheck Condition = Ground Condition mimic
+ICheck ReachedMaxDiscarded = ICheck Condition mimic
 
 ICheck forAll = macro("takes zero or more generator arguments, zero or more guard arguments and zero or more classifier arguments. All of this is followed by one required code argument that will be wrapped in a lexical context. the method returns a Property with everything set correctly to execute the ICheck code",
   
@@ -27,11 +29,9 @@ ICheck forAll = macro("takes zero or more generator arguments, zero or more guar
 
 ICheck aliasMethod("forAll", "forEvery")
 
+ICheck Property currentSize = 0
 ICheck Property valuesFromGenerators = method(
-  result = generators map(next)
-  while(!(guards all?(call(*result))),
-    result = generators map(next))
-  result
+  generators map(next)
 )
 
 ICheck Property classify = method(values, result,
@@ -46,22 +46,32 @@ ICheck Property computeSize = method(maxSuccess, maxSize, successful, discarded,
     maxMod == 0, (successful % maxSize),
     (successful % maxSize) * (maxSize div(maxMod))) + discarded div(10))
 
-ICheck Property check! = method(count: 100, maxSuccess: 100, maxDiscard: 500, maxSize: 100,
-  result = Origin with(classifier: {} withDefault(0))
-  count times(
-    values = valuesFromGenerators
-    classify(values, result)
-    block call(*values))
+ICheck Property check! = method(maxSuccess: 100, maxDiscard: 500, maxSize: 100,
+  result = Origin with(classifier: {} withDefault(0), succeeded: 0, discarded: 0)
+  while(result succeeded < maxSuccess && result discarded < maxDiscard,
+    size = computeSize(maxSuccess, maxDiscard, result succeeded, result discarded)
+    values = let(ICheck Property currentSize, size,
+      valuesFromGenerators)
+    if(!(guards all?(call(*values))),
+      result discarded += 1,
+      classify(values, result)
+      block call(*values)
+      result succeeded += 1)
+  )
   result
 )
 
 ICheck Generator = Origin mimic
 ICheck Generators do(
-  choose = method(start, end, 42)
+  choose = method(start, end, 
+    d = end-start+1
+    start + (System randomNumber abs % d))
+
   sized = dmacro(
     [argName, code]
     block = LexicalBlock createFrom([argName, code], call ground)
-    Origin with(next: fnx(block(0))))
+    ICheck Generator with(next: fnx(block(ICheck Property currentSize))))
+
   int = sized(n, choose(-n, n))
   integer = cell(:int)
 )

@@ -3,8 +3,6 @@ use("ispec")
 use("icheck")
 
 describe(ICheck,
-  it("mixes in itself and makes the property creators available")
-
   describe("forAll",
     it("returns a newly created property",
       prop = ICheck forAll(1 should == 1)
@@ -54,7 +52,7 @@ describe(ICheck,
       ICheck Generators basicSetOfCreatedValues = fnx([42, 55, 12, 42425, 7756] seq)
       allValuesGiven = []
       ICheck forAll(basicSetOfCreatedValues blarg,
-        allValuesGiven << blarg) check!(count: 5)
+        allValuesGiven << blarg) check!(maxSuccess: 5)
       allValuesGiven should == [42, 55, 12, 42425, 7756]
     )
 
@@ -62,31 +60,31 @@ describe(ICheck,
       ICheck Generators anotherSetOfCreatedValues = fnx(inp, Origin with(next: inp + 42))
       bladiBlaTest = 55
       ICheck forAll(anotherSetOfCreatedValues(bladiBlaTest) x,
-        x should == 97) check!(count: 1)
+        x should == 97) check!(maxSuccess: 1)
     )
 
     it("takes zero or more guard statements",
-      ICheck forAll(integer x, where x > 40,
-        nil) check!(count: 1)
+      ICheck forAll(integer x, where x > 2,
+        nil) check!(maxSuccess: 1)
     )
 
     it("should allow a guard statement with keyword syntax too",
-      ICheck forAll(integer x, where: x > 40,
-        nil) check!(count: 1)
+      ICheck forAll(integer x, where: x > 2,
+        nil) check!(maxSuccess: 1)
     )
 
     it("will use the guards to reject the values that fails the guard",
       ICheck Generators testData = fnx((1..100) seq)
       allValuesGiven = []
       ICheck forAll(testData x, where x > 40,
-        allValuesGiven << x) check!(count: 60)
+        allValuesGiven << x) check!(maxSuccess: 60)
       allValuesGiven should == (41..100) asList
     )
 
     it("executes the guards in the lexical scope of where it was created",
       outsideVal = [] 
       ICheck forAll(integer x, where . outsideVal << 42. true,
-        true) check!(count: 2)
+        true) check!(maxSuccess: 2)
       outsideVal should == [42, 42]
     )
 
@@ -136,7 +134,7 @@ describe(ICheck,
 
       Ground testCount should == 100
 
-      prop check!(count: 42)
+      prop check!(maxSuccess: 42)
 
       Ground testCount should == 142
     )
@@ -206,7 +204,7 @@ describe(ICheck,
       ICheck Generators basicSetOfCreatedValues = fnx([42, 55, 12, 42425, 7756] seq)
       allValuesGiven = []
       ICheck forEvery(basicSetOfCreatedValues blarg,
-        allValuesGiven << blarg) check!(count: 5)
+        allValuesGiven << blarg) check!(maxSuccess: 5)
       allValuesGiven should == [42, 55, 12, 42425, 7756]
     )
 
@@ -214,31 +212,31 @@ describe(ICheck,
       ICheck Generators anotherSetOfCreatedValues = fnx(inp, Origin with(next: inp + 42))
       bladiBlaTest = 55
       ICheck forEvery(anotherSetOfCreatedValues(bladiBlaTest) x,
-        x should == 97) check!(count: 1)
+        x should == 97) check!(maxSuccess: 1)
     )
 
     it("takes zero or more guard statements",
       ICheck forEvery(integer x, where x > 40,
-        nil) check!(count: 1)
+        nil) check!(maxSuccess: 1)
     )
 
     it("should allow a guard statement with keyword syntax too",
       ICheck forEvery(integer x, where: x > 40,
-        nil) check!(count: 1)
+        nil) check!(maxSuccess: 1)
     )
 
     it("will use the guards to reject the values that fails the guard",
       ICheck Generators testData = fnx((1..100) seq)
       allValuesGiven = []
       ICheck forEvery(testData x, where x > 40,
-        allValuesGiven << x) check!(count: 60)
+        allValuesGiven << x) check!(maxSuccess: 60)
       allValuesGiven should == (41..100) asList
     )
 
     it("executes the guards in the lexical scope of where it was created",
       outsideVal = [] 
       ICheck forEvery(integer x, where . outsideVal << 42. true,
-        true) check!(count: 2)
+        true) check!(maxSuccess: 2)
       outsideVal should == [42, 42]
     )
 
@@ -288,7 +286,7 @@ describe(ICheck,
 
       Ground testCount should == 100
 
-      prop check!(count: 42)
+      prop check!(maxSuccess: 42)
 
       Ground testCount should == 142
     )
@@ -308,21 +306,8 @@ describe(ICheck,
       Ground testCount should == 1
     )
   )
-
-  describe("Property",
-    it("should have tests")
-
-    describe("check!",
-      it("takes an optional amount of tests to run")
-      it("runs a property a hundred times by default")
-      it("takes a flag whether it should print verbosely or not")
-      it("returns a data structure with results from the run")
-    )
-  )
   
   describe("Generators",
-    it("should have tests")
-
     describe("int",
       it("returns a new generator when called",
         g1 = ICheck Generators int
@@ -334,21 +319,39 @@ describe(ICheck,
         g1 = ICheck Generators int
         atLeastOnePositive = false
         atLeastOneNegative = false
-        50 times(
-          x = g1 next
-          y = g1 next
-          if(x < 0 || y < 0,
-            atLeastOneNegative = true,
-            atLeastOnePositive = true)
-          x should not == y
-        )
+        let(ICheck Property currentSize, 100,
+          50 times(
+            x = g1 next
+            y = g1 next
+            if(x < 0 || y < 0,
+              atLeastOneNegative = true,
+              atLeastOnePositive = true)
+            x should not == y
+        ))
       )
-
-      it("gives new number every time next is called, both negative and positive, based on the size given")
     )
 
     describe("integer",
-      it("should have tests")
+      it("returns a new generator when called",
+        g1 = ICheck Generators integer
+        g1 should mimic(ICheck Generator)
+        g1 should not be(ICheck Generator)
+      )
+
+      it("gives new number every time next is called, both negative and positive",
+        g1 = ICheck Generators integer
+        atLeastOnePositive = false
+        atLeastOneNegative = false
+        let(ICheck Property currentSize, 100,
+          50 times(
+            x = g1 next
+            y = g1 next
+            if(x < 0 || y < 0,
+              atLeastOneNegative = true,
+              atLeastOnePositive = true)
+            x should not == y
+        ))
+      )
     )
 
     describe("decimal",
