@@ -92,6 +92,22 @@ ICheck Generators do(
   nat = sized(n, choose(0, n))
   natural = cell(:nat)
 
+  ratio = sized(n, 
+    result = nil
+    loop(
+      num = choose(-n, n)
+      denum = choose(-n, n)
+      if(denum != 0,
+        result = num / denum
+        if(result mimics?(Number Ratio),
+          break)
+      )
+    )
+    result
+  )
+
+  rational = oneOf(ratio, int)
+
   bool = oneOf(true, false)
   boolean = cell(:bool)
 

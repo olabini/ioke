@@ -322,6 +322,7 @@ describe(ICheck,
         let(ICheck Property currentSize, 10,
           50 times(
             x = g1 next
+            x should mimic(Number Integer)
             if(x < 0, atLeastOneNegative = true)
             if(x > 0, atLeastOnePositive = true)
         ))
@@ -344,6 +345,7 @@ describe(ICheck,
         let(ICheck Property currentSize, 10,
           50 times(
             x = g1 next
+            x should mimic(Number Integer)
             if(x < 0, atLeastOneNegative = true)
             if(x > 0, atLeastOnePositive = true)
         ))
@@ -357,11 +359,55 @@ describe(ICheck,
     )
 
     describe("ratio",
-      it("should have tests")
+      it("returns a new generator when called",
+        g1 = ICheck Generators ratio
+        g1 should mimic(ICheck Generator)
+        g1 should not be(ICheck Generator)
+      )
+
+      it("gives new ratio every time next is called",
+        g1 = ICheck Generators ratio
+        atLeastOnePositive = false
+        atLeastOneNegative = false
+        let(ICheck Property currentSize, 10,
+          50 times(
+            x = g1 next
+            x should mimic(Number Ratio)
+            if(x < 0, atLeastOneNegative = true)
+            if(x > 0, atLeastOnePositive = true)
+        ))
+        atLeastOneNegative should be true
+        atLeastOnePositive should be true
+      )
     )
 
     describe("rational",
-      it("should have tests")
+      it("returns a new generator when called",
+        g1 = ICheck Generators rational
+        g1 should mimic(ICheck Generator)
+        g1 should not be(ICheck Generator)
+      )
+
+      it("gives a ratio or an integer every time next is called",
+        g1 = ICheck Generators rational
+        atLeastOnePositive = false
+        atLeastOneNegative = false
+        atLeastOneRatio = false
+        atLeastOneInteger = false
+        let(ICheck Property currentSize, 10,
+          50 times(
+            x = g1 next
+            x should mimic(Number Rational)
+            if(x mimics?(Number Ratio), atLeastOneRatio = true)
+            if(x mimics?(Number Integer), atLeastOneInteger = true)
+            if(x < 0, atLeastOneNegative = true)
+            if(x > 0, atLeastOnePositive = true)
+        ))
+        atLeastOneNegative should be true
+        atLeastOnePositive should be true
+        atLeastOneRatio should be true
+        atLeastOneInteger should be true
+      )
     )
 
     describe("nat",
@@ -678,10 +724,6 @@ describe(ICheck,
     )
 
     describe("text",
-      it("should have tests")
-    )
-
-    describe("regexp",
       it("should have tests")
     )
 
