@@ -69,20 +69,28 @@ ICheck Generators do(
 
   sized = dmacro(
     [argName, code]
-    block = LexicalBlock createFrom([argName, code], call ground)
+    block = LexicalBlock createFrom(Ground[argName, code], call ground)
     ICheck Generator with(next: fnx(block(ICheck Property currentSize))))
+
+  gen = dmacro(
+    [code]
+    block = LexicalBlock createFrom(Ground[code], call ground)
+    ICheck Generator with(next: fnx(block call)))
 
   oneOf = method(+choices,
     len = choices length
-    ICheck Generator with(next: fnx(
+    gen(
         r = choices[choose(0, len - 1)]
         if(r mimics?(ICheck Generator),
           r next,
           r)
-       )))
+       ))
 
   int = sized(n, choose(-n, n))
   integer = cell(:int)
+
+  nat = sized(n, choose(0, n))
+  natural = cell(:nat)
 
   bool = oneOf(true, false)
   boolean = cell(:bool)
@@ -94,35 +102,33 @@ ICheck Generators do(
     element = if(element mimics?(ICheck Generator),
       element,
       Origin with(next: element))
-    ICheck Generator with(next: fnx(
-        n = choose(0, ICheck Property currentSize)
+    sized(size, 
         result = Ground list
-        choose(0, ICheck Property currentSize) times(
+        choose(0, size) times(
           result << element next
         )
         result
-  )))
+    ))
   [] = cell(:list)
 
   set = method(element,
     element = if(element mimics?(ICheck Generator),
       element,
       Origin with(next: element))
-    ICheck Generator with(next: fnx(
-        n = choose(0, ICheck Property currentSize)
+    sized(size,
         result = Ground set
-        choose(0, ICheck Property currentSize) times(
+        choose(0, size) times(
           result << element next
         )
         result
-  )))
+    ))
 
   range = method(startElement, endElement,
     (startElement, endElement) = Ground[startElement, endElement] map(element,
       if(element mimics?(ICheck Generator),
         element,
         Origin with(next: element)))
-    ICheck Generator with(next: fnx((startElement next)..(endElement next)))
+    gen((startElement next)..(endElement next))
   )
 
   xrange = method(startElement, endElement,
@@ -130,6 +136,14 @@ ICheck Generators do(
       if(element mimics?(ICheck Generator),
         element,
         Origin with(next: element)))
-    ICheck Generator with(next: fnx((startElement next)...(endElement next)))
+    gen((startElement next)...(endElement next))
+  )
+
+  => = method(startElement, endElement,
+    (startElement, endElement) = Ground[startElement, endElement] map(element,
+      if(element mimics?(ICheck Generator),
+        element,
+        Origin with(next: element)))
+    gen((startElement next) => (endElement next))
   )
 )

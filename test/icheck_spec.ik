@@ -365,11 +365,37 @@ describe(ICheck,
     )
 
     describe("nat",
-      it("should have tests")
+      it("returns a new generator when called",
+        g1 = ICheck Generators nat
+        g1 should mimic(ICheck Generator)
+        g1 should not be(ICheck Generator)
+      )
+
+      it("gives new natural number every time next is called",
+        g1 = ICheck Generators nat
+        let(ICheck Property currentSize, 10,
+          50 times(
+            x = g1 next
+            x should be > -1
+        ))
+      )
     )
 
     describe("natural",
-      it("should have tests")
+      it("returns a new generator when called",
+        g1 = ICheck Generators natural
+        g1 should mimic(ICheck Generator)
+        g1 should not be(ICheck Generator)
+      )
+
+      it("gives new natural number every time next is called",
+        g1 = ICheck Generators natural
+        let(ICheck Property currentSize, 10,
+          50 times(
+            x = g1 next
+            x should be > -1
+        ))
+      )
     )
 
     describe("bool",
@@ -551,7 +577,36 @@ describe(ICheck,
     )
 
     describe("=>",
-      it("should have tests")
+      it("returns a new generator when called",
+        g1 = ICheck Generators =>("one", "two")
+        g1 should mimic(ICheck Generator)
+        g1 should not be(ICheck Generator)
+      )
+
+      it("generates a pair with the values given",
+        g1 = ICheck Generators =>("foo", "bar")
+        let(ICheck Property currentSize, 10,
+          50 times(
+            g1 next should == ("foo" => "bar")
+          )
+        )
+      )
+
+      it("generates a pair based on generators",
+        g1 = ICheck Generators =>(ICheck Generators oneOf("foo", "bax"), ICheck Generators oneOf("barg", "mux"))
+        starts = #{}
+        ends = #{}
+
+        let(ICheck Property currentSize, 10,
+          50 times(
+            g1 next tap(x, 
+              starts << x key
+              ends << x value
+        )))
+
+        starts should == #{"foo", "bax"}
+        ends should == #{"barg", "mux"}
+      )
     )
 
     describe("list",
