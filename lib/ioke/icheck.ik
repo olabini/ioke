@@ -72,6 +72,64 @@ ICheck Generators do(
     block = LexicalBlock createFrom([argName, code], call ground)
     ICheck Generator with(next: fnx(block(ICheck Property currentSize))))
 
+  oneOf = method(+choices,
+    len = choices length
+    ICheck Generator with(next: fnx(
+        r = choices[choose(0, len - 1)]
+        if(r mimics?(ICheck Generator),
+          r next,
+          r)
+       )))
+
   int = sized(n, choose(-n, n))
   integer = cell(:int)
+
+  bool = oneOf(true, false)
+  boolean = cell(:bool)
+
+  kleene = oneOf(true, false, nil)
+  kleenean = cell(:kleene)
+
+  list = method(element,
+    element = if(element mimics?(ICheck Generator),
+      element,
+      Origin with(next: element))
+    ICheck Generator with(next: fnx(
+        n = choose(0, ICheck Property currentSize)
+        result = Ground list
+        choose(0, ICheck Property currentSize) times(
+          result << element next
+        )
+        result
+  )))
+  [] = cell(:list)
+
+  set = method(element,
+    element = if(element mimics?(ICheck Generator),
+      element,
+      Origin with(next: element))
+    ICheck Generator with(next: fnx(
+        n = choose(0, ICheck Property currentSize)
+        result = Ground set
+        choose(0, ICheck Property currentSize) times(
+          result << element next
+        )
+        result
+  )))
+
+  range = method(startElement, endElement,
+    (startElement, endElement) = Ground[startElement, endElement] map(element,
+      if(element mimics?(ICheck Generator),
+        element,
+        Origin with(next: element)))
+    ICheck Generator with(next: fnx((startElement next)..(endElement next)))
+  )
+
+  xrange = method(startElement, endElement,
+    (startElement, endElement) = Ground[startElement, endElement] map(element,
+      if(element mimics?(ICheck Generator),
+        element,
+        Origin with(next: element)))
+    ICheck Generator with(next: fnx((startElement next)...(endElement next)))
+  )
 )

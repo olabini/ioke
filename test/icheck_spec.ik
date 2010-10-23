@@ -319,15 +319,14 @@ describe(ICheck,
         g1 = ICheck Generators int
         atLeastOnePositive = false
         atLeastOneNegative = false
-        let(ICheck Property currentSize, 100,
+        let(ICheck Property currentSize, 10,
           50 times(
             x = g1 next
-            y = g1 next
-            if(x < 0 || y < 0,
-              atLeastOneNegative = true,
-              atLeastOnePositive = true)
-            x should not == y
+            if(x < 0, atLeastOneNegative = true)
+            if(x > 0, atLeastOnePositive = true)
         ))
+        atLeastOneNegative should be true
+        atLeastOnePositive should be true
       )
     )
 
@@ -342,15 +341,14 @@ describe(ICheck,
         g1 = ICheck Generators integer
         atLeastOnePositive = false
         atLeastOneNegative = false
-        let(ICheck Property currentSize, 100,
+        let(ICheck Property currentSize, 10,
           50 times(
             x = g1 next
-            y = g1 next
-            if(x < 0 || y < 0,
-              atLeastOneNegative = true,
-              atLeastOnePositive = true)
-            x should not == y
+            if(x < 0, atLeastOneNegative = true)
+            if(x > 0, atLeastOnePositive = true)
         ))
+        atLeastOneNegative should be true
+        atLeastOnePositive should be true
       )
     )
 
@@ -366,34 +364,6 @@ describe(ICheck,
       it("should have tests")
     )
 
-    describe("bool",
-      it("should have tests")
-    )
-
-    describe("boolean",
-      it("should have tests")
-    )
-
-    describe("kleene",
-      it("should have tests")
-    )
-
-    describe("kleenean",
-      it("should have tests")
-    )
-
-    describe("any",
-      it("should have tests")
-    )
-
-    describe("oneOf",
-      it("should have tests")
-    )
-
-    describe("oneOfFrequency",
-      it("should have tests")
-    )
-
     describe("nat",
       it("should have tests")
     )
@@ -402,27 +372,253 @@ describe(ICheck,
       it("should have tests")
     )
 
-    describe("..",
+    describe("bool",
+      it("returns a new generator when called",
+        g1 = ICheck Generators bool
+        g1 should mimic(ICheck Generator)
+        g1 should not be(ICheck Generator)
+      )
+
+      it("gives both false and true",
+        g1 = ICheck Generators bool
+        atLeastOneTrue = false
+        atLeastOneFalse = false
+        50 times(
+          x = g1 next
+          if(x == true, atLeastOneTrue = true)
+          if(x == false, atLeastOneFalse = true))
+        atLeastOneTrue should be true
+        atLeastOneFalse should be true
+      )
+    )
+
+    describe("boolean",
+      it("returns a new generator when called",
+        g1 = ICheck Generators boolean
+        g1 should mimic(ICheck Generator)
+        g1 should not be(ICheck Generator)
+      )
+
+      it("gives both false and true",
+        g1 = ICheck Generators boolean
+        atLeastOneTrue = false
+        atLeastOneFalse = false
+        50 times(
+          x = g1 next
+          if(x == true, atLeastOneTrue = true)
+          if(x == false, atLeastOneFalse = true))
+        atLeastOneTrue should be true
+        atLeastOneFalse should be true
+      )
+    )
+
+    describe("kleene",
+      it("returns a new generator when called",
+        g1 = ICheck Generators kleene
+        g1 should mimic(ICheck Generator)
+        g1 should not be(ICheck Generator)
+      )
+
+      it("gives both true, false and nil",
+        g1 = ICheck Generators kleene
+        atLeastOneTrue = false
+        atLeastOneNil = false
+        atLeastOneFalse = false
+        50 times(
+          x = g1 next
+          if(x == true, atLeastOneTrue = true)
+          if(x == false, atLeastOneFalse = true)
+          if(x == nil, atLeastOneNil = true))
+        atLeastOneTrue should be true
+        atLeastOneNil should be true
+        atLeastOneFalse should be true
+      )
+    )
+
+    describe("kleenean",
+      it("returns a new generator when called",
+        g1 = ICheck Generators kleenean
+        g1 should mimic(ICheck Generator)
+        g1 should not be(ICheck Generator)
+      )
+
+      it("gives both true, false and nil",
+        g1 = ICheck Generators kleenean
+        atLeastOneTrue = false
+        atLeastOneNil = false
+        atLeastOneFalse = false
+        50 times(
+          x = g1 next
+          if(x == true, atLeastOneTrue = true)
+          if(x == false, atLeastOneFalse = true)
+          if(x == nil, atLeastOneNil = true))
+        atLeastOneTrue should be true
+        atLeastOneNil should be true
+        atLeastOneFalse should be true
+      )
+    )
+
+    describe("oneOf",
+      it("returns a new generator when called",
+        g1 = ICheck Generators oneOf("one", "two")
+        g1 should mimic(ICheck Generator)
+        g1 should not be(ICheck Generator)
+      )
+
+      it("returns all of the different values",
+        g1 = ICheck Generators oneOf("one", "two", "three")
+        got = #{}
+        50 times(got << g1 next)
+        got should == #{"one", "two", "three"}
+      )
+
+      it("can take generators as well as constant values",
+        g1 = ICheck Generators oneOf(ICheck Generators boolean, "one", "two", "three", ICheck Generators oneOf(4, 5))
+        got = #{}
+        50 times(got << g1 next)
+        got should == #{"one", "two", "three", true, false, 4, 5}
+      )
+    )
+
+    describe("oneOfFrequency",
       it("should have tests")
     )
 
-    describe("...",
+    describe("range",
+      it("returns a new generator when called",
+        g1 = ICheck Generators range("one", "two")
+        g1 should mimic(ICheck Generator)
+        g1 should not be(ICheck Generator)
+      )
+
+      it("generates a range with the values given",
+        g1 = ICheck Generators range("foo", "bar")
+        let(ICheck Property currentSize, 10,
+          50 times(
+            g1 next should == ("foo".."bar")
+          )
+        )
+      )
+
+      it("generates a range based on generators",
+        g1 = ICheck Generators range(ICheck Generators oneOf("foo", "bax"), ICheck Generators oneOf("barg", "mux"))
+        starts = #{}
+        ends = #{}
+
+        let(ICheck Property currentSize, 10,
+          50 times(
+            g1 next tap(x, 
+              starts << x from
+              ends << x to
+        )))
+
+        starts should == #{"foo", "bax"}
+        ends should == #{"barg", "mux"}
+      )
+    )
+
+    describe("xrange",
+      it("returns a new generator when called",
+        g1 = ICheck Generators xrange("one", "two")
+        g1 should mimic(ICheck Generator)
+        g1 should not be(ICheck Generator)
+      )
+
+      it("generates a range with the values given",
+        g1 = ICheck Generators xrange("foo", "bar")
+        let(ICheck Property currentSize, 10,
+          50 times(
+            g1 next should == ("foo"..."bar")
+          )
+        )
+      )
+
+      it("generates a range based on generators",
+        g1 = ICheck Generators xrange(ICheck Generators oneOf("foo", "bax"), ICheck Generators oneOf("barg", "mux"))
+        starts = #{}
+        ends = #{}
+
+        let(ICheck Property currentSize, 10,
+          50 times(
+            g1 next tap(x, 
+              starts << x from
+              ends << x to
+        )))
+
+        starts should == #{"foo", "bax"}
+        ends should == #{"barg", "mux"}
+      )
+    )
+
+    describe("=>",
       it("should have tests")
     )
 
     describe("list",
-      it("should have tests")
+      it("returns a new generator when called",
+        g1 = ICheck Generators list("one")
+        g1 should mimic(ICheck Generator)
+        g1 should not be(ICheck Generator)
+      )
+
+      it("generates a list with the value given of varying size",
+        g1 = ICheck Generators list("foo")
+        lens = #{}
+        let(ICheck Property currentSize, 10,
+          50 times(
+            val = g1 next
+            val each(should == "foo")
+            lens << val length
+          )
+        )
+        lens asList length should be > 1
+      )
+
+      it("generates a list based on another generator",
+        g1 = ICheck Generators list(ICheck Generators oneOf("foo", "bax"))
+        results = #{}
+
+        let(ICheck Property currentSize, 10,
+          50 times(
+            g1 next each(x, results << x)
+          )
+        )
+
+        results should == #{"foo", "bax"}
+      )
     )
 
     describe("set",
-      it("should have tests")
+      it("returns a new generator when called",
+        g1 = ICheck Generators set("one")
+        g1 should mimic(ICheck Generator)
+        g1 should not be(ICheck Generator)
+      )
+
+      it("generates a set with the value given of varying size",
+        g1 = ICheck Generators set("foo")
+        let(ICheck Property currentSize, 10,
+          50 times(
+            g1 next each(should == "foo")
+          )
+        )
+      )
+
+      it("generates a set based on another generator",
+        g1 = ICheck Generators set(ICheck Generators oneOf("foo", "bax"))
+        results = #{}
+
+        let(ICheck Property currentSize, 10,
+          50 times(
+            g1 next each(x, results << x)
+          )
+        )
+
+        results should == #{"foo", "bax"}
+      )
     )
 
     describe("dict",
-      it("should have tests")
-    )
-
-    describe("=>",
       it("should have tests")
     )
 
@@ -439,7 +635,37 @@ describe(ICheck,
     )
 
     describe("[]",
-      it("should have tests")
+      it("returns a new generator when called",
+        g1 = ICheck Generators["one"]
+        g1 should mimic(ICheck Generator)
+        g1 should not be(ICheck Generator)
+      )
+
+      it("generates a list with the value given of varying size",
+        g1 = ICheck Generators["foo"]
+        lens = #{}
+        let(ICheck Property currentSize, 10,
+          50 times(
+            val = g1 next
+            val each(should == "foo")
+            lens << val length
+          )
+        )
+        lens asList length should be > 1
+      )
+
+      it("generates a list based on another generator",
+        g1 = ICheck Generators[ICheck Generators oneOf("foo", "bax")]
+        results = #{}
+
+        let(ICheck Property currentSize, 10,
+          50 times(
+            g1 next each(x, results << x)
+          )
+        )
+
+        results should == #{"foo", "bax"}
+      )
     )
 
     describe("{}",
@@ -447,7 +673,33 @@ describe(ICheck,
     )
 
     describe("\#{}",
-      it("should have tests")
+      it("returns a new generator when called",
+        g1 = ICheck Generators set("one")
+        g1 should mimic(ICheck Generator)
+        g1 should not be(ICheck Generator)
+      )
+
+      it("generates a set with the value given of varying size",
+        g1 = ICheck Generators #{"foo"}
+        let(ICheck Property currentSize, 10,
+          50 times(
+            g1 next each(should == "foo")
+          )
+        )
+      )
+
+      it("generates a set based on another generator",
+        g1 = ICheck Generators #{ICheck Generators oneOf("foo", "bax")}
+        results = #{}
+
+        let(ICheck Property currentSize, 10,
+          50 times(
+            g1 next each(x, results << x)
+          )
+        )
+
+        results should == #{"foo", "bax"}
+      )
     )
   )
 )
