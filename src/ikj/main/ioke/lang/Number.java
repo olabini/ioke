@@ -897,5 +897,12 @@ public class Number extends IokeData {
                     }
                 }
             }));
+
+        integer.registerMethod(runtime.newNativeMethod("Returns a Text that represents the character with the same character code of this number", new TypeCheckingNativeMethod.WithNoArguments("char", integer) {
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    return runtime.newText(String.valueOf((char)Number.intValue(on).intValue()));
+                }
+            }));
     }
 }// Number

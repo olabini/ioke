@@ -30,9 +30,7 @@ ICheck forAll = macro("takes zero or more generator arguments, zero or more guar
 ICheck aliasMethod("forAll", "forEvery")
 
 ICheck Property currentSize = 0
-ICheck Property valuesFromGenerators = method(
-  generators map(next)
-)
+ICheck Property valuesFromGenerators = method(generators map(next))
 
 ICheck Property classify = method(values, result,
   classifiers select(predicate call(*values)) each(cl,
@@ -80,17 +78,25 @@ ICheck Generators do(
   oneOf = method(+choices,
     len = choices length
     gen(
-        r = choices[choose(0, len - 1)]
-        if(r mimics?(ICheck Generator),
-          r next,
-          r)
-       ))
+      r = choices[choose(0, len - 1)]
+      if(r mimics?(ICheck Generator),
+        r next,
+        r)
+  ))
+
+  choice = method(start, end,
+    gen(choose(start, end)))
 
   int = sized(n, choose(-n, n))
   integer = cell(:int)
 
   nat = sized(n, choose(0, n))
   natural = cell(:nat)
+
+  decimal = sized(n,
+    (a, b, c) = (1..3) map(_, choose(-n, n))
+    a + (b / (c abs + 1.0))
+  )
 
   ratio = sized(n, 
     result = nil
@@ -126,6 +132,17 @@ ICheck Generators do(
         result
     ))
   [] = cell(:list)
+
+  text = method(
+    cGen = oneOf(choice(0, 127), choice(0, 255))
+    sized(n,
+      result = Ground list
+      choose(0, n) times(
+        result << cGen next char
+      )
+      result join("")
+    )
+  )
 
   set = method(element,
     element = if(element mimics?(ICheck Generator),

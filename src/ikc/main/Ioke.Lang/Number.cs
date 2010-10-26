@@ -615,6 +615,12 @@ namespace Ioke.Lang {
                                                                                     return result;
                                                                                 }
                                                                             })));
+
+            integer.RegisterMethod(runtime.NewNativeMethod("Returns a Text that represents the character with the same character code of this number", 
+                                                           new TypeCheckingNativeMethod.WithNoArguments("char", integer,
+                                                                                                        (method, on, args, keywords, context, message) => {
+                                                                                                            return runtime.NewText(Convert.ToString((char)Number.IntValue(on).intValue()));
+                                                                                                        })));
         }
 
         public static string GetInspect(object on) {

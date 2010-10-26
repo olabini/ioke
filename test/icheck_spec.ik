@@ -355,7 +355,26 @@ describe(ICheck,
     )
 
     describe("decimal",
-      it("should have tests")
+      it("returns a new generator when called",
+        g1 = ICheck Generators decimal
+        g1 should mimic(ICheck Generator)
+        g1 should not be(ICheck Generator)
+      )
+
+      it("gives new decimal number every time next is called, both negative and positive",
+        g1 = ICheck Generators decimal
+        atLeastOnePositive = false
+        atLeastOneNegative = false
+        let(ICheck Property currentSize, 10,
+          50 times(
+            x = g1 next
+            x should mimic(Number Decimal)
+            if(x < 0, atLeastOneNegative = true)
+            if(x > 0, atLeastOnePositive = true)
+        ))
+        atLeastOneNegative should be true
+        atLeastOnePositive should be true
+      )
     )
 
     describe("ratio",
@@ -724,7 +743,33 @@ describe(ICheck,
     )
 
     describe("text",
-      it("should have tests")
+      it("returns a new generator when called",
+        g1 = ICheck Generators text
+        g1 should mimic(ICheck Generator)
+        g1 should not be(ICheck Generator)
+      )
+
+      it("generates a text with varying sizes",
+        g1 = ICheck Generators text
+        lens = #{}
+        let(ICheck Property currentSize, 10,
+          50 times(
+            lens << g1 next length
+          )
+        )
+        lens asList length should be > 2
+      )
+
+      it("generates a text with varying characters",
+        g1 = ICheck Generators text
+        chars = #{}
+        let(ICheck Property currentSize, 10,
+          50 times(
+            g1 next chars each(x, chars << x)
+          )
+        )
+        chars asList length should be > 25
+      )
     )
 
     describe("()",

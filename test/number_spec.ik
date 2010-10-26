@@ -1006,6 +1006,14 @@ describe(Number,
       0xFFF should have kind("Number Integer")
     )
 
+    describe("char",
+      it("returns the character as a one character text for that specific code point",
+        0 char should == "\000"
+        65 char should == "A"
+        65445 char should == "\uFFA5"
+      )
+    )
+
     describe("div",
       it("returns zero when called on zero, no matter what the argument",
         0 div(1) should == 0
