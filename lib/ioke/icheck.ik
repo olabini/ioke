@@ -84,6 +84,21 @@ ICheck Generators do(
         r)
   ))
 
+  oneOfFrequency = method(+choices,
+    total = choices map(value) sum
+
+    gen(
+      m = choose(1, total)
+      g = choices some(pair,
+        if(m <= pair value,
+          pair key,
+          m -= pair value
+          false))
+      if(g mimics?(ICheck Generator),
+        g next,
+        g)
+  ))
+
   choice = method(start, end,
     gen(choose(start, end)))
 
@@ -205,4 +220,12 @@ ICheck Generators do(
         Origin with(next: element)))
     gen((startElement next) => (endElement next))
   )
+
+  tuple = method(+elements,
+    elements = elements map(element, if(element mimics?(ICheck Generator),
+        element,
+        Origin with(next: element)))
+    gen(
+      Ground tuple(*(elements map(next)))
+  ))
 )

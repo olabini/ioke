@@ -572,7 +572,25 @@ describe(ICheck,
     )
 
     describe("oneOfFrequency",
-      it("should have tests")
+      it("returns a new generator when called",
+        g1 = ICheck Generators oneOfFrequency("one" => 3, "two" => 1)
+        g1 should mimic(ICheck Generator)
+        g1 should not be(ICheck Generator)
+      )
+
+      it("returns all of the different values",
+        g1 = ICheck Generators oneOfFrequency("one" => 20000, "two" => 10000, "three" => 5000)
+        got = #{}
+        50 times(got << g1 next)
+        got should == #{"one", "two", "three"}
+      )
+
+      it("can take generators as well as constant values",
+        g1 = ICheck Generators oneOfFrequency(ICheck Generators boolean => 2, "one" => 1, "two" => 1, "three" => 1, ICheck Generators oneOf(4, 5) => 3)
+        got = #{}
+        50 times(got << g1 next)
+        got should == #{"one", "two", "three", true, false, 4, 5}
+      )
     )
 
     describe("range",
@@ -863,8 +881,30 @@ describe(ICheck,
       )
     )
 
-    describe("()",
-      it("should have tests")
+    describe("tuple",
+      it("returns a new generator when called",
+        g1 = ICheck Generators tuple("foo")
+        g1 should mimic(ICheck Generator)
+        g1 should not be(ICheck Generator)
+      )
+
+      it("generates a tuple with the given constant values",
+        g1 = ICheck Generators tuple("foo", "bar", 42)
+        50 times(
+          g1 next should == ("foo", "bar", 42)
+        )
+      )
+
+      it("generates a tuple from the given generators too",
+        g1 = ICheck Generators tuple(ICheck Generators oneOf("bar", "max", "mux"), 42)
+        vals = #{}
+        50 times(
+          (x, y) = g1 next
+          y should == 42
+          vals << x
+        )
+        vals should == #{"bar", "max", "mux"}
+      )
     )
 
     describe("[]",
