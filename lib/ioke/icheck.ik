@@ -133,6 +133,32 @@ ICheck Generators do(
     ))
   [] = cell(:list)
 
+  dict = method(+es,
+    elements = oneOf(*(es map(element, 
+      if(element mimics?(ICheck Generator),
+        element => Origin with(next: nil),
+        if(element mimics?(Pair),
+          k = element key
+          v = element value
+          if(k mimics?(ICheck Generator),
+            if(v mimics?(ICheck Generator),
+              k => v,
+              k => Origin with(next: v)),
+            if(v mimics?(ICheck Generator),
+              Origin with(next: k) => v,
+              Origin with(next: k) => Origin with(next: v))),
+          Origin with(next: element) => Origin with(next: nil))))))
+
+    sized(size, 
+        result = Ground dict
+        choose(0, size) times(
+          el = elements next
+          result[el key next] = el value next
+        )
+        result
+    ))
+  {} = cell(:dict)
+
   text = method(
     cGen = oneOf(choice(0, 127), choice(0, 255))
     sized(n,

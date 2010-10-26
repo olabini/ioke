@@ -739,7 +739,98 @@ describe(ICheck,
     )
 
     describe("dict",
-      it("should have tests")
+      it("returns a new generator when called",
+        g1 = ICheck Generators dict("foo")
+        g1 should mimic(ICheck Generator)
+        g1 should not be(ICheck Generator)
+      )
+
+      it("generates a dictionary with the given key as value",
+        g1 = ICheck Generators dict("blarg")
+        let(ICheck Property currentSize, 10,
+          50 times(
+            x = g1 next
+            unless(x empty?,
+              x should == {"blarg" => nil})
+        ))
+      )
+
+      it("generates a dictionary with only the given pair",
+        g1 = ICheck Generators dict("mux" => 42)
+        let(ICheck Property currentSize, 10,
+          50 times(
+            x = g1 next
+            unless(x empty?,
+              x should == {"mux" => 42})
+        ))
+      )
+
+      it("generates a dictionary with the given key generator",
+        g1 = ICheck Generators dict(ICheck Generators oneOf("foo", "bar", "qux"))
+        keys = #{}
+        let(ICheck Property currentSize, 10,
+          50 times(
+            g1 next keys each(x, keys << x)
+        ))
+        keys should == #{"foo", "bar", "qux"}
+      )
+
+      it("generates a dictionary with the pair with key generator",
+        g1 = ICheck Generators dict(ICheck Generators oneOf("foo", "bar", "qux") => 42)
+        keys = #{}
+        let(ICheck Property currentSize, 10,
+          50 times(
+            g1 next keys each(x, keys << x)
+        ))
+        keys should == #{"foo", "bar", "qux"}
+      )
+
+      it("generates a dictionary with the pair with value generator",
+        g1 = ICheck Generators dict(42 => ICheck Generators oneOf("foo", "bar", "qux") )
+        values = #{}
+        let(ICheck Property currentSize, 10,
+          50 times(
+            x = g1 next
+            unless(x empty?,
+              values << x[42])
+        ))
+        values should == #{"foo", "bar", "qux"}
+      )
+
+      it("generates a dictionary with the pair with key and value generator",
+        g1 = ICheck Generators dict(ICheck Generators oneOf("foo", "bar", "qux") => ICheck Generators oneOf("mi", "ma", "mo"))
+        keys = #{}
+        values = #{}
+        let(ICheck Property currentSize, 10,
+          50 times(
+            g1 next each(vv, 
+              keys << vv key
+              values << vv value)
+        ))
+        keys should == #{"foo", "bar", "qux"}
+        values should == #{"mi", "ma", "mo"}
+      )
+
+      it("generates a dictionary with entries from any of the given arguments",
+        g1 = ICheck Generators dict(ICheck Generators oneOf("foo", "bar", "qux") => ICheck Generators oneOf("mi", "ma", "mo"), ICheck Generators oneOf("00x", "00y", "00z") => ICheck Generators oneOf("ba", "qa", "gra"))
+        keys = #{}
+        values = #{}
+        keys2 = #{}
+        values2 = #{}
+        let(ICheck Property currentSize, 10,
+          100 times(
+            g1 next each(vv, 
+              if(vv key[0..1] == "00",
+                keys2 << vv key
+                values2 << vv value,
+                keys << vv key
+                values << vv value))
+        ))
+        keys should == #{"foo", "bar", "qux"}
+        values should == #{"mi", "ma", "mo"}
+        keys2 should == #{"00x", "00y", "00z"}
+        values2 should == #{"ba", "qa", "gra"}
+      )
     )
 
     describe("text",
@@ -811,7 +902,98 @@ describe(ICheck,
     )
 
     describe("{}",
-      it("should have tests")
+      it("returns a new generator when called",
+        g1 = ICheck Generators {"foo"}
+        g1 should mimic(ICheck Generator)
+        g1 should not be(ICheck Generator)
+      )
+
+      it("generates a dictionary with the given key as value",
+        g1 = ICheck Generators {"blarg"}
+        let(ICheck Property currentSize, 10,
+          50 times(
+            x = g1 next
+            unless(x empty?,
+              x should == {"blarg" => nil})
+        ))
+      )
+
+      it("generates a dictionary with only the given pair",
+        g1 = ICheck Generators {"mux" => 42}
+        let(ICheck Property currentSize, 10,
+          50 times(
+            x = g1 next
+            unless(x empty?,
+              x should == {"mux" => 42})
+        ))
+      )
+
+      it("generates a dictionary with the given key generator",
+        g1 = ICheck Generators {ICheck Generators oneOf("foo", "bar", "qux")}
+        keys = #{}
+        let(ICheck Property currentSize, 10,
+          50 times(
+            g1 next keys each(x, keys << x)
+        ))
+        keys should == #{"foo", "bar", "qux"}
+      )
+
+      it("generates a dictionary with the pair with key generator",
+        g1 = ICheck Generators {ICheck Generators oneOf("foo", "bar", "qux") => 42}
+        keys = #{}
+        let(ICheck Property currentSize, 10,
+          50 times(
+            g1 next keys each(x, keys << x)
+        ))
+        keys should == #{"foo", "bar", "qux"}
+      )
+
+      it("generates a dictionary with the pair with value generator",
+        g1 = ICheck Generators {42 => ICheck Generators oneOf("foo", "bar", "qux")}
+        values = #{}
+        let(ICheck Property currentSize, 10,
+          50 times(
+            x = g1 next
+            unless(x empty?,
+              values << x[42])
+        ))
+        values should == #{"foo", "bar", "qux"}
+      )
+
+      it("generates a dictionary with the pair with key and value generator",
+        g1 = ICheck Generators {ICheck Generators oneOf("foo", "bar", "qux") => ICheck Generators oneOf("mi", "ma", "mo")}
+        keys = #{}
+        values = #{}
+        let(ICheck Property currentSize, 10,
+          50 times(
+            g1 next each(vv, 
+              keys << vv key
+              values << vv value)
+        ))
+        keys should == #{"foo", "bar", "qux"}
+        values should == #{"mi", "ma", "mo"}
+      )
+
+      it("generates a dictionary with entries from any of the given arguments",
+        g1 = ICheck Generators {ICheck Generators oneOf("foo", "bar", "qux") => ICheck Generators oneOf("mi", "ma", "mo"), ICheck Generators oneOf("00x", "00y", "00z") => ICheck Generators oneOf("ba", "qa", "gra")}
+        keys = #{}
+        values = #{}
+        keys2 = #{}
+        values2 = #{}
+        let(ICheck Property currentSize, 10,
+          100 times(
+            g1 next each(vv, 
+              if(vv key[0..1] == "00",
+                keys2 << vv key
+                values2 << vv value,
+                keys << vv key
+                values << vv value))
+        ))
+        keys should == #{"foo", "bar", "qux"}
+        values should == #{"mi", "ma", "mo"}
+        keys2 should == #{"00x", "00y", "00z"}
+        values2 should == #{"ba", "qa", "gra"}
+      )
     )
 
     describe("\#{}",
