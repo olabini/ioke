@@ -100,5 +100,15 @@ ISpec do(
       self specs << example
       ISpec ispec_options exampleAdded(example)
     )
+
+    forAll = macro(
+      prop = call resendToReceiver(ICheck)
+      example = ISpec PropertyExample mimic(self, prop)
+      self specs << example
+      ISpec ispec_options exampleAdded(example)
+      prop
+    )
+
+    forEvery = cell(:forAll)
   )
 )

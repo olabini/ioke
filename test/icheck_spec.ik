@@ -1066,4 +1066,34 @@ describe(ICheck,
       )
     )
   )
+
+  describe("simple test properties",
+    forAll(int x, int y, 
+      where: x < y,
+      [x,y] sort should == [x,y])
+
+    forAll(int x, int y, 
+      where: y < x,
+      classify(trivial) x == y,
+      classifyAs(close) (x - y) abs < 2,
+      
+      [x,y] sort should == [y,x] sort)
+
+    ; this should fail
+    forAll(int x, int y, 
+      [x,y] sort should == [x,y])
+
+    forAll([] sort should == [])
+    forAll(int x, 
+      [x] sort should == [x])
+
+    forAll(list(int) xs,
+      xs reverse reverse should == xs)
+
+    forEvery(integer x, integer y,
+      [x, y] max should >= [x, y] min)
+
+    forAll(int x, where: x > 1000000000000000,
+      x should == x)
+  )
 )

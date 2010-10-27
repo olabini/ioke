@@ -6,6 +6,7 @@ ICheck Condition = Ground Condition mimic
 ICheck ReachedMaxDiscarded = ICheck Condition mimic
 
 ICheck forAll = macro("takes zero or more generator arguments, zero or more guard arguments and zero or more classifier arguments. All of this is followed by one required code argument that will be wrapped in a lexical context. the method returns a Property with everything set correctly to execute the ICheck code",
+  fullDescription = call message mimic formattedCode
   
   (generatorClassiftAndGuardCode, code) = (call arguments[0..-2], call arguments[-1])
   (generatorAndClassifyCode, guardCode) = generatorClassiftAndGuardCode partition(first, 
@@ -24,7 +25,7 @@ ICheck forAll = macro("takes zero or more generator arguments, zero or more guar
       name: cc arguments[0] name,
       predicate: LexicalBlock createFrom(argNames + [cc next], call ground)))
 
-  Property with(block: block, generators: generators, guards: guards, classifiers: classifiers)
+  Property with(block: block, generators: generators, guards: guards, classifiers: classifiers, fullDescription: fullDescription)
 )
 
 ICheck aliasMethod("forAll", "forEvery")
@@ -56,6 +57,7 @@ ICheck Property check! = method(maxSuccess: 100, maxDiscard: 500, maxSize: 100,
       block call(*values)
       result succeeded += 1)
   )
+  result exhausted? = result succeeded < maxSuccess
   result
 )
 

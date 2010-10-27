@@ -15,9 +15,14 @@ ISpec do(
       dumpFailure = method(counter, failure,
         println("")
         println("#{counter})")
-        println(red("#{failure header}"))
-        println(red("#{failure condition report}"))
-        println("  #{failure condition example stackTraceAsText(failure condition)}"))
+        if(failure mimics?(ISpec Reporter Failure),
+          println(red("#{failure header}"))
+          println(red("#{failure condition report}"))
+          println("  #{failure condition example stackTraceAsText(failure condition)}"),
+
+          println(magenta("#{failure header}"))
+          )
+      )
 
       dumpSummary = method(duration, exampleCount, failureCount, pendingCount,
         println("")
@@ -90,6 +95,19 @@ ISpec do(
         super(example, message)
         print(yellow("P"))
       )
+
+      propertyExamplePassed = method(example, result,
+        print(green(","))
+      )
+
+      propertyExampleExhausted = method(example, counter, result,
+        print(magenta("X"))
+      )
+
+      propertyExampleFailed = method(example, counter, failure, result,
+        print(red("@"))
+      )
+
 
       startDump      = method(println(""))
       pass           = method(+rest, +:krest, nil) ;ignore other methods
