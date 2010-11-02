@@ -22,6 +22,7 @@ ISpec do(
         newFailure = self mimic
         newFailure example = example
         newFailure result = result
+        newFailure propertyResult = result
         newFailure)
 
       header = method(
@@ -39,10 +40,15 @@ ISpec do(
       @exampleGroups = []
       @failures = []
       @pendingCount = 0
+      @propertyCount = 0
+      @exhaustedCount = 0
+      @propertyInstanceCount = 0
+      @discardedCount = 0
       @examples = []
       @startTime = nil
       @endTime = nil
     )
+
 
     formatters = method(options formatters)
 
@@ -54,7 +60,7 @@ ISpec do(
       formatters each( exampleStarted(example) ))
 
     propertyExampleStarted = method(example,
-      formatters each( propertyExampleStarted(example) ))
+      formatters each(propertyExampleStarted(example) ))
 
     exampleFinished = method(example, error nil,
       examples << example
@@ -65,6 +71,9 @@ ISpec do(
           exampleFailed(example, error))))
 
     propertyExampleFinished = method(example, error, result,
+      @propertyCount += 1
+      @propertyInstanceCount += result succeeded
+      @discardedCount += result discarded
       examples << example
       if(error nil?,
         if(result exhausted?,
@@ -81,8 +90,9 @@ ISpec do(
 
     propertyExampleFailed = method(example, error, result,
       failure = Failure create(example, error)
+      failure propertyResult = result
       failures << failure
-      formatters each(propertyExampleFailed(example, failures length, failure, result)))
+      formatters each(propertyExampleFailed(example, failures length, failure)))
 
     start = method(numberOfExamples,
       clear!
@@ -97,7 +107,7 @@ ISpec do(
       dumpPending
       dumpFailures
       formatters each(f,
-        f dumpSummary(duration, examples length, failures length, pendingCount)
+        f dumpSummary(duration, examples length, failures length, pendingCount, propertyCount, exhaustedCount, propertyInstanceCount, discardedCount)
         f close)
 
       failures length)
@@ -114,6 +124,7 @@ ISpec do(
     examplePassed = method(example, formatters each(examplePassed(example)))
     propertyExamplePassed = method(example, result, formatters each(propertyExamplePassed(example, result)))
     propertyExampleExhausted = method(example, result, 
+      @exhaustedCount += 1
       failure = Exhaustion create(example, result)
       failures << failure
       formatters each(propertyExampleExhausted(example, failures length, result)))

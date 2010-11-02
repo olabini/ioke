@@ -5,8 +5,8 @@ ISpec do(
     initialize = method(context, property,
       self context = context mimic
       self property = property
-      self description = property fullDescription
-      self fullDescription = property fullDescription
+      self description = property fullDescription replaceAll("\n", "\n  ")
+      self fullDescription = property fullDescription replaceAll("\n", "")
     )
 
     fail? = false
@@ -19,7 +19,8 @@ ISpec do(
       executionError = nil
       reporter propertyExampleStarted(self)
 
-      result = bind(
+      result = ICheck Property createResult
+      bind(
         rescue(Ground Condition Error,
           fn(c, executionError ||= c)),
         rescue(ISpec Condition,
@@ -27,7 +28,7 @@ ISpec do(
         handle(Ground Condition,
           fn(c, c example = self)),
 
-        property check!
+        property check!(result: result)
       )
 
       reporter propertyExampleFinished(self, executionError, result)

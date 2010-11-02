@@ -25,7 +25,7 @@ ICheck forAll = macro("takes zero or more generator arguments, zero or more guar
       name: cc arguments[0] name,
       predicate: LexicalBlock createFrom(argNames + [cc next], call ground)))
 
-  Property with(block: block, generators: generators, guards: guards, classifiers: classifiers, fullDescription: fullDescription)
+  Property with(block: block, generators: generators, guards: guards, classifiers: classifiers, fullDescription: fullDescription, callMessage: call message, argumentNames: argNames map(name))
 )
 
 ICheck aliasMethod("forAll", "forEvery")
@@ -45,19 +45,26 @@ ICheck Property computeSize = method(maxSuccess, maxSize, successful, discarded,
     maxMod == 0, (successful % maxSize),
     (successful % maxSize) * (maxSize div(maxMod))) + discarded div(10))
 
-ICheck Property check! = method(maxSuccess: 100, maxDiscard: 500, maxSize: 100,
-  result = Origin with(classifier: {} withDefault(0), succeeded: 0, discarded: 0)
+ICheck Property createResult = method(Origin with(classifier: {} withDefault(0), succeeded: 0, discarded: 0))
+
+ICheck Property check! = method(maxSuccess: 100, maxDiscard: 500, maxSize: 100, result: createResult,
   while(result succeeded < maxSuccess && result discarded < maxDiscard,
-    size = computeSize(maxSuccess, maxDiscard, result succeeded, result discarded)
+    size = computeSize(maxSuccess, maxSize, result succeeded, result discarded)
     values = let(ICheck Property currentSize, size,
       valuesFromGenerators)
     if(!(guards all?(call(*values))),
       result discarded += 1,
       classify(values, result)
-      block call(*values)
+      bind(
+        handle(Ground Condition,
+          fn(c, c currentValues = argumentNames zip(values))),
+        block call(*values)
+      )
       result succeeded += 1)
   )
   result exhausted? = result succeeded < maxSuccess
+  if(result exhausted?,
+    result exhaustionStackTrace = "#{callMessage filename}:#{callMessage line}:#{callMessage position}")
   result
 )
 
@@ -143,8 +150,9 @@ ICheck Generators do(
       Origin with(next: element))
     sized(size, 
         result = Ground list
-        choose(0, size) times(
-          result << element next
+        val = choose(0, size)
+          val times(
+            result << element next
         )
         result
     ))

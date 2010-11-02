@@ -588,7 +588,7 @@ describe(ICheck,
       it("can take generators as well as constant values",
         g1 = ICheck Generators oneOfFrequency(ICheck Generators boolean => 2, "one" => 1, "two" => 1, "three" => 1, ICheck Generators oneOf(4, 5) => 3)
         got = #{}
-        50 times(got << g1 next)
+        150 times(got << g1 next)
         got should == #{"one", "two", "three", true, false, 4, 5}
       )
     )
@@ -1079,9 +1079,9 @@ describe(ICheck,
       
       [x,y] sort should == [y,x] sort)
 
-    ; this should fail
-    forAll(int x, int y, 
-      [x,y] sort should == [x,y])
+    ; ; this should fail
+    ; forAll(int x, int y, 
+    ;   [x,y] sort should == [x,y])
 
     forAll([] sort should == [])
     forAll(int x, 
@@ -1093,7 +1093,7 @@ describe(ICheck,
     forEvery(integer x, integer y,
       [x, y] max should >= [x, y] min)
 
-    forAll(int x, where: x > 1000000000000000,
-      x should == x)
+    ; forAll(int x, where: x > 1000000000000000,
+    ;   x should == x)
   )
 )
