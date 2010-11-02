@@ -532,6 +532,119 @@ public class Number extends IokeData {
                 }
             }));
 
+        integer.registerMethod(runtime.newNativeMethod("returns how many times the first number can be divided by the second one", new TypeCheckingNativeMethod("div") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
+                    .builder()
+                    .receiverMustMimic(integer)
+                    .withRequiredPositional("dividend")
+                    .getArguments();
+
+                @Override
+                public TypeCheckingArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, final IokeObject context, IokeObject message) throws ControlFlow {
+                    Object arg = args.get(0);
+
+                    while(Number.value(arg).isZero()) {
+                        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition,
+                                                                                           message,
+                                                                                           context,
+                                                                                           "Error",
+                                                                                           "Arithmetic",
+                                                                                           "DivisionByZero"), context).mimic(message, context);
+                        condition.setCell("message", message);
+                        condition.setCell("context", context);
+                        condition.setCell("receiver", on);
+
+                        final Object[] newCell = new Object[]{arg};
+                        
+                        context.runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
+                                public void run() throws ControlFlow {
+                                    context.runtime.errorCondition(condition);
+                                }},
+                            context,
+                            new Restart.ArgumentGivingRestart("useValue") {
+                                public List<String> getArgumentNames() {
+                                    return new ArrayList<String>(Arrays.asList("newValue"));
+                                }
+                                
+                                public IokeObject invoke(IokeObject c2, List<Object> arguments) throws ControlFlow {
+                                    newCell[0] = arguments.get(0);
+                                    return c2.runtime.nil;
+                                }
+                            }
+                            );
+                        
+                        arg = newCell[0];
+                    }
+
+                    IokeData data = IokeObject.data(arg);
+                    return context.runtime.newNumber(IntNum.quotient(Number.intValue(on),Number.intValue(arg), IntNum.TRUNCATE));
+                }
+            }));
+
+        integer.registerMethod(runtime.newNativeMethod("returns a tuple of how many times the first number can be divided by the second one, and the remainder", new TypeCheckingNativeMethod("divmod") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
+                    .builder()
+                    .receiverMustMimic(integer)
+                    .withRequiredPositional("dividend")
+                    .getArguments();
+
+                @Override
+                public TypeCheckingArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, final IokeObject context, IokeObject message) throws ControlFlow {
+                    Object arg = args.get(0);
+
+                    while(Number.value(arg).isZero()) {
+                        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition,
+                                                                                           message,
+                                                                                           context,
+                                                                                           "Error",
+                                                                                           "Arithmetic",
+                                                                                           "DivisionByZero"), context).mimic(message, context);
+                        condition.setCell("message", message);
+                        condition.setCell("context", context);
+                        condition.setCell("receiver", on);
+
+                        final Object[] newCell = new Object[]{arg};
+                        
+                        context.runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
+                                public void run() throws ControlFlow {
+                                    context.runtime.errorCondition(condition);
+                                }},
+                            context,
+                            new Restart.ArgumentGivingRestart("useValue") {
+                                public List<String> getArgumentNames() {
+                                    return new ArrayList<String>(Arrays.asList("newValue"));
+                                }
+                                
+                                public IokeObject invoke(IokeObject c2, List<Object> arguments) throws ControlFlow {
+                                    newCell[0] = arguments.get(0);
+                                    return c2.runtime.nil;
+                                }
+                            }
+                            );
+                        
+                        arg = newCell[0];
+                    }
+
+                    IokeData data = IokeObject.data(arg);
+
+                    IntNum q = new IntNum();
+                    IntNum r = new IntNum();
+                    IntNum.divide(Number.intValue(on),Number.intValue(arg), q, r, IntNum.TRUNCATE);
+
+                    return context.runtime.newTuple(context.runtime.newNumber(q.canonicalize()), context.runtime.newNumber(r.canonicalize()));
+                }
+            }));
+
         rational.registerMethod(runtime.newNativeMethod("returns this number to the power of the argument", new TypeCheckingNativeMethod("**") {
                 private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
                     .builder()
@@ -796,6 +909,13 @@ public class Number extends IokeData {
                         }
                         return result;
                     }
+                }
+            }));
+
+        integer.registerMethod(runtime.newNativeMethod("Returns a Text that represents the character with the same character code of this number", new TypeCheckingNativeMethod.WithNoArguments("char", integer) {
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    return runtime.newText(String.valueOf((char)Number.intValue(on).intValue()));
                 }
             }));
     }

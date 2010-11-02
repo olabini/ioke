@@ -419,6 +419,67 @@ namespace Ioke.Lang {
                                                                                              return context.runtime.NewNumber(IntNum.modulo(Number.IntValue(on),Number.IntValue(arg)));
                                                                                         })));
 
+            integer.RegisterMethod(runtime.NewNativeMethod("returns how many times the first number can be divided by the second one",
+                                                           new TypeCheckingNativeMethod("div", TypeCheckingArgumentsDefinition.builder()
+                                                                                        .ReceiverMustMimic(integer)
+                                                                                        .WithRequiredPositional("dividend")
+                                                                                        .Arguments,
+                                                                                         (method, on, args, keywords, context, message) => {
+                                                                                             object arg = args[0];
+                                                                                             while(Number.GetValue(arg).isZero()) {
+                                                                                                 IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition,
+                                                                                                                                                              message,
+                                                                                                                                                              context,
+                                                                                                                                                              "Error",
+                                                                                                                                                              "Arithmetic",
+                                                                                                                                                              "DivisionByZero"), context).Mimic(message, context);
+                                                                                                 condition.SetCell("message", message);
+                                                                                                 condition.SetCell("context", context);
+                                                                                                 condition.SetCell("receiver", on);
+                                                                                                 
+                                                                                                 object[] newCell = new object[]{arg};
+                                                                                                 
+                                                                                                 context.runtime.WithRestartReturningArguments(()=>{context.runtime.ErrorCondition(condition);},
+                                                                                                                                               context,
+                                                                                                                                               new IokeObject.UseValue("dividend", newCell));
+                                                                                                 arg = newCell[0];
+                                                                                             }
+                                                                                             IokeData data = IokeObject.dataOf(arg);
+                                                                                             return context.runtime.NewNumber(IntNum.quotient(Number.IntValue(on),Number.IntValue(arg), IntNum.TRUNCATE));
+                                                                                        })));
+
+            integer.RegisterMethod(runtime.NewNativeMethod("returns a tuple of how many times the first number can be divided by the second one, and the remainder",
+                                                           new TypeCheckingNativeMethod("divmod", TypeCheckingArgumentsDefinition.builder()
+                                                                                        .ReceiverMustMimic(integer)
+                                                                                        .WithRequiredPositional("dividend")
+                                                                                        .Arguments,
+                                                                                         (method, on, args, keywords, context, message) => {
+                                                                                             object arg = args[0];
+                                                                                             while(Number.GetValue(arg).isZero()) {
+                                                                                                 IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition,
+                                                                                                                                                              message,
+                                                                                                                                                              context,
+                                                                                                                                                              "Error",
+                                                                                                                                                              "Arithmetic",
+                                                                                                                                                              "DivisionByZero"), context).Mimic(message, context);
+                                                                                                 condition.SetCell("message", message);
+                                                                                                 condition.SetCell("context", context);
+                                                                                                 condition.SetCell("receiver", on);
+                                                                                                 
+                                                                                                 object[] newCell = new object[]{arg};
+                                                                                                 
+                                                                                                 context.runtime.WithRestartReturningArguments(()=>{context.runtime.ErrorCondition(condition);},
+                                                                                                                                               context,
+                                                                                                                                               new IokeObject.UseValue("dividend", newCell));
+                                                                                                 arg = newCell[0];
+                                                                                             }
+                                                                                             IokeData data = IokeObject.dataOf(arg);
+                                                                                             IntNum q = new IntNum();
+                                                                                             IntNum r = new IntNum();
+                                                                                             IntNum.divide(Number.IntValue(on),Number.IntValue(arg), q, r, IntNum.TRUNCATE);
+                                                                                             return context.runtime.NewTuple(context.runtime.NewNumber(q.canonicalize()), context.runtime.NewNumber(r.canonicalize()));
+                                                                                        })));
+
             rational.RegisterMethod(runtime.NewNativeMethod("returns this number to the power of the argument",
                                                             new TypeCheckingNativeMethod("**", TypeCheckingArgumentsDefinition.builder()
                                                                                          .ReceiverMustMimic(rational)
@@ -567,6 +628,12 @@ namespace Ioke.Lang {
                                                                                     return result;
                                                                                 }
                                                                             })));
+
+            integer.RegisterMethod(runtime.NewNativeMethod("Returns a Text that represents the character with the same character code of this number", 
+                                                           new TypeCheckingNativeMethod.WithNoArguments("char", integer,
+                                                                                                        (method, on, args, keywords, context, message) => {
+                                                                                                            return runtime.NewText(Convert.ToString((char)Number.IntValue(on).intValue()));
+                                                                                                        })));
         }
 
         public static string GetInspect(object on) {

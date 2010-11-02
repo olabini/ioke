@@ -15,19 +15,43 @@ ISpec do(
       dumpFailure = method(counter, failure,
         println("")
         println("#{counter})")
-        println(red("#{failure header}"))
-        println(red("#{failure condition report}"))
-        println("  #{failure condition example stackTraceAsText(failure condition)}"))
+        if(failure mimics?(ISpec Reporter Failure),
+          println(red("#{failure header}"))
+          if(failure condition cell?(:currentValues),
+            println(red(" Failing values:"))
+            failure condition currentValues each(v,
+              println(red("   #{v[0]}: #{v[1] inspect}"))))
+          println(red("#{failure condition report}"))
+          println("  #{failure condition example stackTraceAsText(failure condition)}"),
 
-      dumpSummary = method(duration, exampleCount, failureCount, pendingCount,
+          println(magenta("#{failure header}"))
+          println("\n  #{failure result exhaustionStackTrace}")
+        )
+
+        if(failure cell?(:propertyResult),
+          println("\n  #{formatPropertyResult(failure propertyResult)}")
+        )
+      )
+
+      dumpSummary = method(duration, exampleCount, failureCount, pendingCount, propertyCount, exhaustedCount, propertyInstanceCount, discardedCount,
         println("")
         println("Finished in #{duration} seconds")
         println("")
 
         summary = "#{exampleCount} example#{if(exampleCount == 1, "", "s")}, "
         summary += "#{failureCount} failure#{if(failureCount == 1, "", "s")}"
+
         if(pendingCount > 0,
           summary += ", #{pendingCount} pending")
+
+        if(propertyCount > 0,
+          summary += " - #{propertyCount} propert#{if(propertyCount == 1, "y", "ies")}"
+          summary += ", #{propertyInstanceCount} succeeded"
+          if(exhaustedCount > 0,
+            summary += ", #{exhaustedCount} exhausted")
+          if(discardedCount > 0,
+            summary += ", #{discardedCount} discarded")
+        )
 
         if(failureCount == 0,
           if(pendingCount > 0,
@@ -41,6 +65,14 @@ ISpec do(
           println("Pending:")
           pendingExamples each(pe,
             println("#{pe[0]} (#{pe[1]})"))))
+
+      formatPropertyResult = method(result,
+        classifiers = if(result classifier empty?,
+          "",
+          " -%:[ %s: %s%]" % result classifier)
+        
+        "#{result succeeded} succeeded, #{result discarded} discarded#{classifiers}"
+      )
 
       colour = method(
         "outputs text with colour if possible",
@@ -67,8 +99,20 @@ ISpec do(
         println(red("- #{example description} (FAILED - #{counter})"))
       )
 
+      propertyExampleFailed = method(example, counter, failure, 
+        println(red("- #{example description} (FAILED - #{counter})    [#{formatPropertyResult(failure propertyResult)}]"))
+      )
+
+      propertyExampleExhausted = method(example, counter, result,
+        println(magenta("- #{example description} (EXHAUSTED - #{counter})    [#{formatPropertyResult(result)}]"))
+      )
+
       examplePassed = method(example,
         println(green("- #{example description}"))
+      )
+
+      propertyExamplePassed = method(example, result,
+        println(green("- #{example description}    [#{formatPropertyResult(result)}]"))
       )
 
       examplePending = method(example, message,
@@ -90,6 +134,19 @@ ISpec do(
         super(example, message)
         print(yellow("P"))
       )
+
+      propertyExamplePassed = method(example, result,
+        print(green(","))
+      )
+
+      propertyExampleExhausted = method(example, counter, result,
+        print(magenta("X"))
+      )
+
+      propertyExampleFailed = method(example, counter, failure, 
+        print(red("@"))
+      )
+
 
       startDump      = method(println(""))
       pass           = method(+rest, +:krest, nil) ;ignore other methods
@@ -166,7 +223,7 @@ ISpec do(
         html div(class: "pending spec", "#{example description} (PENDING: #{message})") println
       )
 
-      dumpSummary = method(duration, exampleCount, failureCount, pendingCount, nil)
+      dumpSummary = method(duration, exampleCount, failureCount, pendingCount, propertyCount, exhaustedCount, propertyInstanceCount, discardedCount, nil)
       dumpFailure = method(counter, failure, nil)
       dumpPending = method(nil)
     )
@@ -178,12 +235,17 @@ ISpec do(
     examplePassed   = method(example, nil)
     examplePending  = method(example, message, nil)
     dumpFailure     = method(counter, failure, nil)
-    dumpSummary     = method(duration, exampleCount, failureCount, pendingCount, nil)
+    dumpSummary     = method(duration, exampleCount, failureCount, pendingCount, propertyCount, exhaustedCount, propertyInstanceCount, discardedCount, nil)
     dumpPending     = method(nil)
     startDump       = method(nil)
     output          = System out mimic do(close = nil)
     close           = method(output close)
     println         = method(a, output println(a))
     print           = method(a, output print(a))
+
+    propertyExampleStarted   = method(example, nil)
+    propertyExamplePassed    = method(example, result, nil)
+    propertyExampleExhausted = method(example, counter, result, nil)
+    propertyExampleFailed    = method(example, counter, failure, nil)
   )
 )

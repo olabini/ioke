@@ -41,6 +41,22 @@ ISpec do(
     unless(realValue == value,
       error!(ISpec ExpectationNotMet, text: ISpec ComparisonCompactor compact(20, ISpec inspectionOf(value), ISpec inspectionOf(realValue)), shouldMessage: self shouldMessage)))
 
+  ShouldContext cell(">") = method(value,
+    unless(realValue > value,
+      error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to be > than #{value inspect}", shouldMessage: self shouldMessage)))
+
+  ShouldContext cell("<") = method(value,
+    unless(realValue < value,
+      error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to be < than #{value inspect}", shouldMessage: self shouldMessage)))
+
+  ShouldContext cell(">=") = method(value,
+    unless(realValue >= value,
+      error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to be >= than #{value inspect}", shouldMessage: self shouldMessage)))
+
+  ShouldContext cell("<=") = method(value,
+    unless(realValue <= value,
+      error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to be <= than #{value inspect}", shouldMessage: self shouldMessage)))
+
   ShouldContext close = method(value, epsilon 0.0001,
     unless(((realValue - value) < epsilon) && ((realValue - value) > -epsilon),
       error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to be close to #{value inspect}", shouldMessage: self shouldMessage)))
@@ -140,6 +156,22 @@ ISpec do(
   NotShouldContext == = method(value,
     if(realValue == value,
       error!(ISpec ExpectationNotMet, text: "expected #{ISpec inspectionOf(realValue)} to not == #{ISpec inspectionOf(value)}", shouldMessage: self shouldMessage)))
+
+  NotShouldContext cell(">") = method(value,
+    if(realValue > value,
+      error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to not be > than #{value inspect}", shouldMessage: self shouldMessage)))
+
+  NotShouldContext cell("<") = method(value,
+    if(realValue < value,
+      error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to not be < than #{value inspect}", shouldMessage: self shouldMessage)))
+
+  NotShouldContext cell(">=") = method(value,
+    if(realValue >= value,
+      error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to not be >= than #{value inspect}", shouldMessage: self shouldMessage)))
+
+  NotShouldContext cell("<=") = method(value,
+    if(realValue <= value,
+      error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to not be <= than #{value inspect}", shouldMessage: self shouldMessage)))
 
   NotShouldContext close = method(value, epsilon 0.0001,
     if(((realValue - value) < epsilon) && ((realValue - value) > -epsilon),
