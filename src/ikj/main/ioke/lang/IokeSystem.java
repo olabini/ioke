@@ -48,7 +48,7 @@ public class IokeSystem extends IokeData {
 
     private final static String userHome = System.getProperty("user.home");
     public static String withReplacedHomeDirectory(String input) {      
-        return WINDOWS_SEVEN && input.contains("~/") ? userHome+"\\"+input.replaceAll("~/", "") : input.replaceAll("^~", userHome);
+        return DOSISH && input.contains("~/") ? userHome+"\\"+input.replaceAll("~/", "") : input.replaceAll("^~", userHome);
     }
 
     public void pushCurrentFile(String filename) {
