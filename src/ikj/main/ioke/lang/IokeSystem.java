@@ -523,6 +523,20 @@ public class IokeSystem extends IokeData {
                 }
             }));
 
+        obj.registerMethod(runtime.newNativeMethod("returns the host name of the local machine", new NativeMethod.WithNoArguments("hostName") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                    String tt;
+                    try {
+                        tt = java.net.InetAddress.getLocalHost().getHostName();
+                    } catch(Exception e) {
+                        tt = "localhost";
+                    }
+                    return runtime.newText(tt);
+                }
+            }));
+
         obj.registerMethod(runtime.newNativeMethod("forcibly exits the currently running interpreter. takes one optional argument that defaults to 1 - which is the value to return from the process, if the process is exited.", new NativeMethod("exit") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()

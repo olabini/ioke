@@ -1,3 +1,4 @@
+use("blank_slate")
 
 ISpec do(
   Formatter = Origin mimic
@@ -153,7 +154,6 @@ ISpec do(
     )
 
     HtmlFormatter = ISpec Formatter TextFormatter mimic do(
-      use("blank_slate")
       html = BlankSlate create(fn(bs,
             bs pass = method(+args, +:attrs,
               args "<%s%:[ %s=\"%s\"%]>%[%s%]</%s>\n" format(
@@ -228,6 +228,123 @@ ISpec do(
       dumpPending = method(nil)
     )
 
+    JUnitXMLFormatter = ISpec Formatter mimic do(
+      SimpleStringIO = IO mimic do(
+        initialize = method(@string = "")
+        print      = method(obj, @string += "#{obj}")
+        println    = method(obj, @string += "#{obj}\n")
+      )
+
+      wantsDirectory? = true
+      directory       = "test-results"
+
+      originalOut     = System out
+      originalErr     = System err
+
+      start = method(exampleCount, 
+        super(exampleCount)
+        @allResults = {}
+        @startTimes = {}
+      )
+
+      addResult = method(type, example, +rest,
+        example endTime = DateTime now
+        example stdOut = System out string
+        example stdErr = System err string
+        System out = originalOut
+        System err = originalErr
+        example totalTime = example endTime - example startTime
+        filename = example message filename replace("#{System currentWorkingDirectory}/", "")
+        (allResults[filename] ||= []) << [type, example, rest]
+        startTimes[filename] ||= example startTime
+      )
+
+      exampleStarted  = method(example,
+        super(example)
+        example startTime = DateTime now
+        System out = SimpleStringIO mimic
+        System err = SimpleStringIO mimic
+      )
+    
+      exampleFailed   = method(example, counter, failure, 
+        super(example, counter, failure)
+        addResult(:fail, example, counter, failure)
+      )
+
+      examplePassed   = method(example, 
+        super(example)
+        addResult(:pass, example)
+      )
+
+      examplePending  = method(example, message, 
+        super(example, message)
+        addResult(:pending, example, message)
+      )
+
+      dumpSummary = method(duration, exampleCount, failureCount, pendingCount, propertyCount, exhaustedCount, propertyInstanceCount, discardedCount,
+        FileSystem ensureDirectory(directory)
+
+        allResults keys sort each(k,
+          out = "#{directory}/TEST-#{k replace(#/.ik\Z/, "") replaceAll(#/[\\\/]/, ".")}.xml"
+
+          bind(rescue(Condition Error, fn(ignored, nil)),
+            FileSystem removeFile!(out))
+
+          FileSystem withOpenFile(out, fn(outf,
+              results = allResults[k]
+              (failures, otherResults) = results partition(first == :fail)
+              (passes, pendings) = results partition(first == :pass)
+              (failureResults, errorResults) = failures partition([2][1] expectationNotMet?)
+
+              startTime      = startTimes[k]
+              completeTime   = results map([1] totalTime) sum
+              completeStdOut = results map([1] stdOut) sum
+              completeStdErr = results map([1] stdErr) sum
+
+              outf println("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>")
+              outf println("<testsuite errors=\"#{errorResults length}\" failures=\"#{failureResults length}\" name=\"#{k}\" hostname=\"#{System hostName}\" tests=\"#{results length}\" time=\"#{formatDuration(completeTime)}\" timestamp=\"#{startTime}\" >")
+              outf println("  <properties>")
+              if(System feature?(:java),
+                java:lang:System properties each(e,
+                  outf println("    <property name=\"#{e key}\" value=\"#{e value}\" />")
+                )
+              )
+              outf println("  </properties>")
+
+              ; OUTPUT TO FILE
+
+              results each(res,
+                case(res[0],
+                  :pass, outf println("  <testcase classname=\"#{k}\" name=\"#{makeTextXmlSafe(res[1] fullDescription replace(#/\A /, ""))}\" time=\"#{formatDuration(res[1] totalTime)}\"/>"),
+                  :pending, nil, ;pending specs are ignored in JUnit XML at the moment
+                  :fail,
+                  outf println("  <testcase classname=\"#{k}\" name=\"#{makeTextXmlSafe(res[1] fullDescription replace(#/\A /, ""))}\" time=\"#{formatDuration(res[1] totalTime)}\">")
+                  if(res[2][1] expectationNotMet?,
+                    outf println("    <failure message=\"#{makeTextXmlSafe(res[2][1] condition text)}\" type=\"#{res[2][1] condition kind}\">#{makeTextXmlSafe(res[2][1] condition text)}\n\n#{res[2][1] condition example stackTraceAsText(res[2][1] condition)}")
+                    outf println("    </failure>"),
+                    outf println("    <error message=\"#{makeTextXmlSafe(res[2][1] condition text)}\" type=\"#{res[2][1] condition kind}\">#{makeTextXmlSafe(res[2][1] condition text)}\n\n#{res[2][1] condition example stackTraceAsText(res[2][1] condition)}")
+                    outf println("    </error>")
+                  )                
+                  outf println("  </testcase\">")
+                )
+              )
+
+              outf println("  <system-out><![CDATA[#{completeStdOut}]]></system-out>")
+              outf println("  <system-err><![CDATA[#{completeStdErr}]]></system-err>")
+              outf println("</testsuite>")
+          ))
+        )
+      )
+      
+      makeTextXmlSafe = method(text,
+        text replaceAll("&", "&amp;") replaceAll("<", "&lt;") replaceAll(">", "&gt;"))
+      
+      formatDuration = method(val,
+        after = val%1000
+        before = (val - after)/1000
+        "#{before}.#{"%3s" format(after) replaceAll(" ", "0")}")
+    )
+
     addExampleGroup = method(exampleGroup, @exampleGroup = exampleGroup)
     start           = method(exampleCount, nil)
     exampleStarted  = method(example, nil)
@@ -242,6 +359,7 @@ ISpec do(
     close           = method(output close)
     println         = method(a, output println(a))
     print           = method(a, output print(a))
+    wantsDirectory? = false
 
     propertyExampleStarted   = method(example, nil)
     propertyExamplePassed    = method(example, result, nil)

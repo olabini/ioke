@@ -103,10 +103,14 @@ ISpec do(
       formatters = dict(
         specdoc: ISpec Formatter SpecDocFormatter,
         progress: ISpec Formatter ProgressBarFormatter,
-        html: ISpec Formatter HtmlFormatter)
+        html: ISpec Formatter HtmlFormatter,
+        junit: ISpec Formatter JUnitXMLFormatter,
+        xml: ISpec Formatter JUnitXMLFormatter
+      )
       formatters[:s] = formatters[:specdoc]
       formatters[:p] = formatters[:progress]
       formatters[:h] = formatters[:html]
+      formatters[:x] = formatters[:xml]
 
       banner = "Usage: ispec (FILE|DIRECTORY|GLOB)* [options]"
 
@@ -121,8 +125,11 @@ ISpec do(
         formatter = fkind mimic
         case(to,
           or("-", System out), nil,
-          if(System feature?(:java),
-            formatter output = java:io:PrintStream new(to)))
+          else, 
+            if(formatter wantsDirectory?,
+              formatter directory = to,
+              if(System feature?(:java),
+                formatter output = java:io:PrintStream new(to))))
         @options formatters << formatter
       ) do(
         cell(:documentation) = method(
@@ -131,6 +138,8 @@ ISpec do(
           doc << "if given \"-\" will write to standard output."
           doc << "e.g."
           doc << "     --format specdoc to: specOut.txt"
+          doc << " "
+          doc << " Some formatters expects to get a directory instead of a filename."
           doc << " "
           formats = dict()
           receiver formatters each(pair,

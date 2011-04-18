@@ -152,25 +152,55 @@ cell(:LexicalBlock) java:coerceCode = method(javaType, abstractNames,
   proxy new
 )
 
-JavaGround java:util:List each = dmacro(
+JavaGround java:util:Collection each = dmacro(
   [code]
-  (0...self size asRational) each(n, code evaluateOn(call ground, self get(n)))
+  iter = self iterator
+  while(iter hasNext,
+    code evaluateOn(call ground, iter next))
   self,
 
   [argName, code]
   lexical = call LexicalBlock createFrom(call list(argName, code), call ground)
-  (0...self size asRational) each(n, lexical call(self get(n)))
+  iter = self iterator
+  while(iter hasNext,
+    lexical call(iter next))
   self,
 
   [indexName, argName, code]
   lexical = call LexicalBlock createFrom(call list(indexName, argName, code), call ground)
-  (0...self size asRational) each(n, lexical call(n, self get(n)))
+  iter = self iterator
+  i = 0
+  while(iter hasNext,
+    lexical call(i, iter next)
+    i += 1
+  )
   self)
+
+JavaGround java:util:Collection mimic!(Mixins Enumerable)
 
 JavaGround java:util:List cell("<<") = method(obj,
   self add(obj)
 )
 
-JavaGround java:util:List mimic!(Mixins Enumerable)
+JavaGround java:util:Map each = dmacro(
+  [code]
+  self entrySet each(e, code evaluateOn(call ground, self get(e)))
+  self,
+
+  [argName, code]
+  lexical = call LexicalBlock createFrom(call list(argName, code), call ground)
+  self entrySet each(e, lexical call(e))
+  self,
+
+  [indexName, argName, code]
+  lexical = call LexicalBlock createFrom(call list(indexName, argName, code), call ground)
+  i = 0
+  self entrySet each(e, 
+    lexical call(i, e)
+    i += 1
+  )
+  self)
+
+JavaGround java:util:Map mimic!(Mixins Enumerable)
 )
 

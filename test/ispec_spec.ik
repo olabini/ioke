@@ -275,7 +275,7 @@ describe(ISpec Runner OptionParser,
     it("should set the formatter output to stdout when given keyword arg to: -",
       parser = ISpec Runner OptionParser create(nil, nil)
       parser order(["--format", "specdoc", "to:", "-"])
-      parser options formatters first output should mimic(System out)
+      parser options formatters first output should mimic(IO)
     )
 
     it("should add file when exists",

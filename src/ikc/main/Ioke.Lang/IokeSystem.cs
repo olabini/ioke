@@ -175,6 +175,14 @@ namespace Ioke.Lang {
                                                                                             return context.runtime.NewText(context.runtime.CurrentWorkingDirectory);
                                                                                     })));
 
+            obj.RegisterMethod(runtime.NewNativeMethod("returns the host name of the local machine",
+                                                       new NativeMethod.WithNoArguments("hostName",
+                                                                                        (method, context, message, on, outer) => {
+                                                                                            outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, new SaneArrayList(), new SaneDictionary<string, object>());
+                                                                                            string tt = System.Net.Dns.GetHostName();
+                                                                                            return context.runtime.NewText(tt);
+                                                                                    })));
+
             obj.RegisterMethod(runtime.NewNativeMethod("returns the current directory that the code is executing in",
                                                        new NativeMethod.WithNoArguments("currentDirectory",
                                                                                         (method, context, message, on, outer) => {

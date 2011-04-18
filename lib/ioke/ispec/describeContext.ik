@@ -96,7 +96,7 @@ ISpec do(
         call argAt(1)
       )
 
-      example = ISpec Example mimic(self, shouldText, code, tags)
+      example = ISpec Example mimic(self, shouldText, code, tags, call message)
       self specs << example
       ISpec ispec_options exampleAdded(example)
     )

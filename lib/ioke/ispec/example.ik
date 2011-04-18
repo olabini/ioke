@@ -1,11 +1,12 @@
 ISpec do(
   Example = Origin mimic do(
-    initialize = method(context, name nil, code nil, tags {},
+    initialize = method(context, name nil, code nil, tags {}, msg nil,
       self context = context mimic
       self name = name
       self code = code
       self tags = context tags merge(tags)
       self description = name
+      self message = msg
       self fullDescription = "#{self context fullName} #{name}"
     )
 

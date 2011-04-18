@@ -141,6 +141,6 @@ ISpec do(
         val = endTime - startTime
         after = val%1000
         before = (val - after)/1000
-        "#{before}.#{after}"))
+        "#{before}.#{"%3s" format(after) replaceAll(" ", "0")}"))
   )
 )
