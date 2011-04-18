@@ -67,6 +67,16 @@
     </java>
   </target>
 
+  <target name="ci-test" depends="compile" description="Runs all ISpec tests">
+    <java classname="ioke.lang.Main" fork="true" failonerror="true" maxmemory="256m">
+      <sysproperty key="ispec.ansi" value="${ispec.ansi}"/>
+      <classpath refid="build.classpath"/>
+      <classpath path="${classes.dir}"/>
+
+      <arg line="bin/ispec test -fx to: ${test.results.dir}"/>
+    </java>
+  </target>
+
   <target name="coverage" depends="coverage.instrument" description="Runs all ISpec tests using Cobertura and produces a report">
     <java classname="ioke.lang.Main" fork="true" failonerror="true">
       <classpath refid="build.classpath"/>
@@ -80,6 +90,23 @@
   </target>
 
   <target name="jar" depends="test" description="Create the ioke.jar file">
+    <jar destfile="${lib.dir}/ioke.jar">
+      <fileset dir="${classes.dir}">
+        <include name="**/*.class"/>
+        <include name="**/*.ik"/>
+        <include name="**/*.properties"/>
+      </fileset>
+      <zipfileset src="${lib.release.dir}/jline-0.9.93.jar" includes="**/*"/>
+      <zipfileset src="${lib.release.dir}/joda-time-1.6.jar" includes="**/*"/>
+      <zipfileset src="${lib.release.dir}/asm-3.1.jar" includes="**/*"/>
+      <manifest>
+        <attribute name="Built-By" value="${user.name}"/>
+        <attribute name="Main-Class" value="ioke.lang.Main"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="ci-jar" description="Create the ioke.jar file without depending on earlier stages">
     <jar destfile="${lib.dir}/ioke.jar">
       <fileset dir="${classes.dir}">
         <include name="**/*.class"/>

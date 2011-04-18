@@ -13,6 +13,7 @@
   <property name="release.dir" value="rels"/>
   <property name="build.dir" value="build"/>
   <property name="build.filtered.dir" value="${build.dir}/filtered"/>
+  <property name="test.results.dir" value="${build.dir}/test-results"/>
 
   <target name="prepare" description="Creates the directories needed for building">
     <mkdir dir="${build.dir}"/>
@@ -118,6 +119,12 @@ ioke.build.commit=${version::extract-commit()}
   <target name="test" depends="compile" description="Runs all ISpec tests">
     <exec managed="true" program="bin/ispec.exe">
       <arg line="test -fs"/>
+    </exec>
+  </target>
+
+  <target name="ci-test" depends="compile" description="Runs all ISpec tests">
+    <exec managed="true" program="bin/ispec.exe">
+      <arg line="test  -fx to: ${test.results.dir}"/>
     </exec>
   </target>
 
