@@ -240,6 +240,7 @@ ISpec do(
 
       originalOut     = System out
       originalErr     = System err
+      separator       = if(System windows?, "\\", "/")
 
       start = method(exampleCount, 
         super(exampleCount)
@@ -254,7 +255,7 @@ ISpec do(
         System out = originalOut
         System err = originalErr
         example totalTime = example endTime - example startTime
-        filename = example message filename replace("#{System currentWorkingDirectory}/", "")
+        filename = example message filename replace("#{System currentWorkingDirectory}#{separator}", "")
         (allResults[filename] ||= []) << [type, example, rest]
         startTimes[filename] ||= example startTime
       )
@@ -285,7 +286,7 @@ ISpec do(
         FileSystem ensureDirectory(directory)
 
         allResults keys sort each(k,
-          out = "#{directory}/TEST-#{k replace(#/.ik\Z/, "") replaceAll(#/[\\\/]/, ".")}.xml"
+          out = "#{directory}#{separator}TEST-#{k replace(#/.ik\Z/, "") replaceAll(#/[\\\/]/, ".")}.xml"
 
           bind(rescue(Condition Error, fn(ignored, nil)),
             FileSystem removeFile!(out))
