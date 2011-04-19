@@ -11,6 +11,7 @@
   <taskdef resource="tasks.properties">
     <classpath>
       <fileset dir="${lib.build.dir}" includes="*.jar"/>
+      <fileset dir="${lib.release.dir}" includes="asm-*.jar"/>
     </classpath>
   </taskdef>
 
@@ -55,7 +56,7 @@
 
   <target name="coverage.instrument" depends="compile" description="">
     <cobertura-instrument todir="${coverage.classes.dir}">
-        <fileset dir="${classes.dir}" excludes="ioke/lang/parser/**/*.class"/>
+      <fileset dir="${classes.dir}" excludes="ioke/lang/parser/**/*.class com/google/**/*.class org/jregex/**/*.class gnu/**/*.class"/>
     </cobertura-instrument>
   </target>
 
@@ -90,9 +91,9 @@
   </target>
 
   <target name="coverage" depends="coverage.instrument" description="Runs all ISpec tests using Cobertura and produces a report">
-    <java classname="ioke.lang.Main" fork="true" failonerror="true">
-      <classpath refid="build.classpath"/>
+    <java classname="ioke.lang.Main" fork="true" maxmemory="512m" failonerror="true">
       <classpath path="${coverage.classes.dir}"/>
+      <classpath refid="build.classpath"/>
       <classpath path="${classes.dir}"/>
 
       <arg line="bin/ispec test -fs"/>
@@ -110,7 +111,7 @@
       </fileset>
       <zipfileset src="${lib.release.dir}/jline-0.9.93.jar" includes="**/*"/>
       <zipfileset src="${lib.release.dir}/joda-time-1.6.jar" includes="**/*"/>
-      <zipfileset src="${lib.release.dir}/asm-3.1.jar" includes="**/*"/>
+      <zipfileset src="${lib.release.dir}/asm-3.3.1.jar" includes="**/*"/>
       <manifest>
         <attribute name="Built-By" value="${user.name}"/>
         <attribute name="Main-Class" value="ioke.lang.Main"/>
@@ -127,7 +128,7 @@
       </fileset>
       <zipfileset src="${lib.release.dir}/jline-0.9.93.jar" includes="**/*"/>
       <zipfileset src="${lib.release.dir}/joda-time-1.6.jar" includes="**/*"/>
-      <zipfileset src="${lib.release.dir}/asm-3.1.jar" includes="**/*"/>
+      <zipfileset src="${lib.release.dir}/asm-3.3.1.jar" includes="**/*"/>
       <manifest>
         <attribute name="Built-By" value="${user.name}"/>
         <attribute name="Main-Class" value="ioke.lang.Main"/>
@@ -155,7 +156,7 @@
       </fileset>
       <zipfileset src="${lib.release.dir}/jline-0.9.93.jar" includes="**/*"/>
       <zipfileset src="${lib.release.dir}/joda-time-1.6.jar" includes="**/*"/>
-      <zipfileset src="${lib.release.dir}/asm-3.1.jar" includes="**/*"/>
+      <zipfileset src="${lib.release.dir}/asm-3.3.1.jar" includes="**/*"/>
       <manifest>
         <attribute name="Built-By" value="${user.name}"/>
         <attribute name="Main-Class" value="ioke.lang.Main"/>
