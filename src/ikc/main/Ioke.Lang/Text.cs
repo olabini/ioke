@@ -152,6 +152,12 @@ namespace Ioke.Lang {
                                                                                                             return self.runtime.NewText(Text.GetInspect(on));
                                                                                                         })));
 
+            obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns a text where all non-safe characters have been replaced with safe ones",
+                                                           new TypeCheckingNativeMethod.WithNoArguments("makeXMLSafe", obj,
+                                                                                                        (self, on, args, keywords, context, message) => {
+                                                                                                            return self.runtime.NewText(new StringUtils().XmlSafe(Text.GetText(on)));
+                                                                                                        })));
+
             obj.RegisterMethod(obj.runtime.NewNativeMethod("Returns a lower case version of this text",
                                                            new TypeCheckingNativeMethod.WithNoArguments("lower", obj,
                                                                                                         (self, on, args, keywords, context, message) => {

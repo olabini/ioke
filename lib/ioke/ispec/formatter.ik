@@ -303,7 +303,7 @@ ISpec do(
               completeStdErr = results map([1] stdErr) sum
 
               outf println("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>")
-              outf println("<testsuite errors=\"#{errorResults length}\" failures=\"#{failureResults length}\" name=\"#{k}\" hostname=\"#{System hostName}\" tests=\"#{results length}\" time=\"#{formatDuration(completeTime)}\" timestamp=\"#{startTime}\" >")
+              outf println("<testsuite errors=\"#{errorResults length}\" failures=\"#{failureResults length}\" name=\"#{k replace(#/.ik\Z/, "")}\" hostname=\"#{System hostName}\" tests=\"#{results length}\" time=\"#{formatDuration(completeTime)}\" timestamp=\"#{startTime}\" >")
               outf println("  <properties>")
               if(System feature?(:java),
                 java:lang:System properties each(e,
@@ -312,18 +312,16 @@ ISpec do(
               )
               outf println("  </properties>")
 
-              ; OUTPUT TO FILE
-
               results each(res,
                 case(res[0],
-                  :pass, outf println("  <testcase classname=\"#{k}\" name=\"#{makeTextXmlSafe(res[1] fullDescription replace(#/\A /, ""))}\" time=\"#{formatDuration(res[1] totalTime)}\"/>"),
+                  :pass, outf println("  <testcase classname=\"#{k}\" name=\"#{res[1] fullDescription replace(#/\A /, "") makeXMLSafe}\" time=\"#{formatDuration(res[1] totalTime)}\"/>"),
                   :pending, nil, ;pending specs are ignored in JUnit XML at the moment
                   :fail,
-                  outf println("  <testcase classname=\"#{k}\" name=\"#{makeTextXmlSafe(res[1] fullDescription replace(#/\A /, ""))}\" time=\"#{formatDuration(res[1] totalTime)}\">")
+                  outf println("  <testcase classname=\"#{k}\" name=\"#{res[1] fullDescription replace(#/\A /, "") makeXMLSafe}\" time=\"#{formatDuration(res[1] totalTime)}\">")
                   if(res[2][1] expectationNotMet?,
-                    outf println("    <failure message=\"#{makeTextXmlSafe(res[2][1] condition text)}\" type=\"#{res[2][1] condition kind}\">#{makeTextXmlSafe(res[2][1] condition text)}\n\n#{res[2][1] condition example stackTraceAsText(res[2][1] condition)}")
+                    outf println("    <failure message=\"#{res[2][1] condition text makeXMLSafe}\" type=\"#{res[2][1] condition kind}\">#{res[2][1] condition text makeXMLSafe}\n\n#{res[2][1] condition example stackTraceAsText(res[2][1] condition)}")
                     outf println("    </failure>"),
-                    outf println("    <error message=\"#{makeTextXmlSafe(res[2][1] condition text)}\" type=\"#{res[2][1] condition kind}\">#{makeTextXmlSafe(res[2][1] condition text)}\n\n#{res[2][1] condition example stackTraceAsText(res[2][1] condition)}")
+                    outf println("    <error message=\"#{res[2][1] condition text makeXMLSafe}\" type=\"#{res[2][1] condition kind}\">#{res[2][1] condition text makeXMLSafe}\n\n#{res[2][1] condition example stackTraceAsText(res[2][1] condition)}")
                     outf println("    </error>")
                   )                
                   outf println("  </testcase>")
@@ -337,19 +335,6 @@ ISpec do(
         )
       )
 
-      makeTextXmlSafe = method(text,
-        text chars map(in,
-          case(in,
-            "&", "&amp;",
-            "<", "&lt;",
-            ">", "&gt;",
-            "\"", "&#34;",
-            else, if(in[0] > 255,
-              "&##{in[0]};",
-              in)
-        )) join
-      )
-      
       formatDuration = method(val,
         after = val%1000
         before = (val - after)/1000

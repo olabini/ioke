@@ -99,6 +99,14 @@ public class Text extends IokeData {
                 }
             }));
 
+        obj.registerMethod(obj.runtime.newNativeMethod("Returns a text where all non-safe characters have been replaced with safe ones", new NativeMethod.WithNoArguments("makeXMLSafe") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                    return method.runtime.newText(new StringUtils().xmlSafe(Text.getText(on)));
+                }
+            }));
+
         obj.registerMethod(obj.runtime.newNativeMethod("Returns a brief text inspection of the object", new NativeMethod.WithNoArguments("notice") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {

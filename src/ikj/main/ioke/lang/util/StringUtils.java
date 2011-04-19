@@ -11,6 +11,38 @@ public class StringUtils {
     public StringUtils() {
     }
 
+    public String xmlSafe(String s) {
+        int len = s.length();
+        StringBuilder result = new StringBuilder(s.length());
+        for(int i=0;i<len;i++) {
+            char c = s.charAt(i);
+            switch(c) {
+            case '&':
+                result.append("&amp;");
+                break;
+            case '<':
+                result.append("&lt;");
+                break;
+            case '>':
+                result.append("&gt;");
+                break;
+            case '"':
+                result.append("&#34;");
+                break;
+            default:
+                if(c > 126) {
+                    result.append("&#" + (int)c + ";");
+                } else {
+                    result.append(c);
+                }
+                break;
+            }
+        }
+
+        return result.toString();
+    }
+
+
     public String escape(String s) {
         int len = s.length();
         StringBuilder result = new StringBuilder(s.length());

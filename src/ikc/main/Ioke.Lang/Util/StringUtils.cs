@@ -3,6 +3,38 @@ namespace Ioke.Lang.Util {
     using System.Text;
 
     public class StringUtils {
+        public string XmlSafe(string s) {
+            int len = s.Length;
+            StringBuilder result = new StringBuilder(s.Length);
+            for(int i=0;i<len;i++) {
+                char c = s[i];
+                switch(c) {
+                case '&':
+                    result.Append("&amp;");
+                    break;
+                case '<':
+                    result.Append("&lt;");
+                    break;
+                case '>':
+                    result.Append("&gt;");
+                    break;
+                case '"':
+                    result.Append("&#34;");
+                    break;
+                default:
+                    if(c > 126) {
+                        result.Append("&#" + (int)c + ";");
+                    } else {
+                        result.Append(c);
+                    }
+                break;
+                }
+            }
+
+            return result.ToString();
+        }
+
+
         public string ReplaceEscapes(string s) {
             if(s.IndexOf('\\') == -1) {
                 if(Ioke.Lang.IokeSystem.DOSISH) {
