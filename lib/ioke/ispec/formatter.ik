@@ -326,7 +326,7 @@ ISpec do(
                     outf println("    <error message=\"#{makeTextXmlSafe(res[2][1] condition text)}\" type=\"#{res[2][1] condition kind}\">#{makeTextXmlSafe(res[2][1] condition text)}\n\n#{res[2][1] condition example stackTraceAsText(res[2][1] condition)}")
                     outf println("    </error>")
                   )                
-                  outf println("  </testcase\">")
+                  outf println("  </testcase>")
                 )
               )
 
@@ -336,9 +336,19 @@ ISpec do(
           ))
         )
       )
-      
+
       makeTextXmlSafe = method(text,
-        text replaceAll("&", "&amp;") replaceAll("<", "&lt;") replaceAll(">", "&gt;"))
+        text chars map(in,
+          case(in,
+            "&", "&amp;",
+            "<", "&lt;",
+            ">", "&gt;",
+            "\"", "&#34;",
+            else, if(in[0] > 255,
+              "&##{in[0]};",
+              in)
+        )) join
+      )
       
       formatDuration = method(val,
         after = val%1000

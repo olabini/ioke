@@ -23,6 +23,8 @@
     <mkdir dir="${build.dir}"/>
     <mkdir dir="${coverage.dir}"/>
     <mkdir dir="${classes.dir}"/>
+    <mkdir dir="${test.results.dir}"/>
+    <mkdir dir="${html.test.results.dir}"/>
   </target>
 
   <target name="generate_filters" depends="prepare" description="Generates source files">
@@ -68,13 +70,23 @@
   </target>
 
   <target name="ci-test" depends="compile" description="Runs all ISpec tests">
-    <java classname="ioke.lang.Main" fork="true" failonerror="true" maxmemory="256m">
+    <java classname="ioke.lang.Main" fork="true" maxmemory="256m" resultproperty="ispec.result">
       <sysproperty key="ispec.ansi" value="${ispec.ansi}"/>
       <classpath refid="build.classpath"/>
       <classpath path="${classes.dir}"/>
 
       <arg line="bin/ispec test -fx to: ${test.results.dir}"/>
     </java>
+    <junitreport todir="${test.results.dir}">
+      <fileset dir="${test.results.dir}" includes="TEST-*.xml"/>
+      <report format="frames" todir="${html.test.results.dir}"/>
+    </junitreport>
+    <condition property="ispec.failure">
+      <not>
+        <equals arg1="0" arg2="${ispec.result}"/>
+      </not>
+    </condition>
+    <fail if="ispec.failure" message="Test(s) failed."/>
   </target>
 
   <target name="coverage" depends="coverage.instrument" description="Runs all ISpec tests using Cobertura and produces a report">
