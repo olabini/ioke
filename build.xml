@@ -78,7 +78,9 @@
 
       <arg line="bin/ispec test -fx to: ${test.results.dir}"/>
     </java>
-    <junitreport todir="${test.results.dir}">
+    <delete dir="${html.test.results.dir}" quiet="true"/>
+    <delete file="${test.results.dir}/TESTS-TestSuites.xml" quiet="true"/>
+    <junitreport todir="${test.results.dir}" tofile="${build.dir}/TESTS-TestSuites.xml">
       <fileset dir="${test.results.dir}" includes="TEST-*.xml"/>
       <report format="frames" todir="${html.test.results.dir}"/>
     </junitreport>
@@ -91,7 +93,7 @@
   </target>
 
   <target name="coverage" depends="coverage.instrument" description="Runs all ISpec tests using Cobertura and produces a report">
-    <java classname="ioke.lang.Main" fork="true" maxmemory="512m" failonerror="true">
+    <java classname="ioke.lang.Main" fork="true" maxmemory="320m" failonerror="true">
       <classpath path="${coverage.classes.dir}"/>
       <classpath refid="build.classpath"/>
       <classpath path="${classes.dir}"/>
