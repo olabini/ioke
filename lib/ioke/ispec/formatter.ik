@@ -91,7 +91,7 @@ ISpec do(
     )
 
     SpecDocFormatter = ISpec Formatter TextFormatter mimic do(
-      addExampleGroup = method(exampleGroup,
+      exampleGroupStarted = method(exampleGroup,
         super(exampleGroup)
         println("")
         println(exampleGroup fullName))
@@ -202,7 +202,7 @@ ISpec do(
         html a(href: "txmt://open/?url=file://#{code filename}&line=#{code line}&column=#{code position}", name)
       )
 
-      addExampleGroup = method(exampleGroup,
+      exampleGroupStarted = method(exampleGroup,
         super(exampleGroup)
         html div(class: "exampleGroup", exampleGroup fullName) println
       )
@@ -242,22 +242,26 @@ ISpec do(
       originalErr     = System err
       separator       = if(System windows?, "\\", "/")
 
-      start = method(exampleCount, 
-        super(exampleCount)
-        @allResults = {}
-        @startTimes = {}
-      )
+      ; if we have already outputted something with this name, then we need to add a number to it or something
 
-      addResult = method(type, example, +rest,
-        example endTime = DateTime now
-        example stdOut = System out string
-        example stdErr = System err string
-        System out = originalOut
-        System err = originalErr
-        example totalTime = example endTime - example startTime
-        filename = example message filename replace("#{System currentWorkingDirectory}#{separator}", "")
-        (allResults[filename] ||= []) << [type, example, rest]
-        startTimes[filename] ||= example startTime
+
+      start = method(exampleCount,
+        super(exampleCount)
+        @activeGroups = []
+        @active = nil
+
+        @activeExampleGroups = []
+        @activeExampleGroup  = nil
+        @allResults = []
+        @startTimes = []
+
+        @usedGroupNames = set()
+      )
+      
+      exampleGroupStarted  = method(exampleGroup,
+        super(exampleGroup)
+        @active = Origin with(group: exampleGroup, results: [], startTime: DateTime now)
+        @activeGroups unshift!(@active)
       )
 
       exampleStarted  = method(example,
@@ -266,7 +270,7 @@ ISpec do(
         System out = SimpleStringIO mimic
         System err = SimpleStringIO mimic
       )
-    
+
       exampleFailed   = method(example, counter, failure, 
         super(example, counter, failure)
         addResult(:fail, example, counter, failure)
@@ -282,42 +286,76 @@ ISpec do(
         addResult(:pending, example, message)
       )
 
-      dumpSummary = method(duration, exampleCount, failureCount, pendingCount, propertyCount, exhaustedCount, propertyInstanceCount, discardedCount,
-        FileSystem ensureDirectory(directory)
+      addResult = method(type, example, +rest,
+        example endTime = DateTime now
+        example stdOut = System out string
+        example stdErr = System err string
+        System out = originalOut
+        System err = originalErr
+        example totalTime = example endTime - example startTime
+        @active results << [type, example, rest]
+      )
 
-        allResults keys sort each(k,
-          out = "#{directory}#{separator}TEST-#{k replace(#/.ik\Z/, "") replaceAll(#/[\\\/]/, ".")}.xml"
 
+      exampleGroupFinished = method(exampleGroup,
+        super(exampleGroup)
+
+        outputCurrentExampleGroup!
+
+        @activeGroups shift!
+        @active = @activeGroups first
+      )
+
+      filenameFor = method(suite,
+        basename = suite replaceAll(#/[^a-zA-Z0-9]+/, "-")
+
+        filename = basename
+
+        i = 0
+        while(@usedGroupNames include?(filename),
+          filename = "#{basename}.#{i}"
+          i++
+        )
+        @usedGroupNames << filename
+        filename
+      )
+
+      outputCurrentExampleGroup! = method(
+        i = 0
+        results = active results sortBy(xx, [xx second description, i++])
+
+        (failures, otherResults) = results partition(first == :fail)
+        (passes, pendings) = results partition(first == :pass)
+        (failureResults, errorResults) = failures partition([2][1] expectationNotMet?)
+
+        startTime      = active startTime
+        completeTime   = results map([1] totalTime) sum
+        completeStdOut = results map([1] stdOut) sum
+        completeStdErr = results map([1] stdErr) sum
+
+        if(results length > 0,
+          FileSystem ensureDirectory(directory)
+          out = "#{directory}#{separator}TEST-#{filenameFor(active group fullName replace(#/\A /, ""))}.xml"
           bind(rescue(Condition Error, fn(ignored, nil)),
             FileSystem removeFile!(out))
 
           FileSystem withOpenFile(out, fn(outf,
-              results = allResults[k]
-              (failures, otherResults) = results partition(first == :fail)
-              (passes, pendings) = results partition(first == :pass)
-              (failureResults, errorResults) = failures partition([2][1] expectationNotMet?)
-
-              startTime      = startTimes[k]
-              completeTime   = results map([1] totalTime) sum
-              completeStdOut = results map([1] stdOut) sum
-              completeStdErr = results map([1] stdErr) sum
-
               outf println("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>")
-              outf println("<testsuite errors=\"#{errorResults length}\" failures=\"#{failureResults length}\" name=\"#{k replace(#/.ik\Z/, "")}\" hostname=\"#{System hostName}\" tests=\"#{results length}\" time=\"#{formatDuration(completeTime)}\" timestamp=\"#{startTime}\" >")
+              outf println("<testsuite errors=\"#{errorResults length}\" failures=\"#{failureResults length}\" name=\"#{active group fullName replace(#/\A /, "") makeXMLSafe}\" hostname=\"#{System hostName}\" tests=\"#{results length}\" time=\"#{formatDuration(completeTime)}\" timestamp=\"#{startTime}\" >")
               outf println("  <properties>")
               if(System feature?(:java),
                 java:lang:System properties each(e,
-                  outf println("    <property name=\"#{e key}\" value=\"#{e value}\" />")
+                  outf println("    <property name=\"#{e key asText makeXMLSafe}\" value=\"#{e value asText makeXMLSafe}\" />")
                 )
               )
               outf println("  </properties>")
 
               results each(res,
                 case(res[0],
-                  :pass, outf println("  <testcase classname=\"#{k}\" name=\"#{res[1] fullDescription replace(#/\A /, "") makeXMLSafe}\" time=\"#{formatDuration(res[1] totalTime)}\"/>"),
-                  :pending, nil, ;pending specs are ignored in JUnit XML at the moment
+                  :pass, outf println("  <testcase name=\"#{res[1] fullDescription replace(#/\A /, "") makeXMLSafe}\" time=\"#{formatDuration(res[1] totalTime)}\"/>"),
+                  :pending, outf println("  <testcase name=\"#{res[1] fullDescription replace(#/\A /, "") makeXMLSafe} (PENDING)\" time=\"#{formatDuration(res[1] totalTime)}\"/>"),
                   :fail,
-                  outf println("  <testcase classname=\"#{k}\" name=\"#{res[1] fullDescription replace(#/\A /, "") makeXMLSafe}\" time=\"#{formatDuration(res[1] totalTime)}\">")
+                  outf println("  <testcase name=\"#{res[1] fullDescription replace(#/\A /, "") makeXMLSafe}\" time=\"#{formatDuration(res[1] totalTime)}\">")
                   if(res[2][1] expectationNotMet?,
                     outf println("    <failure message=\"#{res[2][1] condition text makeXMLSafe}\" type=\"#{res[2][1] condition kind}\">#{res[2][1] condition text makeXMLSafe}\n\n#{res[2][1] condition example stackTraceAsText(res[2][1] condition)}")
                     outf println("    </failure>"),
@@ -330,10 +368,7 @@ ISpec do(
 
               outf println("  <system-out><![CDATA[#{completeStdOut}]]></system-out>")
               outf println("  <system-err><![CDATA[#{completeStdErr}]]></system-err>")
-              outf println("</testsuite>")
-          ))
-        )
-      )
+              outf println("</testsuite>")))))
 
       formatDuration = method(val,
         after = val%1000
@@ -341,7 +376,8 @@ ISpec do(
         "#{before}.#{"%3s" format(after) replaceAll(" ", "0")}")
     )
 
-    addExampleGroup = method(exampleGroup, @exampleGroup = exampleGroup)
+    exampleGroupStarted  = method(exampleGroup, @exampleGroup = exampleGroup)
+    exampleGroupFinished = method(exampleGroup, nil)
     start           = method(exampleCount, nil)
     exampleStarted  = method(example, nil)
     exampleFailed   = method(example, counter, failure, nil)

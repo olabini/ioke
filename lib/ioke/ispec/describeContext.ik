@@ -53,12 +53,13 @@ ISpec do(
       "runs all the defined descriptions and specs",
       reporter,
 
-      reporter addExampleGroup(self)
+      reporter exampleGroupStarted(self)
       success = true
       specs each(spec,
         insideSuccess = spec run(reporter)
         if(success, success = insideSuccess)
       )
+      reporter exampleGroupFinished(self)
       success
     )
 

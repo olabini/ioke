@@ -52,9 +52,12 @@ ISpec do(
 
     formatters = method(options formatters)
 
-    addExampleGroup = method(exampleGroup,
-      formatters each( addExampleGroup(exampleGroup) )
+    exampleGroupStarted = method(exampleGroup,
+      formatters each( exampleGroupStarted(exampleGroup) )
       exampleGroups << exampleGroup)
+
+    exampleGroupFinished = method(exampleGroup,
+      formatters each( exampleGroupFinished(exampleGroup)))
 
     exampleStarted = method(example,
       formatters each( exampleStarted(example) ))
