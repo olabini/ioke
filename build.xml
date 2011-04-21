@@ -33,6 +33,25 @@
     <exec executable="ruby" input="generate_filter_data.rb" failonerror="false" failifexecutionfails="false"/>
   </target>
 
+  <target name="generate_version_data" depends="generate_filters" description="Generates version data">
+    <filter filtersfile="version_data.properties"/>
+    <filter token="VERSION" value="${VERSION_NAME}"/>
+    <filter token="VERSION_RUNTIME" value="${VERSION_NUMBER}${VERSION_ADDITION}"/>
+    <filter token="VERSION_STRING" value="Ioke ${VERSION_NAME} ikj ${VERSION_NUMBER}${VERSION_ADDITION}"/>
+
+    <copy todir="${classes.dir}" filtering="true" overwrite="true">
+      <fileset dir="${src.dir}" includes="**/*.properties"/>
+    </copy>
+  </target>
+
+  <target name="add_new_version_file" depends="generate_version_data" description="Adds a new version property file to an existing jar-file">
+    <jar destfile="${lib.dir}/ioke.jar" update="true">
+      <fileset dir="${classes.dir}">
+        <include name="**/*.properties"/>
+      </fileset>
+    </jar>
+  </target>
+
   <target name="gen-pom" description="Creates new pom.xml files based on the current version configuration. This should be run before doing any Maven stuff">
     <filter token="VERSION_NAME" value="${VERSION_NAME}"/>
     <filter token="VERSION_NUMBER" value="${VERSION_NUMBER}"/>

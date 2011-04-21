@@ -51,19 +51,21 @@
     </exec>
   </target>
 
-  <target name="compile" depends="generate_filters" description="Compile the source files for the project.">
-    <csc target="library" output="${bin.dir}/Ioke.Math.dll" debug="true">
-      <sources>
-        <include name="${src.dir}/Ioke.Math/**/*.cs" />
-      </sources>
-    </csc>
-
+  <target name="generate_version_data" depends="generate_filters" description="Generates version data">
     <echo file="${build.filtered.dir}/Ioke.Lang.version.properties">ioke.build.version=${VERSION_NAME}
 ioke.build.runtimeVersion=${VERSION_NUMBER}${VERSION_ADDITION}
 ioke.build.versionString=Ioke ${VERSION_NAME} ikc ${VERSION_NUMBER}${VERSION_ADDITION}
 ioke.build.date=${version::extract-property('DATE', 'version_data.properties')}
 ioke.build.commit=${version::extract-property('COMMIT', 'version_data.properties')}
     </echo>
+  </target>
+
+  <target name="compile" depends="generate_version_data" description="Compile the source files for the project.">
+    <csc target="library" output="${bin.dir}/Ioke.Math.dll" debug="true">
+      <sources>
+        <include name="${src.dir}/Ioke.Math/**/*.cs" />
+      </sources>
+    </csc>
 
     <csc target="library" output="${bin.dir}/Ioke.Lang.dll" debug="true">
       <sources>
@@ -74,8 +76,8 @@ ioke.build.commit=${version::extract-property('COMMIT', 'version_data.properties
         <exclude name="${src.dir}/Ioke.Lang/DokgenMain.cs"/>
       </sources>
       <references basedir="${bin.dir}">
-        <include name="*.dll" />
-        <exclude name="Ioke.Lang.dll" />
+        <include name="Ioke.Math.dll" />
+        <include name="NRegex.dll" />
       </references>      
       <resources basedir="${src.raw.dir}" dynamicprefix="true">
         <include name="builtin/**/*.ik" />
@@ -116,6 +118,22 @@ ioke.build.commit=${version::extract-property('COMMIT', 'version_data.properties
     </csc>
   </target>
 
+  <target name="compile-version" depends="generate_version_data" description="Compiles a version DLL">
+    <al output="${bin.dir}/Ioke.Lang.Version.dll" target="lib">
+      <sources basedir="${build.filtered.dir}" defaultexcludes="true">
+        <include name="*.properties" />
+      </sources>
+    </al>
+  </target>
+
+  <target name="add-new-version-file" depends="compile-version" description="Adds a version DLL to the original DLL">
+    <move file="${bin.dir}/Ioke.Lang.dll" tofile="${bin.dir}/Ioke.Lang.Org.dll"/>
+    <exec managed="true" program="bin/ILRepack.exe">
+      <arg line="/out:${bin.dir}/Ioke.Lang.dll ${bin.dir}/Ioke.Lang.Org.dll ${bin.dir}/Ioke.Lang.Version.dll"/>
+    </exec>
+    <delete file="${bin.dir}/Ioke.Lang.Org.dll"/>
+  </target>
+
   <target name="test" depends="compile" description="Runs all ISpec tests">
     <exec managed="true" program="bin/ispec.exe">
       <arg line="test -fs"/>
@@ -124,7 +142,7 @@ ioke.build.commit=${version::extract-property('COMMIT', 'version_data.properties
 
   <target name="ci-test" description="Runs all ISpec tests">
     <exec managed="true" program="bin/ispec.exe">
-      <arg line="test  -fx to: ${test.results.dir}"/>
+      <arg line="test -fx to: ${test.results.dir}"/>
     </exec>
   </target>
 
@@ -138,6 +156,9 @@ ioke.build.commit=${version::extract-property('COMMIT', 'version_data.properties
         <include name="bin/*.exe"/>
         <include name="bin/ispec"/>
         <include name="bin/dokgen"/>
+        <exclude name="bin/Ioke.Lang.Org.dll"/>
+        <exclude name="bin/Ioke.Lang.Version.dll"/>
+        <exclude name="bin/ILRepack.exe"/>
       </fileset>
 
       <fileset basedir="." prefix="ioke">
@@ -158,6 +179,9 @@ ioke.build.commit=${version::extract-property('COMMIT', 'version_data.properties
         <include name="bin/*.exe"/>
         <include name="bin/ispec"/>
         <include name="bin/dokgen"/>
+        <exclude name="bin/Ioke.Lang.Org.dll"/>
+        <exclude name="bin/Ioke.Lang.Version.dll"/>
+        <exclude name="bin/ILRepack.exe"/>
       </fileset>
 
       <fileset basedir="." prefix="ioke">

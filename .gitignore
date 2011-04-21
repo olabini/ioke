@@ -8,6 +8,7 @@ bin/Ioke.Lang.Parser.Functional.dll
 bin/Ioke.Lang.Parser.Functional.dll.mdb
 bin/Ioke.Math.dll
 bin/Ioke.Math.dll.mdb
+bin/Ioke.Lang.Version.dll
 bin/ioke.exe
 bin/ioke.exe.mdb
 bin/ispec.exe
