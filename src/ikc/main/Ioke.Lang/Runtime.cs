@@ -365,6 +365,8 @@ namespace Ioke.Lang {
             this.Iterator2Sequence.Init();
             this.KeyValueIteratorSequence.Init();
 
+            AfterInitRuntime(this._Runtime);
+
             AddBuiltinScript("benchmark", new Builtin.Delegate((runtime, context, message) => {
                         return Ioke.Lang.Extensions.Benchmark.Benchmark.Create(runtime);
                     }));
@@ -393,7 +395,6 @@ namespace Ioke.Lang {
                 EvaluateString("use(\"builtin/D40_text\")", Message, Ground);
                 EvaluateString("use(\"builtin/D43_regexp\")", Message, Ground);
                 EvaluateString("use(\"builtin/D45_fileSystem\")", Message, Ground);
-                EvaluateString("use(\"builtin/D50_runtime\")", Message, Ground);
 
                 EvaluateString("use(\"builtin/F05_case\")", Message, Ground);
                 EvaluateString("use(\"builtin/F10_comprehensions\")", Message, Ground);
@@ -1069,6 +1070,54 @@ namespace Ioke.Lang {
         public void ErrorCondition(IokeObject cond) {
             ((Message)IokeObject.dataOf(errorMessage)).SendTo(errorMessage, this.Ground, this.Ground, CreateMessage(Ioke.Lang.Message.Wrap(cond)));
         }
+
+
+
+        public void AfterInitRuntime(IokeObject obj) {
+            try {
+                using(Stream str = typeof(IokeSystem).Assembly.GetManifestResourceStream("Ioke.Lang.version.properties")) {
+                    using(StreamReader sr = new StreamReader(str, NETSystem.Text.Encoding.UTF8)) {
+                        var result = new Dictionary<string, string>();
+                        while(!sr.EndOfStream) {
+                            string ss = sr.ReadLine();
+                            if(ss.IndexOf('=') != -1) {
+                                string[] parts = ss.Split('=');
+                                result[parts[0].Trim()] = parts[1].Trim();
+                            }
+                        }
+
+                        string version = result["ioke.build.version"];
+                        string runtimeVersion = result["ioke.build.runtimeVersion"];
+                        string versionString = result["ioke.build.versionString"];
+                        string date = result["ioke.build.date"];
+                        string commit = result["ioke.build.commit"];
+                        
+                        IokeObject versionObj = NewFromOrigin();
+
+                        versionObj.SetCell("machine", NewText("ikc"));
+
+                        var versionParts = new SaneArrayList();
+                        foreach(var s in runtimeVersion.Split(new Char[] {'.', '-'})) {
+                            try {
+                                versionParts.Add(NewNumber(s));
+                            } catch(System.Exception e) {
+                                versionParts.Add(NewText(s));
+                            }
+                        }            
+
+                        versionObj.SetCell("versionNumber", NewList(versionParts));
+                        versionObj.SetCell("release", NewText(version));
+                        versionObj.SetCell("fullVersion", NewText(versionString));
+                        versionObj.SetCell("commit", NewText(commit));
+                        versionObj.SetCell("date", NewText(date));
+
+                        obj.SetCell("version", versionObj);
+                    }
+                }
+            } catch(System.Exception) {
+            }
+        }
+
 
         public static void InitRuntime(IokeObject obj) {
             obj.Kind = "Runtime";

@@ -7,6 +7,7 @@
 
   <property file="build.properties"/>
   <property file="default.build.properties"/>
+  <property file="version.properties"/>
 
   <taskdef resource="tasks.properties">
     <classpath>
@@ -34,9 +35,9 @@
 
   <target name="compile" depends="generate_filters" description="Compile the source files for the project.">
     <filter filtersfile="version_data.properties"/>
-    <filter token="VERSION" value="P"/>
-    <filter token="VERSION_RUNTIME" value="0.4.1-SNAPSHOT"/>
-    <filter token="VERSION_STRING" value="Ioke P ikj 0.4.1-SNAPSHOT"/>
+    <filter token="VERSION" value="${VERSION_NAME}"/>
+    <filter token="VERSION_RUNTIME" value="${VERSION_NUMBER}${VERSION_ADDITION}"/>
+    <filter token="VERSION_STRING" value="Ioke ${VERSION_NAME} ikj ${VERSION_NUMBER}${VERSION_ADDITION}"/>
 
     <javac destdir="${classes.dir}" debug="true" source="${javac.version}" target="${javac.version}" encoding="UTF-8">
       <classpath refid="build.classpath"/>
@@ -178,7 +179,7 @@
   </target>
 
   <target name="dist-bin" depends="jar">
-    <tar destfile="${release.dir}/ioke-P-ikj-0.4.1-SNAPSHOT.tar.gz" compression="gzip">
+    <tar destfile="${release.dir}/ioke-${VERSION_NAME}-ikj-${VERSION_NUMBER}${VERSION_ADDITION}.tar.gz" compression="gzip">
       <tarfileset mode="755" dir="." prefix="ioke">
         <include name="bin/*.bat"/>
         <include name="bin/dokgen"/>
@@ -198,7 +199,7 @@
       </tarfileset>
     </tar>
 
-    <zip destfile="${release.dir}/ioke-P-ikj-0.4.1-SNAPSHOT.zip">
+    <zip destfile="${release.dir}/ioke-${VERSION_NAME}-ikj-${VERSION_NUMBER}${VERSION_ADDITION}.zip">
       <zipfileset filemode="755" dir="." prefix="ioke">
         <include name="bin/*.bat"/>
         <include name="bin/dokgen"/>

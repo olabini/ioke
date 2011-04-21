@@ -324,6 +324,8 @@ public class Runtime extends IokeData {
         iteratorSequence.init();
         keyValueIteratorSequence.init();
 
+        afterInitRuntime(runtime);
+
         addBuiltinScript("benchmark", new Builtin() {
                 public IokeObject load(Runtime runtime, IokeObject context, IokeObject message) throws ControlFlow {
                     return ioke.lang.extensions.benchmark.Benchmark.create(runtime);
@@ -356,7 +358,6 @@ public class Runtime extends IokeData {
             evaluateString("use(\"builtin/D40_text\")", message, ground);
             evaluateString("use(\"builtin/D43_regexp\")", message, ground);
             evaluateString("use(\"builtin/D45_fileSystem\")", message, ground);
-            evaluateString("use(\"builtin/D50_runtime\")", message, ground);
 
             evaluateString("use(\"builtin/F05_case\")", message, ground);
             evaluateString("use(\"builtin/F10_comprehensions\")", message, ground);
@@ -1171,6 +1172,39 @@ public class Runtime extends IokeData {
         }
         if(status != 0) {
             throw new ControlFlow.Exit();
+        }
+    }
+
+    public void afterInitRuntime(IokeObject obj) throws ControlFlow {
+        try {
+            java.util.Properties props = new java.util.Properties();
+            props.load(Main.class.getResourceAsStream("/ioke/lang/version.properties"));
+
+            String version = props.getProperty("ioke.build.version");
+            String runtimeVersion = props.getProperty("ioke.build.runtimeVersion");
+            String versionString = props.getProperty("ioke.build.versionString");
+            String date = props.getProperty("ioke.build.date");
+            String commit = props.getProperty("ioke.build.commit");
+            
+            IokeObject versionObj = newFromOrigin();
+
+            versionObj.setCell("machine", newText("ikj"));
+            List<Object> versionParts = new ArrayList<Object>();
+            for(String s : runtimeVersion.split("[\\.-]")) {
+                try {
+                    versionParts.add(newNumber(s));
+                } catch(Exception e) {
+                    versionParts.add(newText(s));
+                }
+            }            
+            versionObj.setCell("versionNumber", newList(versionParts));
+            versionObj.setCell("release", newText(version));
+            versionObj.setCell("fullVersion", newText(versionString));
+            versionObj.setCell("commit", newText(commit));
+            versionObj.setCell("date", newText(date));
+
+            obj.setCell("version", versionObj);
+        } catch(Exception e) {
         }
     }
 

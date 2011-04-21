@@ -15,6 +15,30 @@
   <property name="build.filtered.dir" value="${build.dir}/filtered"/>
   <property name="test.results.dir" value="${build.dir}/test-results"/>
 
+  <script language="C#" prefix="version">
+    <code>
+      <![CDATA[
+      [Function("extract-property")]
+      public static string ExtractProperty(string name, string from) {
+        try {
+          string outp = System.IO.File.ReadAllText(from);
+          string[] pieces = outp.Split('\n');
+          foreach(string s in pieces) {
+            string[] keyAndValue = s.Split('=');
+            if(keyAndValue[0].Equals(name))
+              return keyAndValue[1];
+          }
+          return null;
+        } catch(System.Exception) { return null; }
+      }
+      ]]>
+    </code>
+  </script>
+
+  <property name="VERSION_NAME" value="${version::extract-property('VERSION_NAME', 'version.properties')}" />
+  <property name="VERSION_NUMBER" value="${version::extract-property('VERSION_NUMBER', 'version.properties')}" />
+  <property name="VERSION_ADDITION" value="${version::extract-property('VERSION_ADDITION', 'version.properties')}" />
+
   <target name="prepare" description="Creates the directories needed for building">
     <mkdir dir="${build.dir}"/>
     <mkdir dir="${build.filtered.dir}"/>
@@ -34,35 +58,11 @@
       </sources>
     </csc>
 
-    <script language="C#" prefix="version">
-      <code>
-        <![CDATA[
-        [Function("extract-date")]
-        public static string ExtractDate() {
-         try {
-          string outp = System.IO.File.ReadAllText("version_data.properties");
-          string[] pieces = outp.Split('\n');
-          return pieces[0].Split('=')[1];
-         } catch(System.Exception) { return "???"; }
-        }
-
-        [Function("extract-commit")]
-        public static string ExtractCommit() {
-         try {
-          string outp = System.IO.File.ReadAllText("version_data.properties");
-          string[] pieces = outp.Split('\n');
-          return pieces[1].Split('=')[1];
-         } catch(System.Exception) { return "???"; }
-        }
-        ]]>
-      </code>
-    </script>
-
-    <echo file="${build.filtered.dir}/Ioke.Lang.version.properties">ioke.build.version=E
-ioke.build.runtimeVersion=0.4.1-SNAPSHOT
-ioke.build.versionString=Ioke P ikc 0.4.1-SNAPSHOT
-ioke.build.date=${version::extract-date()}
-ioke.build.commit=${version::extract-commit()}
+    <echo file="${build.filtered.dir}/Ioke.Lang.version.properties">ioke.build.version=${VERSION_NAME}
+ioke.build.runtimeVersion=${VERSION_NUMBER}${VERSION_ADDITION}
+ioke.build.versionString=Ioke ${VERSION_NAME} ikc ${VERSION_NUMBER}${VERSION_ADDITION}
+ioke.build.date=${version::extract-property('DATE', 'version_data.properties')}
+ioke.build.commit=${version::extract-property('COMMIT', 'version_data.properties')}
     </echo>
 
     <csc target="library" output="${bin.dir}/Ioke.Lang.dll" debug="true">
@@ -132,7 +132,7 @@ ioke.build.commit=${version::extract-commit()}
   </target>
 
   <target name="dist-bin">
-    <tar destfile="${release.dir}/ioke-P-ikc-0.4.1-SNAPSHOT.tar.gz" compression="GZip">
+    <tar destfile="${release.dir}/ioke-${VERSION_NAME}-ikc-${VERSION_NUMBER}${VERSION_ADDITION}.tar.gz" compression="GZip">
       <fileset filemode="755" basedir="." prefix="ioke">
         <include name="bin/*.dll"/>
         <include name="bin/*.exe"/>
@@ -152,7 +152,7 @@ ioke.build.commit=${version::extract-commit()}
       </fileset>
     </tar>
 
-    <zip zipfile="${release.dir}/ioke-P-ikc-0.4.1-SNAPSHOT.zip">
+    <zip zipfile="${release.dir}/ioke-${VERSION_NAME}-ikc-${VERSION_NUMBER}${VERSION_ADDITION}.zip">
       <fileset basedir="." prefix="ioke">
         <include name="bin/*.dll"/>
         <include name="bin/*.exe"/>
