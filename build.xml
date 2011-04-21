@@ -83,7 +83,7 @@
     <delete file="${test.results.dir}/TESTS-TestSuites.xml" quiet="true"/>
     <junitreport todir="${test.results.dir}" tofile="../TESTS-TestSuites.xml">
       <fileset dir="${test.results.dir}" includes="TEST-*.xml"/>
-      <report format="frames" todir="${html.test.results.dir}"/>
+      <report format="noframes" todir="${html.test.results.dir}"/>
     </junitreport>
     <condition property="ispec.failure">
       <not>
