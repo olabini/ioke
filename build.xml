@@ -33,6 +33,15 @@
     <exec executable="ruby" input="generate_filter_data.rb" failonerror="false" failifexecutionfails="false"/>
   </target>
 
+  <target name="gen-pom" description="Creates new pom.xml files based on the current version configuration. This should be run before doing any Maven stuff">
+    <filter token="VERSION_NAME" value="${VERSION_NAME}"/>
+    <filter token="VERSION_NUMBER" value="${VERSION_NUMBER}"/>
+    <filter token="VERSION_ADDITION" value="${VERSION_ADDITION}"/>
+    
+    <copy file="maven/ikj/pom.xml.template" tofile="maven/ikj/pom.xml" filtering="true" overwrite="true"/>
+    <copy file="maven/ikj-lib/pom.xml.template" tofile="maven/ikj-lib/pom.xml" filtering="true" overwrite="true"/>
+  </target>
+
   <target name="compile" depends="generate_filters" description="Compile the source files for the project.">
     <filter filtersfile="version_data.properties"/>
     <filter token="VERSION" value="${VERSION_NAME}"/>
