@@ -71,7 +71,7 @@
     </java>
   </target>
 
-  <target name="ci-test" depends="compile" description="Runs all ISpec tests">
+  <target name="ci-test" description="Runs all ISpec tests">
     <java classname="ioke.lang.Main" fork="true" maxmemory="256m" resultproperty="ispec.result">
       <sysproperty key="ispec.ansi" value="${ispec.ansi}"/>
       <classpath refid="build.classpath"/>

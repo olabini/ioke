@@ -122,7 +122,7 @@ ioke.build.commit=${version::extract-property('COMMIT', 'version_data.properties
     </exec>
   </target>
 
-  <target name="ci-test" depends="compile" description="Runs all ISpec tests">
+  <target name="ci-test" description="Runs all ISpec tests">
     <exec managed="true" program="bin/ispec.exe">
       <arg line="test  -fx to: ${test.results.dir}"/>
     </exec>
