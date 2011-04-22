@@ -5,6 +5,11 @@
     ioke is a next generation language, based on Io, Self, Smalltalk, Ruby and Lisp
   </description>
 
+  <property environment="env" /> 
+  <condition property="VERSION_ADDITION" value="${env.CI_VERSION_ADDITION}"> 
+    <isset property="env.CI_VERSION_ADDITION" />
+  </condition>
+
   <property file="build.properties"/>
   <property file="default.build.properties"/>
   <property file="version.properties"/>
@@ -198,6 +203,7 @@
       </fileset>
     </scp>    
 
+    <sshexec host="ioke.org" username="ioke.org" keyfile="${user.home}/.ssh/id_rsa" command="(cd /home/ioke.org/web/public/dist; rm -rf *-latest.*)"/>
     <sshexec host="ioke.org" username="ioke.org" keyfile="${user.home}/.ssh/id_rsa" command="(cd /home/ioke.org/web/public/dist; ln -s ioke-${VERSION_NAME}-ikj-${VERSION_NUMBER}${VERSION_ADDITION}.tar.gz ioke-ikj-latest.tar.gz)"/>
     <sshexec host="ioke.org" username="ioke.org" keyfile="${user.home}/.ssh/id_rsa" command="(cd /home/ioke.org/web/public/dist; ln -s ioke-${VERSION_NAME}-ikj-${VERSION_NUMBER}${VERSION_ADDITION}.zip ioke-ikj-latest.zip)"/>
     <sshexec host="ioke.org" username="ioke.org" keyfile="${user.home}/.ssh/id_rsa" command="(cd /home/ioke.org/web/public/dist; ln -s ioke-${VERSION_NAME}-ikj-${VERSION_NUMBER}${VERSION_ADDITION}.jar ioke-ikj-latest.jar)"/>

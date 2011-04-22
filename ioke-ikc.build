@@ -15,6 +15,7 @@
   <property name="build.filtered.dir" value="${build.dir}/filtered"/>
   <property name="test.results.dir" value="${build.dir}/test-results"/>
 
+
   <script language="C#" prefix="version">
     <code>
       <![CDATA[
@@ -37,7 +38,12 @@
 
   <property name="VERSION_NAME" value="${version::extract-property('VERSION_NAME', 'version.properties')}" />
   <property name="VERSION_NUMBER" value="${version::extract-property('VERSION_NUMBER', 'version.properties')}" />
+
   <property name="VERSION_ADDITION" value="${version::extract-property('VERSION_ADDITION', 'version.properties')}" />
+
+  <if test="${environment::variable-exists('CI_VERSION_ADDITION')}">
+    <property name="VERSION_ADDITION" value="${environment::get-variable('CI_VERSION_ADDITION')}" />
+  </if>
 
   <target name="prepare" description="Creates the directories needed for building">
     <mkdir dir="${build.dir}"/>
