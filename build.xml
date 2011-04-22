@@ -168,7 +168,7 @@
     </jar>
   </target>
 
-  <target name="ci-jar" description="Create the ioke.jar file without depending on earlier stages">
+  <target name="ci-jar" depends="prepare" description="Create the ioke.jar file without depending on earlier stages">
     <jar destfile="${lib.dir}/ioke.jar">
       <fileset dir="${classes.dir}">
         <include name="**/*.class"/>
@@ -186,6 +186,17 @@
   </target>
 
   <target name="jar-lib" depends="jar" description="Create the ioke-lib.jar file">
+    <jar destfile="${lib.dir}/ioke-lib.jar">
+      <fileset dir="lib/ioke">
+        <include name="**/*"/>
+      </fileset>
+      <manifest>
+        <attribute name="Built-By" value="${user.name}"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="ci-jar-lib" depends="prepare" description="Create the ioke-lib.jar file">
     <jar destfile="${lib.dir}/ioke-lib.jar">
       <fileset dir="lib/ioke">
         <include name="**/*"/>
