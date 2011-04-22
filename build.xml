@@ -83,7 +83,7 @@
     </copy>
   </target>
 
-  <target name="coverage.instrument" depends="compile, ci-coverage-instrument" description=""/>
+  <target name="coverage.instrument" depends="compile, ci-coverage.instrument" description=""/>
 
   <target name="ci-coverage.instrument" description="">
     <cobertura-instrument todir="${coverage.classes.dir}">
