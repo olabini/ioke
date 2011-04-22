@@ -6,8 +6,8 @@
   </description>
 
   <property environment="env" /> 
-  <condition property="VERSION_ADDITION" value="${env.CI_VERSION_ADDITION}"> 
-    <isset property="env.CI_VERSION_ADDITION" />
+  <condition property="VERSION_ADDITION" value="-p${env.GO_PIPELINE_COUNTER}"> 
+    <isset property="env.ADD_SNAPSHOT_VERSION" />
   </condition>
 
   <property file="build.properties"/>
