@@ -83,11 +83,7 @@
     </copy>
   </target>
 
-  <target name="coverage.instrument" depends="compile" description="">
-    <cobertura-instrument todir="${coverage.classes.dir}">
-      <fileset dir="${classes.dir}" excludes="ioke/lang/parser/**/*.class com/google/**/*.class org/jregex/**/*.class gnu/**/*.class ioke/lang/test/**/*.class ioke/lang/performance/**/*.class"/>
-    </cobertura-instrument>
-  </target>
+  <target name="coverage.instrument" depends="compile ci-coverage-instrument" description=""/>
 
   <target name="ci-coverage.instrument" description="">
     <cobertura-instrument todir="${coverage.classes.dir}">
@@ -127,18 +123,7 @@
     <fail if="ispec.failure" message="Test(s) failed."/>
   </target>
 
-  <target name="coverage" depends="coverage.instrument" description="Runs all ISpec tests using Cobertura and produces a report">
-    <java classname="ioke.lang.Main" fork="true" maxmemory="320m" failonerror="true">
-      <classpath path="${coverage.classes.dir}"/>
-      <classpath refid="build.classpath"/>
-      <classpath path="${classes.dir}"/>
-
-      <arg line="bin/ispec test -fs"/>
-    </java>
-
-    <cobertura-report srcdir="${src.dir}" destdir="${coverage.report.dir}"/>
-  </target>
-
+  <target name="coverage" depends="compile ci-coverage" description="Runs all ISpec tests using Cobertura and produces a report"/>
   <target name="ci-coverage" depends="ci-coverage.instrument" description="Runs all ISpec tests using Cobertura and produces a report">
     <java classname="ioke.lang.Main" fork="true" maxmemory="320m" failonerror="true">
       <classpath path="${coverage.classes.dir}"/>
@@ -151,22 +136,7 @@
     <cobertura-report srcdir="${src.dir}" destdir="${coverage.report.dir}"/>
   </target>
 
-  <target name="jar" depends="test" description="Create the ioke.jar file">
-    <jar destfile="${lib.dir}/ioke.jar">
-      <fileset dir="${classes.dir}">
-        <include name="**/*.class"/>
-        <include name="**/*.ik"/>
-        <include name="**/*.properties"/>
-      </fileset>
-      <zipfileset src="${lib.release.dir}/jline-0.9.93.jar" includes="**/*"/>
-      <zipfileset src="${lib.release.dir}/joda-time-1.6.jar" includes="**/*"/>
-      <zipfileset src="${lib.release.dir}/asm-3.3.1.jar" includes="**/*"/>
-      <manifest>
-        <attribute name="Built-By" value="${user.name}"/>
-        <attribute name="Main-Class" value="ioke.lang.Main"/>
-      </manifest>
-    </jar>
-  </target>
+  <target name="jar" depends="test ci-jar" description="Create the ioke.jar file"/>
 
   <target name="ci-jar" depends="prepare" description="Create the ioke.jar file without depending on earlier stages">
     <jar destfile="${lib.dir}/ioke.jar">
@@ -185,16 +155,7 @@
     </jar>
   </target>
 
-  <target name="jar-lib" depends="jar" description="Create the ioke-lib.jar file">
-    <jar destfile="${lib.dir}/ioke-lib.jar">
-      <fileset dir="lib/ioke">
-        <include name="**/*"/>
-      </fileset>
-      <manifest>
-        <attribute name="Built-By" value="${user.name}"/>
-      </manifest>
-    </jar>
-  </target>
+  <target name="jar-lib" depends="jar ci-jar-lib" description="Create the ioke-lib.jar file"/>
 
   <target name="ci-jar-lib" depends="prepare" description="Create the ioke-lib.jar file">
     <jar destfile="${lib.dir}/ioke-lib.jar">
@@ -207,22 +168,7 @@
     </jar>
   </target>
 
-  <target name="jar-notest" depends="compile" description="Create the ioke.jar file">
-    <jar destfile="${lib.dir}/ioke.jar">
-      <fileset dir="${classes.dir}">
-        <include name="**/*.class"/>
-        <include name="**/*.ik"/>
-        <include name="**/*.properties"/>
-      </fileset>
-      <zipfileset src="${lib.release.dir}/jline-0.9.93.jar" includes="**/*"/>
-      <zipfileset src="${lib.release.dir}/joda-time-1.6.jar" includes="**/*"/>
-      <zipfileset src="${lib.release.dir}/asm-3.3.1.jar" includes="**/*"/>
-      <manifest>
-        <attribute name="Built-By" value="${user.name}"/>
-        <attribute name="Main-Class" value="ioke.lang.Main"/>
-      </manifest>
-    </jar>
-  </target>
+  <target name="jar-notest" depends="compile ci-jar" description="Create the ioke.jar file"/>
 
   <target name="jar-lib-notest" depends="jar-notest" description="Create the ioke-lib.jar file">
     <jar destfile="${lib.dir}/ioke-lib.jar">
@@ -235,7 +181,9 @@
     </jar>
   </target>
 
-  <target name="dist-bin" depends="jar">
+  <target name="dist-bin" depends="jar ci-dist-bin"/>
+
+  <target name="ci-dist-bin" depends="prepare">
     <tar destfile="${release.dir}/ioke-${VERSION_NAME}-ikj-${VERSION_NUMBER}${VERSION_ADDITION}.tar.gz" compression="gzip">
       <tarfileset mode="755" dir="." prefix="ioke">
         <include name="bin/*.bat"/>
@@ -278,6 +226,11 @@
   </target>
 
   <target name="dist" depends="dist-bin"/>
+  <target name="ci-dist" depends="ci-dist-bin"/>
+
+  <target name="ci-clean-dist" description="clean things from releases">
+    <delete dir="${release.dir}"/>
+  </target>
 
   <target name="clean" description="clean almost everything">
     <delete dir="${build.dir}"/>

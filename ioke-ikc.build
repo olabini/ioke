@@ -199,6 +199,11 @@ ioke.build.commit=${version::extract-property('COMMIT', 'version_data.properties
 
   <target name="dist" depends="build, dist-bin"/>
   <target name="dist-notest" depends="compile, dist-bin"/>
+  <target name="ci-dist" depends="prepare, dist-bin"/>
+
+  <target name="ci-clean-dist">
+    <delete dir="${release.dir}"/>
+  </target>
 
   <target name="clean" description="clean almost everything">
     <delete file="${bin.dir}/ioke.dll"/>
