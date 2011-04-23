@@ -41,6 +41,10 @@
 
   <property name="VERSION_ADDITION" value="${version::extract-property('VERSION_ADDITION', 'version.properties')}" />
 
+  <if test="${environment::variable-exists('BUILD_RELEASE_VERSION')}">
+    <property name="VERSION_ADDITION" value="" />
+  </if>
+
   <if test="${environment::variable-exists('ADD_SNAPSHOT_VERSION')}">
     <property name="VERSION_ADDITION" value="-p${environment::get-variable('GO_PIPELINE_COUNTER')}" />
   </if>
