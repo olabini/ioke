@@ -729,8 +729,8 @@ Mixins Enumerable Destructor = Origin mimic do(
 
   unpack = method(value,
     if(nested?,
-      mapValue(value, mappers),
-      [value])
+      mapValue(cell(:value), mappers),
+      list(cell(:value)))
   )
 )
 

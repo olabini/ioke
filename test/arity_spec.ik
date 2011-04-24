@@ -41,7 +41,7 @@ describe("Arity",
     cell(:a) arity required should == [:a, :b]
   )
 
-  describe("take:nothing",
+  describe("taking:nothing",
     it("should be the arity for empty argumentsCode",
       Arity fromArgumentsCode("") should == Arity taking:nothing
     )

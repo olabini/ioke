@@ -117,7 +117,7 @@ ISpec do(
     unless(realValue mimics?(value),
       error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to mimic #{value kind}", shouldMessage: self shouldMessage)))
 
-  ShouldContext kind = method(value nil,
+  ShouldContext kind = method(value Ground nil,
     if(value nil?,
       "ISpec ShouldContext",
       unless(realValue kind?(value),

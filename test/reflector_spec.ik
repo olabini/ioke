@@ -475,7 +475,7 @@ describe(Reflector,
     )
   )
 
-  describe("other:removeMimics!",
+  describe("other:removeMimic!",
     it("should not remove something it doesn't mimic",
       Reflector other:removeMimic!(Origin mimic, "foo") mimics should == [Origin]
     )

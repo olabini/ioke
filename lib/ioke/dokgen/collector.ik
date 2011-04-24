@@ -206,5 +206,6 @@ DokGen do(
         collectSpec(sp, collectedSpecs),
         if(sp pending?,
           theList << [sp name],
-          theList << [sp name, sp code]))))
+          if(!(sp mimics?(ISpec PropertyExample)),
+            theList << [sp name, sp code])))))
 )

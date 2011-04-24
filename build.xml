@@ -133,6 +133,15 @@
     <fail if="ispec.failure" message="Test(s) failed."/>
   </target>
 
+  <target name="ci-dokgen" description="Generate dokumentation">
+    <java classname="ioke.lang.Main" failonerror="true" fork="true" maxmemory="512m" >
+      <classpath refid="build.classpath"/>
+      <classpath path="${classes.dir}"/>
+
+      <arg line="bin/dokgen -S"/>
+    </java>
+  </target>
+
   <target name="coverage" depends="compile, ci-coverage" description="Runs all ISpec tests using Cobertura and produces a report"/>
   <target name="ci-coverage" depends="ci-coverage.instrument" description="Runs all ISpec tests using Cobertura and produces a report">
     <java classname="ioke.lang.Main" fork="true" maxmemory="320m" failonerror="true">
@@ -215,6 +224,24 @@
     <sshexec host="ioke.org" username="ioke.org" keyfile="${user.home}/.ssh/id_rsa" command="(cd /home/ioke.org/web/public/dist; ln -s ioke-${VERSION_NAME}-ikj-lib-${VERSION_NUMBER}${VERSION_ADDITION}.jar ioke-ikj-lib-latest.jar)"/>
     <sshexec host="ioke.org" username="ioke.org" keyfile="${user.home}/.ssh/id_rsa" command="(cd /home/ioke.org/web/public/dist; ln -s ioke-${VERSION_NAME}-ikc-${VERSION_NUMBER}${VERSION_ADDITION}.tar.gz ioke-ikc-latest.tar.gz)"/>
     <sshexec host="ioke.org" username="ioke.org" keyfile="${user.home}/.ssh/id_rsa" command="(cd /home/ioke.org/web/public/dist; ln -s ioke-${VERSION_NAME}-ikc-${VERSION_NUMBER}${VERSION_ADDITION}.zip ioke-ikc-latest.zip)"/>
+  </target>
+
+  <target name="ci-push-snapshot-doks" depends="prepare">
+    <sshexec host="ioke.org" username="ioke.org" keyfile="${user.home}/.ssh/id_rsa" command="(cd /home/ioke.org/web/public; mkdir -p dok/latest)"/>
+    <sshexec host="ioke.org" username="ioke.org" keyfile="${user.home}/.ssh/id_rsa" command="(cd /home/ioke.org/web/public; rm -rf dok/latest/*"/>
+
+    <scp todir="ioke.org@ioke.org:/home/ioke.org/web/public/dok/latest" keyfile="${user.home}/.ssh/id_rsa">
+      <fileset dir="dok"/>
+    </scp>    
+  </target>
+
+  <target name="ci-push-release-doks" depends="prepare">
+    <sshexec host="ioke.org" username="ioke.org" keyfile="${user.home}/.ssh/id_rsa" command="(cd /home/ioke.org/web/public; mkdir -p dok/release)"/>
+    <sshexec host="ioke.org" username="ioke.org" keyfile="${user.home}/.ssh/id_rsa" command="(cd /home/ioke.org/web/public; rm -rf dok/release/*"/>
+
+    <scp todir="ioke.org@ioke.org:/home/ioke.org/web/public/dok/release" keyfile="${user.home}/.ssh/id_rsa">
+      <fileset dir="dok"/>
+    </scp>    
   </target>
 
   <target name="ci-dist-bin" depends="prepare">
