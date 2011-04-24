@@ -228,7 +228,7 @@
 
   <target name="ci-push-snapshot-doks" depends="prepare">
     <sshexec host="ioke.org" username="ioke.org" keyfile="${user.home}/.ssh/id_rsa" command="(cd /home/ioke.org/web/public; mkdir -p dok/latest)"/>
-    <sshexec host="ioke.org" username="ioke.org" keyfile="${user.home}/.ssh/id_rsa" command="(cd /home/ioke.org/web/public; rm -rf dok/latest/*"/>
+    <sshexec host="ioke.org" username="ioke.org" keyfile="${user.home}/.ssh/id_rsa" command="(cd /home/ioke.org/web/public; rm -rf dok/latest/*)"/>
 
     <scp todir="ioke.org@ioke.org:/home/ioke.org/web/public/dok/latest" keyfile="${user.home}/.ssh/id_rsa">
       <fileset dir="dok"/>
