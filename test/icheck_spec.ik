@@ -566,7 +566,7 @@ describe(ICheck,
       it("can take generators as well as constant values",
         g1 = ICheck Generators oneOf(ICheck Generators boolean, "one", "two", "three", ICheck Generators oneOf(4, 5))
         got = #{}
-        50 times(got << g1 next)
+        100 times(got << g1 next)
         got should == #{"one", "two", "three", true, false, 4, 5}
       )
     )
