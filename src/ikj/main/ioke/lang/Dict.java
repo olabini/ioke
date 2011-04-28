@@ -270,13 +270,13 @@ public class Dict extends IokeData {
                     Map<Object, Object> ls = Dict.getMap(on);
                     switch(message.getArgumentCount()) {
                     case 0: {
-                        return ((Message)IokeObject.data(runtime.seqMessage)).sendTo(runtime.seqMessage, context, on);
+                        return runtime.interpreter.sendTo(runtime.seqMessage, context, on);
                     }
                     case 1: {
                         IokeObject code = IokeObject.as(message.getArguments().get(0), context);
 
                         for(Map.Entry<Object, Object> o : ls.entrySet()) {
-                            ((Message)IokeObject.data(code)).evaluateCompleteWithReceiver(code, context, context.getRealContext(), runtime.newPair(o.getKey(), o.getValue()));
+                            runtime.interpreter.evaluateCompleteWithReceiver(code, context, context.getRealContext(), runtime.newPair(o.getKey(), o.getValue()));
                         }
                         break;
                     }
@@ -287,7 +287,7 @@ public class Dict extends IokeData {
 
                         for(Map.Entry<Object, Object> o : ls.entrySet()) {
                             c.setCell(name, runtime.newPair(o.getKey(), o.getValue()));
-                            ((Message)IokeObject.data(code)).evaluateCompleteWithoutExplicitReceiver(code, c, c.getRealContext());
+                            runtime.interpreter.evaluateCompleteWithoutExplicitReceiver(code, c, c.getRealContext());
                         }
                         break;
                     }
@@ -301,7 +301,7 @@ public class Dict extends IokeData {
                         for(Map.Entry<Object, Object> o : ls.entrySet()) {
                             c.setCell(name, runtime.newPair(o.getKey(), o.getValue()));
                             c.setCell(iname, runtime.newNumber(index++));
-                            ((Message)IokeObject.data(code)).evaluateCompleteWithoutExplicitReceiver(code, c, c.getRealContext());
+                            runtime.interpreter.evaluateCompleteWithoutExplicitReceiver(code, c, c.getRealContext());
                         }
                         break;
                     }

@@ -372,7 +372,7 @@ public class Number extends IokeData {
                     IokeData data = IokeObject.data(arg);
 
                     if(data instanceof Decimal) {
-                        return ((Message)IokeObject.data(context.runtime.minusMessage)).sendTo(context.runtime.minusMessage, context, context.runtime.newDecimal(((Number)IokeObject.data(on))), arg);
+                        return context.runtime.interpreter.sendTo(context.runtime.minusMessage, context, context.runtime.newDecimal(((Number)IokeObject.data(on))), arg);
                     } else {
                         if(!(data instanceof Number)) {
                             arg = IokeObject.convertToRational(arg, message, context, true);
@@ -402,7 +402,7 @@ public class Number extends IokeData {
                     IokeData data = IokeObject.data(arg);
 
                     if(data instanceof Decimal) {
-                        return ((Message)IokeObject.data(context.runtime.plusMessage)).sendTo(context.runtime.plusMessage, context, context.runtime.newDecimal(((Number)IokeObject.data(on))), arg);
+                        return context.runtime.interpreter.sendTo(context.runtime.plusMessage, context, context.runtime.newDecimal(((Number)IokeObject.data(on))), arg);
                     } else {
                         if(!(data instanceof Number)) {
                             arg = IokeObject.convertToRational(arg, message, context, true);
@@ -432,7 +432,7 @@ public class Number extends IokeData {
                     IokeData data = IokeObject.data(arg);
 
                     if(data instanceof Decimal) {
-                        return ((Message)IokeObject.data(context.runtime.multMessage)).sendTo(context.runtime.multMessage, context, context.runtime.newDecimal(((Number)IokeObject.data(on))), arg);
+                        return context.runtime.interpreter.sendTo(context.runtime.multMessage, context, context.runtime.newDecimal(((Number)IokeObject.data(on))), arg);
                     } else {
                         if(!(data instanceof Number)) {
                             arg = IokeObject.convertToRational(arg, message, context, true);
@@ -462,7 +462,7 @@ public class Number extends IokeData {
                     IokeData data = IokeObject.data(arg);
 
                     if(data instanceof Decimal) {
-                        return ((Message)IokeObject.data(context.runtime.divMessage)).sendTo(context.runtime.divMessage, context, context.runtime.newDecimal(((Number)IokeObject.data(on))), arg);
+                        return context.runtime.interpreter.sendTo(context.runtime.divMessage, context, context.runtime.newDecimal(((Number)IokeObject.data(on))), arg);
                     } else {
                         if(!(data instanceof Number)) {
                             arg = IokeObject.convertToRational(arg, message, context, true);

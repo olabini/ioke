@@ -65,12 +65,12 @@ public class ReflectionBehavior {
                     getArguments().checkArgumentCount(context, message, on);
                     final Runtime runtime = context.runtime;
                     Object _name = ((Message)IokeObject.data(message)).getEvaluatedArgument(message, 0, context);
-                    String name = Text.getText(((Message)IokeObject.data(runtime.asText)).sendTo(runtime.asText, context, _name));
+                    String name = Text.getText(runtime.interpreter.sendTo(runtime.asText, context, _name));
 
                     IokeObject newMessage = Message.deepCopy(message);
                     newMessage.getArguments().remove(0);
                     Message.setName(newMessage, name);
-                    return ((Message)IokeObject.data(newMessage)).sendTo(newMessage, context, on);
+                    return runtime.interpreter.sendTo(newMessage, context, on);
                 }
             }));
 

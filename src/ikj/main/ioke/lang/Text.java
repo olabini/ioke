@@ -465,6 +465,8 @@ public class Text extends IokeData {
         int formatLength = format.length();
         Object arg = null;
         StringBuilder missingText = new StringBuilder();
+        Object seq = null;
+        List<Object> args = null;
 
         while(formatIndex < formatLength) {
             char c = format.charAt(formatIndex++);
@@ -491,37 +493,28 @@ public class Text extends IokeData {
                             return formatIndex;
                         case '[':
                             arg = positionalArgs.get(argIndex++);
-                            final int startLoop = formatIndex;
-                            final int[] endLoop = new int[]{-1};
-                            final boolean doSplat = splat;
-                            final boolean doSplatPairs = splatPairs;
+                            int endLoop = -1;
+
+                            seq = context.runtime.interpreter.sendTo(context.runtime.seqMessage, context, arg);
+
+                            while(IokeObject.isTrue(context.runtime.interpreter.sendTo(context.runtime.nextPMessage, context, seq))) {
+                                Object receiver = context.runtime.interpreter.sendTo(context.runtime.nextMessage, context, seq);
+                                if(splat) {
+                                    args = IokeList.getList(receiver);
+                                } else if(splatPairs) {
+                                    args = Arrays.asList(Pair.getFirst(receiver), Pair.getSecond(receiver));
+                                } else {
+                                    args = Arrays.asList(receiver);
+                                }
+                                
+                                int newVal = formatString(format, formatIndex, message, context, args, result);
+                                endLoop = newVal;
+                            }
+
                             splat = false;
                             splatPairs = false;
-                            ((Message)IokeObject.data(context.runtime.each)).sendTo(context.runtime.each, context, arg, context.runtime.createMessage(new Message(context.runtime, "internal:collectDataForText#format") {
-                                    private Object doEvaluation(IokeObject ctx, Object ground, Object receiver) throws ControlFlow {
-                                        List<Object> args = null;
-                                        if(doSplat) {
-                                            args = IokeList.getList(receiver);
-                                        } else if(doSplatPairs) {
-                                            args = Arrays.asList(Pair.getFirst(receiver), Pair.getSecond(receiver));
-                                        } else {
-                                            args = Arrays.asList(receiver);
-                                        }
 
-                                        int newVal = formatString(format, startLoop, message, context, args, result);
-                                        endLoop[0] = newVal;
-                                        return ctx.runtime.nil;
-                                    }
-                                    @Override
-                                    public Object evaluateCompleteWithReceiver(IokeObject self, IokeObject ctx, Object ground, Object receiver) throws ControlFlow {
-                                        return doEvaluation(ctx, ground, receiver);
-                                    }
-                                    @Override
-                                    public Object evaluateCompleteWith(IokeObject self, IokeObject ctx, Object ground) throws ControlFlow {
-                                        return doEvaluation(ctx, ground, ctx);
-                                    }
-                                }));
-                            if(endLoop[0] == -1) {
+                            if(endLoop == -1) {
                                 int opened = 1;
                                 while(opened > 0 && formatIndex < formatLength) {
                                     char c2 = format.charAt(formatIndex++);
@@ -535,7 +528,7 @@ public class Text extends IokeData {
                                     }
                                 }
                             } else {
-                                formatIndex = endLoop[0];
+                                formatIndex = endLoop;
                             }
                             break;
                         case 's':
@@ -543,7 +536,7 @@ public class Text extends IokeData {
                             arg = positionalArgs.get(argIndex++);
                             Object txt = IokeObject.tryConvertToText(arg, message, context);
                             if(txt == null) {
-                                txt = ((Message)IokeObject.data(context.runtime.asText)).sendTo(context.runtime.asText, context, arg);
+                                txt = context.runtime.interpreter.sendTo(context.runtime.asText, context, arg);
                             }
                             String outTxt = Text.getText(txt);
 

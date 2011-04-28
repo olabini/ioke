@@ -73,7 +73,7 @@ public abstract class Benchmark {
 
                         String theCode = Message.thisCode(((IokeObject)message.getArguments().get(index)));
 
-                        ((Message)IokeObject.data(context.runtime.printlnMessage)).sendTo(context.runtime.printlnMessage, context, ((Message)IokeObject.data(context.runtime.outMessage)).sendTo(context.runtime.outMessage, context, context.runtime.system), context.runtime.newText(String.format("%-32.32s %.6s.%09d", theCode, secs, rest)));
+                        context.runtime.interpreter.sendTo(context.runtime.printlnMessage, context, context.runtime.interpreter.sendTo(context.runtime.outMessage, context, context.runtime.system), context.runtime.newText(String.format("%-32.32s %.6s.%09d", theCode, secs, rest)));
                     }
 
                     return context.runtime.nil;

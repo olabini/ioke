@@ -305,9 +305,9 @@ public class FileSystem {
                     Object result = context.runtime.nil;
 
                     try {
-                        result = ((Message)IokeObject.data(context.runtime.callMessage)).sendTo(context.runtime.callMessage, context, args.get(1), ff);
+                        result = context.runtime.interpreter.sendTo(context.runtime.callMessage, context, args.get(1), ff);
                     } finally {
-                        ((Message)IokeObject.data(context.runtime.closeMessage)).sendTo(context.runtime.closeMessage, context, ff);
+                        context.runtime.interpreter.sendTo(context.runtime.closeMessage, context, ff);
                     }
 
                     return result;

@@ -73,7 +73,7 @@ public class FlowControlBehavior {
 
                                 Object originalValue = runtime.withReturningRescue(context, null, new RunnableWithReturnAndControlFlow() {
                                         public Object run() throws ControlFlow {
-                                            return ((Message)IokeObject.data(_realPlace)).sendTo(_realPlace, context, _wherePlace);
+                                            return runtime.interpreter.sendTo(_realPlace, context, _wherePlace);
                                         }
                                     });
 
@@ -82,7 +82,7 @@ public class FlowControlBehavior {
                                     List<Object> arguments = new ArrayList<Object>(realPlace.getArguments());
                                     arguments.add(args.get(ix++));
                                     IokeObject msg = context.runtime.newMessageFrom(realPlace, newName, arguments);
-                                    ((Message)IokeObject.data(msg)).sendTo(msg, context, wherePlace);
+                                    runtime.interpreter.sendTo(msg, context, wherePlace);
                                     valuesToUnbind.add(0, new Object[]{wherePlace, originalValue, realPlace});
                                 } else {
                                     Object value = ((Message)IokeObject.data(message)).getEvaluatedArgument(message, ix++, context);
@@ -107,16 +107,16 @@ public class FlowControlBehavior {
 
                                     if(value == null) {
                                         if(newName.equals("cell=")) {
-                                            ((Message)IokeObject.data(context.runtime.removeCellMessage)).sendTo(context.runtime.removeCellMessage, context, wherePlace, new ArrayList<Object>(realPlace.getArguments()));
+                                            context.runtime.interpreter.sendTo(context.runtime.removeCellMessage, context, wherePlace, new ArrayList<Object>(realPlace.getArguments()));
                                         } else {
                                             arguments.add(context.runtime.createMessage(Message.wrap(context.runtime.nil)));
                                             IokeObject msg = context.runtime.newMessageFrom(realPlace, newName, arguments);
-                                            ((Message)IokeObject.data(msg)).sendTo(msg, context, wherePlace);
+                                            context.runtime.interpreter.sendTo(msg, context, wherePlace);
                                         }
                                     } else {
                                         arguments.add(context.runtime.createMessage(Message.wrap(IokeObject.as(value, context))));
                                         IokeObject msg = context.runtime.newMessageFrom(realPlace, newName, arguments);
-                                        ((Message)IokeObject.data(msg)).sendTo(msg, context, wherePlace);
+                                        context.runtime.interpreter.sendTo(msg, context, wherePlace);
                                     }
                                 } else {
                                     if(value == null) {
@@ -408,11 +408,11 @@ public class FlowControlBehavior {
 
                     try {
                         IokeObject msg = IokeObject.as(args.get(0), context);
-                        result = ((Message)IokeObject.data(msg)).evaluateCompleteWithoutExplicitReceiver(msg, context, context.getRealContext());
+                        result = runtime.interpreter.evaluateCompleteWithoutExplicitReceiver(msg, context, context.getRealContext());
                     } finally {
                         for(Object o : args.subList(1, argCount)) {
                             IokeObject msg = IokeObject.as(o, context);
-                            ((Message)IokeObject.data(msg)).evaluateCompleteWithoutExplicitReceiver(msg, context, context.getRealContext());
+                            runtime.interpreter.evaluateCompleteWithoutExplicitReceiver(msg, context, context.getRealContext());
                         }
                     }
 

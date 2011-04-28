@@ -306,13 +306,13 @@ public class IokeSet extends IokeData {
 
                     switch(message.getArgumentCount()) {
                     case 0: {
-                        return ((Message)IokeObject.data(runtime.seqMessage)).sendTo(runtime.seqMessage, context, on);
+                        return runtime.interpreter.sendTo(runtime.seqMessage, context, on);
                     }
                     case 1: {
                         IokeObject code = IokeObject.as(message.getArguments().get(0), context);
 
                         for(Object o : set) {
-                            ((Message)IokeObject.data(code)).evaluateCompleteWithReceiver(code, context, context.getRealContext(), o);
+                            context.runtime.interpreter.evaluateCompleteWithReceiver(code, context, context.getRealContext(), o);
                         }
                         break;
                     }
@@ -323,7 +323,7 @@ public class IokeSet extends IokeData {
 
                         for(Object o : set) {
                             c.setCell(name, o);
-                            ((Message)IokeObject.data(code)).evaluateCompleteWithoutExplicitReceiver(code, c, c.getRealContext());
+                            context.runtime.interpreter.evaluateCompleteWithoutExplicitReceiver(code, c, c.getRealContext());
                         }
                         break;
                     }
@@ -337,7 +337,7 @@ public class IokeSet extends IokeData {
                         for(Object o : set) {
                             c.setCell(name, o);
                             c.setCell(iname, runtime.newNumber(index++));
-                            ((Message)IokeObject.data(code)).evaluateCompleteWithoutExplicitReceiver(code, c, c.getRealContext());
+                            context.runtime.interpreter.evaluateCompleteWithoutExplicitReceiver(code, c, c.getRealContext());
                         }
                         break;
                     }

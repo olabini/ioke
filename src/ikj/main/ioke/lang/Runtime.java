@@ -51,6 +51,7 @@ public class Runtime extends IokeData {
 
     public IokeRegistry registry = new IokeRegistry(this);
     public ClassRegistry classRegistry = new ClassRegistry(this);
+    public final Interpreter interpreter = new Interpreter();
 
     // Core objects and origins
     public IokeObject base = new IokeObject(this, "Base is the top of the inheritance structure. Most of the objects in the system are derived from this instance. Base should keep its cells to the bare minimum needed for the system.");
@@ -181,6 +182,8 @@ public class Runtime extends IokeData {
     public IokeObject mimickedMessage = newMessage("mimicked");
     public IokeObject seqMessage = newMessage("seq");
     public IokeObject hashMessage = newMessage("hash");
+    public IokeObject nextPMessage = newMessage("next?");
+    public IokeObject nextMessage = newMessage("next");
 
     public Runtime() throws Exception {
         this(new PrintWriter(new OutputStreamWriter(java.lang.System.out, "UTF-8")), new InputStreamReader(java.lang.System.in, "UTF-8"), new PrintWriter(new OutputStreamWriter(java.lang.System.err, "UTF-8")));
@@ -517,7 +520,7 @@ public class Runtime extends IokeData {
     public Object evaluateStream(Reader reader, IokeObject message, IokeObject context) throws ControlFlow {
         IokeObject msg = parseStream(reader, message, context);
         if(msg != null) {
-            return ((Message)IokeObject.data(msg)).evaluateComplete(msg);
+            return interpreter.evaluateComplete(msg);
         } else {
             return nil;
         }
@@ -526,7 +529,7 @@ public class Runtime extends IokeData {
     public Object evaluateString(String str, IokeObject message, IokeObject context) throws ControlFlow {
         IokeObject msg = parseStream(new StringReader(str), message, context);
         if(msg != null) {
-            return ((Message)IokeObject.data(msg)).evaluateComplete(msg);
+            return interpreter.evaluateComplete(msg);
         } else {
             return nil;
         }
@@ -809,7 +812,7 @@ public class Runtime extends IokeData {
     }
 
     public void errorCondition(IokeObject cond) throws ControlFlow {
-        ((Message)IokeObject.data(errorMessage)).sendTo(errorMessage, ground, ground, createMessage(Message.wrap(cond)));
+        interpreter.sendTo(errorMessage, ground, ground, createMessage(Message.wrap(cond)));
     }
 
     public IokeObject newList(List<Object> list) {
@@ -849,7 +852,7 @@ public class Runtime extends IokeData {
     }
 
     public IokeObject newFile(IokeObject context, File eff) throws ControlFlow {
-        IokeObject fileMimic = IokeObject.as(((Message)IokeObject.data(FileMessage)).sendTo(FileMessage, context, this.fileSystem), context);
+        IokeObject fileMimic = IokeObject.as(interpreter.sendTo(FileMessage, context, this.fileSystem), context);
         IokeObject obj = fileMimic.allocateCopy(null, null);
         obj.mimicsWithoutCheck(fileMimic);
         obj.setData(new FileSystem.IokeFile(eff));
@@ -888,7 +891,7 @@ public class Runtime extends IokeData {
         BindIndex index = getBindIndex();
 
         for(Restart.JavaRestart rjr : restarts) {
-            IokeObject rr = IokeObject.as(((Message)IokeObject.data(mimic)).sendTo(mimic, context, restart), context);
+            IokeObject rr = IokeObject.as(interpreter.sendTo(mimic, context, restart), context);
             IokeObject.setCell(rr, "name", getSymbol(rjr.getName()), context);
 
             List<Object> args = new ArrayList<Object>();
@@ -928,7 +931,7 @@ public class Runtime extends IokeData {
     }
 
     public void withReturningRestart(String name, IokeObject context, RunnableWithControlFlow code) throws ControlFlow {
-        IokeObject rr = IokeObject.as(((Message)IokeObject.data(mimic)).sendTo(mimic, context, restart), context);
+        IokeObject rr = IokeObject.as(interpreter.sendTo(mimic, context, restart), context);
         IokeObject.setCell(rr, "name", getSymbol(name), context);
         IokeObject.setCell(rr, "argumentNames", newList(new ArrayList<Object>()), context);
 
@@ -954,7 +957,7 @@ public class Runtime extends IokeData {
 
     public Object withReturningRescue(IokeObject context, Object toReturn, RunnableWithReturnAndControlFlow javaRescue) throws ControlFlow {
         List<RescueInfo> rescues = new ArrayList<RescueInfo>();
-        IokeObject rr = IokeObject.as(((Message)IokeObject.data(mimic)).sendTo(mimic, context, rescue), context);
+        IokeObject rr = IokeObject.as(interpreter.sendTo(mimic, context, rescue), context);
         List<Object> conds = new ArrayList();
         conds.add(this.condition);
         rescues.add(new RescueInfo(rr, conds, rescues, getBindIndex()));
@@ -1158,7 +1161,7 @@ public class Runtime extends IokeData {
         while(!atExits.isEmpty()) {
             IokeSystem.AtExitInfo atExit = atExits.remove(0);
             try {
-                ((Message)IokeObject.data(atExit.message)).evaluateCompleteWithoutExplicitReceiver(atExit.message, atExit.context, atExit.context.getRealContext());
+                interpreter.evaluateCompleteWithoutExplicitReceiver(atExit.message, atExit.context, atExit.context.getRealContext());
             } catch(ControlFlow.Exit e) {
                 status = 1;
             } catch(ControlFlow e) {

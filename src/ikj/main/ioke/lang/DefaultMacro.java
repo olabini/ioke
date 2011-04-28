@@ -192,7 +192,7 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
         }
 
         try {
-            return ((Message)IokeObject.data(code)).evaluateCompleteWith(code, c, on);
+            return context.runtime.interpreter.evaluateCompleteWith(code, c, on);
         } catch(ControlFlow.Return e) {
             if(e.context == c) {
                 return e.getValue();
@@ -235,7 +235,7 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
         c.setCell("call", call);
 
         try {
-            return ((Message)IokeObject.data(code)).evaluateCompleteWith(code, c, on);
+            return context.runtime.interpreter.evaluateCompleteWith(code, c, on);
         } catch(ControlFlow.Return e) {
             if(e.context == c) {
                 return e.getValue();
@@ -278,7 +278,7 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
         c.setCell("call", context.runtime.newCallFrom(c, message, context, IokeObject.as(on, context)));
 
         try {
-            return ((Message)IokeObject.data(code)).evaluateCompleteWith(code, c, on);
+            return context.runtime.interpreter.evaluateCompleteWith(code, c, on);
         } catch(ControlFlow.Return e) {
             if(e.context == c) {
                 return e.getValue();
@@ -325,7 +325,7 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
         }
 
         try {
-            return ((Message)IokeObject.data(code)).evaluateCompleteWith(code, c, on);
+            return context.runtime.interpreter.evaluateCompleteWith(code, c, on);
         } catch(ControlFlow.Return e) {
             if(e.context == c) {
                 return e.getValue();

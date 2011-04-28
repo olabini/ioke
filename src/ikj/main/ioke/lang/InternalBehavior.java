@@ -46,7 +46,7 @@ public class InternalBehavior {
                             if(IokeObject.data(o) instanceof Text) {
                                 sb.append(Text.getText(o));
                             } else {
-                                sb.append(Text.getText(((Message)IokeObject.data(context.runtime.asText)).sendTo(context.runtime.asText, context, o)));
+                                sb.append(Text.getText(context.runtime.interpreter.sendTo(context.runtime.asText, context, o)));
                             }
                         } else {
                             sb.append(o);
@@ -105,7 +105,7 @@ public class InternalBehavior {
                         } else if(IokeObject.data(o) instanceof Regexp) {
                             addRegexp(o, sb);
                         } else {
-                            addText(((Message)IokeObject.data(context.runtime.asText)).sendTo(context.runtime.asText, context, o), sb);
+                            addText(context.runtime.interpreter.sendTo(context.runtime.asText, context, o), sb);
                         }
                     }
                 }

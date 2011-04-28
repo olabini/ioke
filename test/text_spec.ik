@@ -789,13 +789,7 @@ describe("Text",
 
     it("should iterate over an element with each when using %[ and %]",
       CustomEnumerable = Origin mimic
-      CustomEnumerable mimic!(Mixins Enumerable)
-      CustomEnumerable each = macro(
-        ; Assume only one argument
-        first = call arguments first
-        first evaluateOn(call ground, "3first")
-        first evaluateOn(call ground, "1second")
-        first evaluateOn(call ground, "2third"))
+      CustomEnumerable seq = method(["3first", "1second", "2third"] seq)
 
       "ah: %[%s-%] mama" format(CustomEnumerable) should == "ah: 3first-1second-2third- mama"
       "%[%s%]" format(CustomEnumerable) should == "3first1second2third"

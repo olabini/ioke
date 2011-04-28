@@ -67,15 +67,15 @@ public class CaseBehavior {
                     int argCount = args.size();
                     int index = 0;
                     IokeObject msg = IokeObject.as(args.get(index++), context);
-                    Object value = ((Message)IokeObject.data(msg)).evaluateCompleteWithoutExplicitReceiver(msg, context, context.getRealContext());
+                    Object value = runtime.interpreter.evaluateCompleteWithoutExplicitReceiver(msg, context, context.getRealContext());
                     argCount--;
 
                     while(argCount > 1) {
                         msg = transformWhenStatement(args.get(index++), context, message, obj);
-                        Object when = ((Message)IokeObject.data(msg)).evaluateCompleteWithoutExplicitReceiver(msg, context, context.getRealContext());
-                        if(IokeObject.isTrue(((Message)IokeObject.data(runtime.eqqMessage)).sendTo(runtime.eqqMessage, context, when, value))) {
+                        Object when = runtime.interpreter.evaluateCompleteWithoutExplicitReceiver(msg, context, context.getRealContext());
+                        if(IokeObject.isTrue(runtime.interpreter.sendTo(runtime.eqqMessage, context, when, value))) {
                             msg = IokeObject.as(args.get(index++), context);
-                            return ((Message)IokeObject.data(msg)).evaluateCompleteWithoutExplicitReceiver(msg, context, context.getRealContext());
+                            return runtime.interpreter.evaluateCompleteWithoutExplicitReceiver(msg, context, context.getRealContext());
                         } else {
                             index++;
                         }
@@ -84,7 +84,7 @@ public class CaseBehavior {
 
                     if(argCount == 1) {
                         msg = IokeObject.as(args.get(index++), context);
-                        return ((Message)IokeObject.data(msg)).evaluateCompleteWithoutExplicitReceiver(msg, context, context.getRealContext());
+                        return runtime.interpreter.evaluateCompleteWithoutExplicitReceiver(msg, context, context.getRealContext());
                     }
 
                     return runtime.nil;
