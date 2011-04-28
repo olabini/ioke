@@ -20,6 +20,7 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
     private IokeObject code;
 
     public DefaultSyntax(String name) {
+        super(IokeData.TYPE_DEFAULT_SYNTAX);
         this.name = name;
     }
 
@@ -327,11 +328,59 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
         }
     }
 
-    @Override
-    public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-        return activateWithData(self, context, message, on, null);
+    public static Object activateFixed(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+        DefaultSyntax dm = (DefaultSyntax)self.data;
+        Object result = dm.expand(self, context, message, on, null);
+
+        if(result == context.runtime.nil) {
+            // Remove chain completely
+            IokeObject prev = Message.prev(message);
+            IokeObject next = Message.next(message);
+            if(prev != null) {
+                Message.setNext(prev, next);
+                if(next != null) {
+                    Message.setPrev(next, prev);
+                }
+            } else {
+                message.become(next, message, context);
+                Message.setPrev(next, null);
+            }
+            return null;
+        } else {
+            // Insert resulting value into chain, wrapping it if it's not a message
+
+            IokeObject newObj = null;
+            if(IokeObject.data(result) instanceof Message) {
+                newObj = IokeObject.as(result, context);
+            } else {
+                newObj = context.runtime.createMessage(Message.wrap(IokeObject.as(result, context)));
+            }
+
+            IokeObject prev = Message.prev(message);
+            IokeObject next = Message.next(message);
+
+            message.become(newObj, message, context);
+
+            IokeObject last = newObj;
+            while(Message.next(last) != null) {
+                last = Message.next(last);
+            }
+            Message.setNext(last, next);
+            if(next != null) {
+                Message.setPrev(next, last);
+            }
+            Message.setPrev(newObj, prev);
+
+            // We need to distinguish explicit calls to self, and calls through a local context.
+            Object receiver = (prev == null || Message.isTerminator(prev)) ? context : on;
+            return Interpreter.send(message, context, receiver);
+        }
     }
 
+    @Override
+    public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+        return activateFixed(self, context, message, on);
+    }
 
     @Override
     public Object activateWithData(IokeObject self, IokeObject context, IokeObject message, Object on, Map<String, Object> data) throws ControlFlow {

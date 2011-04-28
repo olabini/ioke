@@ -23,7 +23,7 @@ public class JavaConstructorNativeMethod extends ioke.lang.Method implements Nat
     private boolean special;
 
     public JavaConstructorNativeMethod(Constructor[] ctors, boolean special) {
-        super("new");
+        super("new", IokeData.TYPE_JAVA_CONSTRUCTOR);
         this.ctors = ctors;
         this.special = special;
         this.arguments = JavaArgumentsDefinition.createFrom(ctors, special);

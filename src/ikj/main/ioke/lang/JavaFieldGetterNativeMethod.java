@@ -22,7 +22,7 @@ public class JavaFieldGetterNativeMethod extends Method implements NativeImpleme
     private Field field;
 
     public JavaFieldGetterNativeMethod(Field field) {
-        super(field.getName());
+        super(field.getName(), IokeData.TYPE_JAVA_FIELD_GETTER);
         this.field = field;
         this.declaringClass = field.getDeclaringClass();
     }

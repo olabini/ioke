@@ -195,22 +195,46 @@ public class Interpreter {
         return newCell[0];
     }
 
-    public static Object perform(Object obj, IokeObject recv, IokeObject ctx, IokeObject message, String name) throws ControlFlow {
+    private static boolean shouldActivate(IokeObject io, IokeObject message) throws ControlFlow {
+        return io.isActivatable() || ((io.data instanceof CanRun) && message.getArguments().size() > 0);
+    }
+
+    private static Object doActivate(IokeObject io, IokeObject ctx, IokeObject message, Object obj) throws ControlFlow {
+        switch(io.data.type) {
+        case IokeData.TYPE_NONE:
+            return io.data.activate(io, ctx, message, obj);
+        case IokeData.TYPE_DEFAULT_METHOD:
+            return DefaultMethod.activateFixed(io, ctx, message, obj);
+        case IokeData.TYPE_DEFAULT_MACRO:
+            return DefaultMacro.activateFixed(io, ctx, message, obj);
+        case IokeData.TYPE_DEFAULT_SYNTAX:
+            return DefaultSyntax.activateFixed(io, ctx, message, obj);
+        case IokeData.TYPE_LEXICAL_MACRO:
+        case IokeData.TYPE_ALIAS_METHOD:
+        case IokeData.TYPE_NATIVE_METHOD:
+        case IokeData.TYPE_JAVA_CONSTRUCTOR:
+        case IokeData.TYPE_JAVA_FIELD_GETTER:
+        case IokeData.TYPE_JAVA_FIELD_SETTER:
+        case IokeData.TYPE_JAVA_METHOD:
+        default:
+            return io.data.activate(io, ctx, message, obj);
+        }
+    }
+
+    private static Object findCell(IokeObject message, IokeObject ctx, Object obj, String name, IokeObject recv) throws ControlFlow {
         Runtime runtime = ctx.runtime;
         Object cell = recv.findCell(message, ctx, name);
-        Object passed = null;
-
-        while(cell == runtime.nul && (((cell = passed = recv.findCell(message, ctx, "pass")) == runtime.nul) ||  !isApplicable(passed, message, ctx))) {
+        while(cell == runtime.nul && !isApplicable(cell = recv.findCell(message, ctx, "pass"), message, ctx)) {
             cell = signalNoSuchCell(message, ctx, obj, name, cell, recv);
         }
+        return cell;
+    }
 
-        if(cell instanceof IokeObject) {
-            IokeObject io = (IokeObject)cell;
-            if(io.isActivatable() || ((io.data instanceof CanRun) && message.getArguments().size() > 0)) {
-                return io.data.activate(io, ctx, message, obj);
-            } else {
-                return io;
-            }
+    public static Object perform(Object obj, IokeObject recv, IokeObject ctx, IokeObject message, String name) throws ControlFlow {
+        Object cell = findCell(message, ctx, obj, name, recv);
+
+        if((cell instanceof IokeObject) && shouldActivate((IokeObject)cell, message)) {
+            return doActivate((IokeObject)cell, ctx, message, obj);
         } else {
             return cell;
         }
@@ -224,13 +248,8 @@ public class Interpreter {
     }
 
     public static Object getOrActivate(Object obj, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-        if(obj instanceof IokeObject) {
-            IokeObject io = (IokeObject)obj;
-            if(io.isActivatable() || ((io.data instanceof CanRun) && message.getArguments().size() > 0)) {
-                return io.data.activate(io, context, message, on);
-            } else {
-                return io;
-            }
+        if((obj instanceof IokeObject) && shouldActivate((IokeObject)obj, message)) {
+            return doActivate((IokeObject)obj, context, message, obj);
         } else {
             return obj;
         }

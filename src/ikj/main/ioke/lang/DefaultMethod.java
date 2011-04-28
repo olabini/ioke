@@ -19,11 +19,11 @@ public class DefaultMethod extends Method implements AssociatedCode {
     private IokeObject code;
 
     public DefaultMethod(String name) {
-        super(name);
+        super(name, IokeData.TYPE_DEFAULT_METHOD);
     }
 
     public DefaultMethod(IokeObject context, DefaultArgumentsDefinition arguments, IokeObject code) {
-        super(context);
+        super(context, IokeData.TYPE_DEFAULT_METHOD);
         this.arguments = arguments;
         this.code = code;
     }
@@ -95,7 +95,7 @@ public class DefaultMethod extends Method implements AssociatedCode {
         }
     }
 
-    private IokeObject createSuperCallFor(final IokeObject out_self, final IokeObject out_context, final IokeObject out_message, final Object out_on, final Object out_superCell) throws ControlFlow {
+    private static IokeObject createSuperCallFor(final IokeObject out_self, final IokeObject out_context, final IokeObject out_message, final Object out_on, final Object out_superCell) throws ControlFlow {
         return out_context.runtime.newNativeMethod("will call the super method of the current message on the same receiver", new NativeMethod("super") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
@@ -180,7 +180,12 @@ public class DefaultMethod extends Method implements AssociatedCode {
 
     @Override
     public Object activate(final IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-        if(code == null) {
+        return activateFixed(self, context, message, on);
+    }
+
+    public static Object activateFixed(final IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+        DefaultMethod dm = (DefaultMethod)self.data;
+        if(dm.code == null) {
             IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition,
                                                                          message,
                                                                          context,
@@ -212,7 +217,7 @@ public class DefaultMethod extends Method implements AssociatedCode {
         c.setCell("currentMessage", message);
         c.setCell("surroundingContext", context);
 
-        Object superCell = IokeObject.findSuperCellOn(on, self, message, context, name);
+        Object superCell = IokeObject.findSuperCellOn(on, self, message, context, dm.name);
         if(superCell == context.runtime.nul) {
             superCell = IokeObject.findSuperCellOn(on, self, message, context, Message.name(message));
         }
@@ -221,10 +226,10 @@ public class DefaultMethod extends Method implements AssociatedCode {
             c.setCell("super", createSuperCallFor(self, context, message, on, superCell));
         }
 
-        arguments.assignArgumentValues(c, context, message, on);
+        dm.arguments.assignArgumentValues(c, context, message, on);
 
         try {
-            return context.runtime.interpreter.evaluate(code, c, on, c);
+            return context.runtime.interpreter.evaluate(dm.code, c, on, c);
         } catch(ControlFlow.Return e) {
             if(e.context == c) {
                 return e.getValue();

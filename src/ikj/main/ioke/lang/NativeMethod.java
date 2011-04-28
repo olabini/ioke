@@ -29,7 +29,7 @@ public abstract class NativeMethod extends Method implements CanRun {
     }
 
     public NativeMethod(String name) {
-        super(name);
+        super(name, IokeData.TYPE_NATIVE_METHOD);
     }
 
     @Override

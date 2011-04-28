@@ -23,7 +23,7 @@ public class JavaFieldSetterNativeMethod extends Method implements NativeImpleme
     private JavaArgumentsDefinition arguments;
 
     public JavaFieldSetterNativeMethod(Field field) {
-        super(field.getName() + "=");
+        super(field.getName() + "=", IokeData.TYPE_JAVA_FIELD_SETTER);
         this.field = field;
         this.declaringClass = field.getDeclaringClass();
         this.arguments = JavaArgumentsDefinition.createFrom(field);

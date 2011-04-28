@@ -16,12 +16,13 @@ import ioke.lang.exceptions.ControlFlow;
 public class Method extends IokeData implements Named, Inspectable {
     String name;
 
-    public Method(String name) {
+    public Method(String name, int type) {
+        super(type);
         this.name = name;
     }
 
-    public Method(IokeObject context) {
-        this((String)null);
+    public Method(IokeObject context, int type) {
+        this((String)null, type);
     }
 
     @Override

@@ -19,6 +19,7 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
     private IokeObject code;
 
     public DefaultMacro(String name) {
+        super(IokeData.TYPE_DEFAULT_MACRO);
         this.name = name;
     }
 
@@ -204,7 +205,12 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
 
     @Override
     public Object activate(final IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-        if(code == null) {
+        return activateFixed(self, context, message, on);
+    }
+
+    public static Object activateFixed(final IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+        DefaultMacro dm = (DefaultMacro)self.data;
+        if(dm.code == null) {
             IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition,
                                                                          message,
                                                                          context,
@@ -235,7 +241,7 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
         c.setCell("call", context.runtime.newCallFrom(c, message, context, IokeObject.as(on, context)));
 
         try {
-            return context.runtime.interpreter.evaluate(code, c, on, c);
+            return context.runtime.interpreter.evaluate(dm.code, c, on, c);
         } catch(ControlFlow.Return e) {
             if(e.context == c) {
                 return e.getValue();

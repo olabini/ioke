@@ -20,6 +20,7 @@ public class LexicalMacro extends IokeData implements AssociatedCode, Named, Ins
     private IokeObject code;
 
     public LexicalMacro(IokeObject context, IokeObject code) {
+        super(IokeData.TYPE_LEXICAL_MACRO);
         this.context = context;
         this.code = code;
     }

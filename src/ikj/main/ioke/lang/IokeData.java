@@ -15,6 +15,28 @@ import ioke.lang.exceptions.ControlFlow;
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
 public abstract class IokeData {
+    public final int type;
+
+    public final static int TYPE_NONE = 0;
+    public final static int TYPE_DEFAULT_METHOD = 1;
+    public final static int TYPE_DEFAULT_MACRO = 2;
+    public final static int TYPE_DEFAULT_SYNTAX = 3;
+    public final static int TYPE_LEXICAL_MACRO = 4;
+    public final static int TYPE_ALIAS_METHOD = 5;
+    public final static int TYPE_NATIVE_METHOD = 6;
+    public final static int TYPE_JAVA_CONSTRUCTOR = 7;
+    public final static int TYPE_JAVA_FIELD_GETTER = 8;
+    public final static int TYPE_JAVA_FIELD_SETTER = 9;
+    public final static int TYPE_JAVA_METHOD = 10;
+
+    public IokeData() {
+        this(TYPE_NONE);
+    }
+
+    public IokeData(final int type) {
+        this.type = type;
+    }
+
     public final static IokeData None = new IokeData(){};
 
     public final static IokeData Nil = new IokeData(){
