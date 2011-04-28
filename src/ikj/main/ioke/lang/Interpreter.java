@@ -203,19 +203,25 @@ public class Interpreter {
         switch(io.data.type) {
         case IokeData.TYPE_NONE:
             return io.data.activate(io, ctx, message, obj);
-        case IokeData.TYPE_DEFAULT_METHOD:
-            return DefaultMethod.activateFixed(io, ctx, message, obj);
-        case IokeData.TYPE_DEFAULT_MACRO:
-            return DefaultMacro.activateFixed(io, ctx, message, obj);
-        case IokeData.TYPE_DEFAULT_SYNTAX:
-            return DefaultSyntax.activateFixed(io, ctx, message, obj);
-        case IokeData.TYPE_LEXICAL_MACRO:
-        case IokeData.TYPE_ALIAS_METHOD:
-        case IokeData.TYPE_NATIVE_METHOD:
-        case IokeData.TYPE_JAVA_CONSTRUCTOR:
-        case IokeData.TYPE_JAVA_FIELD_GETTER:
-        case IokeData.TYPE_JAVA_FIELD_SETTER:
-        case IokeData.TYPE_JAVA_METHOD:
+        // case IokeData.TYPE_DEFAULT_METHOD:
+        //     return DefaultMethod.activateFixed(io, ctx, message, obj);
+        // case IokeData.TYPE_DEFAULT_MACRO:
+        //     return DefaultMacro.activateFixed(io, ctx, message, obj);
+        // case IokeData.TYPE_DEFAULT_SYNTAX:
+        //     return DefaultSyntax.activateFixed(io, ctx, message, obj);
+        // case IokeData.TYPE_LEXICAL_MACRO:
+        //     return LexicalMacro.activateFixed(io, ctx, message, obj);
+        // case IokeData.TYPE_NATIVE_METHOD:
+        //     return NativeMethod.activateFixed(io, ctx, message, obj);
+        // case IokeData.TYPE_JAVA_CONSTRUCTOR:
+        //     return JavaConstructorNativeMethod.activateFixed(io, ctx, message, obj);
+        // case IokeData.TYPE_JAVA_FIELD_GETTER:
+        //     return JavaFieldGetterNativeMethod.activateFixed(io, ctx, message, obj);
+        // case IokeData.TYPE_JAVA_FIELD_SETTER:
+        //     return JavaFieldSetterNativeMethod.activateFixed(io, ctx, message, obj);
+        // case IokeData.TYPE_JAVA_METHOD:
+        //     return JavaMethodNativeMethod.activateFixed(io, ctx, message, obj);
+        // case IokeData.TYPE_ALIAS_METHOD:
         default:
             return io.data.activate(io, ctx, message, obj);
         }
