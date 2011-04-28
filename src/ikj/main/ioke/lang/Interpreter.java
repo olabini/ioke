@@ -243,7 +243,7 @@ public class Interpreter {
             cell = newCell[0];
         }
 
-        return clz.getOrActivate(cell, ctx, message, obj);
+        return getOrActivate(cell, ctx, message, obj);
     }
 
     private static boolean isApplicable(Object pass, IokeObject message, IokeObject ctx) throws ControlFlow {
@@ -311,6 +311,31 @@ public class Interpreter {
             cell = newCell[0];
         }
 
-        return recv.getOrActivate(cell, ctx, message, recv);
+        return getOrActivate(cell, ctx, message, recv);
+    }
+
+    public static Object getOrActivate(Object obj, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+        if(obj instanceof IokeObject) {
+            IokeObject io = (IokeObject)obj;
+            if(io.isActivatable() || ((io.data instanceof CanRun) && message.getArguments().size() > 0)) {
+                return io.data.activate(io, context, message, on);
+            } else {
+                return io;
+            }
+        } else {
+            return obj;
+        }
+    }
+
+    public static Object activate(IokeObject receiver, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+        return receiver.data.activate(receiver, context, message, on);
+    }
+
+    public static Object activateWithData(IokeObject receiver, IokeObject context, IokeObject message, Object on, Map<String, Object> d1) throws ControlFlow {
+        return receiver.data.activateWithData(receiver, context, message, on, d1);
+    }
+
+    public static Object activateWithCallAndData(IokeObject receiver, IokeObject context, IokeObject message, Object on, Object c, Map<String, Object> d1) throws ControlFlow {
+        return receiver.data.activateWithCallAndData(receiver, context, message, on, c, d1);
     }
 }

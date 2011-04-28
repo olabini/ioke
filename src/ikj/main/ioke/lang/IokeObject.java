@@ -24,7 +24,7 @@ public class IokeObject implements TypeChecker {
 
     Collection<IokeObject> hooks = null;
 
-    private IokeData data;
+    IokeData data;
 
     private boolean frozen = false;
 
@@ -492,7 +492,7 @@ public class IokeObject implements TypeChecker {
         if(IokeObject.data(obj) instanceof Text) {
             return ((Text)IokeObject.data(obj)).getText();
         } else {
-            return ((Text)IokeObject.data(getOrActivate(obj, context, message, this))).getText();
+            return ((Text)IokeObject.data(Interpreter.getOrActivate(obj, context, message, this))).getText();
         }
     }
 
@@ -507,14 +507,6 @@ public class IokeObject implements TypeChecker {
 
     public boolean hasKind() {
         return cells.containsKey("kind");
-    }
-
-    public static Object getOrActivate(Object obj, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-        if(obj instanceof IokeObject) {
-            return as(obj, context).getOrActivate(context, message, on);
-        } else {
-            return obj;
-        }
     }
 
     public static void setCell(Object on, String name, Object value, IokeObject context) {
@@ -891,36 +883,8 @@ public class IokeObject implements TypeChecker {
         return data.convertToRegexp(this, m, context);
     }
 
-    public Object getOrActivate(IokeObject context, IokeObject message, Object on) throws ControlFlow {
-        if(isActivatable() || ((data instanceof CanRun) && message.getArguments().size() > 0)) {
-            return activate(context, message, on);
-        } else {
-            return this;
-        }
-    }
-
     public String toString() {
         return data.toString(this);
-    }
-
-    public static Object activate(Object self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-        return as(self, context).activate(context, message, on);
-    }
-
-    public Object activate(IokeObject context, IokeObject message, Object on) throws ControlFlow {
-        return data.activate(this, context, message, on);
-    }
-
-    public Object activateWithData(IokeObject context, IokeObject message, Object on, Map<String, Object> d1) throws ControlFlow {
-        return data.activateWithData(this, context, message, on, d1);
-    }
-
-    public Object activateWithCall(IokeObject context, IokeObject message, Object on, Object c) throws ControlFlow {
-        return data.activateWithCall(this, context, message, on, c);
-    }
-
-    public Object activateWithCallAndData(IokeObject context, IokeObject message, Object on, Object c, Map<String, Object> d1) throws ControlFlow {
-        return data.activateWithCallAndData(this, context, message, on, c, d1);
     }
 
     @Override

@@ -459,15 +459,11 @@ public abstract class IokeData {
             newMessage.getArguments().add(context.runtime.createMessage(Message.wrap(context)));
             newMessage.getArguments().add(context.runtime.createMessage(Message.wrap(message)));
             newMessage.getArguments().add(context.runtime.createMessage(Message.wrap(IokeObject.as(on, context))));
-            return IokeObject.getOrActivate(cell, context, newMessage, self);
+            return Interpreter.getOrActivate(cell, context, newMessage, self);
         }
     }
 
     public Object activateWithData(IokeObject self, IokeObject context, IokeObject message, Object on, Map<String, Object> c) throws ControlFlow {
-        return activate(self, context, message, on);
-    }
-
-    public Object activateWithCall(IokeObject self, IokeObject context, IokeObject message, Object on, Object c) throws ControlFlow {
         return activate(self, context, message, on);
     }
 

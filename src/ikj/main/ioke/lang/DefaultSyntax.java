@@ -68,7 +68,7 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
 
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    return IokeObject.as(on, context).activate(context, message, context.getRealContext());
+                    return Interpreter.activate(IokeObject.as(on, context), context, message, context.getRealContext());
                 }
             }));
 
@@ -325,11 +325,6 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
             Object receiver = (prev == null || Message.isTerminator(prev)) ? context : on;
             return Interpreter.send(message, context, receiver);
         }
-    }
-
-    @Override
-    public Object activateWithCall(final IokeObject self, IokeObject context, IokeObject message, Object on, Object call) throws ControlFlow {
-        return activateWithCallAndData(self, context, message, on, call, null);
     }
 
     @Override

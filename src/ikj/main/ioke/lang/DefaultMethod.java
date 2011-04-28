@@ -110,68 +110,12 @@ public class DefaultMethod extends Method implements AssociatedCode {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     if(IokeObject.data(out_superCell) instanceof Method) {
-                        return IokeObject.activate(out_superCell, context, message, out_on);
+                        return Interpreter.activate(((IokeObject)out_superCell), context, message, out_on);
                     } else {
                         return out_superCell;
                     }
                 }
             });
-    }
-
-    @Override
-    public Object activateWithCall(final IokeObject self, IokeObject context, IokeObject message, Object on, Object call) throws ControlFlow {
-        if(code == null) {
-            IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition,
-                                                                         message,
-                                                                         context,
-                                                                         "Error",
-                                                                         "Invocation",
-                                                                         "NotActivatable"), context).mimic(message, context);
-            condition.setCell("message", message);
-            condition.setCell("context", context);
-            condition.setCell("receiver", on);
-            condition.setCell("method", self);
-            condition.setCell("report", context.runtime.newText("You tried to activate a method without any code - did you by any chance activate the DefaultMethod kind by referring to it without wrapping it inside a call to cell?"));
-            context.runtime.errorCondition(condition);
-            return null;
-        }
-
-
-        IokeObject c = context.runtime.locals.mimic(message, context);
-        c.setCell("self", on);
-        c.setCell("@", on);
-
-        c.registerMethod(c.runtime.newNativeMethod("will return the currently executing method receiver", new NativeMethod.WithNoArguments("@@") {
-                @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
-                    return self;
-                }
-            }));
-
-        c.setCell("currentMessage", message);
-        c.setCell("surroundingContext", context);
-
-        Object superCell = IokeObject.findSuperCellOn(on, self, message, context, name);
-        if(superCell == context.runtime.nul) {
-            superCell = IokeObject.findSuperCellOn(on, self, message, context, Message.name(message));
-        }
-
-        if(superCell != context.runtime.nul) {
-            c.setCell("super", createSuperCallFor(self, context, message, on, superCell));
-        }
-
-        arguments.assignArgumentValues(c, context, message, on, ((Call)IokeObject.data(call)));
-
-        try {
-            return context.runtime.interpreter.evaluate(code, c, on, c);
-        } catch(ControlFlow.Return e) {
-            if(e.context == c) {
-                return e.getValue();
-            } else {
-                throw e;
-            }
-        }
     }
 
     @Override

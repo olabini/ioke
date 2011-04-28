@@ -66,7 +66,7 @@ public class Method extends IokeData implements Named, Inspectable {
 
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    return IokeObject.as(on, context).activate(context, message, context.getRealContext());
+                    return Interpreter.activate(IokeObject.as(on, context), context, message, context.getRealContext());
                 }
             }));
 

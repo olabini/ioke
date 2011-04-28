@@ -66,7 +66,7 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
 
                 @Override
                 public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    return IokeObject.as(on, context).activate(context, message, context.getRealContext());
+                    return Interpreter.activate(IokeObject.as(on, context), context, message, context.getRealContext());
                 }
             }));
 
@@ -190,49 +190,6 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
             String s = d.getKey();
             c.setCell(s.substring(0, s.length()-1), d.getValue());
         }
-
-        try {
-            return context.runtime.interpreter.evaluate(code, c, on, c);
-        } catch(ControlFlow.Return e) {
-            if(e.context == c) {
-                return e.getValue();
-            } else {
-                throw e;
-            }
-        }
-    }
-
-    @Override
-    public Object activateWithCall(final IokeObject self, IokeObject context, IokeObject message, Object on, Object call) throws ControlFlow {
-        if(code == null) {
-            IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition,
-                                                                         message,
-                                                                         context,
-                                                                         "Error",
-                                                                         "Invocation",
-                                                                         "NotActivatable"), context).mimic(message, context);
-            condition.setCell("message", message);
-            condition.setCell("context", context);
-            condition.setCell("receiver", on);
-            condition.setCell("method", self);
-            condition.setCell("report", context.runtime.newText("You tried to activate a method without any code - did you by any chance activate the DefaultMacro kind by referring to it without wrapping it inside a call to cell?"));
-            context.runtime.errorCondition(condition);
-            return null;
-        }
-
-        IokeObject c = context.runtime.locals.mimic(message, context);
-        c.setCell("self", on);
-        c.setCell("@", on);
-        c.registerMethod(c.runtime.newNativeMethod("will return the currently executing macro receiver", new NativeMethod.WithNoArguments("@@") {
-                @Override
-                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
-                    return self;
-                }
-            }));
-        c.setCell("currentMessage", message);
-        c.setCell("surroundingContext", context);
-        c.setCell("call", call);
 
         try {
             return context.runtime.interpreter.evaluate(code, c, on, c);

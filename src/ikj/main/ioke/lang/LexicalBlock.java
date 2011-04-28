@@ -83,7 +83,7 @@ public class LexicalBlock extends IokeData implements AssociatedCode {
 
                 @Override
                 public Object activate(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on) throws ControlFlow {
-                    return IokeObject.as(on, dynamicContext).activate(dynamicContext, message, on);
+                    return Interpreter.activate(IokeObject.as(on, dynamicContext), dynamicContext, message, on);
                 }
             }));
 
@@ -175,15 +175,6 @@ public class LexicalBlock extends IokeData implements AssociatedCode {
             String s = d.getKey();
             c.setCell(s.substring(0, s.length()-1), d.getValue());
         }
-        arguments.assignArgumentValues(c, dynamicContext, message, on, ((Call)IokeObject.data(call)));
-
-        return self.runtime.interpreter.evaluate(this.message, c, on, c);
-    }
-
-    @Override
-    public Object activateWithCall(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on, Object call) throws ControlFlow {
-        LexicalContext c = new LexicalContext(self.runtime, on, "Lexical activation context", message, this.context);
-
         arguments.assignArgumentValues(c, dynamicContext, message, on, ((Call)IokeObject.data(call)));
 
         return self.runtime.interpreter.evaluate(this.message, c, on, c);

@@ -155,7 +155,7 @@ public class Call extends IokeData {
                         self = args.get(1);
                     }
 
-                    return IokeObject.getOrActivate(args.get(0), c.surroundingContext, c.message, self);
+                    return Interpreter.getOrActivate(args.get(0), c.surroundingContext, c.message, self);
                 }
             }));
 
@@ -181,7 +181,7 @@ public class Call extends IokeData {
                         self = args.get(1);
                     }
 
-                    return IokeObject.as(args.get(0), context).activateWithData(c.surroundingContext, c.message, self, keys);
+                    return Interpreter.activateWithData(IokeObject.as(args.get(0), context), c.surroundingContext, c.message, self, keys);
                 }
             }));
 
@@ -207,7 +207,7 @@ public class Call extends IokeData {
                         self = args.get(1);
                     }
 
-                    return IokeObject.as(args.get(0), context).activateWithCallAndData(c.surroundingContext, c.message, self, on, keys);
+                    return Interpreter.activateWithCallAndData(IokeObject.as(args.get(0), context), c.surroundingContext, c.message, self, on, keys);
                 }
             }));
 
