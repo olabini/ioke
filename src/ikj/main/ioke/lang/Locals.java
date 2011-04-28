@@ -60,7 +60,7 @@ public class Locals {
                                                                Object selfDelegate = IokeObject.as(on, context).getSelf();
 
                                                                if(selfDelegate != null && selfDelegate != on) {
-                                                                   return IokeObject.perform(selfDelegate, context, message);
+                                                                   return Interpreter.perform(selfDelegate, context, message);
                                                                }
 
                                                                return context.runtime.nil;

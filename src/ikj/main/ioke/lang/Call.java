@@ -88,7 +88,7 @@ public class Call extends IokeData {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
 
                     IokeObject msg = ((Call)IokeObject.data(on)).message;
-                    return context.runtime.newList(((Message)IokeObject.data(msg)).getEvaluatedArguments(msg, ((Call)IokeObject.data(on)).surroundingContext));
+                    return context.runtime.newList(context.runtime.interpreter.getEvaluatedArguments(msg, ((Call)IokeObject.data(on)).surroundingContext));
                 }
             }));
 

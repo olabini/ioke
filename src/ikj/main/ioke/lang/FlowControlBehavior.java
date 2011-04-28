@@ -48,7 +48,7 @@ public class FlowControlBehavior {
                             IokeObject place = IokeObject.as(args.get(ix++), context);
 
                             if(Message.next(place) == null && place.getArguments().size() == 0) {
-                                Object value = ((Message)IokeObject.data(message)).getEvaluatedArgument(message, ix++, context);
+                                Object value = context.runtime.interpreter.getEvaluatedArgument(message, ix++, context);
                                 lc.setCell(Message.name(place), value);
                             } else {
                                 place = Message.deepCopy(place);
@@ -65,7 +65,7 @@ public class FlowControlBehavior {
 
                                 Object wherePlace = context.getRealContext();
                                 if(place != realPlace) {
-                                    wherePlace = Message.getEvaluatedArgument(place, context);
+                                    wherePlace = Interpreter.getEvaluatedArgument(place, context);
                                 }
 
                                 final IokeObject _realPlace = realPlace;
@@ -85,14 +85,14 @@ public class FlowControlBehavior {
                                     runtime.interpreter.sendTo(msg, context, wherePlace);
                                     valuesToUnbind.add(0, new Object[]{wherePlace, originalValue, realPlace});
                                 } else {
-                                    Object value = ((Message)IokeObject.data(message)).getEvaluatedArgument(message, ix++, context);
+                                    Object value = context.runtime.interpreter.getEvaluatedArgument(message, ix++, context);
                                     IokeObject.assign(wherePlace, realPlace.getName(), value, context, message);
                                     valuesToUnbind.add(0, new Object[]{wherePlace, originalValue, realPlace});
                                 }
                             }
                         }
 
-                        return ((Message)IokeObject.data(message)).getEvaluatedArgument(message, end, lc);
+                        return context.runtime.interpreter.getEvaluatedArgument(message, end, lc);
                     } finally {
                         while(!valuesToUnbind.isEmpty()) {
                             try {
@@ -149,7 +149,7 @@ public class FlowControlBehavior {
 
                     Object value = runtime.nil;
                     if(message.getArgumentCount() > 0) {
-                        value = ((Message)IokeObject.data(message)).getEvaluatedArgument(message, 0, context);
+                        value = context.runtime.interpreter.getEvaluatedArgument(message, 0, context);
                     }
                     throw new ControlFlow.Break(value);
                 }
@@ -218,9 +218,9 @@ public class FlowControlBehavior {
                     do {
                         doAgain = false;
                         try {
-                            while(!IokeObject.isTrue(((Message)IokeObject.data(message)).getEvaluatedArgument(message, 0, context))) {
+                            while(!IokeObject.isTrue(context.runtime.interpreter.getEvaluatedArgument(message, 0, context))) {
                                 if(body) {
-                                    ret = ((Message)IokeObject.data(message)).getEvaluatedArgument(message, 1, context);
+                                    ret = context.runtime.interpreter.getEvaluatedArgument(message, 1, context);
                                 }
                             }
                         } catch(ControlFlow.Break e) {
@@ -260,9 +260,9 @@ public class FlowControlBehavior {
                     do {
                         doAgain = false;
                         try {
-                            while(IokeObject.isTrue(((Message)IokeObject.data(message)).getEvaluatedArgument(message, 0, context))) {
+                            while(IokeObject.isTrue(context.runtime.interpreter.getEvaluatedArgument(message, 0, context))) {
                                 if(body) {
-                                    ret = ((Message)IokeObject.data(message)).getEvaluatedArgument(message, 1, context);
+                                    ret = context.runtime.interpreter.getEvaluatedArgument(message, 1, context);
                                 }
                             }
                         } catch(ControlFlow.Break e) {
@@ -295,7 +295,7 @@ public class FlowControlBehavior {
                         while(true) {
                             try {
                                 while(true) {
-                                    ((Message)IokeObject.data(message)).getEvaluatedArgument(message, 0, context);
+                                    context.runtime.interpreter.getEvaluatedArgument(message, 0, context);
                                 }
                             } catch(ControlFlow.Break e) {
                                 return e.getValue();
@@ -325,20 +325,20 @@ public class FlowControlBehavior {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().checkArgumentCount(context, message, on);
 
-                    Object test = ((Message)IokeObject.data(message)).getEvaluatedArgument(message, 0, context);
+                    Object test = context.runtime.interpreter.getEvaluatedArgument(message, 0, context);
 
                     LexicalContext itContext = new LexicalContext(context.runtime, context.getRealContext(), "Lexical activation context", message, context);
                     itContext.setCell("it", test);
 
                     if(IokeObject.isTrue(test)) {
                         if(message.getArgumentCount() > 1) {
-                            return ((Message)IokeObject.data(message)).getEvaluatedArgument(message, 1, itContext);
+                            return context.runtime.interpreter.getEvaluatedArgument(message, 1, itContext);
                         } else {
                             return test;
                         }
                     } else {
                         if(message.getArgumentCount() > 2) {
-                            return ((Message)IokeObject.data(message)).getEvaluatedArgument(message, 2, itContext);
+                            return context.runtime.interpreter.getEvaluatedArgument(message, 2, itContext);
                         } else {
                             return test;
                         }
@@ -363,20 +363,20 @@ public class FlowControlBehavior {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().checkArgumentCount(context, message, on);
 
-                    Object test = ((Message)IokeObject.data(message)).getEvaluatedArgument(message, 0, context);
+                    Object test = context.runtime.interpreter.getEvaluatedArgument(message, 0, context);
 
                     LexicalContext itContext = new LexicalContext(context.runtime, context.getRealContext(), "Lexical activation context", message, context);
                     itContext.setCell("it", test);
 
                     if(IokeObject.isTrue(test)) {
                         if(message.getArgumentCount() > 2) {
-                            return ((Message)IokeObject.data(message)).getEvaluatedArgument(message, 2, itContext);
+                            return context.runtime.interpreter.getEvaluatedArgument(message, 2, itContext);
                         } else {
                             return test;
                         }
                     } else {
                         if(message.getArgumentCount() > 1) {
-                            return ((Message)IokeObject.data(message)).getEvaluatedArgument(message, 1, itContext);
+                            return context.runtime.interpreter.getEvaluatedArgument(message, 1, itContext);
                         } else {
                             return test;
                         }

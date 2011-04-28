@@ -434,7 +434,7 @@ public class AssignmentBehavior {
                     getArguments().checkArgumentCount(context, message, on);
                     IokeObject nameMessage = (IokeObject)Message.getArg1(message);
                     String name = nameMessage.getName();
-                    Object current = IokeObject.as(on, context).perform(context, message, name);
+                    Object current = context.runtime.interpreter.perform(IokeObject.as(on, context), context, message, name);
                     Object value = context.runtime.interpreter.sendTo(runtime.succ, context, current);
                     return context.runtime.interpreter.sendTo(runtime.setValue, context, on, nameMessage, value);
                 }
@@ -457,7 +457,7 @@ public class AssignmentBehavior {
 
                     IokeObject nameMessage = (IokeObject)Message.getArg1(message);
                     String name = nameMessage.getName();
-                    Object current = IokeObject.as(on, context).perform(context, message, name);
+                    Object current = context.runtime.interpreter.perform(IokeObject.as(on, context), context, message, name);
                     Object value = context.runtime.interpreter.sendTo(runtime.pred, context, current);
                     return context.runtime.interpreter.sendTo(runtime.setValue, context, on, nameMessage, value);
                 }

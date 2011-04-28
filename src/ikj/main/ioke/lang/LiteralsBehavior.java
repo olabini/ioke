@@ -122,12 +122,12 @@ public class LiteralsBehavior {
                             String str = Message.name(o);
                             key = context.runtime.getSymbol(str.substring(0, str.length()-1));
                             if(Message.next(o) != null) {
-                                value = Message.getEvaluatedArgument(Message.next(o), context);
+                                value = Interpreter.getEvaluatedArgument(Message.next(o), context);
                             } else {
                                 value = context.runtime.nil;
                             }
                         } else {
-                            Object result = Message.getEvaluatedArgument(o, context);
+                            Object result = Interpreter.getEvaluatedArgument(o, context);
                             if((result instanceof IokeObject) && (IokeObject.data(result) instanceof Pair)) {
                                 key = Pair.getFirst(result);
                                 value = Pair.getSecond(result);

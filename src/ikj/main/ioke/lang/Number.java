@@ -893,7 +893,7 @@ public class Number extends IokeData {
                     case 1: {
                         Object result = runtime.nil;
                         while(num > 0) {
-                            result = ((Message)IokeObject.data(message)).getEvaluatedArgument(message, 0, context);
+                            result = context.runtime.interpreter.getEvaluatedArgument(message, 0, context);
                             num--;
                         }
                         return result;
@@ -904,7 +904,7 @@ public class Number extends IokeData {
                         Object result = runtime.nil;
                         while(ix<num) {
                             context.setCell(name, runtime.newNumber(IntNum.make(ix)));
-                            result = ((Message)IokeObject.data(message)).getEvaluatedArgument(message, 1, context);
+                            result = context.runtime.interpreter.getEvaluatedArgument(message, 1, context);
                             ix++;
                         }
                         return result;

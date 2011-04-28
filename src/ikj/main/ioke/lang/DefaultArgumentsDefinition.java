@@ -242,9 +242,9 @@ public class DefaultArgumentsDefinition {
 
         for(Object o : arguments) {
             if(Message.isKeyword(o)) {
-                givenKeywords.put(IokeObject.as(o, context).getName(), Message.getEvaluatedArgument(((Message)IokeObject.data(o)).next, context));
+                givenKeywords.put(IokeObject.as(o, context).getName(), Interpreter.getEvaluatedArgument(((Message)IokeObject.data(o)).next, context));
             } else if(Message.hasName(o, "*") && IokeObject.as(o, context).getArguments().size() == 1) { // Splat
-                Object result = Message.getEvaluatedArgument(IokeObject.as(o, context).getArguments().get(0), context);
+                Object result = Interpreter.getEvaluatedArgument(IokeObject.as(o, context).getArguments().get(0), context);
                 if(IokeObject.data(result) instanceof IokeList) {
                     List<Object> elements = IokeList.getList(result);
                     argumentsWithoutKeywords.addAll(elements);
@@ -284,7 +284,7 @@ public class DefaultArgumentsDefinition {
                     argCount += outp.size();
                 }
             } else {
-                argumentsWithoutKeywords.add(Message.getEvaluatedArgument(o, context));
+                argumentsWithoutKeywords.add(Interpreter.getEvaluatedArgument(o, context));
                 argCount++;
             }
         }

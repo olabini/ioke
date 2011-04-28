@@ -160,7 +160,7 @@ public class InternalBehavior {
                     boolean cache = true;
                     if(o instanceof IokeObject) {
                         cache = false;
-                        o = Message.getEvaluatedArgument(o, context);
+                        o = Interpreter.getEvaluatedArgument(o, context);
                     }
                     if(o instanceof String) {
                         String s = (String)o;
@@ -194,10 +194,10 @@ public class InternalBehavior {
                     Object o = Message.getArg1(message);
                     Object o2 = Message.getArg2(message);
                     if(o instanceof IokeObject) {
-                        o = Message.getEvaluatedArgument(o, context);
+                        o = Interpreter.getEvaluatedArgument(o, context);
                     }
                     if(o2 instanceof IokeObject) {
-                        o2 = Message.getEvaluatedArgument(o2, context);
+                        o2 = Interpreter.getEvaluatedArgument(o2, context);
                     }
                     if(o instanceof String) {
                         String s = (String)o;
@@ -227,7 +227,7 @@ public class InternalBehavior {
                     boolean cache = true;
                     if(o instanceof IokeObject) {
                         cache = false;
-                        o = Message.getEvaluatedArgument(o, context);
+                        o = Interpreter.getEvaluatedArgument(o, context);
                     }
                     Object value = null;
                     if(o instanceof String) {
@@ -262,7 +262,7 @@ public class InternalBehavior {
                     boolean cache = true;
                     if(o instanceof IokeObject) {
                         cache = false;
-                        o = Message.getEvaluatedArgument(o, context);
+                        o = Interpreter.getEvaluatedArgument(o, context);
                     }
                     Object value = runtime.newDecimal((String)o);
                     if(cache) {

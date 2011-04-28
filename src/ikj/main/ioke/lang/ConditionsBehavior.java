@@ -190,14 +190,14 @@ public class ConditionsBehavior {
                     int count = message.getArgumentCount();
                     List<Object> conds = new ArrayList<Object>();
                     for(int i=0, j=count-1; i<j; i++) {
-                        conds.add(((Message)IokeObject.data(message)).getEvaluatedArgument(message, i, context));
+                        conds.add(context.runtime.interpreter.getEvaluatedArgument(message, i, context));
                     }
 
                     if(conds.isEmpty()) {
                         conds.add(context.runtime.condition);
                     }
 
-                    Object handler = ((Message)IokeObject.data(message)).getEvaluatedArgument(message, count-1, context);
+                    Object handler = context.runtime.interpreter.getEvaluatedArgument(message, count-1, context);
                     Object rescue = context.runtime.interpreter.sendTo(context.runtime.mimic, context, context.runtime.rescue);
 
                     IokeObject.setCell(rescue, "handler", handler, context);
@@ -225,14 +225,14 @@ public class ConditionsBehavior {
                     int count = message.getArgumentCount();
                     List<Object> conds = new ArrayList<Object>();
                     for(int i=0, j=count-1; i<j; i++) {
-                        conds.add(((Message)IokeObject.data(message)).getEvaluatedArgument(message, i, context));
+                        conds.add(context.runtime.interpreter.getEvaluatedArgument(message, i, context));
                     }
 
                     if(conds.isEmpty()) {
                         conds.add(context.runtime.condition);
                     }
 
-                    Object code = ((Message)IokeObject.data(message)).getEvaluatedArgument(message, count-1, context);
+                    Object code = context.runtime.interpreter.getEvaluatedArgument(message, count-1, context);
                     Object handle = context.runtime.interpreter.sendTo(context.runtime.mimic, context, context.runtime.handler);
 
                     IokeObject.setCell(handle, "handler", code, context);

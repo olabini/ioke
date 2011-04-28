@@ -693,7 +693,7 @@ public class Message extends IokeData {
 
                         index = newCell[0];
                     }
-                    return ((Message)IokeObject.data(_m)).getEvaluatedArgument(_m, index, newContext);
+                    return context.runtime.interpreter.getEvaluatedArgument(_m, index, newContext);
                 }
             }));
 
@@ -930,31 +930,6 @@ public class Message extends IokeData {
     @Override
     public boolean isMessage() {
         return true;
-    }
-
-    public static Object getEvaluatedArgument(Object argument, IokeObject context) throws ControlFlow {
-        if(!(argument instanceof IokeObject)) {
-            return argument;
-        }
-
-        IokeObject o = IokeObject.as(argument, context);
-        if(!o.isMessage()) {
-            return o;
-        }
-
-        return context.runtime.interpreter.evaluateCompleteWithoutExplicitReceiver(o, context, context.getRealContext());
-    }
-
-    public Object getEvaluatedArgument(IokeObject self, int index, IokeObject context) throws ControlFlow {
-        return Message.getEvaluatedArgument(arguments.get(index), context);
-    }
-
-    public List<Object> getEvaluatedArguments(IokeObject self, IokeObject context) throws ControlFlow {
-        List<Object> args = new ArrayList<Object>(arguments.size());
-        for(Object o : arguments) {
-            args.add(getEvaluatedArgument(o, context));
-        }
-        return args;
     }
 
     public static String code(IokeObject message) {

@@ -587,8 +587,8 @@ public class Reflector {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().checkArgumentCount(context, message, on);
                     final Runtime runtime = context.runtime;
-                    Object recv = ((Message)IokeObject.data(message)).getEvaluatedArgument(message, 0, context);
-                    Object _name = ((Message)IokeObject.data(message)).getEvaluatedArgument(message, 1, context);
+                    Object recv = runtime.interpreter.getEvaluatedArgument(message, 0, context);
+                    Object _name = context.runtime.interpreter.getEvaluatedArgument(message, 1, context);
                     String name = Text.getText(runtime.interpreter.sendTo(runtime.asText, context, _name));
 
                     IokeObject newMessage = Message.deepCopy(message);

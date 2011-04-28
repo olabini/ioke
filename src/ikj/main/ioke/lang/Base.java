@@ -281,7 +281,7 @@ public class Base {
 
                         String name = m1.getName();
                         if(m1.getArguments().size() == 0) {
-                            Object value = Message.getEvaluatedArgument(args.get(1), context);
+                            Object value = Interpreter.getEvaluatedArgument(args.get(1), context);
 
                             IokeObject.assign(on, name, value, context, message);
 
@@ -310,7 +310,7 @@ public class Base {
                         int lastIndex = args.size() - 1;
                         int numPlaces = lastIndex;
 
-                        return recursiveDestructuring(args, numPlaces, message, context, on, Message.getEvaluatedArgument(args.get(lastIndex), context));
+                        return recursiveDestructuring(args, numPlaces, message, context, on, Interpreter.getEvaluatedArgument(args.get(lastIndex), context));
                     }
                 }
             }));

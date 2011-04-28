@@ -248,7 +248,7 @@ public class JavaArgumentsDefinition {
             if(Message.isKeyword(o)) {
                 // ignore for now
             } else if(Message.hasName(o, "*") && IokeObject.as(o, context).getArguments().size() == 1) { // Splat
-                Object result = Message.getEvaluatedArgument(IokeObject.as(o, context).getArguments().get(0), context);
+                Object result = Interpreter.getEvaluatedArgument(IokeObject.as(o, context).getArguments().get(0), context);
                 if(IokeObject.data(result) instanceof IokeList) {
                     List<Object> elements = IokeList.getList(result);
                     for(Object oe : elements) {
@@ -286,7 +286,7 @@ public class JavaArgumentsDefinition {
             } else if(Message.hasName(o, "") && IokeObject.as(o, context).getArguments().size() == 1) {
                 Object m = IokeObject.as(o, context).getArguments().get(0);
                 String name = Message.name(m).intern();
-                Object result = Message.getEvaluatedArgument(Message.next(o), context);
+                Object result = Interpreter.getEvaluatedArgument(Message.next(o), context);
                 Class into = null;
                 Class alt = null;
                 // TODO: make these handle native arrays too
@@ -346,7 +346,7 @@ public class JavaArgumentsDefinition {
                 resultArguments.add(new JavaArgumentDefinition(into, alt, result));
                 argCount++;
             } else {
-                Object val = Message.getEvaluatedArgument(o, context);
+                Object val = Interpreter.getEvaluatedArgument(o, context);
                 JavaArgumentDefinition jarg = new JavaArgumentDefinition(null, null, val, val instanceof IokeObject && IokeObject.data(val) instanceof AssociatedCode);
                 resultArguments.add(jarg);
                 argCount++;
