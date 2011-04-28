@@ -43,9 +43,7 @@ public class Interpreter {
                     tmp = perform(current, IokeRegistry.wrap(current.getClass(), ctx), ctx, m, name);
                 }
 
-                if(tmp != null) {
-                    lastReal = current = tmp;
-                }
+                lastReal = current = tmp;
             }
             m = Message.next(m);
         }
