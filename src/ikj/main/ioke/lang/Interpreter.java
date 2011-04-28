@@ -44,8 +44,7 @@ public class Interpreter {
                 }
 
                 if(tmp != null) {
-                    current = tmp;
-                    lastReal = current;
+                    lastReal = current = tmp;
                 }
             }
             m = Message.next(m);
@@ -207,7 +206,16 @@ public class Interpreter {
             cell = signalNoSuchCell(message, ctx, obj, name, cell, recv);
         }
 
-        return getOrActivate(cell, ctx, message, obj);
+        if(cell instanceof IokeObject) {
+            IokeObject io = (IokeObject)cell;
+            if(io.isActivatable() || ((io.data instanceof CanRun) && message.getArguments().size() > 0)) {
+                return io.data.activate(io, ctx, message, obj);
+            } else {
+                return io;
+            }
+        } else {
+            return cell;
+        }
     }
 
     private static boolean isApplicable(Object pass, IokeObject message, IokeObject ctx) throws ControlFlow {
