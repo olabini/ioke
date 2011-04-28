@@ -27,7 +27,7 @@ public class Interpreter {
         IokeObject m = self;
         Message msg;
         while(m != null) {
-            msg = (Message)IokeObject.data(m);
+            msg = (Message)m.data;
             tmp = msg.cached;
             if(tmp != null) {
                 lastReal = current = tmp;
@@ -93,7 +93,7 @@ public class Interpreter {
 
     public static Object send(IokeObject self, IokeObject context, Object recv) throws ControlFlow {
         Object result;
-        if((result = ((Message)IokeObject.data(self)).cached) != null) {
+        if((result = self.data.cached) != null) {
             return result;
         }
 
@@ -102,7 +102,7 @@ public class Interpreter {
 
     public static Object send(IokeObject self, IokeObject context, Object recv, Object argument) throws ControlFlow {
         Object result;
-        if((result = ((Message)IokeObject.data(self)).cached) != null) {
+        if((result = self.data.cached) != null) {
             return result;
         }
 
@@ -115,7 +115,7 @@ public class Interpreter {
 
     public static Object send(IokeObject self, IokeObject context, Object recv, Object arg1, Object arg2) throws ControlFlow {
         Object result;
-        if((result = ((Message)IokeObject.data(self)).cached) != null) {
+        if((result = self.data.cached) != null) {
             return result;
         }
 
@@ -128,7 +128,7 @@ public class Interpreter {
 
     public static Object send(IokeObject self, IokeObject context, Object recv, Object arg1, Object arg2, Object arg3) throws ControlFlow {
         Object result;
-        if((result = ((Message)IokeObject.data(self)).cached) != null) {
+        if((result = self.data.cached) != null) {
             return result;
         }
 
@@ -142,7 +142,7 @@ public class Interpreter {
 
     public static Object send(IokeObject self, IokeObject context, Object recv, List<Object> args) throws ControlFlow {
         Object result;
-        if((result = ((Message)IokeObject.data(self)).cached) != null) {
+        if((result = self.data.cached) != null) {
             return result;
         }
 

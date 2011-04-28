@@ -107,6 +107,8 @@ namespace Ioke.Lang {
         public IokeObject noticeMessage;
         public IokeObject removeCellMessage;
         public IokeObject eachMessage;
+        public IokeObject nextPMessage;
+        public IokeObject nextMessage;
         public IokeObject plusMessage;
         public IokeObject multMessage;
         public IokeObject divMessage;
@@ -228,6 +230,8 @@ namespace Ioke.Lang {
             noticeMessage = NewMessage("notice");
             removeCellMessage = NewMessage("removeCell!");
             eachMessage = NewMessage("each");
+            nextPMessage = NewMessage("next?");
+            nextMessage = NewMessage("next");
             plusMessage = NewMessage("+");
             multMessage = NewMessage("*");
             divMessage = NewMessage("/");

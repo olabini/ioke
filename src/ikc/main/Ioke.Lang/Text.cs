@@ -432,6 +432,8 @@ namespace Ioke.Lang {
             int formatLength = format.Length;
             object arg = null;
             StringBuilder missingText = new StringBuilder();
+            object seq = null;
+            IList args = null;
 
             while(formatIndex < formatLength) {
                 char c = format[formatIndex++];
@@ -458,29 +460,28 @@ namespace Ioke.Lang {
                                 return formatIndex;
                             case '[':
                                 arg = positionalArgs[argIndex++];
-                                int startLoop = formatIndex;
                                 int endLoop = -1;
-                                bool doSplat = splat;
-                                bool doSplatPairs = splatPairs;
+
+                                seq = ((Message)IokeObject.dataOf(context.runtime.seqMessage)).SendTo(context.runtime.seqMessage, context, arg);
+
+                                while(IokeObject.IsObjectTrue(((Message)IokeObject.dataOf(context.runtime.nextPMessage)).SendTo(context.runtime.nextPMessage, context, seq))) {
+                                    object receiver = ((Message)IokeObject.dataOf(context.runtime.nextMessage)).SendTo(context.runtime.nextMessage, context, seq);
+
+                                    if(splat) {
+                                        args = IokeList.GetList(receiver);
+                                    } else if(splatPairs) {
+                                        args = new SaneArrayList() {Pair.GetFirst(receiver), Pair.GetSecond(receiver)};
+                                    } else {
+                                        args = new SaneArrayList() {receiver};
+                                    }
+                                    
+                                    int newVal = FormatString(format, formatIndex, message, context, args, result);
+                                    endLoop = newVal;
+                                }
+
                                 splat = false;
                                 splatPairs = false;
-                                ((Message)IokeObject.dataOf(context.runtime.eachMessage)).SendTo(context.runtime.eachMessage, context, arg,
-                                                                                                 context.runtime.CreateMessage(
-                                                                                                                               new EvaluatingMessage(context.runtime, "internal:collectDataForText#format",
-                                                                                                                                                     (ctx, ground, receiver) => {
-                                                                                                                                                         IList args = null;
-                                                                                                                                                         if(doSplat) {
-                                                                                                                                                             args = IokeList.GetList(receiver);
-                                                                                                                                                         } else if(doSplatPairs) {
-                                                                                                                                                             args = new SaneArrayList() {Pair.GetFirst(receiver), Pair.GetSecond(receiver)};
-                                                                                                                                                         } else {
-                                                                                                                                                             args = new SaneArrayList() {receiver};
-                                                                                                                                                         }
 
-                                                                                                                                                         int newVal = FormatString(format, startLoop, message, context, args, result);
-                                                                                                                                                         endLoop = newVal;
-                                                                                                                                                         return ctx.runtime.nil;
-                                                                                                                                                     })));
                                 if(endLoop == -1) {
                                     int opened = 1;
                                     while(opened > 0 && formatIndex < formatLength) {
