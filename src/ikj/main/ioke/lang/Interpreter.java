@@ -22,19 +22,26 @@ public class Interpreter {
     public Object evaluate(IokeObject self, IokeObject ctx, Object ground, Object receiver) throws ControlFlow {
         Object current = receiver;
         Object tmp = null;
+        String name = null;
         Object lastReal = self.runtime.getNil();
         IokeObject m = self;
+        Message msg;
         while(m != null) {
-            String name = m.getName();
-
-            if(name.equals(".")) {
+            msg = (Message)IokeObject.data(m);
+            tmp = msg.cached;
+            if(tmp != null) {
+                lastReal = current = tmp;
+            } else if((name = msg.name.intern()) == ".") {
                 current = ctx;
-            } else if(name.length() > 0 && m.getArguments().size() == 0 && name.charAt(0) == ':') {
-                current = self.runtime.getSymbol(name.substring(1));
-                Message.cacheValue(m, current);
-                lastReal = current;
+            } else if(name.length() > 0 && msg.arguments.size() == 0 && name.charAt(0) == ':') {
+                lastReal = msg.cached = current = self.runtime.getSymbol(name.substring(1));
             } else {
-                tmp = send(m, ctx, current);
+                if((current instanceof IokeObject) || IokeRegistry.isWrapped(current, ctx)) {
+                    tmp = perform(IokeObject.as(current, ctx), ctx, m, name);
+                } else {
+                    tmp = performJava(current, ctx, m);
+                }
+
                 if(tmp != null) {
                     current = tmp;
                     lastReal = current;
@@ -85,16 +92,18 @@ public class Interpreter {
 
 
     public static Object send(IokeObject self, IokeObject context, Object recv) throws ControlFlow {
-        if(((Message)IokeObject.data(self)).cached != null) {
-            return ((Message)IokeObject.data(self)).cached;
+        Object result;
+        if((result = ((Message)IokeObject.data(self)).cached) != null) {
+            return result;
         }
 
         return perform(recv, context, self);
     }
 
     public static Object send(IokeObject self, IokeObject context, Object recv, Object argument) throws ControlFlow {
-        if(((Message)IokeObject.data(self)).cached != null) {
-            return ((Message)IokeObject.data(self)).cached;
+        Object result;
+        if((result = ((Message)IokeObject.data(self)).cached) != null) {
+            return result;
         }
 
         IokeObject m = self.allocateCopy(self, context);
@@ -105,8 +114,9 @@ public class Interpreter {
     }
 
     public static Object send(IokeObject self, IokeObject context, Object recv, Object arg1, Object arg2) throws ControlFlow {
-        if(((Message)IokeObject.data(self)).cached != null) {
-            return ((Message)IokeObject.data(self)).cached;
+        Object result;
+        if((result = ((Message)IokeObject.data(self)).cached) != null) {
+            return result;
         }
 
         IokeObject m = self.allocateCopy(self, context);
@@ -117,8 +127,9 @@ public class Interpreter {
     }
 
     public static Object send(IokeObject self, IokeObject context, Object recv, Object arg1, Object arg2, Object arg3) throws ControlFlow {
-        if(((Message)IokeObject.data(self)).cached != null) {
-            return ((Message)IokeObject.data(self)).cached;
+        Object result;
+        if((result = ((Message)IokeObject.data(self)).cached) != null) {
+            return result;
         }
 
         IokeObject m = self.allocateCopy(self, context);
@@ -130,8 +141,9 @@ public class Interpreter {
     }
 
     public static Object send(IokeObject self, IokeObject context, Object recv, List<Object> args) throws ControlFlow {
-        if(((Message)IokeObject.data(self)).cached != null) {
-            return ((Message)IokeObject.data(self)).cached;
+        Object result;
+        if((result = ((Message)IokeObject.data(self)).cached) != null) {
+            return result;
         }
 
         IokeObject m = self.allocateCopy(self, context);
@@ -165,6 +177,10 @@ public class Interpreter {
         } else {
             return performJava(obj, ctx, message);
         }
+    }
+
+    public static Object perform(IokeObject obj, IokeObject ctx, IokeObject message) throws ControlFlow {
+        return perform(obj, ctx, message, message.getName());
     }
 
     private static Object performJava(Object obj, IokeObject ctx, IokeObject message) throws ControlFlow {

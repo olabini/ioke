@@ -21,12 +21,12 @@ import ioke.lang.exceptions.ControlFlow;
 public class Message extends IokeData {
     private boolean isTerminator;
 
-    private String name;
+    String name;
     private String file;
     private int line;
     private int pos;
 
-    private List<Object> arguments = new ArrayList<Object>();
+    List<Object> arguments = new ArrayList<Object>();
 
     public IokeObject next;
     public IokeObject prev;
