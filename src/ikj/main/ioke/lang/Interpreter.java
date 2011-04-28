@@ -37,9 +37,10 @@ public class Interpreter {
                 lastReal = msg.cached = current = self.runtime.getSymbol(name.substring(1));
             } else {
                 if((current instanceof IokeObject) || IokeRegistry.isWrapped(current, ctx)) {
-                    tmp = perform(IokeObject.as(current, ctx), ctx, m, name);
+                    IokeObject recv = IokeObject.as(current, ctx);
+                    tmp = perform(recv, recv, ctx, m, name);
                 } else {
-                    tmp = performJava(current, ctx, m);
+                    tmp = perform(current, IokeRegistry.wrap(current.getClass(), ctx), ctx, m, name);
                 }
 
                 if(tmp != null) {
@@ -173,74 +174,37 @@ public class Interpreter {
 
     public static Object perform(Object obj, IokeObject ctx, IokeObject message) throws ControlFlow {
         if((obj instanceof IokeObject) || IokeRegistry.isWrapped(obj, ctx)) {
-            return perform(IokeObject.as(obj, ctx), ctx, message, message.getName());
+            IokeObject recv = IokeObject.as(obj, ctx);
+            return perform(recv, recv, ctx, message, message.getName());
         } else {
-            return performJava(obj, ctx, message);
+            return perform(obj, IokeRegistry.wrap(obj.getClass(), ctx), ctx, message, message.getName());
         }
     }
 
-    public static Object perform(IokeObject obj, IokeObject ctx, IokeObject message) throws ControlFlow {
-        return perform(obj, ctx, message, message.getName());
+    private static Object signalNoSuchCell(IokeObject message, IokeObject ctx, Object obj, String name, Object cell, IokeObject recv) throws ControlFlow {
+        Runtime runtime = ctx.runtime;
+        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition,
+                                                                           message,
+                                                                           ctx,
+                                                                           "Error",
+                                                                           "NoSuchCell"), ctx).mimic(message, ctx);
+        condition.setCell("message", message);
+        condition.setCell("context", ctx);
+        condition.setCell("receiver", obj);
+        condition.setCell("cellName", runtime.getSymbol(name));
+     
+        Object[] newCell = new Object[]{cell};
+        runtime.withRestartReturningArguments(new ErrorConditionRunnable(runtime, condition), ctx, new UseValueRestart(name, newCell), new StoreValueRestart(name, newCell, recv));
+        return newCell[0];
     }
 
-    private static Object performJava(Object obj, IokeObject ctx, IokeObject message) throws ControlFlow {
-        final IokeObject clz = IokeRegistry.wrap(obj.getClass(), ctx);
-        final Runtime runtime = ctx.runtime;
-        final String name = message.getName();
-        final String outerName = name;
-        Object cell = clz.findCell(message, ctx, name);
+    public static Object perform(Object obj, IokeObject recv, IokeObject ctx, IokeObject message, String name) throws ControlFlow {
+        Runtime runtime = ctx.runtime;
+        Object cell = recv.findCell(message, ctx, name);
         Object passed = null;
 
-        while(cell == runtime.nul && (((cell = passed = clz.findCell(message, ctx, "pass")) == runtime.nul) ||  !isApplicable(passed, message, ctx))) {
-            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition,
-                                                                               message,
-                                                                               ctx,
-                                                                               "Error",
-                                                                               "NoSuchCell"), ctx).mimic(message, ctx);
-            condition.setCell("message", message);
-            condition.setCell("context", ctx);
-            condition.setCell("receiver", obj);
-            condition.setCell("cellName", runtime.getSymbol(name));
-
-            final Object[] newCell = new Object[]{cell};
-
-            runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
-                    public void run() throws ControlFlow {
-                        runtime.errorCondition(condition);
-                    }},
-                ctx,
-                new Restart.ArgumentGivingRestart("useValue") {
-                    public String report() {
-                        return "Use value for: " + outerName;
-                    }
-
-                    public List<String> getArgumentNames() {
-                        return new ArrayList<String>(Arrays.asList("newValue"));
-                    }
-
-                    public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
-                        newCell[0] = arguments.get(0);
-                        return context.runtime.nil;
-                    }
-                },
-                new Restart.ArgumentGivingRestart("storeValue") {
-                    public String report() {
-                        return "Store value for: " + outerName;
-                    }
-
-                    public List<String> getArgumentNames() {
-                        return new ArrayList<String>(Arrays.asList("newValue"));
-                    }
-
-                    public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
-                        newCell[0] = arguments.get(0);
-                        clz.setCell(outerName, newCell[0]);
-                        return context.runtime.nil;
-                    }
-                }
-                );
-
-            cell = newCell[0];
+        while(cell == runtime.nul && (((cell = passed = recv.findCell(message, ctx, "pass")) == runtime.nul) ||  !isApplicable(passed, message, ctx))) {
+            cell = signalNoSuchCell(message, ctx, obj, name, cell, recv);
         }
 
         return getOrActivate(cell, ctx, message, obj);
@@ -251,67 +215,6 @@ public class Interpreter {
             return IokeObject.isTrue(Interpreter.send(ctx.runtime.isApplicableMessage, ctx, pass, ctx.runtime.createMessage(Message.wrap(message))));
         }
         return true;
-    }
-
-    public static Object perform(final IokeObject recv, IokeObject ctx, IokeObject message, final String name) throws ControlFlow {
-        final String outerName = name;
-        final Runtime runtime = recv.runtime;
-        Object cell = recv.findCell(message, ctx, name);
-        Object passed = null;
-
-        while(cell == runtime.nul && (((cell = passed = recv.findCell(message, ctx, "pass")) == runtime.nul) || !isApplicable(passed, message, ctx))) {
-            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition,
-                                                                               message,
-                                                                               ctx,
-                                                                               "Error",
-                                                                               "NoSuchCell"), ctx).mimic(message, ctx);
-            condition.setCell("message", message);
-            condition.setCell("context", ctx);
-            condition.setCell("receiver", recv);
-            condition.setCell("cellName", runtime.getSymbol(name));
-
-            final Object[] newCell = new Object[]{cell};
-
-            runtime.withRestartReturningArguments(new RunnableWithControlFlow() {
-                    public void run() throws ControlFlow {
-                        runtime.errorCondition(condition);
-                    }},
-                ctx,
-                new Restart.ArgumentGivingRestart("useValue") {
-                    public String report() {
-                        return "Use value for: " + outerName;
-                    }
-
-                    public List<String> getArgumentNames() {
-                        return new ArrayList<String>(Arrays.asList("newValue"));
-                    }
-
-                    public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
-                        newCell[0] = arguments.get(0);
-                        return context.runtime.nil;
-                    }
-                },
-                new Restart.ArgumentGivingRestart("storeValue") {
-                    public String report() {
-                        return "Store value for: " + outerName;
-                    }
-
-                    public List<String> getArgumentNames() {
-                        return new ArrayList<String>(Arrays.asList("newValue"));
-                    }
-
-                    public IokeObject invoke(IokeObject context, List<Object> arguments) throws ControlFlow {
-                        newCell[0] = arguments.get(0);
-                        recv.setCell(outerName, newCell[0]);
-                        return context.runtime.nil;
-                    }
-                }
-                );
-
-            cell = newCell[0];
-        }
-
-        return getOrActivate(cell, ctx, message, recv);
     }
 
     public static Object getOrActivate(Object obj, IokeObject context, IokeObject message, Object on) throws ControlFlow {
