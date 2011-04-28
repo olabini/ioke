@@ -255,7 +255,7 @@ public class DefaultArgumentsDefinition {
                         givenKeywords.put(Text.getText(IokeObject.convertToText(me.getKey(), message, context, true)) + ":", me.getValue());
                     }
                 } else if(IokeObject.findCell(result, message, context, "asTuple") != runtime.nul) {
-                    Object tupledValue = runtime.interpreter.sendTo(runtime.asTuple, context, result);
+                    Object tupledValue = Interpreter.send(runtime.asTuple, context, result);
                     Object[] values = Tuple.getElements(tupledValue);
                     argumentsWithoutKeywords.addAll(Arrays.asList(values));
                     argCount += values.length;
@@ -417,7 +417,7 @@ public class DefaultArgumentsDefinition {
                     Object defVal = ((KeywordArgument)a).getDefaultValue();
                     if(!(defVal instanceof String)) {
                         IokeObject msg = IokeObject.as(defVal, context);
-                        result = runtime.interpreter.evaluateCompleteWithoutExplicitReceiver(msg, locals, locals.getRealContext());
+                        result = runtime.interpreter.evaluate(msg, locals, locals.getRealContext(), locals);
                         locals.setCell(a.getName(), result);
                     }
                 } else {
@@ -428,7 +428,7 @@ public class DefaultArgumentsDefinition {
                 Object defVal = ((OptionalArgument)a).getDefaultValue();
                 if(!(defVal instanceof String)) {
                     IokeObject msg = IokeObject.as(defVal, context);
-                    locals.setCell(a.getName(), runtime.interpreter.evaluateCompleteWithoutExplicitReceiver(msg, locals, locals.getRealContext()));
+                    locals.setCell(a.getName(), runtime.interpreter.evaluate(msg, locals, locals.getRealContext(), locals));
                 }
             } else {
                 locals.setCell(a.getName(), argumentsWithoutKeywords.get(ix++));

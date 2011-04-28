@@ -64,13 +64,13 @@ public class ReflectionBehavior {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().checkArgumentCount(context, message, on);
                     final Runtime runtime = context.runtime;
-                    Object _name = runtime.interpreter.getEvaluatedArgument(message, 0, context);
-                    String name = Text.getText(runtime.interpreter.sendTo(runtime.asText, context, _name));
+                    Object _name = Interpreter.getEvaluatedArgument(message, 0, context);
+                    String name = Text.getText(Interpreter.send(runtime.asText, context, _name));
 
                     IokeObject newMessage = Message.deepCopy(message);
                     newMessage.getArguments().remove(0);
                     Message.setName(newMessage, name);
-                    return runtime.interpreter.sendTo(newMessage, context, on);
+                    return Interpreter.send(newMessage, context, on);
                 }
             }));
 
@@ -89,7 +89,7 @@ public class ReflectionBehavior {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     List<Object> args = new ArrayList<Object>();
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
-                    return !IokeObject.equals(on, context.runtime.interpreter.getEvaluatedArgument(message, 0, context)) ? context.runtime._true : context.runtime._false ;
+                    return !IokeObject.equals(on, Interpreter.getEvaluatedArgument(message, 0, context)) ? context.runtime._true : context.runtime._false ;
                 }
             }));
 

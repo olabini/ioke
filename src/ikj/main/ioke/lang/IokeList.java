@@ -163,13 +163,13 @@ public class IokeList extends IokeData {
 
                     switch(message.getArgumentCount()) {
                     case 0: {
-                        return runtime.interpreter.sendTo(runtime.seqMessage, context, on);
+                        return Interpreter.send(runtime.seqMessage, context, on);
                     }
                     case 1: {
                         IokeObject code = IokeObject.as(message.getArguments().get(0), context);
 
                         for(Object o : ls) {
-                            runtime.interpreter.evaluateCompleteWithReceiver(code, context, context.getRealContext(), o);
+                            runtime.interpreter.evaluate(code, context, context.getRealContext(), o);
                         }
                         break;
                     }
@@ -180,7 +180,7 @@ public class IokeList extends IokeData {
 
                         for(Object o : ls) {
                             c.setCell(name, o);
-                            runtime.interpreter.evaluateCompleteWithoutExplicitReceiver(code, c, c.getRealContext());
+                            runtime.interpreter.evaluate(code, c, c.getRealContext(), c);
                         }
                         break;
                     }
@@ -194,7 +194,7 @@ public class IokeList extends IokeData {
                         for(Object o : ls) {
                             c.setCell(name, o);
                             c.setCell(iname, runtime.newNumber(index++));
-                            runtime.interpreter.evaluateCompleteWithoutExplicitReceiver(code, c, c.getRealContext());
+                            runtime.interpreter.evaluate(code, c, c.getRealContext(), c);
                         }
                         break;
                     }
@@ -875,7 +875,7 @@ public class IokeList extends IokeData {
                         IokeObject code = IokeObject.as(message.getArguments().get(0), context);
 
                         for(int i = 0; i<size; i++) {
-                            ls.set(i, runtime.interpreter.evaluateCompleteWithReceiver(code, context, context.getRealContext(), ls.get(i)));
+                            ls.set(i, runtime.interpreter.evaluate(code, context, context.getRealContext(), ls.get(i)));
                         }
                         break;
                     }
@@ -886,7 +886,7 @@ public class IokeList extends IokeData {
 
                         for(int i = 0; i<size; i++) {
                             c.setCell(name, ls.get(i));
-                            ls.set(i, runtime.interpreter.evaluateCompleteWithoutExplicitReceiver(code, c, c.getRealContext()));
+                            ls.set(i, runtime.interpreter.evaluate(code, c, c.getRealContext(), c));
                         }
                         break;
                     }
@@ -923,7 +923,7 @@ public class IokeList extends IokeData {
 
                         for(Iterator<Object> iter = ls.iterator(); iter.hasNext();) {
                             Object obj = iter.next();
-                            if(IokeObject.isTrue(runtime.interpreter.evaluateCompleteWithReceiver(code, context, context.getRealContext(), obj))) {
+                            if(IokeObject.isTrue(runtime.interpreter.evaluate(code, context, context.getRealContext(), obj))) {
                                 iter.remove();
                             }
                         }
@@ -937,7 +937,7 @@ public class IokeList extends IokeData {
                         for(Iterator<Object> iter = ls.iterator(); iter.hasNext();) {
                             Object obj = iter.next();
                             c.setCell(name, obj);
-                            if(IokeObject.isTrue(runtime.interpreter.evaluateCompleteWithoutExplicitReceiver(code, c, c.getRealContext()))) {
+                            if(IokeObject.isTrue(runtime.interpreter.evaluate(code, c, c.getRealContext(), c))) {
                                 iter.remove();
                             }
                         }
@@ -973,7 +973,7 @@ public class IokeList extends IokeData {
             if(o instanceof IokeObject && IokeObject.data(o) instanceof IokeList) {
                 join(getList(o), sb, sep, asText, context);
             } else {
-                sb.append(Text.getText(context.runtime.interpreter.sendTo(asText, context, o)));
+                sb.append(Text.getText(Interpreter.send(asText, context, o)));
             }
             realSep = sep;
         }

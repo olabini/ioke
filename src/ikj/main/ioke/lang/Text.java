@@ -495,10 +495,10 @@ public class Text extends IokeData {
                             arg = positionalArgs.get(argIndex++);
                             int endLoop = -1;
 
-                            seq = context.runtime.interpreter.sendTo(context.runtime.seqMessage, context, arg);
+                            seq = Interpreter.send(context.runtime.seqMessage, context, arg);
 
-                            while(IokeObject.isTrue(context.runtime.interpreter.sendTo(context.runtime.nextPMessage, context, seq))) {
-                                Object receiver = context.runtime.interpreter.sendTo(context.runtime.nextMessage, context, seq);
+                            while(IokeObject.isTrue(Interpreter.send(context.runtime.nextPMessage, context, seq))) {
+                                Object receiver = Interpreter.send(context.runtime.nextMessage, context, seq);
                                 if(splat) {
                                     args = IokeList.getList(receiver);
                                 } else if(splatPairs) {
@@ -536,7 +536,7 @@ public class Text extends IokeData {
                             arg = positionalArgs.get(argIndex++);
                             Object txt = IokeObject.tryConvertToText(arg, message, context);
                             if(txt == null) {
-                                txt = context.runtime.interpreter.sendTo(context.runtime.asText, context, arg);
+                                txt = Interpreter.send(context.runtime.asText, context, arg);
                             }
                             String outTxt = Text.getText(txt);
 

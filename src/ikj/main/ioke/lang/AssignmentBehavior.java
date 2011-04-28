@@ -36,14 +36,14 @@ public class AssignmentBehavior {
                     if(m1.getArgumentCount() == 0) {
                         Object val = IokeObject.findCell(on, message, context, name);
                         if(val == context.runtime.nul || !IokeObject.isTrue(val)) {
-                            return context.runtime.interpreter.sendTo(context.runtime.setValue, context, on, m1, Message.getArg2(message));
+                            return Interpreter.send(context.runtime.setValue, context, on, m1, Message.getArg2(message));
                         } else {
                             return val;
                         }
                     } else {
-                        Object val = context.runtime.interpreter.sendTo(m1, context, on);
+                        Object val = Interpreter.send(m1, context, on);
                         if(val == context.runtime.nul || !IokeObject.isTrue(val)) {
-                            return context.runtime.interpreter.sendTo(context.runtime.setValue, context, on, m1, Message.getArg2(message));
+                            return Interpreter.send(context.runtime.setValue, context, on, m1, Message.getArg2(message));
                         } else {
                             return val;
                         }
@@ -75,14 +75,14 @@ public class AssignmentBehavior {
                         if(val == context.runtime.nul || !IokeObject.isTrue(val)) {
                             return val;
                         } else {
-                            return context.runtime.interpreter.sendTo(context.runtime.setValue, context, on, m1, Message.getArg2(message));
+                            return Interpreter.send(context.runtime.setValue, context, on, m1, Message.getArg2(message));
                         }
                     } else {
-                        Object val = context.runtime.interpreter.sendTo(m1, context, on);
+                        Object val = Interpreter.send(m1, context, on);
                         if(val == context.runtime.nul || !IokeObject.isTrue(val)) {
                             return val;
                         } else {
-                            return context.runtime.interpreter.sendTo(context.runtime.setValue, context, on, m1, Message.getArg2(message));
+                            return Interpreter.send(context.runtime.setValue, context, on, m1, Message.getArg2(message));
                         }
                     }
                 }
@@ -108,12 +108,12 @@ public class AssignmentBehavior {
                     String name = m1.getName();
                     if(m1.getArgumentCount() == 0) {
                         Object val = IokeObject.getCell(on, message, context, name);
-                        Object result = context.runtime.interpreter.sendTo(context.runtime.plusMessage, context, val, Message.getArg2(message));
-                        return context.runtime.interpreter.sendTo(context.runtime.setValue, context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
+                        Object result = Interpreter.send(context.runtime.plusMessage, context, val, Message.getArg2(message));
+                        return Interpreter.send(context.runtime.setValue, context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
                     } else {
-                        Object val = context.runtime.interpreter.sendTo(m1, context, on);
-                        Object result = context.runtime.interpreter.sendTo(context.runtime.plusMessage, context, val, Message.getArg2(message));
-                        return context.runtime.interpreter.sendTo(context.runtime.setValue, context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
+                        Object val = Interpreter.send(m1, context, on);
+                        Object result = Interpreter.send(context.runtime.plusMessage, context, val, Message.getArg2(message));
+                        return Interpreter.send(context.runtime.setValue, context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
                     }
                 }
             }));
@@ -138,12 +138,12 @@ public class AssignmentBehavior {
                     String name = m1.getName();
                     if(m1.getArgumentCount() == 0) {
                         Object val = IokeObject.getCell(on, message, context, name);
-                        Object result = context.runtime.interpreter.sendTo(context.runtime.minusMessage, context, val, Message.getArg2(message));
-                        return context.runtime.interpreter.sendTo(context.runtime.setValue, context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
+                        Object result = Interpreter.send(context.runtime.minusMessage, context, val, Message.getArg2(message));
+                        return Interpreter.send(context.runtime.setValue, context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
                     } else {
-                        Object val = context.runtime.interpreter.sendTo(m1, context, on);
-                        Object result = context.runtime.interpreter.sendTo(context.runtime.minusMessage, context, val, Message.getArg2(message));
-                        return context.runtime.interpreter.sendTo(context.runtime.setValue, context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
+                        Object val = Interpreter.send(m1, context, on);
+                        Object result = Interpreter.send(context.runtime.minusMessage, context, val, Message.getArg2(message));
+                        return Interpreter.send(context.runtime.setValue, context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
                     }
                 }
             }));
@@ -168,12 +168,12 @@ public class AssignmentBehavior {
                     String name = m1.getName();
                     if(m1.getArgumentCount() == 0) {
                         Object val = IokeObject.getCell(on, message, context, name);
-                        Object result = context.runtime.interpreter.sendTo(context.runtime.multMessage, context, val, Message.getArg2(message));
-                        return context.runtime.interpreter.sendTo(context.runtime.setValue, context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
+                        Object result = Interpreter.send(context.runtime.multMessage, context, val, Message.getArg2(message));
+                        return Interpreter.send(context.runtime.setValue, context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
                     } else {
-                        Object val = context.runtime.interpreter.sendTo(m1, context, on);
-                        Object result = context.runtime.interpreter.sendTo(context.runtime.multMessage, context, val, Message.getArg2(message));
-                        return context.runtime.interpreter.sendTo(context.runtime.setValue, context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
+                        Object val = Interpreter.send(m1, context, on);
+                        Object result = Interpreter.send(context.runtime.multMessage, context, val, Message.getArg2(message));
+                        return Interpreter.send(context.runtime.setValue, context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
                     }
                 }
             }));
@@ -198,12 +198,12 @@ public class AssignmentBehavior {
                     String name = m1.getName();
                     if(m1.getArgumentCount() == 0) {
                         Object val = IokeObject.getCell(on, message, context, name);
-                        Object result = context.runtime.interpreter.sendTo(context.runtime.divMessage, context, val, Message.getArg2(message));
-                        return context.runtime.interpreter.sendTo(context.runtime.setValue, context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
+                        Object result = Interpreter.send(context.runtime.divMessage, context, val, Message.getArg2(message));
+                        return Interpreter.send(context.runtime.setValue, context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
                     } else {
-                        Object val = context.runtime.interpreter.sendTo(m1, context, on);
-                        Object result = context.runtime.interpreter.sendTo(context.runtime.divMessage, context, val, Message.getArg2(message));
-                        return context.runtime.interpreter.sendTo(context.runtime.setValue, context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
+                        Object val = Interpreter.send(m1, context, on);
+                        Object result = Interpreter.send(context.runtime.divMessage, context, val, Message.getArg2(message));
+                        return Interpreter.send(context.runtime.setValue, context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
                     }
                 }
             }));
@@ -228,12 +228,12 @@ public class AssignmentBehavior {
                     String name = m1.getName();
                     if(m1.getArgumentCount() == 0) {
                         Object val = IokeObject.getCell(on, message, context, name);
-                        Object result = context.runtime.interpreter.sendTo(context.runtime.modMessage, context, val, Message.getArg2(message));
-                        return context.runtime.interpreter.sendTo(context.runtime.setValue, context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
+                        Object result = Interpreter.send(context.runtime.modMessage, context, val, Message.getArg2(message));
+                        return Interpreter.send(context.runtime.setValue, context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
                     } else {
-                        Object val = context.runtime.interpreter.sendTo(m1, context, on);
-                        Object result = context.runtime.interpreter.sendTo(context.runtime.modMessage, context, val, Message.getArg2(message));
-                        return context.runtime.interpreter.sendTo(context.runtime.setValue, context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
+                        Object val = Interpreter.send(m1, context, on);
+                        Object result = Interpreter.send(context.runtime.modMessage, context, val, Message.getArg2(message));
+                        return Interpreter.send(context.runtime.setValue, context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
                     }
                 }
             }));
@@ -258,12 +258,12 @@ public class AssignmentBehavior {
                     String name = m1.getName();
                     if(m1.getArgumentCount() == 0) {
                         Object val = IokeObject.getCell(on, message, context, name);
-                        Object result = context.runtime.interpreter.sendTo(context.runtime.expMessage, context, val, Message.getArg2(message));
-                        return context.runtime.interpreter.sendTo(context.runtime.setValue, context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
+                        Object result = Interpreter.send(context.runtime.expMessage, context, val, Message.getArg2(message));
+                        return Interpreter.send(context.runtime.setValue, context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
                     } else {
-                        Object val = context.runtime.interpreter.sendTo(m1, context, on);
-                        Object result = context.runtime.interpreter.sendTo(context.runtime.expMessage, context, val, Message.getArg2(message));
-                        return context.runtime.interpreter.sendTo(context.runtime.setValue, context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
+                        Object val = Interpreter.send(m1, context, on);
+                        Object result = Interpreter.send(context.runtime.expMessage, context, val, Message.getArg2(message));
+                        return Interpreter.send(context.runtime.setValue, context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
                     }
                 }
             }));
@@ -288,12 +288,12 @@ public class AssignmentBehavior {
                     String name = m1.getName();
                     if(m1.getArgumentCount() == 0) {
                         Object val = IokeObject.getCell(on, message, context, name);
-                        Object result = context.runtime.interpreter.sendTo(context.runtime.binAndMessage, context, val, Message.getArg2(message));
-                        return context.runtime.interpreter.sendTo(context.runtime.setValue, context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
+                        Object result = Interpreter.send(context.runtime.binAndMessage, context, val, Message.getArg2(message));
+                        return Interpreter.send(context.runtime.setValue, context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
                     } else {
-                        Object val = context.runtime.interpreter.sendTo(m1, context, on);
-                        Object result = context.runtime.interpreter.sendTo(context.runtime.binAndMessage, context, val, Message.getArg2(message));
-                        return context.runtime.interpreter.sendTo(context.runtime.setValue, context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
+                        Object val = Interpreter.send(m1, context, on);
+                        Object result = Interpreter.send(context.runtime.binAndMessage, context, val, Message.getArg2(message));
+                        return Interpreter.send(context.runtime.setValue, context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
                     }
                 }
             }));
@@ -318,12 +318,12 @@ public class AssignmentBehavior {
                     String name = m1.getName();
                     if(m1.getArgumentCount() == 0) {
                         Object val = IokeObject.getCell(on, message, context, name);
-                        Object result = context.runtime.interpreter.sendTo(context.runtime.binOrMessage, context, val, Message.getArg2(message));
-                        return context.runtime.interpreter.sendTo(context.runtime.setValue, context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
+                        Object result = Interpreter.send(context.runtime.binOrMessage, context, val, Message.getArg2(message));
+                        return Interpreter.send(context.runtime.setValue, context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
                     } else {
-                        Object val = context.runtime.interpreter.sendTo(m1, context, on);
-                        Object result = context.runtime.interpreter.sendTo(context.runtime.binOrMessage, context, val, Message.getArg2(message));
-                        return context.runtime.interpreter.sendTo(context.runtime.setValue, context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
+                        Object val = Interpreter.send(m1, context, on);
+                        Object result = Interpreter.send(context.runtime.binOrMessage, context, val, Message.getArg2(message));
+                        return Interpreter.send(context.runtime.setValue, context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
                     }
                 }
             }));
@@ -348,12 +348,12 @@ public class AssignmentBehavior {
                     String name = m1.getName();
                     if(m1.getArgumentCount() == 0) {
                         Object val = IokeObject.getCell(on, message, context, name);
-                        Object result = context.runtime.interpreter.sendTo(context.runtime.binXorMessage, context, val, Message.getArg2(message));
-                        return context.runtime.interpreter.sendTo(context.runtime.setValue, context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
+                        Object result = Interpreter.send(context.runtime.binXorMessage, context, val, Message.getArg2(message));
+                        return Interpreter.send(context.runtime.setValue, context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
                     } else {
-                        Object val = context.runtime.interpreter.sendTo(m1, context, on);
-                        Object result = context.runtime.interpreter.sendTo(context.runtime.binXorMessage, context, val, Message.getArg2(message));
-                        return context.runtime.interpreter.sendTo(context.runtime.setValue, context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
+                        Object val = Interpreter.send(m1, context, on);
+                        Object result = Interpreter.send(context.runtime.binXorMessage, context, val, Message.getArg2(message));
+                        return Interpreter.send(context.runtime.setValue, context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
                     }
                 }
             }));
@@ -378,12 +378,12 @@ public class AssignmentBehavior {
                     String name = m1.getName();
                     if(m1.getArgumentCount() == 0) {
                         Object val = IokeObject.getCell(on, message, context, name);
-                        Object result = context.runtime.interpreter.sendTo(context.runtime.lshMessage, context, val, Message.getArg2(message));
-                        return context.runtime.interpreter.sendTo(context.runtime.setValue, context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
+                        Object result = Interpreter.send(context.runtime.lshMessage, context, val, Message.getArg2(message));
+                        return Interpreter.send(context.runtime.setValue, context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
                     } else {
-                        Object val = context.runtime.interpreter.sendTo(m1, context, on);
-                        Object result = context.runtime.interpreter.sendTo(context.runtime.lshMessage, context, val, Message.getArg2(message));
-                        return context.runtime.interpreter.sendTo(context.runtime.setValue, context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
+                        Object val = Interpreter.send(m1, context, on);
+                        Object result = Interpreter.send(context.runtime.lshMessage, context, val, Message.getArg2(message));
+                        return Interpreter.send(context.runtime.setValue, context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
                     }
                 }
             }));
@@ -408,12 +408,12 @@ public class AssignmentBehavior {
                     String name = m1.getName();
                     if(m1.getArgumentCount() == 0) {
                         Object val = IokeObject.getCell(on, message, context, name);
-                        Object result = context.runtime.interpreter.sendTo(context.runtime.rshMessage, context, val, Message.getArg2(message));
-                        return context.runtime.interpreter.sendTo(context.runtime.setValue, context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
+                        Object result = Interpreter.send(context.runtime.rshMessage, context, val, Message.getArg2(message));
+                        return Interpreter.send(context.runtime.setValue, context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
                     } else {
-                        Object val = context.runtime.interpreter.sendTo(m1, context, on);
-                        Object result = context.runtime.interpreter.sendTo(context.runtime.rshMessage, context, val, Message.getArg2(message));
-                        return context.runtime.interpreter.sendTo(context.runtime.setValue, context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
+                        Object val = Interpreter.send(m1, context, on);
+                        Object result = Interpreter.send(context.runtime.rshMessage, context, val, Message.getArg2(message));
+                        return Interpreter.send(context.runtime.setValue, context, on, m1, context.runtime.createMessage(Message.wrap(IokeObject.as(result, context))));
                     }
                 }
             }));
@@ -434,9 +434,9 @@ public class AssignmentBehavior {
                     getArguments().checkArgumentCount(context, message, on);
                     IokeObject nameMessage = (IokeObject)Message.getArg1(message);
                     String name = nameMessage.getName();
-                    Object current = context.runtime.interpreter.perform(IokeObject.as(on, context), context, message, name);
-                    Object value = context.runtime.interpreter.sendTo(runtime.succ, context, current);
-                    return context.runtime.interpreter.sendTo(runtime.setValue, context, on, nameMessage, value);
+                    Object current = Interpreter.perform(IokeObject.as(on, context), context, message, name);
+                    Object value = Interpreter.send(runtime.succ, context, current);
+                    return Interpreter.send(runtime.setValue, context, on, nameMessage, value);
                 }
             }));
 
@@ -457,9 +457,9 @@ public class AssignmentBehavior {
 
                     IokeObject nameMessage = (IokeObject)Message.getArg1(message);
                     String name = nameMessage.getName();
-                    Object current = context.runtime.interpreter.perform(IokeObject.as(on, context), context, message, name);
-                    Object value = context.runtime.interpreter.sendTo(runtime.pred, context, current);
-                    return context.runtime.interpreter.sendTo(runtime.setValue, context, on, nameMessage, value);
+                    Object current = Interpreter.perform(IokeObject.as(on, context), context, message, name);
+                    Object value = Interpreter.send(runtime.pred, context, current);
+                    return Interpreter.send(runtime.setValue, context, on, nameMessage, value);
                 }
             }));
     }

@@ -539,7 +539,7 @@ public class IokeObject implements TypeChecker {
 
         if(!SLIGHTLY_BAD_CHARS.matcher(name).find() && findCell(message, context, name + "=") != runtime.nul) {
             IokeObject msg = runtime.createMessage(new Message(runtime, name + "=", runtime.createMessage(Message.wrap(as(value, context)))));
-            runtime.interpreter.sendTo(msg, context, this);
+            Interpreter.send(msg, context, this);
         } else {
             if(hooks != null) {
                 boolean contains = cells.containsKey(name);
@@ -712,7 +712,7 @@ public class IokeObject implements TypeChecker {
         if(result == null) {
             if(conversionMethod != null && findCell(message, context, conversionMethod) != context.runtime.nul) {
                 IokeObject msg = context.runtime.newMessage(conversionMethod);
-                return runtime.interpreter.sendTo(msg, context, this);
+                return Interpreter.send(msg, context, this);
             }
             if(signalCondition) {
                 return data.convertTo(this, kind, true, conversionMethod, message, context);
@@ -727,7 +727,7 @@ public class IokeObject implements TypeChecker {
         if(result == null) {
             if(conversionMethod != null && findCell(message, context, conversionMethod) != context.runtime.nul) {
                 IokeObject msg = context.runtime.newMessage(conversionMethod);
-                return runtime.interpreter.sendTo(msg, context, this);
+                return Interpreter.send(msg, context, this);
             }
             if(signalCondition) {
                 return data.convertTo(this, mimic, true, conversionMethod, message, context);
@@ -795,7 +795,7 @@ public class IokeObject implements TypeChecker {
         IokeObject result = data.convertToRational(this, m, context, false);
         if(result == null) {
             if(findCell(m, context, "asRational") != context.runtime.nul) {
-                return IokeObject.as(runtime.interpreter.sendTo(context.runtime.asRational, context, this), context);
+                return IokeObject.as(Interpreter.send(context.runtime.asRational, context, this), context);
             }
             if(signalCondition) {
                 return data.convertToRational(this, m, context, true);
@@ -809,7 +809,7 @@ public class IokeObject implements TypeChecker {
         IokeObject result = data.convertToDecimal(this, m, context, false);
         if(result == null) {
             if(findCell(m, context, "asDecimal") != context.runtime.nul) {
-                return IokeObject.as(runtime.interpreter.sendTo(context.runtime.asDecimal, context, this), context);
+                return IokeObject.as(Interpreter.send(context.runtime.asDecimal, context, this), context);
             }
             if(signalCondition) {
                 return data.convertToDecimal(this, m, context, true);
@@ -839,7 +839,7 @@ public class IokeObject implements TypeChecker {
         if(on instanceof IokeObject) {
             IokeObject ion = (IokeObject)on;
             Runtime runtime = ion.runtime;
-            return Text.getText(runtime.interpreter.sendTo(runtime.inspectMessage, ion, ion));
+            return Text.getText(Interpreter.send(runtime.inspectMessage, ion, ion));
         } else {
             return on.toString();
         }
@@ -849,7 +849,7 @@ public class IokeObject implements TypeChecker {
         if(on instanceof IokeObject) {
             IokeObject ion = (IokeObject)on;
             Runtime runtime = ion.runtime;
-            return Text.getText(runtime.interpreter.sendTo(runtime.noticeMessage, ion, ion));
+            return Text.getText(Interpreter.send(runtime.noticeMessage, ion, ion));
         } else {
             return on.toString();
         }
@@ -859,7 +859,7 @@ public class IokeObject implements TypeChecker {
         IokeObject result = data.convertToText(this, m, context, false);
         if(result == null) {
             if(findCell(m, context, "asText") != context.runtime.nul) {
-                return as(runtime.interpreter.sendTo(context.runtime.asText, context, this), context);
+                return as(Interpreter.send(context.runtime.asText, context, this), context);
             }
             if(signalCondition) {
                 return data.convertToText(this, m, context, true);
@@ -877,7 +877,7 @@ public class IokeObject implements TypeChecker {
         IokeObject result = data.convertToSymbol(this, m, context, false);
         if(result == null) {
             if(findCell(m, context, "asSymbol") != context.runtime.nul) {
-                return as(runtime.interpreter.sendTo(context.runtime.asSymbol, context, this), context);
+                return as(Interpreter.send(context.runtime.asSymbol, context, this), context);
             }
             if(signalCondition) {
                 return data.convertToSymbol(this, m, context, true);

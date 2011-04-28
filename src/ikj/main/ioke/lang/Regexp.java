@@ -124,7 +124,7 @@ public class Regexp extends IokeData {
 
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
-                    IokeObject target = IokeObject.as(context.runtime.interpreter.sendTo(context.runtime.asText, context, args.get(0)), context);
+                    IokeObject target = IokeObject.as(Interpreter.send(context.runtime.asText, context, args.get(0)), context);
                     String arg = Text.getText(target);
                     Matcher m = ((Regexp)IokeObject.data(on)).regexp.matcher(arg);
 
@@ -154,7 +154,7 @@ public class Regexp extends IokeData {
 
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
-                    return context.runtime.newText(Pattern.quote(Text.getText(context.runtime.interpreter.sendTo(context.runtime.asText, context, args.get(0)))));
+                    return context.runtime.newText(Pattern.quote(Text.getText(Interpreter.send(context.runtime.asText, context, args.get(0)))));
                 }
             }));
 
@@ -172,10 +172,10 @@ public class Regexp extends IokeData {
 
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
-                    String pattern = Text.getText(context.runtime.interpreter.sendTo(context.runtime.asText, context, args.get(0)));
+                    String pattern = Text.getText(Interpreter.send(context.runtime.asText, context, args.get(0)));
                     String flags = "";
                     if(args.size() > 1) {
-                        flags = Text.getText(context.runtime.interpreter.sendTo(context.runtime.asText, context, args.get(1)));
+                        flags = Text.getText(Interpreter.send(context.runtime.asText, context, args.get(1)));
                     }
 
                     return context.runtime.newRegexp(pattern, flags, context, message);
@@ -196,7 +196,7 @@ public class Regexp extends IokeData {
 
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
-                    String arg = Text.getText(context.runtime.interpreter.sendTo(context.runtime.asText, context, args.get(0)));
+                    String arg = Text.getText(Interpreter.send(context.runtime.asText, context, args.get(0)));
                     Matcher m = ((Regexp)IokeObject.data(on)).regexp.matcher(arg);
 
                     List<Object> result = new ArrayList<Object>();

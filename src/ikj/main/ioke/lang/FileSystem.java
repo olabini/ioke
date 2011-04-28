@@ -305,9 +305,9 @@ public class FileSystem {
                     Object result = context.runtime.nil;
 
                     try {
-                        result = context.runtime.interpreter.sendTo(context.runtime.callMessage, context, args.get(1), ff);
+                        result = Interpreter.send(context.runtime.callMessage, context, args.get(1), ff);
                     } finally {
-                        context.runtime.interpreter.sendTo(context.runtime.closeMessage, context, ff);
+                        Interpreter.send(context.runtime.closeMessage, context, ff);
                     }
 
                     return result;

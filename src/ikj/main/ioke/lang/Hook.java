@@ -40,7 +40,7 @@ public class Hook extends IokeData {
             IokeObject sym = context.runtime.getSymbol(name);
             IokeObject cellAddedMessage = context.runtime.cellAddedMessage;
             for(IokeObject h : hooks) {
-                context.runtime.interpreter.sendTo(cellAddedMessage, context, h, on, sym);
+                Interpreter.send(cellAddedMessage, context, h, on, sym);
             }
         }
     }
@@ -51,7 +51,7 @@ public class Hook extends IokeData {
             IokeObject sym = context.runtime.getSymbol(name);
             IokeObject cellChangedMessage = context.runtime.cellChangedMessage;
             for(IokeObject h : hooks) {
-                context.runtime.interpreter.sendTo(cellChangedMessage, context, h, on, sym, prevValue);
+                Interpreter.send(cellChangedMessage, context, h, on, sym, prevValue);
             }
         }
     }
@@ -62,7 +62,7 @@ public class Hook extends IokeData {
             IokeObject sym = context.runtime.getSymbol(name);
             IokeObject cellRemovedMessage = context.runtime.cellRemovedMessage;
             for(IokeObject h : hooks) {
-                context.runtime.interpreter.sendTo(cellRemovedMessage, context, h, on, sym, prevValue);
+                Interpreter.send(cellRemovedMessage, context, h, on, sym, prevValue);
             }
         }
     }
@@ -73,7 +73,7 @@ public class Hook extends IokeData {
             IokeObject sym = context.runtime.getSymbol(name);
             IokeObject cellUndefinedMessage = context.runtime.cellUndefinedMessage;
             for(IokeObject h : hooks) {
-                context.runtime.interpreter.sendTo(cellUndefinedMessage, context, h, on, sym, prevValue);
+                Interpreter.send(cellUndefinedMessage, context, h, on, sym, prevValue);
             }
         }
     }
@@ -83,7 +83,7 @@ public class Hook extends IokeData {
         if(hooks != null) {
             IokeObject mimicAddedMessage = context.runtime.mimicAddedMessage;
             for(IokeObject h : hooks) {
-                context.runtime.interpreter.sendTo(mimicAddedMessage, context, h, on, newMimic);
+                Interpreter.send(mimicAddedMessage, context, h, on, newMimic);
             }
         }
     }
@@ -93,7 +93,7 @@ public class Hook extends IokeData {
         if(hooks != null) {
             IokeObject mimicRemovedMessage = context.runtime.mimicRemovedMessage;
             for(IokeObject h : hooks) {
-                context.runtime.interpreter.sendTo(mimicRemovedMessage, context, h, on, removedMimic);
+                Interpreter.send(mimicRemovedMessage, context, h, on, removedMimic);
             }
         }
     }
@@ -103,7 +103,7 @@ public class Hook extends IokeData {
         if(hooks != null) {
             IokeObject mimicsChangedMessage = context.runtime.mimicsChangedMessage;
             for(IokeObject h : hooks) {
-                context.runtime.interpreter.sendTo(mimicsChangedMessage, context, h, on, changedMimic);
+                Interpreter.send(mimicsChangedMessage, context, h, on, changedMimic);
             }
         }
     }
@@ -113,7 +113,7 @@ public class Hook extends IokeData {
         if(hooks != null) {
             IokeObject mimickedMessage = context.runtime.mimickedMessage;
             for(IokeObject h : hooks) {
-                context.runtime.interpreter.sendTo(mimickedMessage, context, h, on, mimickingObject);
+                Interpreter.send(mimickedMessage, context, h, on, mimickingObject);
             }
         }
     }

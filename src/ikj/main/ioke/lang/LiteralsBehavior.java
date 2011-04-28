@@ -43,7 +43,7 @@ public class LiteralsBehavior {
                     if(IokeObject.data(o) instanceof Text) {
                         name = Text.getText(o);
                     } else {
-                        name = Text.getText(context.runtime.interpreter.sendTo(context.runtime.asText, context, o));
+                        name = Text.getText(Interpreter.send(context.runtime.asText, context, o));
                     }
 
                     Message m = new Message(context.runtime, name);
@@ -92,7 +92,7 @@ public class LiteralsBehavior {
                     List<Object> args = new ArrayList<Object>();
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
 
-                    String sym = Text.getText(context.runtime.interpreter.sendTo(runtime.asText, context, args.get(0)));
+                    String sym = Text.getText(Interpreter.send(runtime.asText, context, args.get(0)));
                     return context.runtime.getSymbol(sym);
                 }
             }));

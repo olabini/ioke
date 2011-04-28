@@ -244,8 +244,8 @@ public class DefinitionsBehavior {
                     List<Object> args = new ArrayList<Object>();
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
 
-                    String fromName = Text.getText(context.runtime.interpreter.sendTo(runtime.asText, context, args.get(0)));
-                    String toName = Text.getText(context.runtime.interpreter.sendTo(runtime.asText, context, args.get(1)));
+                    String fromName = Text.getText(Interpreter.send(runtime.asText, context, args.get(0)));
+                    String toName = Text.getText(Interpreter.send(runtime.asText, context, args.get(1)));
                     IokeObject.as(on, context).aliasMethod(fromName, toName, message, context);
                     return on;
                 }

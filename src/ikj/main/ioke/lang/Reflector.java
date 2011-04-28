@@ -239,7 +239,7 @@ public class Reflector {
                     List<Object> args = new ArrayList<Object>();
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
 
-                    String name = Text.getText(context.runtime.interpreter.sendTo(context.runtime.asText, context, args.get(1)));
+                    String name = Text.getText(Interpreter.send(context.runtime.asText, context, args.get(1)));
                     return IokeObject.getCell(args.get(0), message, context, name);
                 }
             }));
@@ -261,7 +261,7 @@ public class Reflector {
                     List<Object> args = new ArrayList<Object>();
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
 
-                    String name = Text.getText(context.runtime.interpreter.sendTo(context.runtime.asText, context, args.get(1)));
+                    String name = Text.getText(Interpreter.send(context.runtime.asText, context, args.get(1)));
                     return IokeObject.findCell(args.get(0), message, context, name) != context.runtime.nul ? context.runtime._true : context.runtime._false;
                 }
             }));
@@ -283,7 +283,7 @@ public class Reflector {
                     List<Object> args = new ArrayList<Object>();
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
 
-                    String name = Text.getText(context.runtime.interpreter.sendTo(context.runtime.asText, context, args.get(1)));
+                    String name = Text.getText(Interpreter.send(context.runtime.asText, context, args.get(1)));
                     return (IokeObject.findPlace(args.get(0), message, context, name) == args.get(0)) ? context.runtime._true : context.runtime._false;
                 }
             }));
@@ -305,7 +305,7 @@ public class Reflector {
                     List<Object> args = new ArrayList<Object>();
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
 
-                    String name = Text.getText(context.runtime.interpreter.sendTo(context.runtime.asText, context, args.get(1)));
+                    String name = Text.getText(Interpreter.send(context.runtime.asText, context, args.get(1)));
                     Object result = IokeObject.findPlace(args.get(0), message, context, name);
                     if(result == context.runtime.nul) {
                         return context.runtime.nil;
@@ -331,7 +331,7 @@ public class Reflector {
                     List<Object> args = new ArrayList<Object>();
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
 
-                    String name = Text.getText(context.runtime.interpreter.sendTo(context.runtime.asText, context, args.get(1)));
+                    String name = Text.getText(Interpreter.send(context.runtime.asText, context, args.get(1)));
                     IokeObject.removeCell(args.get(0), message, context, name);
                     return args.get(0);
                 }
@@ -354,7 +354,7 @@ public class Reflector {
                     List<Object> args = new ArrayList<Object>();
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
 
-                    String name = Text.getText(context.runtime.interpreter.sendTo(context.runtime.asText, context, args.get(1)));
+                    String name = Text.getText(Interpreter.send(context.runtime.asText, context, args.get(1)));
                     IokeObject.undefineCell(args.get(0), message, context, name);
                     return args.get(0);
                 }
@@ -587,15 +587,15 @@ public class Reflector {
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().checkArgumentCount(context, message, on);
                     final Runtime runtime = context.runtime;
-                    Object recv = runtime.interpreter.getEvaluatedArgument(message, 0, context);
-                    Object _name = context.runtime.interpreter.getEvaluatedArgument(message, 1, context);
-                    String name = Text.getText(runtime.interpreter.sendTo(runtime.asText, context, _name));
+                    Object recv = Interpreter.getEvaluatedArgument(message, 0, context);
+                    Object _name = Interpreter.getEvaluatedArgument(message, 1, context);
+                    String name = Text.getText(Interpreter.send(runtime.asText, context, _name));
 
                     IokeObject newMessage = Message.deepCopy(message);
                     newMessage.getArguments().remove(0);
                     newMessage.getArguments().remove(0);
                     Message.setName(newMessage, name);
-                    return runtime.interpreter.sendTo(newMessage, context, recv);
+                    return Interpreter.send(newMessage, context, recv);
                 }
             }));
     }

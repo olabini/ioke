@@ -67,15 +67,15 @@ public class CaseBehavior {
                     int argCount = args.size();
                     int index = 0;
                     IokeObject msg = IokeObject.as(args.get(index++), context);
-                    Object value = runtime.interpreter.evaluateCompleteWithoutExplicitReceiver(msg, context, context.getRealContext());
+                    Object value = runtime.interpreter.evaluate(msg, context, context.getRealContext(), context);
                     argCount--;
 
                     while(argCount > 1) {
                         msg = transformWhenStatement(args.get(index++), context, message, obj);
-                        Object when = runtime.interpreter.evaluateCompleteWithoutExplicitReceiver(msg, context, context.getRealContext());
-                        if(IokeObject.isTrue(runtime.interpreter.sendTo(runtime.eqqMessage, context, when, value))) {
+                        Object when = runtime.interpreter.evaluate(msg, context, context.getRealContext(), context);
+                        if(IokeObject.isTrue(Interpreter.send(runtime.eqqMessage, context, when, value))) {
                             msg = IokeObject.as(args.get(index++), context);
-                            return runtime.interpreter.evaluateCompleteWithoutExplicitReceiver(msg, context, context.getRealContext());
+                            return runtime.interpreter.evaluate(msg, context, context.getRealContext(), context);
                         } else {
                             index++;
                         }
@@ -84,7 +84,7 @@ public class CaseBehavior {
 
                     if(argCount == 1) {
                         msg = IokeObject.as(args.get(index++), context);
-                        return runtime.interpreter.evaluateCompleteWithoutExplicitReceiver(msg, context, context.getRealContext());
+                        return runtime.interpreter.evaluate(msg, context, context.getRealContext(), context);
                     }
 
                     return runtime.nil;

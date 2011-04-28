@@ -177,7 +177,7 @@ public class LexicalBlock extends IokeData implements AssociatedCode {
         }
         arguments.assignArgumentValues(c, dynamicContext, message, on, ((Call)IokeObject.data(call)));
 
-        return self.runtime.interpreter.evaluateCompleteWith(this.message, c, on);
+        return self.runtime.interpreter.evaluate(this.message, c, on, c);
     }
 
     @Override
@@ -186,7 +186,7 @@ public class LexicalBlock extends IokeData implements AssociatedCode {
 
         arguments.assignArgumentValues(c, dynamicContext, message, on, ((Call)IokeObject.data(call)));
 
-        return self.runtime.interpreter.evaluateCompleteWith(this.message, c, on);
+        return self.runtime.interpreter.evaluate(this.message, c, on, c);
     }
 
     @Override
@@ -195,7 +195,7 @@ public class LexicalBlock extends IokeData implements AssociatedCode {
 
         arguments.assignArgumentValues(c, dynamicContext, message, on);
 
-        return self.runtime.interpreter.evaluateCompleteWith(this.message, c, on);
+        return self.runtime.interpreter.evaluate(this.message, c, on, c);
     }
 
     @Override
@@ -209,7 +209,7 @@ public class LexicalBlock extends IokeData implements AssociatedCode {
 
         arguments.assignArgumentValues(c, dynamicContext, message, on);
 
-        return self.runtime.interpreter.evaluateCompleteWith(this.message, c, on);
+        return self.runtime.interpreter.evaluate(this.message, c, on, c);
     }
 
     public static String getInspect(Object on) {

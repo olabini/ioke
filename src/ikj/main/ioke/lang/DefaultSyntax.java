@@ -214,7 +214,7 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
         Object result = null;
 
         try {
-            result = context.runtime.interpreter.evaluateCompleteWith(code, c, on);
+            result = context.runtime.interpreter.evaluate(code, c, on, c);
         } catch(ControlFlow.Return e) {
             if(e.context == c) {
                 result = e.getValue();
@@ -266,7 +266,7 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
         Object result = null;
 
         try {
-            result = context.runtime.interpreter.evaluateCompleteWith(code, c, on);
+            result = context.runtime.interpreter.evaluate(code, c, on, c);
         } catch(ControlFlow.Return e) {
             if(e.context == c) {
                 result = e.getValue();
@@ -323,7 +323,7 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
 
             // We need to distinguish explicit calls to self, and calls through a local context.
             Object receiver = (prev == null || Message.isTerminator(prev)) ? context : on;
-            return context.runtime.interpreter.sendTo(message, context, receiver);
+            return Interpreter.send(message, context, receiver);
         }
     }
 
@@ -383,7 +383,7 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
 
             // We need to distinguish explicit calls to self, and calls through a local context.
             Object receiver = (prev == null || Message.isTerminator(prev)) ? context : on;
-            return context.runtime.interpreter.sendTo(message, context, receiver);
+            return Interpreter.send(message, context, receiver);
         }
     }
 }// DefaultSyntax

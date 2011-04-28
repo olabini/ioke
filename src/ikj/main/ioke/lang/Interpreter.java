@@ -19,86 +19,7 @@ import ioke.lang.exceptions.ControlFlow;
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
 public class Interpreter {
-    public static Object getEvaluatedArgument(Object argument, IokeObject context) throws ControlFlow {
-        if(!(argument instanceof IokeObject)) {
-            return argument;
-        }
-
-        IokeObject o = IokeObject.as(argument, context);
-        if(!o.isMessage()) {
-            return o;
-        }
-
-        return context.runtime.interpreter.evaluateCompleteWithoutExplicitReceiver(o, context, context.getRealContext());
-    }
-
-    public Object getEvaluatedArgument(IokeObject self, int index, IokeObject context) throws ControlFlow {
-        return getEvaluatedArgument(self.getArguments().get(index), context);
-    }
-
-    public List<Object> getEvaluatedArguments(IokeObject self, IokeObject context) throws ControlFlow {
-        List<Object> arguments = self.getArguments();
-        List<Object> args = new ArrayList<Object>(arguments.size());
-        for(Object o : arguments) {
-            args.add(getEvaluatedArgument(o, context));
-        }
-        return args;
-    }
-
-    public Object evaluateComplete(IokeObject self) throws ControlFlow {
-        IokeObject ctx = self.runtime.ground;
-        Object current = ctx;
-        Object tmp = null;
-        Object lastReal = self.runtime.getNil();
-        IokeObject m = self;
-        while(m != null) {
-            String name = m.getName();
-
-            if(name.equals(".")) {
-                current = ctx;
-            } else if(name.length() > 0 && m.getArguments().size() == 0 && name.charAt(0) == ':') {
-                current = self.runtime.getSymbol(name.substring(1));
-                Message.cacheValue(m, current);
-                lastReal = current;
-            } else {
-                tmp = sendTo(m, ctx, current);
-                if(tmp != null) {
-                    current = tmp;
-                    lastReal = current;
-                }
-            }
-            m = Message.next(m);
-        }
-        return lastReal;
-    }
-
-    public Object evaluateCompleteWith(IokeObject self, IokeObject ctx, Object ground) throws ControlFlow {
-        Object current = ctx;
-        Object tmp = null;
-        Object lastReal = self.runtime.getNil();
-        IokeObject m = self;
-        while(m != null) {
-            String name = m.getName();
-
-            if(name.equals(".")) {
-                current = ctx;
-            } else if(name.length() > 0 && m.getArguments().size() == 0 && name.charAt(0) == ':') {
-                current = self.runtime.getSymbol(name.substring(1));
-                Message.cacheValue(m, current);
-                lastReal = current;
-            } else {
-                tmp = sendTo(m, ctx, current);
-                if(tmp != null) {
-                    current = tmp;
-                    lastReal = current;
-                }
-            }
-            m = Message.next(m);
-        }
-        return lastReal;
-    }
-
-    public Object evaluateCompleteWithReceiver(IokeObject self, IokeObject ctx, Object ground, Object receiver) throws ControlFlow {
+    public Object evaluate(IokeObject self, IokeObject ctx, Object ground, Object receiver) throws ControlFlow {
         Object current = receiver;
         Object tmp = null;
         Object lastReal = self.runtime.getNil();
@@ -113,60 +34,7 @@ public class Interpreter {
                 Message.cacheValue(m, current);
                 lastReal = current;
             } else {
-                tmp = sendTo(m, ctx, current);
-                if(tmp != null) {
-                    current = tmp;
-                    lastReal = current;
-                }
-            }
-            m = Message.next(m);
-        }
-        return lastReal;
-    }
-
-    public Object evaluateCompleteWithoutExplicitReceiver(IokeObject self, IokeObject ctx, Object ground) throws ControlFlow {
-        Object current = ctx;
-        Object tmp = null;
-        Object lastReal = self.runtime.getNil();
-        IokeObject m = self;
-        while(m != null) {
-            String name = m.getName();
-
-            if(name.equals(".")) {
-                current = ctx;
-            } else if(name.length() > 0 && m.getArguments().size() == 0 && name.charAt(0) == ':') {
-                current = self.runtime.getSymbol(name.substring(1));
-                Message.cacheValue(m, current);
-                lastReal = current;
-            } else {
-                tmp = sendTo(m, ctx, current);
-                if(tmp != null) {
-                    current = tmp;
-                    lastReal = current;
-                }
-            }
-            m = Message.next(m);
-        }
-        return lastReal;
-    }
-
-    public Object evaluateCompleteWith(IokeObject self, Object ground) throws ControlFlow {
-        IokeObject ctx = IokeObject.as(ground, self);
-        Object current = ctx;
-        Object tmp = null;
-        Object lastReal = self.runtime.getNil();
-        IokeObject m = self;
-        while(m != null) {
-            String name = m.getName();
-
-            if(name.equals(".")) {
-                current = ctx;
-            } else if(name.length() > 0 && m.getArguments().size() == 0 && name.charAt(0) == ':') {
-                current = self.runtime.getSymbol(name.substring(1));
-                Message.cacheValue(m, current);
-                lastReal = current;
-            } else {
-                tmp = sendTo(m, ctx, current);
+                tmp = send(m, ctx, current);
                 if(tmp != null) {
                     current = tmp;
                     lastReal = current;
@@ -182,11 +50,41 @@ public class Interpreter {
 
 
 
+    public static Object getEvaluatedArgument(Object argument, IokeObject context) throws ControlFlow {
+        if(!(argument instanceof IokeObject)) {
+            return argument;
+        }
+
+        IokeObject o = IokeObject.as(argument, context);
+        if(!o.isMessage()) {
+            return o;
+        }
+
+        return context.runtime.interpreter.evaluate(o, context, context.getRealContext(), context);
+    }
+
+    public static Object getEvaluatedArgument(IokeObject self, int index, IokeObject context) throws ControlFlow {
+        return getEvaluatedArgument(self.getArguments().get(index), context);
+    }
+
+    public static List<Object> getEvaluatedArguments(IokeObject self, IokeObject context) throws ControlFlow {
+        List<Object> arguments = self.getArguments();
+        List<Object> args = new ArrayList<Object>(arguments.size());
+        for(Object o : arguments) {
+            args.add(getEvaluatedArgument(o, context));
+        }
+        return args;
+    }
 
 
 
 
-    public Object sendTo(IokeObject self, IokeObject context, Object recv) throws ControlFlow {
+
+
+
+
+
+    public static Object send(IokeObject self, IokeObject context, Object recv) throws ControlFlow {
         if(((Message)IokeObject.data(self)).cached != null) {
             return ((Message)IokeObject.data(self)).cached;
         }
@@ -194,7 +92,7 @@ public class Interpreter {
         return perform(recv, context, self);
     }
 
-    public Object sendTo(IokeObject self, IokeObject context, Object recv, Object argument) throws ControlFlow {
+    public static Object send(IokeObject self, IokeObject context, Object recv, Object argument) throws ControlFlow {
         if(((Message)IokeObject.data(self)).cached != null) {
             return ((Message)IokeObject.data(self)).cached;
         }
@@ -206,7 +104,7 @@ public class Interpreter {
         return perform(recv, context, m);
     }
 
-    public Object sendTo(IokeObject self, IokeObject context, Object recv, Object arg1, Object arg2) throws ControlFlow {
+    public static Object send(IokeObject self, IokeObject context, Object recv, Object arg1, Object arg2) throws ControlFlow {
         if(((Message)IokeObject.data(self)).cached != null) {
             return ((Message)IokeObject.data(self)).cached;
         }
@@ -218,7 +116,7 @@ public class Interpreter {
         return perform(recv, context, m);
     }
 
-    public Object sendTo(IokeObject self, IokeObject context, Object recv, Object arg1, Object arg2, Object arg3) throws ControlFlow {
+    public static Object send(IokeObject self, IokeObject context, Object recv, Object arg1, Object arg2, Object arg3) throws ControlFlow {
         if(((Message)IokeObject.data(self)).cached != null) {
             return ((Message)IokeObject.data(self)).cached;
         }
@@ -231,7 +129,7 @@ public class Interpreter {
         return perform(recv, context, m);
     }
 
-    public Object sendTo(IokeObject self, IokeObject context, Object recv, List<Object> args) throws ControlFlow {
+    public static Object send(IokeObject self, IokeObject context, Object recv, List<Object> args) throws ControlFlow {
         if(((Message)IokeObject.data(self)).cached != null) {
             return ((Message)IokeObject.data(self)).cached;
         }
@@ -263,7 +161,7 @@ public class Interpreter {
 
     public static Object perform(Object obj, IokeObject ctx, IokeObject message) throws ControlFlow {
         if((obj instanceof IokeObject) || IokeRegistry.isWrapped(obj, ctx)) {
-            return ctx.runtime.interpreter.perform(IokeObject.as(obj, ctx), ctx, message);
+            return perform(IokeObject.as(obj, ctx), ctx, message, message.getName());
         } else {
             return performJava(obj, ctx, message);
         }
@@ -332,19 +230,14 @@ public class Interpreter {
         return clz.getOrActivate(cell, ctx, message, obj);
     }
 
-
-    public Object perform(IokeObject recv, IokeObject ctx, IokeObject message) throws ControlFlow {
-        return perform(recv, ctx, message, message.getName());
-    }
-
     private static boolean isApplicable(Object pass, IokeObject message, IokeObject ctx) throws ControlFlow {
         if(pass != null && pass != ctx.runtime.nul && IokeObject.as(pass, ctx).findCell(message, ctx, "applicable?") != ctx.runtime.nul) {
-            return IokeObject.isTrue(ctx.runtime.interpreter.sendTo(ctx.runtime.isApplicableMessage, ctx, pass, ctx.runtime.createMessage(Message.wrap(message))));
+            return IokeObject.isTrue(Interpreter.send(ctx.runtime.isApplicableMessage, ctx, pass, ctx.runtime.createMessage(Message.wrap(message))));
         }
         return true;
     }
 
-    public Object perform(final IokeObject recv, IokeObject ctx, IokeObject message, final String name) throws ControlFlow {
+    public static Object perform(final IokeObject recv, IokeObject ctx, IokeObject message, final String name) throws ControlFlow {
         final String outerName = name;
         final Runtime runtime = recv.runtime;
         Object cell = recv.findCell(message, ctx, name);

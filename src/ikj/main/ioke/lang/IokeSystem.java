@@ -452,7 +452,7 @@ public class IokeSystem extends IokeData {
                     List<Object> args = new ArrayList<Object>();
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
 
-                    String name = Text.getText(context.runtime.interpreter.sendTo(runtime.asText, context, args.get(0)));
+                    String name = Text.getText(Interpreter.send(runtime.asText, context, args.get(0)));
                     if(FEATURES.contains(name)) {
                         return runtime._true;
                     } else {
@@ -585,7 +585,7 @@ public class IokeSystem extends IokeData {
                     getArguments().checkArgumentCount(context, message, on);
                     if(((IokeSystem)IokeObject.data(on)).currentProgram().equals(message.getFile())) {
                         IokeObject msg = ((IokeObject)message.getArguments().get(0));
-                        return context.runtime.interpreter.evaluateCompleteWith(msg, context, context.getRealContext());
+                        return context.runtime.interpreter.evaluate(msg, context, context.getRealContext(), context);
                     } else {
                         return runtime.nil;
                     }
@@ -629,7 +629,7 @@ public class IokeSystem extends IokeData {
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
                     boolean forceReload = IokeObject.isTrue(args.get(1));
 
-                    String name = Text.getText(context.runtime.interpreter.sendTo(runtime.asText, context, args.get(0)));
+                    String name = Text.getText(Interpreter.send(runtime.asText, context, args.get(0)));
                     if(((IokeSystem)IokeObject.data(runtime.system)).use(IokeObject.as(on, context), context, message, name, forceReload)) {
                         return runtime._true;
                     } else {

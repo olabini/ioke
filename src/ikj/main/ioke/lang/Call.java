@@ -88,7 +88,7 @@ public class Call extends IokeData {
                     getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
 
                     IokeObject msg = ((Call)IokeObject.data(on)).message;
-                    return context.runtime.newList(context.runtime.interpreter.getEvaluatedArguments(msg, ((Call)IokeObject.data(on)).surroundingContext));
+                    return context.runtime.newList(Interpreter.getEvaluatedArguments(msg, ((Call)IokeObject.data(on)).surroundingContext));
                 }
             }));
 
@@ -107,10 +107,10 @@ public class Call extends IokeData {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     Call c = (Call)IokeObject.data(on);
-                    String name = Text.getText(context.runtime.interpreter.sendTo(runtime.asText, context, args.get(0)));
+                    String name = Text.getText(Interpreter.send(runtime.asText, context, args.get(0)));
                     IokeObject m = Message.copy(c.message);
                     Message.setName(m, name);
-                    return context.runtime.interpreter.sendTo(m, c.surroundingContext, c.on);
+                    return Interpreter.send(m, c.surroundingContext, c.on);
                 }
             }));
 
@@ -130,7 +130,7 @@ public class Call extends IokeData {
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     Call c = (Call)IokeObject.data(on);
                     Object recv = args.get(0);
-                    return context.runtime.interpreter.sendTo(c.message, c.surroundingContext, recv);
+                    return Interpreter.send(c.message, c.surroundingContext, recv);
                 }
             }));
 

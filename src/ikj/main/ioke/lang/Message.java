@@ -235,7 +235,7 @@ public class Message extends IokeData {
                 Object o = onAsMessage;
                 while(o != null) {
                     c.setCell(name, o);
-                    code.runtime.interpreter.evaluateCompleteWithoutExplicitReceiver(code, c, c.getRealContext());
+                    code.runtime.interpreter.evaluate(code, c, c.getRealContext(), c);
                     for (Object arg : ((IokeObject)o).getArguments()) {
                         walkWithoutExplicitReceiver(arg, c, name, code);
                     }
@@ -246,7 +246,7 @@ public class Message extends IokeData {
             private void walkWithReceiver(IokeObject context, Object onAsMessage, IokeObject code) throws ControlFlow {
                 Object o = onAsMessage;
                 while(o != null) {
-                    code.runtime.interpreter.evaluateCompleteWithReceiver(code, context, context.getRealContext(), o);
+                    code.runtime.interpreter.evaluate(code, context, context.getRealContext(), o);
                     for (Object arg : ((IokeObject)o).getArguments()) {
                         walkWithReceiver(context, arg, code);
                     }
@@ -277,13 +277,13 @@ public class Message extends IokeData {
                     Runtime runtime = context.runtime;
                     switch(message.getArgumentCount()) {
                     case 0: {
-                        return runtime.interpreter.sendTo(runtime.seqMessage, context, on);
+                        return Interpreter.send(runtime.seqMessage, context, on);
                     }
                     case 1: {
                         IokeObject code = IokeObject.as(message.getArguments().get(0), context);
                         Object o = onAsMessage;
                         while(o != null) {
-                            runtime.interpreter.evaluateCompleteWithReceiver(code, context, context.getRealContext(), o);
+                            runtime.interpreter.evaluate(code, context, context.getRealContext(), o);
                             o = next(o);
                         }
 
@@ -297,7 +297,7 @@ public class Message extends IokeData {
                         Object o = onAsMessage;
                         while(o != null) {
                             c.setCell(name, o);
-                            runtime.interpreter.evaluateCompleteWithoutExplicitReceiver(code, c, c.getRealContext());
+                            runtime.interpreter.evaluate(code, c, c.getRealContext(), c);
                             o = next(o);
                         }
                         break;
@@ -313,7 +313,7 @@ public class Message extends IokeData {
                         while(o != null) {
                             c.setCell(name, o);
                             c.setCell(iname, runtime.newNumber(index++));
-                            runtime.interpreter.evaluateCompleteWithoutExplicitReceiver(code, c, c.getRealContext());
+                            runtime.interpreter.evaluate(code, c, c.getRealContext(), c);
                             o = next(o);
                         }
                         break;
@@ -514,7 +514,7 @@ public class Message extends IokeData {
                     }
 
                     IokeObject msg = IokeObject.as(on, context);
-                    return context.runtime.interpreter.sendTo(msg, realContext, realReceiver);
+                    return Interpreter.send(msg, realContext, realReceiver);
                 }
             }));
 
@@ -639,7 +639,7 @@ public class Message extends IokeData {
                         }
                     }
                     IokeObject msg = IokeObject.as(on, context);
-                    return context.runtime.interpreter.evaluateCompleteWithReceiver(msg, messageGround, messageGround, receiver);
+                    return context.runtime.interpreter.evaluate(msg, messageGround, messageGround, receiver);
                 }
             }));
 
@@ -693,7 +693,7 @@ public class Message extends IokeData {
 
                         index = newCell[0];
                     }
-                    return context.runtime.interpreter.getEvaluatedArgument(_m, index, newContext);
+                    return Interpreter.getEvaluatedArgument(_m, index, newContext);
                 }
             }));
 
