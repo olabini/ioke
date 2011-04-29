@@ -23,7 +23,7 @@ public class JavaMethodNativeMethod extends ioke.lang.Method implements NativeIm
     private JavaArgumentsDefinition arguments;
 
     public JavaMethodNativeMethod(Method[] methods) {
-        super(methods[0].getName(), IokeData.TYPE_JAVA_FIELD_SETTER);
+        super(methods[0].getName(), IokeData.TYPE_JAVA_METHOD);
         this.methods = methods;
         this.declaringClass = methods[0].getDeclaringClass();
         this.arguments = JavaArgumentsDefinition.createFrom(methods);

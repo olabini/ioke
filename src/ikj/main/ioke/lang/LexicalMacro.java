@@ -211,7 +211,12 @@ public class LexicalMacro extends IokeData implements AssociatedCode, Named, Ins
 
     @Override
     public Object activate(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on) throws ControlFlow {
-        if(code == null) {
+        return activateFixed(self, dynamicContext, message, on);
+    }
+
+    public static Object activateFixed(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on) throws ControlFlow {
+        LexicalMacro lm = (LexicalMacro)self.data;
+        if(lm.code == null) {
             IokeObject condition = IokeObject.as(IokeObject.getCellChain(dynamicContext.runtime.condition,
                                                                          message,
                                                                          dynamicContext,
@@ -227,12 +232,12 @@ public class LexicalMacro extends IokeData implements AssociatedCode, Named, Ins
             return null;
         }
 
-        LexicalContext c = new LexicalContext(self.runtime, on, "Lexical macro activation context", message, this.context);
+        LexicalContext c = new LexicalContext(self.runtime, on, "Lexical macro activation context", message, lm.context);
 
-        c.setCell("outerScope", context);
+        c.setCell("outerScope", lm.context);
         c.setCell("call", dynamicContext.runtime.newCallFrom(c, message, dynamicContext, IokeObject.as(on, dynamicContext)));
 
-        return self.runtime.interpreter.evaluate(this.code, c, on, c);
+        return self.runtime.interpreter.evaluate(lm.code, c, on, c);
     }
 
     @Override

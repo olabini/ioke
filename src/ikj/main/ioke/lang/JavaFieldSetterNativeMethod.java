@@ -33,11 +33,16 @@ public class JavaFieldSetterNativeMethod extends Method implements NativeImpleme
         return "...";
     }
 
+    public static Object activateFixed(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+        JavaFieldSetterNativeMethod nm = (JavaFieldSetterNativeMethod)self.data;
+        List<Object> args = new LinkedList<Object>();
+        nm.arguments.getJavaArguments(context, message, on, args);
+        return nm.activate(self, on, args.get(0), context, message);
+    }
+
     @Override
     public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-        List<Object> args = new LinkedList<Object>();
-        arguments.getJavaArguments(context, message, on, args);
-        return activate(self, on, args.get(0), context, message);
+        return activateFixed(self, context, message, on);
     }
 
     public Object activate(IokeObject self, Object on, Object arg, IokeObject context, IokeObject message) throws ControlFlow {

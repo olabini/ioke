@@ -33,14 +33,19 @@ public class JavaFieldGetterNativeMethod extends Method implements NativeImpleme
 
     @Override
     public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+        return activateFixed(self, context, message, on);
+    }
+
+    public static Object activateFixed(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+        JavaFieldGetterNativeMethod nm = (JavaFieldGetterNativeMethod)self.data;
         try {
             if((on instanceof IokeObject) && (IokeObject.data(on) instanceof JavaWrapper)) {
                 Object obj = ((JavaWrapper)IokeObject.data(on)).getObject();
-                if(!(declaringClass.isInstance(obj))) {
+                if(!(nm.declaringClass.isInstance(obj))) {
                     obj = obj.getClass();
                 }
 
-                Object result = field.get(obj);
+                Object result = nm.field.get(obj);
                 if(result == null) {
                     return context.runtime.nil;
                 } else if(result instanceof Boolean) {
@@ -49,11 +54,11 @@ public class JavaFieldGetterNativeMethod extends Method implements NativeImpleme
                 return result;
             } else {
                 Object obj = on;
-                if(!(declaringClass.isInstance(obj))) {
+                if(!(nm.declaringClass.isInstance(obj))) {
                     obj = obj.getClass();
                 }
 
-                Object result = field.get(obj);
+                Object result = nm.field.get(obj);
                 if(result == null) {
                     return context.runtime.nil;
                 } else if(result instanceof Boolean) {
