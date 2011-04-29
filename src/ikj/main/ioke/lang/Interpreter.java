@@ -203,12 +203,12 @@ public class Interpreter {
         switch(io.data.type) {
         case IokeData.TYPE_NONE:
             return io.data.activate(io, ctx, message, obj);
-        // case IokeData.TYPE_DEFAULT_METHOD:
-        //     return DefaultMethod.activateFixed(io, ctx, message, obj);
-        // case IokeData.TYPE_DEFAULT_MACRO:
-        //     return DefaultMacro.activateFixed(io, ctx, message, obj);
-        // case IokeData.TYPE_DEFAULT_SYNTAX:
-        //     return DefaultSyntax.activateFixed(io, ctx, message, obj);
+        case IokeData.TYPE_DEFAULT_METHOD:
+            return DefaultMethod.activateFixed(io, ctx, message, obj);
+        case IokeData.TYPE_DEFAULT_MACRO:
+            return DefaultMacro.activateFixed(io, ctx, message, obj);
+        case IokeData.TYPE_DEFAULT_SYNTAX:
+            return DefaultSyntax.activateFixed(io, ctx, message, obj);
         // case IokeData.TYPE_LEXICAL_MACRO:
         //     return LexicalMacro.activateFixed(io, ctx, message, obj);
         // case IokeData.TYPE_NATIVE_METHOD:
@@ -238,12 +238,7 @@ public class Interpreter {
 
     public static Object perform(Object obj, IokeObject recv, IokeObject ctx, IokeObject message, String name) throws ControlFlow {
         Object cell = findCell(message, ctx, obj, name, recv);
-
-        if((cell instanceof IokeObject) && shouldActivate((IokeObject)cell, message)) {
-            return doActivate((IokeObject)cell, ctx, message, obj);
-        } else {
-            return cell;
-        }
+        return getOrActivate(cell, ctx, message, obj);
     }
 
     private static boolean isApplicable(Object pass, IokeObject message, IokeObject ctx) throws ControlFlow {
@@ -255,7 +250,7 @@ public class Interpreter {
 
     public static Object getOrActivate(Object obj, IokeObject context, IokeObject message, Object on) throws ControlFlow {
         if((obj instanceof IokeObject) && shouldActivate((IokeObject)obj, message)) {
-            return doActivate((IokeObject)obj, context, message, obj);
+            return doActivate((IokeObject)obj, context, message, on);
         } else {
             return obj;
         }
