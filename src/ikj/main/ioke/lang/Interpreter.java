@@ -199,34 +199,6 @@ public class Interpreter {
         return io.isActivatable() || ((io.data instanceof CanRun) && message.getArguments().size() > 0);
     }
 
-    private static Object doActivate(IokeObject io, IokeObject ctx, IokeObject message, Object obj) throws ControlFlow {
-        switch(io.data.type) {
-        case IokeData.TYPE_NONE:
-            return io.data.activate(io, ctx, message, obj);
-        case IokeData.TYPE_DEFAULT_METHOD:
-            return DefaultMethod.activateFixed(io, ctx, message, obj);
-        case IokeData.TYPE_DEFAULT_MACRO:
-            return DefaultMacro.activateFixed(io, ctx, message, obj);
-        case IokeData.TYPE_DEFAULT_SYNTAX:
-            return DefaultSyntax.activateFixed(io, ctx, message, obj);
-        case IokeData.TYPE_LEXICAL_MACRO:
-            return LexicalMacro.activateFixed(io, ctx, message, obj);
-        // case IokeData.TYPE_NATIVE_METHOD:
-        //     return NativeMethod.activateFixed(io, ctx, message, obj);
-        case IokeData.TYPE_JAVA_CONSTRUCTOR:
-            return JavaConstructorNativeMethod.activateFixed(io, ctx, message, obj);
-        case IokeData.TYPE_JAVA_FIELD_GETTER:
-            return JavaFieldGetterNativeMethod.activateFixed(io, ctx, message, obj);
-        case IokeData.TYPE_JAVA_FIELD_SETTER:
-            return JavaFieldSetterNativeMethod.activateFixed(io, ctx, message, obj);
-        // case IokeData.TYPE_JAVA_METHOD:
-        //     return JavaMethodNativeMethod.activateFixed(io, ctx, message, obj);
-        // case IokeData.TYPE_ALIAS_METHOD:
-        default:
-            return io.data.activate(io, ctx, message, obj);
-        }
-    }
-
     private static Object findCell(IokeObject message, IokeObject ctx, Object obj, String name, IokeObject recv) throws ControlFlow {
         Runtime runtime = ctx.runtime;
         Object cell = recv.findCell(message, ctx, name);
@@ -250,21 +222,105 @@ public class Interpreter {
 
     public static Object getOrActivate(Object obj, IokeObject context, IokeObject message, Object on) throws ControlFlow {
         if((obj instanceof IokeObject) && shouldActivate((IokeObject)obj, message)) {
-            return doActivate((IokeObject)obj, context, message, on);
+            return activate((IokeObject)obj, context, message, on);
         } else {
             return obj;
         }
     }
 
-    public static Object activate(IokeObject receiver, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-        return receiver.data.activate(receiver, context, message, on);
+    public static Object activate(IokeObject receiver, IokeObject context, IokeObject message, Object obj) throws ControlFlow {
+        switch(receiver.data.type) {
+        case IokeData.TYPE_DEFAULT_METHOD:
+            return DefaultMethod.activateFixed(receiver, context, message, obj);
+        case IokeData.TYPE_DEFAULT_MACRO:
+            return DefaultMacro.activateFixed(receiver, context, message, obj);
+        case IokeData.TYPE_DEFAULT_SYNTAX:
+            return DefaultSyntax.activateFixed(receiver, context, message, obj);
+        case IokeData.TYPE_LEXICAL_MACRO:
+            return LexicalMacro.activateFixed(receiver, context, message, obj);
+        case IokeData.TYPE_NATIVE_METHOD:
+            return NativeMethod.activateFixed(receiver, context, message, obj);
+        case IokeData.TYPE_JAVA_CONSTRUCTOR:
+            return JavaConstructorNativeMethod.activateFixed(receiver, context, message, obj);
+        case IokeData.TYPE_JAVA_FIELD_GETTER:
+            return JavaFieldGetterNativeMethod.activateFixed(receiver, context, message, obj);
+        case IokeData.TYPE_JAVA_FIELD_SETTER:
+            return JavaFieldSetterNativeMethod.activateFixed(receiver, context, message, obj);
+        case IokeData.TYPE_JAVA_METHOD:
+            return JavaMethodNativeMethod.activateFixed(receiver, context, message, obj);
+        case IokeData.TYPE_METHOD_PROTOTYPE:
+            return Method.activateFixed(receiver, context, message, obj);
+        case IokeData.TYPE_LEXICAL_BLOCK:
+            return LexicalBlock.activateFixed(receiver, context, message, obj);
+        case IokeData.TYPE_ALIAS_METHOD:
+            return AliasMethod.activateFixed(receiver, context, message, obj);
+        case IokeData.TYPE_NONE:
+        default:
+            return IokeData.activateFixed(receiver, context, message, obj);
+        }
     }
 
-    public static Object activateWithData(IokeObject receiver, IokeObject context, IokeObject message, Object on, Map<String, Object> d1) throws ControlFlow {
-        return receiver.data.activateWithData(receiver, context, message, on, d1);
+    public static Object activateWithData(IokeObject receiver, IokeObject context, IokeObject message, Object obj, Map<String, Object> d1) throws ControlFlow {
+        switch(receiver.data.type) {
+        case IokeData.TYPE_DEFAULT_METHOD:
+            return DefaultMethod.activateWithDataFixed(receiver, context, message, obj, d1);
+        case IokeData.TYPE_DEFAULT_MACRO:
+            return DefaultMacro.activateWithDataFixed(receiver, context, message, obj, d1);
+        case IokeData.TYPE_DEFAULT_SYNTAX:
+            return DefaultSyntax.activateWithDataFixed(receiver, context, message, obj, d1);
+        case IokeData.TYPE_LEXICAL_MACRO:
+            return LexicalMacro.activateWithDataFixed(receiver, context, message, obj, d1);
+        case IokeData.TYPE_NATIVE_METHOD:
+            return NativeMethod.activateFixed(receiver, context, message, obj);
+        case IokeData.TYPE_JAVA_CONSTRUCTOR:
+            return JavaConstructorNativeMethod.activateFixed(receiver, context, message, obj);
+        case IokeData.TYPE_JAVA_FIELD_GETTER:
+            return JavaFieldGetterNativeMethod.activateFixed(receiver, context, message, obj);
+        case IokeData.TYPE_JAVA_FIELD_SETTER:
+            return JavaFieldSetterNativeMethod.activateFixed(receiver, context, message, obj);
+        case IokeData.TYPE_JAVA_METHOD:
+            return JavaMethodNativeMethod.activateFixed(receiver, context, message, obj);
+        case IokeData.TYPE_METHOD_PROTOTYPE:
+            return Method.activateFixed(receiver, context, message, obj);
+        case IokeData.TYPE_LEXICAL_BLOCK:
+            return LexicalBlock.activateWithDataFixed(receiver, context, message, obj, d1);
+        case IokeData.TYPE_ALIAS_METHOD:
+            return AliasMethod.activateFixed(receiver, context, message, obj);
+        case IokeData.TYPE_NONE:
+        default:
+            return IokeData.activateFixed(receiver, context, message, obj);
+        }
     }
 
-    public static Object activateWithCallAndData(IokeObject receiver, IokeObject context, IokeObject message, Object on, Object c, Map<String, Object> d1) throws ControlFlow {
-        return receiver.data.activateWithCallAndData(receiver, context, message, on, c, d1);
+    public static Object activateWithCallAndData(IokeObject receiver, IokeObject context, IokeObject message, Object obj, Object c, Map<String, Object> d1) throws ControlFlow {
+        switch(receiver.data.type) {
+        case IokeData.TYPE_DEFAULT_METHOD:
+            return DefaultMethod.activateWithCallAndDataFixed(receiver, context, message, obj, c, d1);
+        case IokeData.TYPE_DEFAULT_MACRO:
+            return DefaultMacro.activateWithCallAndDataFixed(receiver, context, message, obj, c, d1);
+        case IokeData.TYPE_DEFAULT_SYNTAX:
+            return DefaultSyntax.activateWithCallAndDataFixed(receiver, context, message, obj, c, d1);
+        case IokeData.TYPE_LEXICAL_MACRO:
+            return LexicalMacro.activateWithCallAndDataFixed(receiver, context, message, obj, c, d1);
+        case IokeData.TYPE_NATIVE_METHOD:
+            return NativeMethod.activateFixed(receiver, context, message, obj);
+        case IokeData.TYPE_JAVA_CONSTRUCTOR:
+            return JavaConstructorNativeMethod.activateFixed(receiver, context, message, obj);
+        case IokeData.TYPE_JAVA_FIELD_GETTER:
+            return JavaFieldGetterNativeMethod.activateFixed(receiver, context, message, obj);
+        case IokeData.TYPE_JAVA_FIELD_SETTER:
+            return JavaFieldSetterNativeMethod.activateFixed(receiver, context, message, obj);
+        case IokeData.TYPE_JAVA_METHOD:
+            return JavaMethodNativeMethod.activateFixed(receiver, context, message, obj);
+        case IokeData.TYPE_METHOD_PROTOTYPE:
+            return Method.activateFixed(receiver, context, message, obj);
+        case IokeData.TYPE_LEXICAL_BLOCK:
+            return LexicalBlock.activateWithCallAndDataFixed(receiver, context, message, obj, c, d1);
+        case IokeData.TYPE_ALIAS_METHOD:
+            return AliasMethod.activateFixed(receiver, context, message, obj);
+        case IokeData.TYPE_NONE:
+        default:
+            return IokeData.activateFixed(receiver, context, message, obj);
+        }
     }
 }

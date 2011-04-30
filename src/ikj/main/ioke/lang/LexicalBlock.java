@@ -20,6 +20,7 @@ public class LexicalBlock extends IokeData implements AssociatedCode {
     private IokeObject message;
 
     public LexicalBlock(IokeObject context, DefaultArgumentsDefinition arguments, IokeObject message) {
+        super(IokeData.TYPE_LEXICAL_BLOCK);
         this.context = context;
         this.arguments = arguments;
         this.message = message;
@@ -167,40 +168,38 @@ public class LexicalBlock extends IokeData implements AssociatedCode {
             }));
     }
 
-    @Override
-    public Object activateWithCallAndData(final IokeObject self, IokeObject dynamicContext, IokeObject message, Object on, Object call, Map<String, Object> data) throws ControlFlow {
-        LexicalContext c = new LexicalContext(self.runtime, on, "Lexical activation context", message, this.context);
+    public static Object activateWithCallAndDataFixed(final IokeObject self, IokeObject dynamicContext, IokeObject message, Object on, Object call, Map<String, Object> data) throws ControlFlow {
+        LexicalBlock lb = (LexicalBlock)self.data;
+        LexicalContext c = new LexicalContext(self.runtime, on, "Lexical activation context", message, lb.context);
 
         for(Map.Entry<String, Object> d : data.entrySet()) {
             String s = d.getKey();
             c.setCell(s.substring(0, s.length()-1), d.getValue());
         }
-        arguments.assignArgumentValues(c, dynamicContext, message, on, ((Call)IokeObject.data(call)));
+        lb.arguments.assignArgumentValues(c, dynamicContext, message, on, ((Call)IokeObject.data(call)));
 
-        return self.runtime.interpreter.evaluate(this.message, c, on, c);
+        return self.runtime.interpreter.evaluate(lb.message, c, on, c);
     }
 
-    @Override
-    public Object activate(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on) throws ControlFlow {
-        LexicalContext c = new LexicalContext(self.runtime, on, "Lexical activation context", message, this.context);
-
-        arguments.assignArgumentValues(c, dynamicContext, message, on);
-
-        return self.runtime.interpreter.evaluate(this.message, c, on, c);
+    public static Object activateFixed(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on) throws ControlFlow {
+        LexicalBlock lb = (LexicalBlock)self.data;
+        LexicalContext c = new LexicalContext(self.runtime, on, "Lexical activation context", message, lb.context);
+        lb.arguments.assignArgumentValues(c, dynamicContext, message, on);
+        return self.runtime.interpreter.evaluate(lb.message, c, on, c);
     }
 
-    @Override
-    public Object activateWithData(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on, Map<String, Object> data) throws ControlFlow {
-        LexicalContext c = new LexicalContext(self.runtime, on, "Lexical activation context", message, this.context);
+    public static Object activateWithDataFixed(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on, Map<String, Object> data) throws ControlFlow {
+        LexicalBlock lb = (LexicalBlock)self.data;
+        LexicalContext c = new LexicalContext(self.runtime, on, "Lexical activation context", message, lb.context);
 
         for(Map.Entry<String, Object> d : data.entrySet()) {
             String s = d.getKey();
             c.setCell(s.substring(0, s.length()-1), d.getValue());
         }
 
-        arguments.assignArgumentValues(c, dynamicContext, message, on);
+        lb.arguments.assignArgumentValues(c, dynamicContext, message, on);
 
-        return self.runtime.interpreter.evaluate(this.message, c, on, c);
+        return self.runtime.interpreter.evaluate(lb.message, c, on, c);
     }
 
     public static String getInspect(Object on) {

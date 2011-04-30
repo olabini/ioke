@@ -179,9 +179,9 @@ public class LexicalMacro extends IokeData implements AssociatedCode, Named, Ins
         }
     }
 
-    @Override
-    public Object activateWithCallAndData(final IokeObject self, IokeObject dynamicContext, IokeObject message, Object on, Object call, Map<String, Object> data) throws ControlFlow {
-        if(code == null) {
+    public static Object activateWithCallAndDataFixed(final IokeObject self, IokeObject dynamicContext, IokeObject message, Object on, Object call, Map<String, Object> data) throws ControlFlow {
+        LexicalMacro lm = (LexicalMacro)self.data;
+        if(lm.code == null) {
             IokeObject condition = IokeObject.as(IokeObject.getCellChain(dynamicContext.runtime.condition,
                                                                          message,
                                                                          dynamicContext,
@@ -197,21 +197,16 @@ public class LexicalMacro extends IokeData implements AssociatedCode, Named, Ins
             return null;
         }
 
-        LexicalContext c = new LexicalContext(self.runtime, on, "Lexical macro activation context", message, this.context);
+        LexicalContext c = new LexicalContext(self.runtime, on, "Lexical macro activation context", message, lm.context);
 
-        c.setCell("outerScope", context);
+        c.setCell("outerScope", lm.context);
         c.setCell("call", call);
         for(Map.Entry<String, Object> d : data.entrySet()) {
             String s = d.getKey();
             c.setCell(s.substring(0, s.length()-1), d.getValue());
         }
 
-        return self.runtime.interpreter.evaluate(this.code, c, on, c);
-    }
-
-    @Override
-    public Object activate(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on) throws ControlFlow {
-        return activateFixed(self, dynamicContext, message, on);
+        return self.runtime.interpreter.evaluate(lm.code, c, on, c);
     }
 
     public static Object activateFixed(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on) throws ControlFlow {
@@ -240,9 +235,9 @@ public class LexicalMacro extends IokeData implements AssociatedCode, Named, Ins
         return self.runtime.interpreter.evaluate(lm.code, c, on, c);
     }
 
-    @Override
-    public Object activateWithData(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on, Map<String, Object> data) throws ControlFlow {
-        if(code == null) {
+    public static Object activateWithDataFixed(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on, Map<String, Object> data) throws ControlFlow {
+        LexicalMacro lm = (LexicalMacro)self.data;
+        if(lm.code == null) {
             IokeObject condition = IokeObject.as(IokeObject.getCellChain(dynamicContext.runtime.condition,
                                                                          message,
                                                                          dynamicContext,
@@ -258,15 +253,15 @@ public class LexicalMacro extends IokeData implements AssociatedCode, Named, Ins
             return null;
         }
 
-        LexicalContext c = new LexicalContext(self.runtime, on, "Lexical macro activation context", message, this.context);
+        LexicalContext c = new LexicalContext(self.runtime, on, "Lexical macro activation context", message, lm.context);
 
-        c.setCell("outerScope", context);
+        c.setCell("outerScope", lm.context);
         c.setCell("call", dynamicContext.runtime.newCallFrom(c, message, dynamicContext, IokeObject.as(on, dynamicContext)));
         for(Map.Entry<String, Object> d : data.entrySet()) {
             String s = d.getKey();
             c.setCell(s.substring(0, s.length()-1), d.getValue());
         }
 
-        return self.runtime.interpreter.evaluate(this.code, c, on, c);
+        return self.runtime.interpreter.evaluate(lm.code, c, on, c);
     }
 }// LexicalMacro

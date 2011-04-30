@@ -31,11 +31,6 @@ public class JavaFieldGetterNativeMethod extends Method implements NativeImpleme
         return "...";
     }
 
-    @Override
-    public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-        return activateFixed(self, context, message, on);
-    }
-
     public static Object activateFixed(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
         JavaFieldGetterNativeMethod nm = (JavaFieldGetterNativeMethod)self.data;
         try {

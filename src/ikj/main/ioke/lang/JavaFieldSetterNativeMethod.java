@@ -40,11 +40,6 @@ public class JavaFieldSetterNativeMethod extends Method implements NativeImpleme
         return nm.activate(self, on, args.get(0), context, message);
     }
 
-    @Override
-    public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-        return activateFixed(self, context, message, on);
-    }
-
     public Object activate(IokeObject self, Object on, Object arg, IokeObject context, IokeObject message) throws ControlFlow {
         try {
             if((on instanceof IokeObject) && (IokeObject.data(on) instanceof JavaWrapper)) {

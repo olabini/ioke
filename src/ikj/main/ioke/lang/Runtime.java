@@ -67,7 +67,7 @@ public class Runtime extends IokeData {
     public IokeObject text = new IokeObject(this, "Contains an immutable piece of text.", new Text(""));
     public IokeObject symbol = new IokeObject(this, "Represents a symbol - an object that always represents itself.", new Symbol(""));
     public IokeObject number = new IokeObject(this, "Represents an exact number", new Number(Number.getFrom("0")));
-    public IokeObject method = new IokeObject(this, "Method is the origin of all methods in the system, both default and Java..", new Method((String)null, IokeData.TYPE_NONE));
+    public IokeObject method = new IokeObject(this, "Method is the origin of all methods in the system, both default and Java..", new Method((String)null, IokeData.TYPE_METHOD_PROTOTYPE));
     public IokeObject defaultMethod = new IokeObject(this, "DefaultMethod is the instance all methods in the system are derived from.", new DefaultMethod((String)null));
     public IokeObject nativeMethod = new IokeObject(this, "NativeMethod is a derivation of Method that represents a primitive implemented in Java.", new NativeMethod.WithNoArguments((String)null));
     public IokeObject lexicalBlock = new IokeObject(this, "A lexical block allows you to delay a computation in a specific lexical context. See DefaultMethod#fn for detailed documentation.", new LexicalBlock(ground));

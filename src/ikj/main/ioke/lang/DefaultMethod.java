@@ -118,9 +118,9 @@ public class DefaultMethod extends Method implements AssociatedCode {
             });
     }
 
-    @Override
-    public Object activateWithCallAndData(final IokeObject self, IokeObject context, IokeObject message, Object on, Object call, Map<String, Object> data) throws ControlFlow {
-        if(code == null) {
+    public static Object activateWithCallAndDataFixed(final IokeObject self, IokeObject context, IokeObject message, Object on, Object call, Map<String, Object> data) throws ControlFlow {
+        DefaultMethod dm = (DefaultMethod)self.data;
+        if(dm.code == null) {
             IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition,
                                                                          message,
                                                                          context,
@@ -156,7 +156,7 @@ public class DefaultMethod extends Method implements AssociatedCode {
             c.setCell(s.substring(0, s.length()-1), d.getValue());
         }
 
-        Object superCell = IokeObject.findSuperCellOn(on, self, message, context, name);
+        Object superCell = IokeObject.findSuperCellOn(on, self, message, context, dm.name);
         if(superCell == context.runtime.nul) {
             superCell = IokeObject.findSuperCellOn(on, self, message, context, Message.name(message));
         }
@@ -165,10 +165,10 @@ public class DefaultMethod extends Method implements AssociatedCode {
             c.setCell("super", createSuperCallFor(self, context, message, on, superCell));
         }
 
-        arguments.assignArgumentValues(c, context, message, on, ((Call)IokeObject.data(call)));
+        dm.arguments.assignArgumentValues(c, context, message, on, ((Call)IokeObject.data(call)));
 
         try {
-            return context.runtime.interpreter.evaluate(code, c, on, c);
+            return context.runtime.interpreter.evaluate(dm.code, c, on, c);
         } catch(ControlFlow.Return e) {
             if(e.context == c) {
                 return e.getValue();
@@ -176,11 +176,6 @@ public class DefaultMethod extends Method implements AssociatedCode {
                 throw e;
             }
         }
-    }
-
-    @Override
-    public Object activate(final IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-        return activateFixed(self, context, message, on);
     }
 
     public static Object activateFixed(final IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
@@ -239,9 +234,9 @@ public class DefaultMethod extends Method implements AssociatedCode {
         }
     }
 
-    @Override
-    public Object activateWithData(final IokeObject self, IokeObject context, IokeObject message, Object on, Map<String, Object> data) throws ControlFlow {
-        if(code == null) {
+    public static Object activateWithDataFixed(final IokeObject self, IokeObject context, IokeObject message, Object on, Map<String, Object> data) throws ControlFlow {
+        DefaultMethod dm = (DefaultMethod)self.data;
+        if(dm.code == null) {
             IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition,
                                                                          message,
                                                                          context,
@@ -277,7 +272,7 @@ public class DefaultMethod extends Method implements AssociatedCode {
             c.setCell(s.substring(0, s.length()-1), d.getValue());
         }
 
-        Object superCell = IokeObject.findSuperCellOn(on, self, message, context, name);
+        Object superCell = IokeObject.findSuperCellOn(on, self, message, context, dm.name);
         if(superCell == context.runtime.nul) {
             superCell = IokeObject.findSuperCellOn(on, self, message, context, Message.name(message));
         }
@@ -286,10 +281,10 @@ public class DefaultMethod extends Method implements AssociatedCode {
             c.setCell("super", createSuperCallFor(self, context, message, on, superCell));
         }
 
-        arguments.assignArgumentValues(c, context, message, on);
+        dm.arguments.assignArgumentValues(c, context, message, on);
 
         try {
-            return context.runtime.interpreter.evaluate(code, c, on, c);
+            return context.runtime.interpreter.evaluate(dm.code, c, on, c);
         } catch(ControlFlow.Return e) {
             if(e.context == c) {
                 return e.getValue();

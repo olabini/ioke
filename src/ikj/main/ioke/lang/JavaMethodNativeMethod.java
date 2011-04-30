@@ -33,14 +33,14 @@ public class JavaMethodNativeMethod extends ioke.lang.Method implements NativeIm
         return "...";
     }
 
-    @Override
-    public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+    public static Object activateFixed(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+        JavaMethodNativeMethod nm = (JavaMethodNativeMethod)self.data;
         List<Object> args = new LinkedList<Object>();
-        Method method = (Method)arguments.getJavaArguments(context, message, on, args);
-        return activate(self, on, args, method, context, message);
+        Method method = (Method)nm.arguments.getJavaArguments(context, message, on, args);
+        return nm.activate(self, on, args, method, context, message);
     }
 
-    public Object activate(IokeObject self, Object on, List<Object> args, Method method, IokeObject context, IokeObject message) throws ControlFlow {
+    public final Object activate(IokeObject self, Object on, List<Object> args, Method method, IokeObject context, IokeObject message) throws ControlFlow {
         try {
             if((on instanceof IokeObject) && (IokeObject.data(on) instanceof JavaWrapper)) {
 //                   System.err.println("Invoking " + method.getName() + " on " + ((JavaWrapper)IokeObject.data(on)).getObject() + "[" + ((JavaWrapper)IokeObject.data(on)).getObject().getClass().getName() + "]");

@@ -64,17 +64,16 @@ public abstract class NativeMethod extends Method implements CanRun {
         return getArguments().getCode(false);
     }
 
-    @Override
     public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-        return activateFixed(self, context, message, on);
+        List<Object> args = new ArrayList<Object>();
+        Map<String, Object> keywords = new HashMap<String, Object>();
+        getArguments().getEvaluatedArguments(context, message, on, args, keywords);
+        return activate(self, on, args, keywords, context, message);
     }
 
     public static Object activateFixed(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
         NativeMethod nm = (NativeMethod)self.data;
-        List<Object> args = new ArrayList<Object>();
-        Map<String, Object> keywords = new HashMap<String, Object>();
-        nm.getArguments().getEvaluatedArguments(context, message, on, args, keywords);
-        return nm.activate(self, on, args, keywords, context, message);
+        return nm.activate(self, context, message, on);
     }
 
     public Object activate(IokeObject self, Object on, List<Object> args,

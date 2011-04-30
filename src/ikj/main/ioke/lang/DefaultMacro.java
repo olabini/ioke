@@ -156,9 +156,9 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
         }
     }
 
-    @Override
-    public Object activateWithCallAndData(final IokeObject self, IokeObject context, IokeObject message, Object on, Object call, Map<String, Object> data) throws ControlFlow {
-        if(code == null) {
+    public static Object activateWithCallAndDataFixed(final IokeObject self, IokeObject context, IokeObject message, Object on, Object call, Map<String, Object> data) throws ControlFlow {
+        DefaultMacro dm = (DefaultMacro)self.data;
+        if(dm.code == null) {
             IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition,
                                                                          message,
                                                                          context,
@@ -193,7 +193,7 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
         }
 
         try {
-            return context.runtime.interpreter.evaluate(code, c, on, c);
+            return context.runtime.interpreter.evaluate(dm.code, c, on, c);
         } catch(ControlFlow.Return e) {
             if(e.context == c) {
                 return e.getValue();
@@ -201,11 +201,6 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
                 throw e;
             }
         }
-    }
-
-    @Override
-    public Object activate(final IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-        return activateFixed(self, context, message, on);
     }
 
     public static Object activateFixed(final IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
@@ -251,9 +246,9 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
         }
     }
 
-    @Override
-    public Object activateWithData(final IokeObject self, IokeObject context, IokeObject message, Object on, Map<String, Object> data) throws ControlFlow {
-        if(code == null) {
+    public static Object activateWithDataFixed(final IokeObject self, IokeObject context, IokeObject message, Object on, Map<String, Object> data) throws ControlFlow {
+        DefaultMacro dm = (DefaultMacro)self.data;
+        if(dm.code == null) {
             IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition,
                                                                          message,
                                                                          context,
@@ -288,7 +283,7 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
         }
 
         try {
-            return context.runtime.interpreter.evaluate(code, c, on, c);
+            return context.runtime.interpreter.evaluate(dm.code, c, on, c);
         } catch(ControlFlow.Return e) {
             if(e.context == c) {
                 return e.getValue();

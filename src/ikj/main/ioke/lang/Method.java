@@ -98,8 +98,7 @@ public class Method extends IokeData implements Named, Inspectable {
         this.name = name;
     }
 
-    @Override
-    public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+    public static Object activateFixed(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
         IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition,
                                                                      message,
                                                                      context,
@@ -110,7 +109,7 @@ public class Method extends IokeData implements Named, Inspectable {
         condition.setCell("context", context);
         condition.setCell("receiver", on);
         condition.setCell("method", self);
-        condition.setCell("reportMsg", context.runtime.newText("You tried to activate a method (" + name +") without any code - did you by any chance activate the Method kind by referring to it without wrapping it inside a call to cell?"));
+        condition.setCell("reportMsg", context.runtime.newText("You tried to activate a method (" + ((Method)self.data).name +") without any code - did you by any chance activate the Method kind by referring to it without wrapping it inside a call to cell?"));
         context.runtime.errorCondition(condition);
 
         return self.runtime.nil;

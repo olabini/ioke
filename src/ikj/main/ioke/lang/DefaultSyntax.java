@@ -279,9 +279,9 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
         return result;
     }
 
-    @Override
-    public Object activateWithCallAndData(final IokeObject self, IokeObject context, IokeObject message, Object on, Object call, Map<String, Object> data) throws ControlFlow {
-        Object result = expandWithCall(self, context, message, on, call, data);
+    public static Object activateWithCallAndDataFixed(final IokeObject self, IokeObject context, IokeObject message, Object on, Object call, Map<String, Object> data) throws ControlFlow {
+        DefaultSyntax dm = (DefaultSyntax)self.data;
+        Object result = dm.expandWithCall(self, context, message, on, call, data);
 
         if(result == context.runtime.nil) {
             // Remove chain completely
@@ -377,14 +377,9 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
         }
     }
 
-    @Override
-    public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-        return activateFixed(self, context, message, on);
-    }
-
-    @Override
-    public Object activateWithData(IokeObject self, IokeObject context, IokeObject message, Object on, Map<String, Object> data) throws ControlFlow {
-        Object result = expand(self, context, message, on, data);
+    public static Object activateWithDataFixed(IokeObject self, IokeObject context, IokeObject message, Object on, Map<String, Object> data) throws ControlFlow {
+        DefaultSyntax dm = (DefaultSyntax)self.data;
+        Object result = dm.expand(self, context, message, on, data);
 
         if(result == context.runtime.nil) {
             // Remove chain completely

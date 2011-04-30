@@ -33,11 +33,6 @@ public class JavaConstructorNativeMethod extends ioke.lang.Method implements Nat
         return "...";
     }
 
-    @Override
-    public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-        return activateFixed(self, context, message, on);
-    }
-
     public static Object activateFixed(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
         JavaConstructorNativeMethod nm = (JavaConstructorNativeMethod)self.data;
         List<Object> args = new LinkedList<Object>();

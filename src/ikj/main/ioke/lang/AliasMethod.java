@@ -15,6 +15,7 @@ public class AliasMethod extends IokeData implements Named, Inspectable, Associa
     IokeObject realSelf;
 
     public AliasMethod(String name, IokeData realMethod, IokeObject realSelf) {
+        super(IokeData.TYPE_ALIAS_METHOD);
         this.name = name;
         this.realMethod = realMethod;
         this.realSelf = realSelf;
@@ -64,8 +65,37 @@ public class AliasMethod extends IokeData implements Named, Inspectable, Associa
         return "";
     }
 
-    @Override
-    public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-        return realMethod.activate(realSelf, context, message, on);
+    public static Object activateFixed(IokeObject self, IokeObject ctx, IokeObject message, Object obj) throws ControlFlow {
+        AliasMethod am = (AliasMethod)self.data;
+        IokeObject realSelf = am.realSelf;
+        switch(am.realMethod.type) {
+        case IokeData.TYPE_DEFAULT_METHOD:
+            return DefaultMethod.activateFixed(realSelf, ctx, message, obj);
+        case IokeData.TYPE_DEFAULT_MACRO:
+            return DefaultMacro.activateFixed(realSelf, ctx, message, obj);
+        case IokeData.TYPE_DEFAULT_SYNTAX:
+            return DefaultSyntax.activateFixed(realSelf, ctx, message, obj);
+        case IokeData.TYPE_LEXICAL_MACRO:
+            return LexicalMacro.activateFixed(realSelf, ctx, message, obj);
+        case IokeData.TYPE_NATIVE_METHOD:
+            return NativeMethod.activateFixed(realSelf, ctx, message, obj);
+        case IokeData.TYPE_JAVA_CONSTRUCTOR:
+            return JavaConstructorNativeMethod.activateFixed(realSelf, ctx, message, obj);
+        case IokeData.TYPE_JAVA_FIELD_GETTER:
+            return JavaFieldGetterNativeMethod.activateFixed(realSelf, ctx, message, obj);
+        case IokeData.TYPE_JAVA_FIELD_SETTER:
+            return JavaFieldSetterNativeMethod.activateFixed(realSelf, ctx, message, obj);
+        case IokeData.TYPE_JAVA_METHOD:
+            return JavaMethodNativeMethod.activateFixed(realSelf, ctx, message, obj);
+        case IokeData.TYPE_METHOD_PROTOTYPE:
+            return Method.activateFixed(realSelf, ctx, message, obj);
+        case IokeData.TYPE_LEXICAL_BLOCK:
+            return LexicalBlock.activateFixed(realSelf, ctx, message, obj);
+        case IokeData.TYPE_ALIAS_METHOD:
+            return AliasMethod.activateFixed(realSelf, ctx, message, obj);
+        case IokeData.TYPE_NONE:
+        default:
+            return IokeData.activateFixed(realSelf, ctx, message, obj);
+        }
     }
 }// AliasMethod

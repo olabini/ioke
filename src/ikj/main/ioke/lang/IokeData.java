@@ -28,6 +28,8 @@ public abstract class IokeData {
     public final static int TYPE_JAVA_FIELD_GETTER = 8;
     public final static int TYPE_JAVA_FIELD_SETTER = 9;
     public final static int TYPE_JAVA_METHOD = 10;
+    public final static int TYPE_METHOD_PROTOTYPE = 11;
+    public final static int TYPE_LEXICAL_BLOCK = 12;
 
     public IokeData() {
         this(TYPE_NONE);
@@ -456,7 +458,7 @@ public abstract class IokeData {
         return IokeObject.convertToRegexp(newCell[0], m, context);
     }
 
-    private void report(Object self, IokeObject context, IokeObject message, String name) throws ControlFlow {
+    private static void report(Object self, IokeObject context, IokeObject message, String name) throws ControlFlow {
         IokeObject condition = IokeObject.as(IokeObject.getCellChain(context.runtime.condition,
                                                                      message,
                                                                      context,
@@ -470,7 +472,7 @@ public abstract class IokeData {
         context.runtime.errorCondition(condition);
     }
 
-    public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+    public static Object activateFixed(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
         Object cell = self.findCell(message, context, "activate");
         if(cell == context.runtime.nul) {
             report(self, context, message, "activate");
@@ -483,14 +485,6 @@ public abstract class IokeData {
             newMessage.getArguments().add(context.runtime.createMessage(Message.wrap(IokeObject.as(on, context))));
             return Interpreter.getOrActivate(cell, context, newMessage, self);
         }
-    }
-
-    public Object activateWithData(IokeObject self, IokeObject context, IokeObject message, Object on, Map<String, Object> c) throws ControlFlow {
-        return activate(self, context, message, on);
-    }
-
-    public Object activateWithCallAndData(IokeObject self, IokeObject context, IokeObject message, Object on, Object c, Map<String, Object> data) throws ControlFlow {
-        return activate(self, context, message, on);
     }
 
     public List<Object> getArguments(IokeObject self) throws ControlFlow {
