@@ -35,6 +35,7 @@ public class DefaultMethod extends Method implements AssociatedCode {
     @Override
     public void init(IokeObject defaultMethod) throws ControlFlow {
         defaultMethod.setKind("DefaultMethod");
+
         defaultMethod.registerMethod(defaultMethod.runtime.newNativeMethod("returns a list of the keywords this method takes", new TypeCheckingNativeMethod.WithNoArguments("keywords", defaultMethod) {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {

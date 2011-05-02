@@ -44,6 +44,7 @@ public abstract class IokeData {
     public final static IokeData Nil = new IokeData(){
             public void init(IokeObject obj) {
                 obj.setKind("nil");
+                obj.flags |= IokeObject.NIL_F | IokeObject.FALSY_F;
             }
 
             @Override
@@ -57,14 +58,6 @@ public abstract class IokeData {
                 condition.setCell("context", context);
                 condition.setCell("receiver", obj);
                 context.runtime.errorCondition(condition);
-            }
-
-            public boolean isNil() {
-                return true;
-            }
-
-            public boolean isTrue() {
-                return false;
             }
 
             @Override
@@ -76,6 +69,7 @@ public abstract class IokeData {
     public final static IokeData False = new IokeData(){
             public void init(IokeObject obj) {
                 obj.setKind("false");
+                obj.flags |= IokeObject.FALSY_F;
             }
 
             @Override
@@ -89,10 +83,6 @@ public abstract class IokeData {
                 condition.setCell("context", context);
                 condition.setCell("receiver", obj);
                 context.runtime.errorCondition(condition);
-            }
-
-            public boolean isTrue() {
-                return false;
             }
 
             @Override
@@ -128,8 +118,6 @@ public abstract class IokeData {
 
     public void init(IokeObject obj) throws ControlFlow {}
     public void checkMimic(IokeObject obj, IokeObject m, IokeObject context) throws ControlFlow {}
-    public boolean isNil() {return false;}
-    public boolean isTrue() {return true;}
     public boolean isMessage() {return false;}
     public boolean isSymbol() {return false;}
 

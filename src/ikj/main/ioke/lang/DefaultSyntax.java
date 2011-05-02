@@ -47,7 +47,7 @@ public class DefaultSyntax extends IokeData implements Named, Inspectable, Assoc
     @Override
     public void init(final IokeObject syntax) throws ControlFlow {
         syntax.setKind("DefaultSyntax");
-        syntax.registerCell("activatable", syntax.runtime._true);
+        syntax.setActivatable(true);
 
         syntax.registerMethod(syntax.runtime.newNativeMethod("returns the name of the syntax", new TypeCheckingNativeMethod.WithNoArguments("name", syntax) {
                 @Override

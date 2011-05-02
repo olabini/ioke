@@ -26,10 +26,71 @@ public class IokeObject implements TypeChecker {
 
     IokeData data;
 
-    private boolean frozen = false;
-
     // Used to handle recursive cell lookup chains more efficiently. Should in the end be a ThreadLocal of course.
     private boolean marked = false;
+
+    // zeroed by jvm
+    int flags;
+
+    public static final int FALSY_F = 1 << 0;
+    public static final int NIL_F = 1 << 1;
+    public static final int FROZEN_F = 1 << 2;
+    public static final int ACTIVATABLE_F = 1 << 3;
+    public static final int HAS_ACTIVATABLE_F = 1 << 4;
+
+    public final void setFlag(int flag, boolean set) {
+        if(set) {
+            flags |= flag;
+        } else {
+            flags &= ~flag;
+        }
+    }
+    
+    public final boolean getFlag(int flag) {
+        return (flags & flag) != 0;
+    }
+
+    public final boolean isNil() {
+        return (flags & NIL_F) != 0;
+    }
+
+    public final boolean isTrue() {
+        return (flags & FALSY_F) == 0;
+    }
+
+    public final boolean isFalse() {
+        return (flags & FALSY_F) != 0;
+    }
+
+    public final boolean isFrozen() {
+        return (flags & FROZEN_F) != 0;
+    }
+
+    public final void setFrozen(boolean frozen) {
+        if (frozen) {
+            flags |= FROZEN_F;
+        } else {
+            flags &= ~FROZEN_F;
+        }
+    }
+
+    public final boolean isActivatable() {
+        return (flags & ACTIVATABLE_F) != 0;
+    }
+
+    public final boolean isSetActivatable() {
+        return (flags & HAS_ACTIVATABLE_F) != 0;
+    }
+
+    public final void setActivatable(boolean activatable) {
+        flags |= HAS_ACTIVATABLE_F;
+        if (activatable) {
+            flags |= ACTIVATABLE_F;
+        } else {
+            flags &= ~ACTIVATABLE_F;
+        }
+    }
+    
 
     public IokeObject(Runtime runtime, String documentation) {
         this(runtime, documentation, IokeData.None);
@@ -50,7 +111,7 @@ public class IokeObject implements TypeChecker {
     }
 
     private void checkFrozen(String modification, IokeObject message, IokeObject context) throws ControlFlow {
-        if(frozen) {
+        if(isFrozen()) {
             final IokeObject condition = as(IokeObject.getCellChain(context.runtime.condition,
                                                                     message,
                                                                     context,
@@ -72,7 +133,7 @@ public class IokeObject implements TypeChecker {
         this.cells = other.cells;
         this.mimics = other.mimics;
         this.data = other.data;
-        this.frozen = other.frozen;
+        this.flags = other.flags;
         this.hooks = other.hooks;
     }
 
@@ -81,19 +142,19 @@ public class IokeObject implements TypeChecker {
     }
 
     public static boolean isFrozen(Object on) {
-        return (on instanceof IokeObject) && as(on, null).frozen;
+        return (on instanceof IokeObject) && as(on, null).isFrozen();
     }
 
     public static void freeze(Object on) {
         if(on instanceof IokeObject) {
-            as(on,null).frozen = true;
+            as(on,null).setFrozen(true);
         }
 
     }
 
     public static void thaw(Object on) {
         if(on instanceof IokeObject) {
-            as(on, null).frozen = false;
+            as(on, null).setFrozen(false);
         }
     }
 
@@ -554,16 +615,8 @@ public class IokeObject implements TypeChecker {
         return data.isSymbol();
     }
 
-    public boolean isNil() {
-        return data.isNil();
-    }
-
     public static boolean isTrue(Object on) {
         return !(on instanceof IokeObject) || as(on, null).isTrue();
-    }
-
-    public boolean isTrue() {
-        return data.isTrue();
     }
 
     public static boolean isMessage(Object obj) {
@@ -578,15 +631,23 @@ public class IokeObject implements TypeChecker {
         return mimics;
     }
 
+    private final void transplantActivation(IokeObject mimic) {
+        if(!this.isSetActivatable() && mimic.isSetActivatable()) {
+            this.setActivatable(mimic.isActivatable());
+        }
+    }
+
     public void mimicsWithoutCheck(IokeObject mimic) {
         if(!contains(this.mimics, mimic)) {
             this.mimics.add(mimic);
+            transplantActivation(mimic);
         }
     }
 
     public void mimicsWithoutCheck(int index, IokeObject mimic) {
         if(!contains(this.mimics, mimic)) {
             this.mimics.add(index, mimic);
+            transplantActivation(mimic);
         }
     }
 
@@ -596,6 +657,7 @@ public class IokeObject implements TypeChecker {
         mimic.data.checkMimic(mimic, message, context);
         if(!contains(this.mimics, mimic)) {
             this.mimics.add(mimic);
+            transplantActivation(mimic);
             if(mimic.hooks != null) {
                 Hook.fireMimicked(mimic, message, context, this);
             }
@@ -612,6 +674,7 @@ public class IokeObject implements TypeChecker {
         mimic.data.checkMimic(mimic, message, context);
         if(!contains(this.mimics, mimic)) {
             this.mimics.add(index, mimic);
+            transplantActivation(mimic);
             if(mimic.hooks != null) {
                 Hook.fireMimicked(mimic, message, context, this);
             }
@@ -641,10 +704,6 @@ public class IokeObject implements TypeChecker {
 
     public void registerCell(String name, Object o) {
         cells.put(name, o);
-    }
-
-    public boolean isActivatable() {
-        return isTrue(findCell(null, null, "activatable"));
     }
 
     public IokeObject negate() {

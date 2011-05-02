@@ -766,7 +766,9 @@ public class Runtime extends IokeData {
     }
 
     public IokeObject newNativeMethod(String doc, NativeMethod impl) throws ControlFlow {
-        return newMethod(doc, this.nativeMethod, impl);
+        IokeObject obj = newMethod(doc, this.nativeMethod, impl);
+        obj.setActivatable(true);
+        return obj;
     }
 
     public IokeObject newMessage(String name) {

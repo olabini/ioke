@@ -163,6 +163,32 @@ public class Base {
                 }
             }));
 
+        base.registerMethod(base.runtime.newNativeMethod("returns a boolean indicating of this object should be activated or not.", new NativeMethod.WithNoArguments("activatable") {
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    getArguments().getEvaluatedArguments(context, message, on, new ArrayList<Object>(), new HashMap<String, Object>());
+                    return IokeObject.as(on, context).isActivatable() ? context.runtime._true : context.runtime._false;
+                }
+            }));
+
+        base.registerMethod(base.runtime.newNativeMethod("sets the activatable flag for a specific object. this will not impact objects that mimic this object..", new TypeCheckingNativeMethod("activatable=") {
+                private final TypeCheckingArgumentsDefinition ARGUMENTS = TypeCheckingArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("activatableFlag")
+                    .getArguments();
+
+                @Override
+                public TypeCheckingArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    IokeObject.as(on, context).setActivatable(IokeObject.isTrue(args.get(0)));
+                    return args.get(0);
+                }
+            }));
+
         base.registerMethod(base.runtime.newNativeMethod("returns this object", new NativeMethod.WithNoArguments("identity") {
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {

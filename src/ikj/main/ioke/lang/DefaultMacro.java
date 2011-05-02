@@ -45,7 +45,7 @@ public class DefaultMacro extends IokeData implements Named, Inspectable, Associ
     @Override
     public void init(IokeObject macro) throws ControlFlow {
         macro.setKind("DefaultMacro");
-        macro.registerCell("activatable", macro.runtime._true);
+        macro.setActivatable(true);
 
         macro.registerMethod(macro.runtime.newNativeMethod("returns the name of the macro", new TypeCheckingNativeMethod.WithNoArguments("name", macro) {
                 @Override
