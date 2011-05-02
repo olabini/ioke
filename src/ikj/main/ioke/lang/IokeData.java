@@ -44,7 +44,7 @@ public abstract class IokeData {
     public final static IokeData Nil = new IokeData(){
             public void init(IokeObject obj) {
                 obj.setKind("nil");
-                obj.flags |= IokeObject.NIL_F | IokeObject.FALSY_F;
+                obj.body.flags |= IokeObject.NIL_F | IokeObject.FALSY_F;
             }
 
             @Override
@@ -69,7 +69,7 @@ public abstract class IokeData {
     public final static IokeData False = new IokeData(){
             public void init(IokeObject obj) {
                 obj.setKind("false");
-                obj.flags |= IokeObject.FALSY_F;
+                obj.body.flags |= IokeObject.FALSY_F;
             }
 
             @Override

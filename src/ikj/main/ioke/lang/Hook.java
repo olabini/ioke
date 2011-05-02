@@ -25,17 +25,17 @@ public class Hook extends IokeData {
 
     private void rewire(IokeObject self) {
         for(IokeObject io : connected) {
-            if(io.hooks == null) {
-                io.hooks = new LinkedList<IokeObject>();
+            if(io.body.hooks == null) {
+                io.body.hooks = new LinkedList<IokeObject>();
             }
-            if(!io.hooks.contains(self)) {
-                io.hooks.add(self);
+            if(!io.body.hooks.contains(self)) {
+                io.body.hooks.add(self);
             }
         }
     }
 
     public static void fireCellAdded(IokeObject on, IokeObject message, IokeObject context, String name) throws ControlFlow {
-        Collection<IokeObject> hooks = on.hooks;
+        Collection<IokeObject> hooks = on.body.hooks;
         if(hooks != null) {
             IokeObject sym = context.runtime.getSymbol(name);
             IokeObject cellAddedMessage = context.runtime.cellAddedMessage;
@@ -46,7 +46,7 @@ public class Hook extends IokeData {
     }
 
     public static void fireCellChanged(IokeObject on, IokeObject message, IokeObject context, String name, Object prevValue) throws ControlFlow {
-        Collection<IokeObject> hooks = on.hooks;
+        Collection<IokeObject> hooks = on.body.hooks;
         if(hooks != null) {
             IokeObject sym = context.runtime.getSymbol(name);
             IokeObject cellChangedMessage = context.runtime.cellChangedMessage;
@@ -57,7 +57,7 @@ public class Hook extends IokeData {
     }
 
     public static void fireCellRemoved(IokeObject on, IokeObject message, IokeObject context, String name, Object prevValue) throws ControlFlow {
-        Collection<IokeObject> hooks = on.hooks;
+        Collection<IokeObject> hooks = on.body.hooks;
         if(hooks != null) {
             IokeObject sym = context.runtime.getSymbol(name);
             IokeObject cellRemovedMessage = context.runtime.cellRemovedMessage;
@@ -68,7 +68,7 @@ public class Hook extends IokeData {
     }
 
     public static void fireCellUndefined(IokeObject on, IokeObject message, IokeObject context, String name, Object prevValue) throws ControlFlow {
-        Collection<IokeObject> hooks = on.hooks;
+        Collection<IokeObject> hooks = on.body.hooks;
         if(hooks != null) {
             IokeObject sym = context.runtime.getSymbol(name);
             IokeObject cellUndefinedMessage = context.runtime.cellUndefinedMessage;
@@ -79,7 +79,7 @@ public class Hook extends IokeData {
     }
 
     public static void fireMimicAdded(IokeObject on, IokeObject message, IokeObject context, IokeObject newMimic) throws ControlFlow {
-        Collection<IokeObject> hooks = on.hooks;
+        Collection<IokeObject> hooks = on.body.hooks;
         if(hooks != null) {
             IokeObject mimicAddedMessage = context.runtime.mimicAddedMessage;
             for(IokeObject h : hooks) {
@@ -89,7 +89,7 @@ public class Hook extends IokeData {
     }
 
     public static void fireMimicRemoved(IokeObject on, IokeObject message, IokeObject context, Object removedMimic) throws ControlFlow {
-        Collection<IokeObject> hooks = on.hooks;
+        Collection<IokeObject> hooks = on.body.hooks;
         if(hooks != null) {
             IokeObject mimicRemovedMessage = context.runtime.mimicRemovedMessage;
             for(IokeObject h : hooks) {
@@ -99,7 +99,7 @@ public class Hook extends IokeData {
     }
 
     public static void fireMimicsChanged(IokeObject on, IokeObject message, IokeObject context, Object changedMimic) throws ControlFlow {
-        Collection<IokeObject> hooks = on.hooks;
+        Collection<IokeObject> hooks = on.body.hooks;
         if(hooks != null) {
             IokeObject mimicsChangedMessage = context.runtime.mimicsChangedMessage;
             for(IokeObject h : hooks) {
@@ -109,7 +109,7 @@ public class Hook extends IokeData {
     }
 
     public static void fireMimicked(IokeObject on, IokeObject message, IokeObject context, IokeObject mimickingObject) throws ControlFlow {
-        Collection<IokeObject> hooks = on.hooks;
+        Collection<IokeObject> hooks = on.body.hooks;
         if(hooks != null) {
             IokeObject mimickedMessage = context.runtime.mimickedMessage;
             for(IokeObject h : hooks) {
