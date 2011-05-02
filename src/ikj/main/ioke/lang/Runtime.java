@@ -184,6 +184,7 @@ public class Runtime extends IokeData {
     public IokeObject hashMessage = newMessage("hash");
     public IokeObject nextPMessage = newMessage("next?");
     public IokeObject nextMessage = newMessage("next");
+    public IokeObject kindMessage = newMessage("kind");
 
     public Runtime() throws Exception {
         this(new PrintWriter(new OutputStreamWriter(java.lang.System.out, "UTF-8")), new InputStreamReader(java.lang.System.in, "UTF-8"), new PrintWriter(new OutputStreamWriter(java.lang.System.err, "UTF-8")));

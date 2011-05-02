@@ -76,7 +76,7 @@ Condition Error noticeFor = method(obj,
 Condition Error NoSuchCell report = method(
   "returns a representation of this error, showing the name of the missing cell and the object that didn't have it",
 
-  "couldn't find cell '#{cellName}' on '#{noticeFor(cell(:receiver))}' (#{self kind})
+  "couldn't find cell '#{cellName}' on '#{noticeFor(@cell(:receiver))}' (#{self kind})
 
 #{message asStackTraceText}
 #{context stackTraceAsText}")

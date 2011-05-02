@@ -513,7 +513,7 @@ public abstract class IokeData {
                 return "#<nul:" + hash + ">";
             }
 
-            Object obj = self.findCell(null, null, "kind");
+            Object obj = Interpreter.send(self.runtime.kindMessage, self.runtime.ground, self);
             String kind = ((Text)IokeObject.data(obj)).getText();
             return "#<" + kind + ":" + hash + ">";
         } catch(ControlFlow e) {}

@@ -46,8 +46,10 @@ DokGen do(
   )
 
   lookup = method(segments,
-    segments inject(Origin, current, name, cell(:current) cell(name))
-  )
+    segments inject(Origin, current, name, 
+      if(cell(:current) cell?(name),
+        cell(:current) cell(name),
+        cell(:current))))
 
   collectSpecsOnly = method(specsPattern, collected,
     internal:initISpec
@@ -78,7 +80,6 @@ DokGen do(
             fname = c value message filename
             (collected collectedFiles[fname] ||= []) << [cell(:current), c key, c value, id])
           (collected collectedCells[c key asText] ||= []) << [cell(:current), c key, c value, id, {}])
-
 
         cellForSegment = collected collectedCells[segments[-1]]
         if(cellForSegment,

@@ -185,6 +185,7 @@ public class Interpreter {
                                                                            ctx,
                                                                            "Error",
                                                                            "NoSuchCell"), ctx).mimic(message, ctx);
+        
         condition.setCell("message", message);
         condition.setCell("context", ctx);
         condition.setCell("receiver", obj);
@@ -202,7 +203,8 @@ public class Interpreter {
     private static Object findCell(IokeObject message, IokeObject ctx, Object obj, String name, IokeObject recv) throws ControlFlow {
         Runtime runtime = ctx.runtime;
         Object cell = recv.findCell(message, ctx, name);
-        while(cell == runtime.nul && !isApplicable(cell = recv.findCell(message, ctx, "pass"), message, ctx)) {
+        Object passed = null;
+        while(cell == runtime.nul && ((cell = passed = recv.findCell(message, ctx, "pass")) != runtime.nul) && !isApplicable(passed, message, ctx)) {
             cell = signalNoSuchCell(message, ctx, obj, name, cell, recv);
         }
         return cell;

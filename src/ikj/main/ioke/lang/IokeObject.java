@@ -408,7 +408,9 @@ public class IokeObject implements TypeChecker {
             return false;
         }
 
-        if(body.cells.containsKey("kind") && kind.equals(Text.getText(body.cells.get("kind")))) {
+        Object c = body.cells.get("kind");
+
+        if(c != null && Text.isText(c) && kind.equals(Text.getText(c))) {
             return true;
         }
 

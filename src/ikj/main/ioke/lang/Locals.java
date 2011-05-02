@@ -14,7 +14,7 @@ import ioke.lang.exceptions.ControlFlow;
 public class Locals {
     public static void init(IokeObject obj) throws ControlFlow {
         obj.setKind("Locals");
-        obj.getMimics().clear();
+        obj.body.mimicCount = 0;
 
         obj.setCell("=",         obj.runtime.base.getCells().get("="));
         Map<String, Object> assgn = IokeObject.as(obj.runtime.defaultBehavior.getCells().get("Assignment"), null).getCells();
