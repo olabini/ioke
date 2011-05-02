@@ -20,7 +20,10 @@ public class IokeObject implements TypeChecker {
     public static class Body {
         String documentation;
         Map<String, Object> cells = new LinkedHashMap<String, Object>();
-        List<IokeObject> mimics = new ArrayList<IokeObject>();
+
+        IokeObject[] mimics = new IokeObject[1];
+        int mimicCount = 0;
+
         Collection<IokeObject> hooks = null;
         // zeroed by jvm
         int flags;
@@ -173,28 +176,60 @@ public class IokeObject implements TypeChecker {
     }
 
     public static List<IokeObject> getMimics(Object on, IokeObject context) {
-        return as(on, context).body.mimics;
+        return as(on, context).getMimics();
+    }
+
+    private int mimicIndex(Object other) {
+        for(int i = 0; i < body.mimicCount; i++) {
+            if(body.mimics[i] == other) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private void removeMimicAt(int index) {
+        if(index == 0) {
+            body.mimicCount--;
+            IokeObject[] newMimics = new IokeObject[body.mimicCount];
+            System.arraycopy(body.mimics, 1, newMimics, 0, body.mimicCount);
+            body.mimics = newMimics;
+        } else if(index == body.mimicCount - 1) {
+            body.mimics[index] = null;
+            body.mimicCount--;
+        } else {
+            body.mimicCount--;
+            IokeObject[] newMimics = new IokeObject[body.mimicCount];
+            System.arraycopy(body.mimics, 0, newMimics, 0, index);
+            System.arraycopy(body.mimics, index + 1, newMimics, index, body.mimicCount - (index + 1));
+            body.mimics = newMimics;
+        }
     }
 
     public static void removeMimic(Object on, Object other, IokeObject message, IokeObject context) throws ControlFlow {
         IokeObject me = as(on, context);
         me.checkFrozen("removeMimic!", message, context);
-        me.body.mimics.remove(other);
-        if(me.body.hooks != null) {
-            Hook.fireMimicsChanged(me, message, context, other);
-            Hook.fireMimicRemoved(me, message, context, other);
+        int ix = me.mimicIndex(other);
+        if(ix > -1) {
+            me.removeMimicAt(ix);
+            if(me.body.hooks != null) {
+                Hook.fireMimicsChanged(me, message, context, other);
+                Hook.fireMimicRemoved(me, message, context, other);
+            }
         }
     }
 
     public static void removeAllMimics(Object on, IokeObject message, IokeObject context) throws ControlFlow {
         IokeObject me = as(on, context);
         me.checkFrozen("removeAllMimics!", message, context);
-        for(java.util.Iterator<IokeObject> it = me.body.mimics.iterator(); it.hasNext();) {
-            IokeObject mm = it.next();
-            it.remove();
-            Hook.fireMimicsChanged(me, message, context, mm);
-            Hook.fireMimicRemoved(me, message, context, mm);
+
+        while(me.body.mimicCount > 0) {
+            Hook.fireMimicsChanged(me, message, context, me.body.mimics[me.body.mimicCount-1]);
+            Hook.fireMimicRemoved(me, message, context, me.body.mimics[me.body.mimicCount-1]);
+            me.body.mimicCount--;
         }
+
+        me.body.mimics = new IokeObject[0];
     }
 
     public static Object getRealContext(Object o) {
@@ -232,12 +267,14 @@ public class IokeObject implements TypeChecker {
 
         this.body.marked = true;
         try {
-            for(IokeObject mimic : body.mimics) {
-                Object cell = mimic.markingFindSuperCell(early, message, context, name, found);
+            for(int i = 0; i<body.mimicCount; i++) {
+                Object cell = body.mimics[i].markingFindSuperCell(early, message, context, name, found);
                 if(cell != runtime.nul) {
                     return cell;
                 }
+                
             }
+
             return runtime.nul;
         } finally {
             this.body.marked = false;
@@ -295,8 +332,8 @@ public class IokeObject implements TypeChecker {
         } else {
             this.body.marked = true;
             try {
-                for(IokeObject mimic : body.mimics) {
-                    Object place = mimic.markingFindPlace(name);
+                for(int i = 0; i<body.mimicCount; i++) {
+                    Object place = body.mimics[i].markingFindPlace(name);
                     if(place != runtime.nul) {
                         return place;
                     }
@@ -320,8 +357,8 @@ public class IokeObject implements TypeChecker {
             this.body.marked = true;
 
             try {
-                for(IokeObject mimic : body.mimics) {
-                    Object cell = mimic.markingFindCell(m, context, name);
+                for(int i = 0; i<body.mimicCount; i++) {
+                    Object cell = body.mimics[i].markingFindCell(m, context, name);
                     if(cell != runtime.nul) {
                         return cell;
                     }
@@ -377,8 +414,8 @@ public class IokeObject implements TypeChecker {
 
         this.body.marked = true;
         try {
-            for(IokeObject mimic : body.mimics) {
-                if(mimic.isKind(kind)) {
+            for(int i = 0; i<body.mimicCount; i++) {
+                if(body.mimics[i].isKind(kind)) {
                     return true;
                 }
             }
@@ -389,9 +426,9 @@ public class IokeObject implements TypeChecker {
         }
     }
 
-    private final static boolean contains(List<IokeObject> l, IokeObject obj) {
-        for(IokeObject p : l) {
-            if(p == obj) {
+    private final boolean containsMimic(IokeObject obj) {
+        for(int i = 0; i < body.mimicCount; i++) {
+            if(body.mimics[i] == obj) {
                 return true;
             }
         }
@@ -403,14 +440,14 @@ public class IokeObject implements TypeChecker {
             return false;
         }
 
-        if(this.body == pot.body || contains(body.mimics, pot)) {
+        if(this.body == pot.body || containsMimic(pot)) {
             return true;
         }
 
         this.body.marked = true;
         try {
-            for(IokeObject mimic : body.mimics) {
-                if(mimic.isMimic(pot)) {
+            for(int i = 0; i<body.mimicCount; i++) {
+                if(body.mimics[i].isMimic(pot)) {
                     return true;
                 }
             }
@@ -624,7 +661,7 @@ public class IokeObject implements TypeChecker {
     }
 
     public List<IokeObject> getMimics() {
-        return body.mimics;
+        return Arrays.asList(body.mimics).subList(0, body.mimicCount);
     }
 
     private final void transplantActivation(IokeObject mimic) {
@@ -633,16 +670,55 @@ public class IokeObject implements TypeChecker {
         }
     }
 
+    private void addMimic(IokeObject mimic) {
+        addMimic(body.mimicCount, mimic);
+    }
+
+    private void addMimic(int at, IokeObject mimic) {
+        if(at == 0) {
+            int newLen = body.mimicCount + 1;
+            IokeObject[] newMimics;
+            if(body.mimics.length < newLen) {
+                newMimics = new IokeObject[newLen];
+            } else {
+                newMimics = body.mimics;
+            }
+            System.arraycopy(body.mimics, 0, newMimics, 1, newLen - 1);
+            body.mimics = newMimics;
+            newMimics[0] = mimic;
+            body.mimicCount++;
+        } else if(at == body.mimicCount) {
+            if(body.mimicCount == body.mimics.length) {
+                IokeObject[] newMimics = new IokeObject[body.mimics.length + 1];
+                System.arraycopy(body.mimics, 0, newMimics, 0, body.mimics.length);
+                body.mimics = newMimics;
+            }
+            body.mimics[body.mimicCount++] = mimic;
+        } else {
+            if(body.mimicCount == body.mimics.length) {
+                IokeObject[] newMimics = new IokeObject[body.mimics.length + 1];
+                System.arraycopy(body.mimics, 0, newMimics, 0, at);
+                System.arraycopy(body.mimics, at, newMimics, at+1, body.mimicCount - at);
+                body.mimics = newMimics;
+                body.mimics[at] = mimic;
+            } else {
+                System.arraycopy(body.mimics, at, body.mimics, at + 1, body.mimicCount - at);
+                body.mimics[at] = mimic;
+            }
+            body.mimicCount++;
+        }
+    }
+
     public void mimicsWithoutCheck(IokeObject mimic) {
-        if(!contains(this.body.mimics, mimic)) {
-            this.body.mimics.add(mimic);
+        if(!containsMimic(mimic)) {
+            addMimic(mimic);
             transplantActivation(mimic);
         }
     }
 
     public void mimicsWithoutCheck(int index, IokeObject mimic) {
-        if(!contains(this.body.mimics, mimic)) {
-            this.body.mimics.add(index, mimic);
+        if(!containsMimic(mimic)) {
+            addMimic(index, mimic);
             transplantActivation(mimic);
         }
     }
@@ -651,8 +727,8 @@ public class IokeObject implements TypeChecker {
         checkFrozen("mimic!", message, context);
 
         mimic.data.checkMimic(mimic, message, context);
-        if(!contains(this.body.mimics, mimic)) {
-            this.body.mimics.add(mimic);
+        if(!containsMimic(mimic)) {
+            addMimic(mimic);
             transplantActivation(mimic);
             if(mimic.body.hooks != null) {
                 Hook.fireMimicked(mimic, message, context, this);
@@ -668,8 +744,8 @@ public class IokeObject implements TypeChecker {
         checkFrozen("prependMimic!", message, context);
 
         mimic.data.checkMimic(mimic, message, context);
-        if(!contains(this.body.mimics, mimic)) {
-            this.body.mimics.add(index, mimic);
+        if(!containsMimic(mimic)) {
+            addMimic(index, mimic);
             transplantActivation(mimic);
             if(mimic.body.hooks != null) {
                 Hook.fireMimicked(mimic, message, context, this);
