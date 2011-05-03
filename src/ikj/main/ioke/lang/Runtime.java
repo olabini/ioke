@@ -674,7 +674,12 @@ public class Runtime extends IokeData {
                 obj.mimicsWithoutCheck(objWrap);
                 obj.setData(JavaWrapper.wrapWithMethods(clz, obj, this));
 
-                objWrap.mimicsWithoutCheck(0, obj); //circularity - warning! =)
+                for(Map.Entry<String, Object> me : obj.getCells().entrySet()) {
+                    String name = me.getKey();
+                    if(name.startsWith("class:")) {
+                        objWrap.getCells().put(name, me.getValue());
+                    }
+                }
 
                 return obj;
             } else {

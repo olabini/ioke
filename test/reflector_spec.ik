@@ -131,12 +131,6 @@ describe(Reflector,
     it("should return true if another mimic has the kind",
       Reflector other:kind?(123, "Mixins Comparing") should be true
     )
-
-    it("should handle a cycle of mimics correctly",
-      f = Origin mimic. f mimic!(f). Reflector other:kind?(f, "Origin") should be true
-      f = Origin mimic. Origin mimic!(f). Reflector other:kind?(f, "Origin") should be true
-      f = Origin mimic. Origin mimic!(f). Reflector other:kind?(f, "DefaultBehavior") should be true
-    )
   )
 
   describe("other:become!",
@@ -359,14 +353,6 @@ describe(Reflector,
       x = Origin mimic. y = x mimic. z = y mimic. Reflector other:mimics?(z, x) should be true
       x = Origin mimic. y = x mimic. z = y mimic. Reflector other:mimics?(z, y) should be true
       x = Origin mimic. y = x mimic. z = y mimic. Reflector other:mimics?(z, z) should be true
-      f = Origin mimic. Origin mimic!(f). x = Origin mimic. y = x mimic. z = y mimic. Reflector other:mimics?(z, f) should be true
-    )
-
-    it("should handle a cycle of mimics correctly",
-      x = Origin mimic. y = x mimic. z = y mimic. Origin mimic!(z). Reflector other:mimics?(z, Number) should be false
-      x = Origin mimic. y = x mimic. z = y mimic. Origin mimic!(z). Reflector other:mimics?(z, Origin) should be true
-      x = Origin mimic. y = x mimic. z = y mimic. Origin mimic!(z). Reflector other:mimics?(z, Base) should be true
-      x = Origin mimic. x mimic!(x). Reflector other:mimics?(x, Origin) should be true
     )
   )
 

@@ -27,8 +27,6 @@ public final class IokeObject implements TypeChecker {
         Collection<IokeObject> hooks = null;
         // zeroed by jvm
         int flags;
-        // Used to handle recursive cell lookup chains more efficiently. Should in the end be a ThreadLocal of course.
-        boolean marked = false;
     }
 
     public Runtime runtime;
@@ -260,10 +258,6 @@ public final class IokeObject implements TypeChecker {
     }
 
     protected final Object realMarkingFindSuperCell(IokeObject early, IokeObject message, IokeObject context, String name, boolean[] found) {
-        if(this.body.marked) {
-            return runtime.nul;
-        }
-
         if(body.cells.containsKey(name)) {
             if(found[0]) {
                 return body.cells.get(name);
@@ -272,21 +266,15 @@ public final class IokeObject implements TypeChecker {
                 found[0] = true;
             }
         }
-
-        this.body.marked = true;
-        try {
-            for(int i = 0; i<body.mimicCount; i++) {
-                Object cell = body.mimics[i].markingFindSuperCell(early, message, context, name, found);
-                if(cell != runtime.nul) {
-                    return cell;
-                }
-                
+        
+        for(int i = 0; i<body.mimicCount; i++) {
+            Object cell = body.mimics[i].markingFindSuperCell(early, message, context, name, found);
+            if(cell != runtime.nul) {
+                return cell;
             }
-
-            return runtime.nul;
-        } finally {
-            this.body.marked = false;
         }
+
+        return runtime.nul;
     }
 
     protected final Object markingFindSuperCell(IokeObject early, IokeObject message, IokeObject context, String name, boolean[] found) {
@@ -332,13 +320,6 @@ public final class IokeObject implements TypeChecker {
     }
 
     protected final Object markingFindPlace(String name) {
-        if(this.body.marked) {
-            if(isLexical()) {
-                return IokeObject.findPlace(((LexicalContext)this.data).surroundingContext, name);
-            }
-            return runtime.nul;
-        }
-
         if(body.cells.containsKey(name)) {
             if(body.cells.get(name) == runtime.nul) {
                 if(isLexical()) {
@@ -348,49 +329,36 @@ public final class IokeObject implements TypeChecker {
             }
             return this;
         } else {
-            this.body.marked = true;
-            try {
-                for(int i = 0; i<body.mimicCount; i++) {
-                    Object place = body.mimics[i].markingFindPlace(name);
-                    if(place != runtime.nul) {
-                        return place;
-                    }
+            for(int i = 0; i<body.mimicCount; i++) {
+                Object place = body.mimics[i].markingFindPlace(name);
+                if(place != runtime.nul) {
+                    return place;
                 }
-                
-                if(isLexical()) {
-                    return IokeObject.findPlace(((LexicalContext)this.data).surroundingContext, name);
-                }
-                return runtime.nul;
-            } finally {
-                this.body.marked = false;
             }
+                
+            if(isLexical()) {
+                return IokeObject.findPlace(((LexicalContext)this.data).surroundingContext, name);
+            }
+            return runtime.nul;
         }
     }
 
     public static final Object realFindCell(IokeObject on, IokeObject m, IokeObject context, String name) {
         Body b = on.body;
-        if(b.marked) {
-            return on.runtime.nul;
-        }
 
         Object cell;
 
         if((cell = b.cells.get(name)) != null) {
             return cell;
         } else {
-            b.marked = true;
 
-            try {
-                for(int i = 0; i<b.mimicCount; i++) {
-                    if((cell = findCell(b.mimics[i], m, context, name)) != on.runtime.nul) {
-                        return cell;
-                    }
+            for(int i = 0; i<b.mimicCount; i++) {
+                if((cell = findCell(b.mimics[i], m, context, name)) != on.runtime.nul) {
+                    return cell;
                 }
-
-                return on.runtime.nul;
-            } finally {
-                b.marked = false;
             }
+
+            return on.runtime.nul;
         }
     }
 
@@ -435,9 +403,6 @@ public final class IokeObject implements TypeChecker {
     }
 
     private boolean isKind(String kind) {
-        if(this.body.marked) {
-            return false;
-        }
 
         Object c = body.cells.get("kind");
 
@@ -445,8 +410,6 @@ public final class IokeObject implements TypeChecker {
             return true;
         }
 
-        this.body.marked = true;
-        try {
             for(int i = 0; i<body.mimicCount; i++) {
                 if(body.mimics[i].isKind(kind)) {
                     return true;
@@ -454,9 +417,6 @@ public final class IokeObject implements TypeChecker {
             }
 
             return false;
-        } finally {
-            this.body.marked = false;
-        }
     }
 
     private final boolean containsMimic(IokeObject obj) {
@@ -469,26 +429,17 @@ public final class IokeObject implements TypeChecker {
     }
 
     private boolean isMimic(IokeObject pot) {
-        if(this.body.marked) {
-            return false;
-        }
-
         if(this.body == pot.body || containsMimic(pot)) {
             return true;
         }
 
-        this.body.marked = true;
-        try {
-            for(int i = 0; i<body.mimicCount; i++) {
-                if(body.mimics[i].isMimic(pot)) {
-                    return true;
-                }
+        for(int i = 0; i<body.mimicCount; i++) {
+            if(body.mimics[i].isMimic(pot)) {
+                return true;
             }
-
-            return false;
-        } finally {
-            this.body.marked = false;
         }
+
+        return false;
     }
 
     public static Object getCellChain(Object on, IokeObject m, IokeObject c, String... names) throws ControlFlow {

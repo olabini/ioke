@@ -18,4 +18,8 @@ ISpec ispec_options = method(
   parser order!(System programArguments)
   ISpec ispec_options = parser options)
 
-DefaultBehavior mimic!(ISpec ExtendedDefaultBehavior)
+DefaultBehavior should   = ISpec ExtendedDefaultBehavior cell(:should)
+DefaultBehavior describe = ISpec ExtendedDefaultBehavior cell(:describe)
+DefaultBehavior stub!    = ISpec ExtendedDefaultBehavior cell(:stub!)
+DefaultBehavior mock!    = ISpec ExtendedDefaultBehavior cell(:mock!)
+DefaultBehavior stubs    = ISpec ExtendedDefaultBehavior cell(:stubs)

@@ -483,12 +483,6 @@ describe(DefaultBehavior,
       123 kind?("Mixins Comparing") should be true
     )
 
-    it("should handle a cycle of mimics correctly",
-      f = Origin mimic. f mimic!(f). f kind?("Origin") should be true
-      f = Origin mimic. Origin mimic!(f). f kind?("Origin") should be true
-      f = Origin mimic. Origin mimic!(f). f kind?("DefaultBehavior") should be true
-    )
-
     it("should validate type of argument",
       fn("" kind?([])) should signal(Condition Error Type IncorrectType)
     )
@@ -512,14 +506,6 @@ describe(DefaultBehavior,
       x = Origin mimic. y = x mimic. z = y mimic. z mimics?(x) should be true
       x = Origin mimic. y = x mimic. z = y mimic. z mimics?(y) should be true
       x = Origin mimic. y = x mimic. z = y mimic. z mimics?(z) should be true
-      f = Origin mimic. Origin mimic!(f). x = Origin mimic. y = x mimic. z = y mimic. z mimics?(f) should be true
-    )
-
-    it("should handle a cycle of mimics correctly",
-      x = Origin mimic. y = x mimic. z = y mimic. Origin mimic!(z). z mimics?(Number) should be false
-      x = Origin mimic. y = x mimic. z = y mimic. Origin mimic!(z). z mimics?(Origin) should be true
-      x = Origin mimic. y = x mimic. z = y mimic. Origin mimic!(z). z mimics?(Base) should be true
-      x = Origin mimic. x mimic!(x). x mimics?(Origin) should be true
     )
   )
 
@@ -541,14 +527,6 @@ describe(DefaultBehavior,
       x = Origin mimic. y = x mimic. z = y mimic. z is?(x) should be true
       x = Origin mimic. y = x mimic. z = y mimic. z is?(y) should be true
       x = Origin mimic. y = x mimic. z = y mimic. z is?(z) should be true
-      f = Origin mimic. Origin mimic!(f). x = Origin mimic. y = x mimic. z = y mimic. z is?(f) should be true
-    )
-
-    it("should handle a cycle of mimics correctly",
-      x = Origin mimic. y = x mimic. z = y mimic. Origin mimic!(z). z is?(Number) should be false
-      x = Origin mimic. y = x mimic. z = y mimic. Origin mimic!(z). z is?(Origin) should be true
-      x = Origin mimic. y = x mimic. z = y mimic. Origin mimic!(z). z is?(Base) should be true
-      x = Origin mimic. x mimic!(x). x is?(Origin) should be true
     )
   )
 

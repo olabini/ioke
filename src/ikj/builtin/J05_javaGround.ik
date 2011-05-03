@@ -94,6 +94,7 @@ JavaGround java:lang:Class [] = method(dimension nil,
     createPrimitiveJavaArray!(baseType, *dims) class
   )
 )
+JavaGround java:lang:Object [] = JavaGround java:lang:Class cell(:[])
 
 JavaGround JavaArray each = dmacro(
   [code]
