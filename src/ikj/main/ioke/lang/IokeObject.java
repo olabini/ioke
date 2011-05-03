@@ -343,31 +343,30 @@ public final class IokeObject implements TypeChecker {
         }
     }
 
-    public static final Object realFindCell(IokeObject on, IokeObject m, IokeObject context, String name) {
+    public static final Object findCell(IokeObject on, IokeObject m, IokeObject context, String name) {
         Body b = on.body;
-
         Object cell;
+        IokeObject nul = on.runtime.nul;
 
         if((cell = b.cells.get(name)) != null) {
+            if(cell == nul && on.isLexical()) {
+                return findCell(((LexicalContext)on.data).surroundingContext, m, context, name);
+            }
+
             return cell;
         } else {
 
             for(int i = 0; i<b.mimicCount; i++) {
-                if((cell = findCell(b.mimics[i], m, context, name)) != on.runtime.nul) {
+                if((cell = findCell(b.mimics[i], m, context, name)) != nul) {
                     return cell;
                 }
             }
 
-            return on.runtime.nul;
+            if(on.isLexical()) {
+                return findCell(((LexicalContext)on.data).surroundingContext, m, context, name);
+            }
+            return nul;
         }
-    }
-
-    public static final Object findCell(IokeObject on, IokeObject m, IokeObject context, String name) {
-        Object val = realFindCell(on, m, context, name);
-        if(val == on.runtime.nul && on.isLexical()) {
-            return findCell(((LexicalContext)on.data).surroundingContext, m, context, name);
-        }
-        return val;
     }
 
     public static final Object findCell(Object on, IokeObject m, IokeObject context, String name) {
