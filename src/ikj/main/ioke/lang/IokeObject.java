@@ -297,10 +297,6 @@ public final class IokeObject implements TypeChecker {
         return nn;
     }
 
-    public static Object findCell(Object obj, IokeObject m, IokeObject context, String name) {
-        return markingFindCell(as(obj, context), m, context, name);
-    }
-
     public static Object findPlace(Object obj, String name) {
         return as(obj, null).markingFindPlace(name);
     }
@@ -371,7 +367,7 @@ public final class IokeObject implements TypeChecker {
         }
     }
 
-    protected static final Object realMarkingFindCell(IokeObject on, IokeObject m, IokeObject context, String name) {
+    public static final Object realFindCell(IokeObject on, IokeObject m, IokeObject context, String name) {
         Body b = on.body;
         if(b.marked) {
             return on.runtime.nul;
@@ -386,7 +382,7 @@ public final class IokeObject implements TypeChecker {
 
             try {
                 for(int i = 0; i<b.mimicCount; i++) {
-                    if((cell = markingFindCell(b.mimics[i], m, context, name)) != on.runtime.nul) {
+                    if((cell = findCell(b.mimics[i], m, context, name)) != on.runtime.nul) {
                         return cell;
                     }
                 }
@@ -398,12 +394,16 @@ public final class IokeObject implements TypeChecker {
         }
     }
 
-    protected static final Object markingFindCell(IokeObject on, IokeObject m, IokeObject context, String name) {
-        Object val = realMarkingFindCell(on, m, context, name);
+    public static final Object findCell(IokeObject on, IokeObject m, IokeObject context, String name) {
+        Object val = realFindCell(on, m, context, name);
         if(val == on.runtime.nul && on.isLexical()) {
-            return IokeObject.findCell(((LexicalContext)on.data).surroundingContext, m, context, name);
+            return findCell(((LexicalContext)on.data).surroundingContext, m, context, name);
         }
         return val;
+    }
+
+    public static final Object findCell(Object on, IokeObject m, IokeObject context, String name) {
+        return findCell(as(on, context), m, context, name);
     }
 
     public static IokeObject mimic(Object on, IokeObject message, IokeObject context) throws ControlFlow {
@@ -416,10 +416,6 @@ public final class IokeObject implements TypeChecker {
         IokeObject clone = allocateCopy(message, context);
         clone.mimics(this, message, context);
         return clone;
-    }
-
-    public Object findCell(IokeObject m, IokeObject context, String name) {
-        return markingFindCell(this, m, context, name);
     }
 
     public static boolean isKind(Object on, String kind, IokeObject context) {
@@ -522,7 +518,7 @@ public final class IokeObject implements TypeChecker {
 
     public Object getCell(IokeObject m, IokeObject context, String name) throws ControlFlow {
         final String outerName = name;
-        Object cell = this.findCell(m, context, name);
+        Object cell = findCell(this, m, context, name);
 
         while(cell == runtime.nul) {
             final IokeObject condition = as(IokeObject.getCellChain(runtime.condition,
@@ -619,7 +615,7 @@ public final class IokeObject implements TypeChecker {
     }
 
     public String getKind(IokeObject message, IokeObject context) throws ControlFlow {
-        Object obj = findCell(null, null, "kind");
+        Object obj = findCell(this, null, null, "kind");
         if(IokeObject.data(obj) instanceof Text) {
             return ((Text)IokeObject.data(obj)).getText();
         } else {
@@ -628,7 +624,7 @@ public final class IokeObject implements TypeChecker {
     }
 
     public String getKind() {
-        Object obj = findCell(null, null, "kind");
+        Object obj = findCell(this, null, null, "kind");
         if(obj != null && IokeObject.data(obj) instanceof Text) {
             return ((Text)IokeObject.data(obj)).getText();
         } else {
@@ -668,7 +664,7 @@ public final class IokeObject implements TypeChecker {
         } else {
             checkFrozen("=", message, context);
 
-            if(!SLIGHTLY_BAD_CHARS.matcher(name).find() && findCell(message, context, name + "=") != runtime.nul) {
+            if(!SLIGHTLY_BAD_CHARS.matcher(name).find() && findCell(this, message, context, name + "=") != runtime.nul) {
                 IokeObject msg = runtime.createMessage(new Message(runtime, name + "=", runtime.createMessage(Message.wrap(as(value, context)))));
                 Interpreter.send(msg, context, this);
             } else {
@@ -810,7 +806,7 @@ public final class IokeObject implements TypeChecker {
     public void aliasMethod(String originalName, String newName, IokeObject message, IokeObject context) throws ControlFlow {
         checkFrozen("aliasMethod", message, context);
 
-        IokeObject io = as(findCell(null, null, originalName), context);
+        IokeObject io = as(findCell(this, null, null, originalName), context);
         IokeObject newObj = io.mimic(null, null);
         newObj.data = new AliasMethod(newName, io.data, io);
         body.cells.put(newName, newObj);
@@ -883,7 +879,7 @@ public final class IokeObject implements TypeChecker {
     public Object convertTo(String kind, boolean signalCondition, String conversionMethod, IokeObject message, IokeObject context) throws ControlFlow {
         Object result = data.convertTo(this, kind, false, conversionMethod, message, context);
         if(result == null) {
-            if(conversionMethod != null && findCell(message, context, conversionMethod) != context.runtime.nul) {
+            if(conversionMethod != null && findCell(this, message, context, conversionMethod) != context.runtime.nul) {
                 IokeObject msg = context.runtime.newMessage(conversionMethod);
                 return Interpreter.send(msg, context, this);
             }
@@ -898,7 +894,7 @@ public final class IokeObject implements TypeChecker {
     public Object convertTo(Object mimic, boolean signalCondition, String conversionMethod, IokeObject message, IokeObject context) throws ControlFlow {
         Object result = data.convertTo(this, mimic, false, conversionMethod, message, context);
         if(result == null) {
-            if(conversionMethod != null && findCell(message, context, conversionMethod) != context.runtime.nul) {
+            if(conversionMethod != null && findCell(this, message, context, conversionMethod) != context.runtime.nul) {
                 IokeObject msg = context.runtime.newMessage(conversionMethod);
                 return Interpreter.send(msg, context, this);
             }
@@ -967,7 +963,7 @@ public final class IokeObject implements TypeChecker {
     public IokeObject convertToRational(IokeObject m, IokeObject context, boolean signalCondition) throws ControlFlow {
         IokeObject result = data.convertToRational(this, m, context, false);
         if(result == null) {
-            if(findCell(m, context, "asRational") != context.runtime.nul) {
+            if(findCell(this, m, context, "asRational") != context.runtime.nul) {
                 return IokeObject.as(Interpreter.send(context.runtime.asRational, context, this), context);
             }
             if(signalCondition) {
@@ -981,7 +977,7 @@ public final class IokeObject implements TypeChecker {
     public IokeObject convertToDecimal(IokeObject m, IokeObject context, boolean signalCondition) throws ControlFlow {
         IokeObject result = data.convertToDecimal(this, m, context, false);
         if(result == null) {
-            if(findCell(m, context, "asDecimal") != context.runtime.nul) {
+            if(findCell(this, m, context, "asDecimal") != context.runtime.nul) {
                 return IokeObject.as(Interpreter.send(context.runtime.asDecimal, context, this), context);
             }
             if(signalCondition) {
@@ -1031,7 +1027,7 @@ public final class IokeObject implements TypeChecker {
     public IokeObject convertToText(IokeObject m, IokeObject context, boolean signalCondition) throws ControlFlow {
         IokeObject result = data.convertToText(this, m, context, false);
         if(result == null) {
-            if(findCell(m, context, "asText") != context.runtime.nul) {
+            if(findCell(this, m, context, "asText") != context.runtime.nul) {
                 return as(Interpreter.send(context.runtime.asText, context, this), context);
             }
             if(signalCondition) {
@@ -1049,7 +1045,7 @@ public final class IokeObject implements TypeChecker {
     public IokeObject convertToSymbol(IokeObject m, IokeObject context, boolean signalCondition) throws ControlFlow {
         IokeObject result = data.convertToSymbol(this, m, context, false);
         if(result == null) {
-            if(findCell(m, context, "asSymbol") != context.runtime.nul) {
+            if(findCell(this, m, context, "asSymbol") != context.runtime.nul) {
                 return as(Interpreter.send(context.runtime.asSymbol, context, this), context);
             }
             if(signalCondition) {

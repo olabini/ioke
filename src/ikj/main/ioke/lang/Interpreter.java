@@ -202,9 +202,9 @@ public class Interpreter {
 
     private static Object findCell(IokeObject message, IokeObject ctx, Object obj, String name, IokeObject recv) throws ControlFlow {
         Runtime runtime = ctx.runtime;
-        Object cell = recv.findCell(message, ctx, name);
+        Object cell = IokeObject.findCell(recv, message, ctx, name);
         Object passed = null;
-        while(cell == runtime.nul && ((cell = passed = recv.findCell(message, ctx, "pass")) != runtime.nul) && !isApplicable(passed, message, ctx)) {
+        while(cell == runtime.nul && ((cell = passed = IokeObject.findCell(recv, message, ctx, "pass")) != runtime.nul) && !isApplicable(passed, message, ctx)) {
             cell = signalNoSuchCell(message, ctx, obj, name, cell, recv);
         }
         return cell;
@@ -216,7 +216,7 @@ public class Interpreter {
     }
 
     private static boolean isApplicable(Object pass, IokeObject message, IokeObject ctx) throws ControlFlow {
-        if(pass != null && pass != ctx.runtime.nul && IokeObject.as(pass, ctx).findCell(message, ctx, "applicable?") != ctx.runtime.nul) {
+        if(pass != null && pass != ctx.runtime.nul && IokeObject.findCell(IokeObject.as(pass, ctx), message, ctx, "applicable?") != ctx.runtime.nul) {
             return IokeObject.isTrue(Interpreter.send(ctx.runtime.isApplicableMessage, ctx, pass, ctx.runtime.createMessage(Message.wrap(message))));
         }
         return true;
