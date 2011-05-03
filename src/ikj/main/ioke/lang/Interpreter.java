@@ -105,7 +105,7 @@ public class Interpreter {
         }
 
         IokeObject m = self.allocateCopy(self, context);
-        m.mimicsWithoutCheck(context.runtime.message);
+        m.singleMimicsWithoutCheck(context.runtime.message);
         m.getArguments().clear();
         m.getArguments().add(argument);
         return perform(recv, context, m);

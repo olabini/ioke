@@ -18,7 +18,7 @@ public class Reflector {
     public static void init(final Runtime runtime) throws ControlFlow {
         IokeObject obj = new IokeObject(runtime, "Allows access to the internals of any object without actually using methods on that object");
         obj.setKind("Reflector");
-        obj.mimicsWithoutCheck(runtime.origin);
+        obj.singleMimicsWithoutCheck(runtime.origin);
         runtime.iokeGround.registerCell("Reflector", obj);
 
         obj.registerMethod(runtime.newNativeMethod("returns the documentation text of the object given as argument. anything can have a documentation text - this text will initially be nil.", new TypeCheckingNativeMethod("other:documentation") {

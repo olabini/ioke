@@ -69,6 +69,6 @@ public class Sequence {
     public static void init(IokeObject obj) throws ControlFlow {
         final Runtime runtime = obj.runtime;
         obj.setKind("Sequence");
-        obj.mimicsWithoutCheck(runtime.origin);
+        obj.singleMimicsWithoutCheck(runtime.origin);
     }
 }

@@ -65,7 +65,7 @@ public class Regexp extends IokeData {
         obj.setKind("Regexp");
 
         final IokeObject regexpMatch  = new IokeObject(runtime, "contains behavior related to assignment", new RegexpMatch(obj, null, null));
-        regexpMatch.mimicsWithoutCheck(runtime.origin);
+        regexpMatch.singleMimicsWithoutCheck(runtime.origin);
         regexpMatch.init();
         obj.registerCell("Match", regexpMatch);
 
@@ -130,7 +130,7 @@ public class Regexp extends IokeData {
 
                     if(m.find()) {
                         IokeObject match = regexpMatch.allocateCopy(message, context);
-                        match.mimicsWithoutCheck(regexpMatch);
+                        match.singleMimicsWithoutCheck(regexpMatch);
                         match.setData(new RegexpMatch(IokeObject.as(on, context), m, target));
                         return match;
                     } else {

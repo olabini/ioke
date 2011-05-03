@@ -149,40 +149,40 @@ public class Number extends IokeData {
         obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Comparing"), obj), runtime.nul, runtime.nul);
 
         IokeObject real = new IokeObject(runtime, "A real number can be either a rational number or a decimal number", new Number());
-        real.mimicsWithoutCheck(number);
+        real.singleMimicsWithoutCheck(number);
         real.setKind("Number Real");
         number.registerCell("Real", real);
 
         final IokeObject rational = new IokeObject(runtime, "A rational number is either an integer or a ratio", new Number());
-        rational.mimicsWithoutCheck(real);
+        rational.singleMimicsWithoutCheck(real);
         rational.setKind("Number Rational");
         number.registerCell("Rational", rational);
 
         final IokeObject integer = new IokeObject(runtime, "An integral number", new Number());
-        integer.mimicsWithoutCheck(rational);
+        integer.singleMimicsWithoutCheck(rational);
         integer.setKind("Number Integer");
         number.registerCell("Integer", integer);
         runtime.integer = integer;
 
         final IokeObject ratio = new IokeObject(runtime, "A ratio of two integral numbers", new Number());
-        ratio.mimicsWithoutCheck(rational);
+        ratio.singleMimicsWithoutCheck(rational);
         ratio.setKind("Number Ratio");
         number.registerCell("Ratio", ratio);
         runtime.ratio = ratio;
 
         IokeObject decimal = new IokeObject(runtime, "An exact, unlimited representation of a decimal number", new Decimal(BigDecimal.ZERO));
-        decimal.mimicsWithoutCheck(real);
+        decimal.singleMimicsWithoutCheck(real);
         decimal.init();
         number.registerCell("Decimal", decimal);
 
         final IokeObject infinity = new IokeObject(runtime, "A value representing infinity", new Number(RatNum.infinity(1)));
-        infinity.mimicsWithoutCheck(ratio);
+        infinity.singleMimicsWithoutCheck(ratio);
         infinity.setKind("Number Infinity");
         number.registerCell("Infinity", infinity);
         runtime.infinity = infinity;
 
         final IokeObject infinity2 = new IokeObject(runtime, "A value representing infinity", new Number(RatNum.infinity(1)));
-        infinity2.mimicsWithoutCheck(ratio);
+        infinity2.singleMimicsWithoutCheck(ratio);
         infinity2.setKind("Number \u221E");
         number.registerCell("\u221E", infinity2);
 

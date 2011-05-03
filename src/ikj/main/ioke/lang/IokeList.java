@@ -92,7 +92,7 @@ public class IokeList extends IokeData {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     IokeObject obj = method.runtime.iteratorSequence.allocateCopy(null, null);
-                    obj.mimicsWithoutCheck(method.runtime.iteratorSequence);
+                    obj.singleMimicsWithoutCheck(method.runtime.iteratorSequence);
                     obj.setData(new Sequence.IteratorSequence(IokeList.getList(on).iterator()));
                     return obj;
                 }

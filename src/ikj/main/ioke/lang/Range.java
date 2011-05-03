@@ -244,7 +244,7 @@ public class Range extends IokeData {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     IokeObject obj = method.runtime.iteratorSequence.allocateCopy(null, null);
-                    obj.mimicsWithoutCheck(method.runtime.iteratorSequence);
+                    obj.singleMimicsWithoutCheck(method.runtime.iteratorSequence);
                     Range r = ((Range)IokeObject.data(on));
                     RangeIterator ri = new RangeIterator(r.from, r.to, r.inclusive, r.inverted, context, message);
                     obj.setData(new Sequence.IteratorSequence(ri));

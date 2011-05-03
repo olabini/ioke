@@ -74,7 +74,7 @@ public class FileSystem {
         obj.setKind("FileSystem");
 
         IokeObject file = new IokeObject(runtime, "represents a file in the file system", new IokeFile(null));
-        file.mimicsWithoutCheck(runtime.io);
+        file.singleMimicsWithoutCheck(runtime.io);
         file.init();
         obj.registerCell("File", file);
 

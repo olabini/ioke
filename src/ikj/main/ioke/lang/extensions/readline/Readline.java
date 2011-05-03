@@ -57,7 +57,7 @@ public abstract class Readline {
     public static void init(final IokeObject rl) throws ControlFlow {
         Runtime runtime = rl.runtime;
         rl.setKind("Readline");
-        rl.mimicsWithoutCheck(runtime.origin);
+        rl.singleMimicsWithoutCheck(runtime.origin);
         runtime.ground.setCell("Readline", rl);
         rl.setCell("VERSION", runtime.newText("JLine wrapper"));
 

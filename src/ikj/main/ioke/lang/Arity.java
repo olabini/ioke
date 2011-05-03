@@ -15,7 +15,7 @@ public class Arity extends IokeData {
 
     private static final IokeObject getArity(IokeObject self, Taking thing) {
         IokeObject obj = self.runtime.arity.allocateCopy(null, null);
-        obj.mimicsWithoutCheck(self.runtime.arity);
+        obj.singleMimicsWithoutCheck(self.runtime.arity);
         Arity arity = new Arity(thing);
         obj.setData(arity);
         return obj;
@@ -26,7 +26,7 @@ public class Arity extends IokeData {
             return IokeObject.as(takingNothing(self), self.runtime.arity);
         }
         IokeObject obj = self.runtime.arity.allocateCopy(null, null);
-        obj.mimicsWithoutCheck(self.runtime.arity);
+        obj.singleMimicsWithoutCheck(self.runtime.arity);
         Arity arity = new Arity(def);
         obj.setData(arity);
         return obj;

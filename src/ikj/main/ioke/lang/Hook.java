@@ -121,7 +121,7 @@ public class Hook extends IokeData {
     public static void init(final Runtime runtime) throws ControlFlow {
         final IokeObject obj = new IokeObject(runtime, "A hook allow you to observe what happens to a specific object. All hooks have Hook in their mimic chain.", new Hook(new ArrayList<IokeObject>()));
         obj.setKind("Hook");
-        obj.mimicsWithoutCheck(runtime.origin);
+        obj.singleMimicsWithoutCheck(runtime.origin);
         runtime.iokeGround.registerCell("Hook", obj);
 
         obj.registerMethod(runtime.newNativeMethod("Takes one or more arguments to hook into and returns a new Hook connected to them.", new NativeMethod("into") {
@@ -141,7 +141,7 @@ public class Hook extends IokeData {
                     List<Object> args = new ArrayList<Object>();
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
                     IokeObject hook = obj.allocateCopy(context, message);
-                    hook.mimicsWithoutCheck(obj);
+                    hook.singleMimicsWithoutCheck(obj);
 
                     List<IokeObject> objs = new ArrayList<IokeObject>(args.size());
                     for(Object o : args) {

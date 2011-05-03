@@ -29,7 +29,7 @@ public class Tuple extends IokeData {
     public void init(IokeObject obj) throws ControlFlow {
         final Runtime runtime = obj.runtime;
         obj.setKind("Tuple");
-        obj.mimicsWithoutCheck(runtime.origin);
+        obj.singleMimicsWithoutCheck(runtime.origin);
         runtime.iokeGround.registerCell("Tuple", obj);
 
         obj.registerMethod(runtime.newNativeMethod("will modify the tuple, initializing it to contain the specified arguments", new NativeMethod("private:initializeWith") {

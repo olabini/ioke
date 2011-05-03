@@ -240,7 +240,7 @@ public class Dict extends IokeData {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     IokeObject obj = method.runtime.keyValueIteratorSequence.allocateCopy(null, null);
-                    obj.mimicsWithoutCheck(method.runtime.keyValueIteratorSequence);
+                    obj.singleMimicsWithoutCheck(method.runtime.keyValueIteratorSequence);
                     obj.setData(new Sequence.KeyValueIteratorSequence(Dict.getMap(on).entrySet().iterator()));
                     return obj;
                 }
