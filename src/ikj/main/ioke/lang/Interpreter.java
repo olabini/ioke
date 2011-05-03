@@ -178,7 +178,7 @@ public class Interpreter {
         }
     }
 
-    private static Object signalNoSuchCell(IokeObject message, IokeObject ctx, Object obj, String name, Object cell, IokeObject recv) throws ControlFlow {
+    public static Object signalNoSuchCell(IokeObject message, IokeObject ctx, Object obj, String name, Object cell, IokeObject recv) throws ControlFlow {
         Runtime runtime = ctx.runtime;
         final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition,
                                                                            message,

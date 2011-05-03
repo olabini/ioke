@@ -96,7 +96,7 @@ public class DefaultMethod extends Method implements AssociatedCode {
         }
     }
 
-    private static IokeObject createSuperCallFor(final IokeObject out_self, final IokeObject out_context, final IokeObject out_message, final Object out_on, final Object out_superCell) throws ControlFlow {
+    private static IokeObject createSuperCallFor(final IokeObject out_self, final IokeObject out_context, final IokeObject out_message, final Object out_on, final String out_name) throws ControlFlow {
         return out_context.runtime.newNativeMethod("will call the super method of the current message on the same receiver", new NativeMethod("super") {
                 private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
                     .builder()
@@ -110,10 +110,19 @@ public class DefaultMethod extends Method implements AssociatedCode {
 
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    if(IokeObject.data(out_superCell) instanceof Method) {
-                        return Interpreter.activate(((IokeObject)out_superCell), context, message, out_on);
+                    Object superCell = IokeObject.findSuperCellOn(out_on, out_self, out_message, out_context, out_name);
+                    if(superCell == context.runtime.nul) {
+                        superCell = IokeObject.findSuperCellOn(out_on, out_self, out_message, out_context, Message.name(out_message));
+                    }
+
+                    if(superCell != context.runtime.nul) {
+                        if(IokeObject.data(superCell) instanceof Method) {
+                            return Interpreter.activate(((IokeObject)superCell), context, message, out_on);
+                        } else {
+                            return superCell;
+                        }
                     } else {
-                        return out_superCell;
+                        return Interpreter.signalNoSuchCell(message, context, out_on, out_name, superCell, out_self);
                     }
                 }
             });
@@ -157,14 +166,7 @@ public class DefaultMethod extends Method implements AssociatedCode {
             c.setCell(s.substring(0, s.length()-1), d.getValue());
         }
 
-        Object superCell = IokeObject.findSuperCellOn(on, self, message, context, dm.name);
-        if(superCell == context.runtime.nul) {
-            superCell = IokeObject.findSuperCellOn(on, self, message, context, Message.name(message));
-        }
-
-        if(superCell != context.runtime.nul) {
-            c.setCell("super", createSuperCallFor(self, context, message, on, superCell));
-        }
+        c.setCell("super", createSuperCallFor(self, context, message, on, dm.name));
 
         dm.arguments.assignArgumentValues(c, context, message, on, ((Call)IokeObject.data(call)));
 
@@ -212,15 +214,7 @@ public class DefaultMethod extends Method implements AssociatedCode {
 
         c.setCell("currentMessage", message);
         c.setCell("surroundingContext", context);
-
-        Object superCell = IokeObject.findSuperCellOn(on, self, message, context, dm.name);
-        if(superCell == context.runtime.nul) {
-            superCell = IokeObject.findSuperCellOn(on, self, message, context, Message.name(message));
-        }
-
-        if(superCell != context.runtime.nul) {
-            c.setCell("super", createSuperCallFor(self, context, message, on, superCell));
-        }
+        c.setCell("super", createSuperCallFor(self, context, message, on, dm.name));
 
         dm.arguments.assignArgumentValues(c, context, message, on);
 
@@ -273,14 +267,7 @@ public class DefaultMethod extends Method implements AssociatedCode {
             c.setCell(s.substring(0, s.length()-1), d.getValue());
         }
 
-        Object superCell = IokeObject.findSuperCellOn(on, self, message, context, dm.name);
-        if(superCell == context.runtime.nul) {
-            superCell = IokeObject.findSuperCellOn(on, self, message, context, Message.name(message));
-        }
-
-        if(superCell != context.runtime.nul) {
-            c.setCell("super", createSuperCallFor(self, context, message, on, superCell));
-        }
+        c.setCell("super", createSuperCallFor(self, context, message, on, dm.name));
 
         dm.arguments.assignArgumentValues(c, context, message, on);
 
