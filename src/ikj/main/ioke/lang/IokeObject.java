@@ -40,6 +40,7 @@ public class IokeObject implements TypeChecker {
     public static final int FROZEN_F = 1 << 2;
     public static final int ACTIVATABLE_F = 1 << 3;
     public static final int HAS_ACTIVATABLE_F = 1 << 4;
+    public static final int LEXICAL_F = 1 << 5;
 
     public final void setFlag(int flag, boolean set) {
         if(set) {
@@ -92,6 +93,10 @@ public class IokeObject implements TypeChecker {
         } else {
             body.flags &= ~ACTIVATABLE_F;
         }
+    }
+
+    public final boolean isLexical() {
+        return (body.flags & LEXICAL_F) != 0;
     }
     
 
@@ -239,8 +244,12 @@ public class IokeObject implements TypeChecker {
         return o;
     }
 
-    public Object getRealContext() {
-        return this;
+    public final Object getRealContext() {
+        if(isLexical()) {
+            return ((LexicalContext)this).ground;
+        } else {
+            return this;
+        }
     }
 
     public IokeObject allocateCopy(IokeObject m, IokeObject context) {
@@ -251,7 +260,7 @@ public class IokeObject implements TypeChecker {
         return as(obj, context).markingFindSuperCell(early, message, context, name, new boolean[]{false});
     }
 
-    protected Object markingFindSuperCell(IokeObject early, IokeObject message, IokeObject context, String name, boolean[] found) {
+    protected final Object realMarkingFindSuperCell(IokeObject early, IokeObject message, IokeObject context, String name, boolean[] found) {
         if(this.body.marked) {
             return runtime.nul;
         }
@@ -279,6 +288,14 @@ public class IokeObject implements TypeChecker {
         } finally {
             this.body.marked = false;
         }
+    }
+
+    protected final Object markingFindSuperCell(IokeObject early, IokeObject message, IokeObject context, String name, boolean[] found) {
+        Object nn = realMarkingFindSuperCell(early, message, context, name, found);
+        if(nn == runtime.nul && isLexical()) {
+            return IokeObject.findSuperCellOn(((LexicalContext)this).surroundingContext, early, message, context, name);
+        }
+        return nn;
     }
 
     public static Object findCell(Object obj, IokeObject m, IokeObject context, String name) {
@@ -319,13 +336,19 @@ public class IokeObject implements TypeChecker {
         return markingFindPlace(name);
     }
 
-    protected Object markingFindPlace(String name) {
+    protected final Object markingFindPlace(String name) {
         if(this.body.marked) {
+            if(isLexical()) {
+                return IokeObject.findPlace(((LexicalContext)this).surroundingContext, name);
+            }
             return runtime.nul;
         }
 
         if(body.cells.containsKey(name)) {
             if(body.cells.get(name) == runtime.nul) {
+                if(isLexical()) {
+                    return IokeObject.findPlace(((LexicalContext)this).surroundingContext, name);
+                }
                 return runtime.nul;
             }
             return this;
@@ -338,7 +361,10 @@ public class IokeObject implements TypeChecker {
                         return place;
                     }
                 }
-
+                
+                if(isLexical()) {
+                    return IokeObject.findPlace(((LexicalContext)this).surroundingContext, name);
+                }
                 return runtime.nul;
             } finally {
                 this.body.marked = false;
@@ -346,13 +372,20 @@ public class IokeObject implements TypeChecker {
         }
     }
 
-    protected Object markingFindCell(IokeObject m, IokeObject context, String name) {
+    protected final Object markingFindCell(IokeObject m, IokeObject context, String name) {
         if(this.body.marked) {
+            if(isLexical()) {
+                return IokeObject.findCell(((LexicalContext)this).surroundingContext, m, context, name);
+            }
             return runtime.nul;
         }
 
         if(body.cells.containsKey(name)) {
-            return body.cells.get(name);
+            Object val = body.cells.get(name);
+            if(val == runtime.nul && isLexical()) {
+                return IokeObject.findCell(((LexicalContext)this).surroundingContext, m, context, name);
+            }
+            return val;
         } else {
             this.body.marked = true;
 
@@ -364,6 +397,9 @@ public class IokeObject implements TypeChecker {
                     }
                 }
 
+                if(isLexical()) {
+                    return IokeObject.findCell(((LexicalContext)this).surroundingContext, m, context, name);
+                }
                 return runtime.nul;
             } finally {
                 this.body.marked = false;
@@ -622,26 +658,35 @@ public class IokeObject implements TypeChecker {
     }
 
     public final static Pattern SLIGHTLY_BAD_CHARS = Pattern.compile("[!=\\.\\-\\+&|\\{\\[]");
-    public void assign(String name, Object value, IokeObject context, IokeObject message) throws ControlFlow {
-        checkFrozen("=", message, context);
 
-        if(!SLIGHTLY_BAD_CHARS.matcher(name).find() && findCell(message, context, name + "=") != runtime.nul) {
-            IokeObject msg = runtime.createMessage(new Message(runtime, name + "=", runtime.createMessage(Message.wrap(as(value, context)))));
-            Interpreter.send(msg, context, this);
+    public final void assign(String name, Object value, IokeObject context, IokeObject message) throws ControlFlow {
+        if(isLexical()) {
+            Object place = findPlace(name);
+            if(place == runtime.nul) {
+                place = this;
+            }
+            IokeObject.setCell(place, name, value, context);
         } else {
-            if(body.hooks != null) {
-                boolean contains = body.cells.containsKey(name);
-                Object prev = context.runtime.nil;
-                if(contains) {
-                    prev = body.cells.get(name);
-                }
-                body.cells.put(name, value);
-                if(!contains) {
-                    Hook.fireCellAdded(this, message, context, name);
-                }
-                Hook.fireCellChanged(this, message, context, name, prev);
+            checkFrozen("=", message, context);
+
+            if(!SLIGHTLY_BAD_CHARS.matcher(name).find() && findCell(message, context, name + "=") != runtime.nul) {
+                IokeObject msg = runtime.createMessage(new Message(runtime, name + "=", runtime.createMessage(Message.wrap(as(value, context)))));
+                Interpreter.send(msg, context, this);
             } else {
-                body.cells.put(name, value);
+                if(body.hooks != null) {
+                    boolean contains = body.cells.containsKey(name);
+                    Object prev = context.runtime.nil;
+                    if(contains) {
+                        prev = body.cells.get(name);
+                    }
+                    body.cells.put(name, value);
+                    if(!contains) {
+                        Hook.fireCellAdded(this, message, context, name);
+                    }
+                    Hook.fireCellChanged(this, message, context, name, prev);
+                } else {
+                    body.cells.put(name, value);
+                }
             }
         }
     }
@@ -804,8 +849,12 @@ public class IokeObject implements TypeChecker {
         }
     }
 
-    public Object getSelf() {
-        return this.body.cells.get("self");
+    public final Object getSelf() {
+        if(isLexical()) {
+            return ((LexicalContext)this).surroundingContext.getSelf();
+        } else {
+            return this.body.cells.get("self");
+        }
     }
 
     public static IokeObject convertToNumber(Object on, IokeObject m, IokeObject context) throws ControlFlow {

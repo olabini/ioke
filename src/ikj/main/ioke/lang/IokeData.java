@@ -509,7 +509,7 @@ public abstract class IokeData {
         try {
             int h = hashCode(self);
             String hash = Integer.toHexString(h).toUpperCase();
-            if(self instanceof NullObject) {
+            if(self == self.runtime.nul) {
                 return "#<nul:" + hash + ">";
             }
 

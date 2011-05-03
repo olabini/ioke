@@ -174,7 +174,7 @@ public class IokeList extends IokeData {
                         break;
                     }
                     case 2: {
-                        LexicalContext c = new LexicalContext(context.runtime, context, "Lexical activation context for List#each", message, context);
+                        IokeObject c = context.runtime.newLexicalContext(context, "Lexical activation context for Set#each", context);
                         String name = IokeObject.as(message.getArguments().get(0), context).getName();
                         IokeObject code = IokeObject.as(message.getArguments().get(1), context);
 
@@ -185,7 +185,7 @@ public class IokeList extends IokeData {
                         break;
                     }
                     case 3: {
-                        LexicalContext c = new LexicalContext(context.runtime, context, "Lexical activation context for List#each", message, context);
+                        IokeObject c = context.runtime.newLexicalContext(context, "Lexical activation context for Set#each", context);
                         String iname = IokeObject.as(message.getArguments().get(0), context).getName();
                         String name = IokeObject.as(message.getArguments().get(1), context).getName();
                         IokeObject code = IokeObject.as(message.getArguments().get(2), context);
@@ -880,7 +880,7 @@ public class IokeList extends IokeData {
                         break;
                     }
                     case 2: {
-                        LexicalContext c = new LexicalContext(context.runtime, context, "Lexical activation context for List#map!", message, context);
+                        IokeObject c = context.runtime.newLexicalContext(context, "Lexical activation context for Set#each", context);
                         String name = IokeObject.as(message.getArguments().get(0), context).getName();
                         IokeObject code = IokeObject.as(message.getArguments().get(1), context);
 
@@ -930,7 +930,7 @@ public class IokeList extends IokeData {
                         break;
                     }
                     case 2: {
-                        LexicalContext c = new LexicalContext(context.runtime, context, "Lexical activation context for List#map!", message, context);
+                        IokeObject c = context.runtime.newLexicalContext(context, "Lexical activation context for Set#each", context);
                         String name = IokeObject.as(message.getArguments().get(0), context).getName();
                         IokeObject code = IokeObject.as(message.getArguments().get(1), context);
 

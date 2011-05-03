@@ -219,7 +219,7 @@ public class Message extends IokeData {
                     break;
                 }
                 case 2: {
-                    LexicalContext c = new LexicalContext(context.runtime, context, "Lexical activation context for Message#walk", message, context);
+                    IokeObject c = context.runtime.newLexicalContext(context, "Lexical activation context for Set#each", context);
                     String name = IokeObject.as(message.getArguments().get(0), context).getName();
                     IokeObject code = IokeObject.as(message.getArguments().get(1), context);
 
@@ -231,7 +231,7 @@ public class Message extends IokeData {
 
             }
 
-            private void walkWithoutExplicitReceiver(Object onAsMessage, LexicalContext c, String name, IokeObject code) throws ControlFlow {
+            private void walkWithoutExplicitReceiver(Object onAsMessage, IokeObject c, String name, IokeObject code) throws ControlFlow {
                 Object o = onAsMessage;
                 while(o != null) {
                     c.setCell(name, o);
@@ -290,7 +290,7 @@ public class Message extends IokeData {
                         break;
                     }
                     case 2: {
-                        LexicalContext c = new LexicalContext(context.runtime, context, "Lexical activation context for List#each", message, context);
+                        IokeObject c = context.runtime.newLexicalContext(context, "Lexical activation context for Set#each", context);
                         String name = IokeObject.as(message.getArguments().get(0), context).getName();
                         IokeObject code = IokeObject.as(message.getArguments().get(1), context);
 
@@ -303,7 +303,7 @@ public class Message extends IokeData {
                         break;
                     }
                     case 3: {
-                        LexicalContext c = new LexicalContext(context.runtime, context, "Lexical activation context for List#each", message, context);
+                        IokeObject c = context.runtime.newLexicalContext(context, "Lexical activation context for Set#each", context);
                         String iname = IokeObject.as(message.getArguments().get(0), context).getName();
                         String name = IokeObject.as(message.getArguments().get(1), context).getName();
                         IokeObject code = IokeObject.as(message.getArguments().get(2), context);

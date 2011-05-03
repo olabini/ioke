@@ -197,7 +197,7 @@ public class LexicalMacro extends IokeData implements AssociatedCode, Named, Ins
             return null;
         }
 
-        LexicalContext c = new LexicalContext(self.runtime, on, "Lexical macro activation context", message, lm.context);
+        IokeObject c = self.runtime.newLexicalContext(on, "Lexical macro activation context", lm.context);
 
         c.setCell("outerScope", lm.context);
         c.setCell("call", call);
@@ -227,7 +227,7 @@ public class LexicalMacro extends IokeData implements AssociatedCode, Named, Ins
             return null;
         }
 
-        LexicalContext c = new LexicalContext(self.runtime, on, "Lexical macro activation context", message, lm.context);
+        IokeObject c = self.runtime.newLexicalContext(on, "Lexical macro activation context", lm.context);
 
         c.setCell("outerScope", lm.context);
         c.setCell("call", dynamicContext.runtime.newCallFrom(c, message, dynamicContext, IokeObject.as(on, dynamicContext)));
@@ -253,7 +253,7 @@ public class LexicalMacro extends IokeData implements AssociatedCode, Named, Ins
             return null;
         }
 
-        LexicalContext c = new LexicalContext(self.runtime, on, "Lexical macro activation context", message, lm.context);
+        IokeObject c = self.runtime.newLexicalContext(on, "Lexical macro activation context", lm.context);
 
         c.setCell("outerScope", lm.context);
         c.setCell("call", dynamicContext.runtime.newCallFrom(c, message, dynamicContext, IokeObject.as(on, dynamicContext)));

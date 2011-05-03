@@ -170,7 +170,7 @@ public class LexicalBlock extends IokeData implements AssociatedCode {
 
     public static Object activateWithCallAndDataFixed(final IokeObject self, IokeObject dynamicContext, IokeObject message, Object on, Object call, Map<String, Object> data) throws ControlFlow {
         LexicalBlock lb = (LexicalBlock)self.data;
-        LexicalContext c = new LexicalContext(self.runtime, on, "Lexical activation context", message, lb.context);
+        IokeObject c = self.runtime.newLexicalContext(on, "Lexical activation context", lb.context);
 
         for(Map.Entry<String, Object> d : data.entrySet()) {
             String s = d.getKey();
@@ -183,14 +183,14 @@ public class LexicalBlock extends IokeData implements AssociatedCode {
 
     public static Object activateFixed(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on) throws ControlFlow {
         LexicalBlock lb = (LexicalBlock)self.data;
-        LexicalContext c = new LexicalContext(self.runtime, on, "Lexical activation context", message, lb.context);
+        IokeObject c = self.runtime.newLexicalContext(on, "Lexical activation context", lb.context);
         lb.arguments.assignArgumentValues(c, dynamicContext, message, on);
         return self.runtime.interpreter.evaluate(lb.message, c, on, c);
     }
 
     public static Object activateWithDataFixed(IokeObject self, IokeObject dynamicContext, IokeObject message, Object on, Map<String, Object> data) throws ControlFlow {
         LexicalBlock lb = (LexicalBlock)self.data;
-        LexicalContext c = new LexicalContext(self.runtime, on, "Lexical activation context", message, lb.context);
+        IokeObject c = self.runtime.newLexicalContext(on, "Lexical activation context", lb.context);
 
         for(Map.Entry<String, Object> d : data.entrySet()) {
             String s = d.getKey();

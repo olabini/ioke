@@ -39,7 +39,7 @@ public class FlowControlBehavior {
                 public Object activate(IokeObject method, final IokeObject context, IokeObject message, Object on) throws ControlFlow {
                     getArguments().checkArgumentCount(context, message, on);
                     List<Object> args = message.getArguments();
-                    LexicalContext lc = new LexicalContext(context.runtime, context.getRealContext(), "Let lexical activation context", message, context);
+                    IokeObject lc = context.runtime.newLexicalContext(context.getRealContext(), "Let lexical activation context", context);
                     int ix = 0;
                     int end = args.size()-1;
                     List<Object[]> valuesToUnbind = new LinkedList<Object[]>();
@@ -327,7 +327,7 @@ public class FlowControlBehavior {
 
                     Object test = Interpreter.getEvaluatedArgument(message, 0, context);
 
-                    LexicalContext itContext = new LexicalContext(context.runtime, context.getRealContext(), "Lexical activation context", message, context);
+                    IokeObject itContext = context.runtime.newLexicalContext(context.getRealContext(), "Lexical activation context", context);
                     itContext.setCell("it", test);
 
                     if(IokeObject.isTrue(test)) {
@@ -365,7 +365,7 @@ public class FlowControlBehavior {
 
                     Object test = Interpreter.getEvaluatedArgument(message, 0, context);
 
-                    LexicalContext itContext = new LexicalContext(context.runtime, context.getRealContext(), "Lexical activation context", message, context);
+                    IokeObject itContext = context.runtime.newLexicalContext(context.getRealContext(), "Lexical activation context", context);
                     itContext.setCell("it", test);
 
                     if(IokeObject.isTrue(test)) {

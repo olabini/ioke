@@ -43,7 +43,7 @@ public class Runtime extends IokeData {
     public boolean debug = false;
     private final int id = getNextId();
     // NOT TO BE EXPOSED TO Ioke - used for internal usage only
-    public final NullObject nul = new NullObject(this);
+    public final IokeObject nul = new IokeObject(this, "NOT TO BE EXPOSED TO Ioke - used for internal usage only");
 
     PrintWriter out;
     PrintWriter err;
@@ -85,7 +85,7 @@ public class Runtime extends IokeData {
     public IokeObject pair = new IokeObject(this, "A pair is a collection of two objects of any kind. They are used among other things to represent Dict entries.", new Pair(nil, nil));
     public IokeObject tuple = new IokeObject(this, "A tuple is a collection of objects of any kind. It is immutable and supports destructuring.", new Tuple(new Object[0]));
     public IokeObject call = new IokeObject(this, "A call is the runtime structure that includes the specific information for a call, that is available inside a DefaultMacro.", new Call());
-    public LexicalContext lexicalContext = new LexicalContext(this, ground, "A lexical activation context.", null, ground);
+    public IokeObject lexicalContext = newLexicalContext(ground, "A lexical activation context.", ground);
     public IokeObject dateTime = new IokeObject(this, "A DateTime represents the current date and time in a particular time zone.", new DateTime(0));
 
     public IokeObject locals = new IokeObject(this, "Contains all the locals for a specific invocation.");
@@ -388,7 +388,7 @@ public class Runtime extends IokeData {
         }
     }
 
-    public NullObject getNul() {
+    public IokeObject getNul() {
         return nul;
     }
 
@@ -620,6 +620,11 @@ public class Runtime extends IokeData {
         IokeObject obj = this.text.allocateCopy(null, null);
         obj.mimicsWithoutCheck(this.text);
         obj.setData(new Text(text));
+        return obj;
+    }
+
+    public IokeObject newLexicalContext(Object ground, String documentation, IokeObject surroundingContext) {
+        IokeObject obj = new LexicalContext(this, ground, documentation, surroundingContext);
         return obj;
     }
 
