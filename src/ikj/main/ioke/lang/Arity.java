@@ -21,7 +21,7 @@ public class Arity extends IokeData {
         return obj;
     }
 
-    public static final IokeObject getArity(IokeObject self, DefaultArgumentsDefinition def) throws ControlFlow {
+    public static final IokeObject getArity(IokeObject self, ArgumentsDefinition def) throws ControlFlow {
         if( def == null || def.isEmpty() ) {
             return IokeObject.as(takingNothing(self), self.runtime.arity);
         }
@@ -32,14 +32,14 @@ public class Arity extends IokeData {
         return obj;
     }
 
-    private DefaultArgumentsDefinition argumentsDefinition;
+    private ArgumentsDefinition argumentsDefinition;
     private Taking taking;
 
     public Arity(Taking taking) {
         this.taking = taking;
     }
 
-    public Arity(DefaultArgumentsDefinition argumentsDefinition) {
+    public Arity(ArgumentsDefinition argumentsDefinition) {
         if(argumentsDefinition == null || argumentsDefinition.isEmpty()) {
             this.taking = Taking.Nothing;
         } else {
@@ -80,7 +80,7 @@ public class Arity extends IokeData {
                     if (args.size() == 0) {
                         return takingNothing(self);
                     }
-                    DefaultArgumentsDefinition def = DefaultArgumentsDefinition.createFrom(args, 0, args.size(), message, on, context);
+                    ArgumentsDefinition def = DefaultArgumentsDefinition.createFrom(args, 0, args.size(), message, on, context);
                     return getArity(self, def);
                 }
             }));

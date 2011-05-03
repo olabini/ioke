@@ -20,7 +20,7 @@ import ioke.lang.exceptions.ControlFlow;
  *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
-public class DefaultArgumentsDefinition {
+public class DefaultArgumentsDefinition implements ArgumentsDefinition {
     public static class Argument {
         private String name;
         public Argument(String name) {
@@ -460,8 +460,8 @@ public class DefaultArgumentsDefinition {
         return min == 0 && max == 0 && arguments.isEmpty() && keywords.isEmpty() && rest == null && krest == null;
     }
 
-    public static DefaultArgumentsDefinition empty() {
-        return new DefaultArgumentsDefinition(new ArrayList<Argument>(), new ArrayList<String>(), null, null, 0, 0, false);
+    public static ArgumentsDefinition empty() {
+        return new DefaultArgumentsDefinitionArgs0();
     }
 
     public static int indexOf(List<Object> objs, Object obj) {
@@ -475,7 +475,7 @@ public class DefaultArgumentsDefinition {
         return -1;
     }
 
-    public static DefaultArgumentsDefinition createFrom(List<Object> args, int start, int len, final IokeObject message, final Object on, final IokeObject context) throws ControlFlow {
+    public static ArgumentsDefinition createFrom(List<Object> args, int start, int len, final IokeObject message, final Object on, final IokeObject context) throws ControlFlow {
         final Runtime runtime = context.runtime;
         List<Argument> arguments = new ArrayList<Argument>();
         List<String> keywords = new ArrayList<String>();
@@ -558,6 +558,23 @@ public class DefaultArgumentsDefinition {
                     max++;
                     arguments.add(new Argument(IokeObject.as(obj, context).getName()));
                 }
+            }
+        }
+
+        if(!hadOptional && keywords.size() == 0) {
+            switch(min) {
+            case 0:
+                return new DefaultArgumentsDefinitionArgs0();
+            case 1:
+                return new DefaultArgumentsDefinitionArgs1(arguments.get(0).getName());
+            case 2:
+                return new DefaultArgumentsDefinitionArgs2(arguments.get(0).getName(), arguments.get(1).getName());
+            case 3:
+                return new DefaultArgumentsDefinitionArgs3(arguments.get(0).getName(), arguments.get(1).getName(), arguments.get(2).getName());
+            case 4:
+                return new DefaultArgumentsDefinitionArgs4(arguments.get(0).getName(), arguments.get(1).getName(), arguments.get(2).getName(), arguments.get(3).getName());
+            case 5:
+                return new DefaultArgumentsDefinitionArgs5(arguments.get(0).getName(), arguments.get(1).getName(), arguments.get(2).getName(), arguments.get(3).getName(), arguments.get(4).getName());
             }
         }
 

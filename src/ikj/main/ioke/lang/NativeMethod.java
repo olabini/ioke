@@ -16,7 +16,7 @@ import ioke.lang.exceptions.ControlFlow;
  */
 public abstract class NativeMethod extends Method implements CanRun {
     public static class WithNoArguments extends NativeMethod {
-        private final static DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition.empty();
+        private final static DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition.builder().getArguments();;
 
         public WithNoArguments(String name) {
             super(name);

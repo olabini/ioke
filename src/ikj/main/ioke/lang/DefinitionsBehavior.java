@@ -59,7 +59,7 @@ public class DefinitionsBehavior {
                         doc = s;
                     }
 
-                    DefaultArgumentsDefinition def = DefaultArgumentsDefinition.createFrom(args, start, args.size()-1, message, on, context);
+                    ArgumentsDefinition def = DefaultArgumentsDefinition.createFrom(args, start, args.size()-1, message, on, context);
 
                     return runtime.newMethod(doc, runtime.defaultMethod, new DefaultMethod(context, def, (IokeObject)args.get(args.size()-1)));
                 }
@@ -222,7 +222,7 @@ public class DefinitionsBehavior {
 
                     IokeObject code = IokeObject.as(args.get(args.size()-1), context);
 
-                    DefaultArgumentsDefinition def = DefaultArgumentsDefinition.createFrom(args, start, args.size()-1, message, on, context);
+                    ArgumentsDefinition def = DefaultArgumentsDefinition.createFrom(args, start, args.size()-1, message, on, context);
                     return runtime.newLexicalBlock(doc, runtime.lexicalBlock, new LexicalBlock(context, def, code));
                 }
             }));

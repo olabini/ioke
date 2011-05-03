@@ -15,14 +15,14 @@ import ioke.lang.exceptions.ControlFlow;
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
 public class DefaultMethod extends Method implements AssociatedCode {
-    private DefaultArgumentsDefinition arguments;
+    private ArgumentsDefinition arguments;
     private IokeObject code;
 
     public DefaultMethod(String name) {
         super(name, IokeData.TYPE_DEFAULT_METHOD);
     }
 
-    public DefaultMethod(IokeObject context, DefaultArgumentsDefinition arguments, IokeObject code) {
+    public DefaultMethod(IokeObject context, ArgumentsDefinition arguments, IokeObject code) {
         super(context, IokeData.TYPE_DEFAULT_METHOD);
         this.arguments = arguments;
         this.code = code;

@@ -15,11 +15,11 @@ import ioke.lang.exceptions.ControlFlow;
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
 public class LexicalBlock extends IokeData implements AssociatedCode {
-    private DefaultArgumentsDefinition arguments;
+    private ArgumentsDefinition arguments;
     private IokeObject context;
     private IokeObject message;
 
-    public LexicalBlock(IokeObject context, DefaultArgumentsDefinition arguments, IokeObject message) {
+    public LexicalBlock(IokeObject context, ArgumentsDefinition arguments, IokeObject message) {
         super(IokeData.TYPE_LEXICAL_BLOCK);
         this.context = context;
         this.arguments = arguments;
@@ -66,7 +66,7 @@ public class LexicalBlock extends IokeData implements AssociatedCode {
 
                     IokeObject code = IokeObject.as(args.get(args.size()-1), dynamicContext);
 
-                    DefaultArgumentsDefinition def = DefaultArgumentsDefinition.createFrom(args, 0, args.size()-1, message, on, dynamicContext);
+                    ArgumentsDefinition def = DefaultArgumentsDefinition.createFrom(args, 0, args.size()-1, message, on, dynamicContext);
                     return runtime.newLexicalBlock(null, runtime.lexicalBlock, new LexicalBlock(ground, def, code));
                 }
             }));
