@@ -129,7 +129,7 @@ public abstract class IokeData {
         Object cell = IokeObject.findCell(self, self.runtime.eqMessage, self.runtime.ground, "==");
 
         if(cell == self.runtime.nul) {
-            boolean result = (other instanceof IokeObject) && (self.getCells() == IokeObject.as(other, self).getCells());
+            boolean result = (other instanceof IokeObject) && (self.body == IokeObject.as(other, self).body);
             return result;
         } else {
             boolean result = IokeObject.isTrue(Interpreter.send(self.runtime.eqMessage, self.runtime.ground, self, self.runtime.createMessage(Message.wrap(IokeObject.as(other, self)))));
@@ -141,7 +141,7 @@ public abstract class IokeData {
         Object cell = IokeObject.findCell(self, self.runtime.hashMessage, self.runtime.ground, "hash");
 
         if(cell == self.runtime.nul) {
-            return System.identityHashCode(self.getCells());
+            return System.identityHashCode(self.body);
         } else {
             return Number.extractInt(Interpreter.send(self.runtime.hashMessage, self.runtime.ground, self), self.runtime.hashMessage, self.runtime.ground);
         }

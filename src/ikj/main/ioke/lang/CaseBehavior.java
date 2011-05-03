@@ -21,7 +21,7 @@ public class CaseBehavior {
     public static IokeObject transformWhenStatement(Object when, IokeObject context, IokeObject message, IokeObject caseMimic) throws ControlFlow {
         String outerName = Message.name(when);
 
-        if(caseMimic.getCells().containsKey("case:" + outerName)) {
+        if(caseMimic.body.has("case:" + outerName)) {
             IokeObject cp = Message.deepCopy(when);
             replaceAllCaseNames(cp, context, message, caseMimic);
             return cp;
@@ -32,7 +32,7 @@ public class CaseBehavior {
 
     private static void replaceAllCaseNames(IokeObject when, IokeObject context, IokeObject message, IokeObject caseMimic) throws ControlFlow {
         String theName = "case:" + Message.name(when);
-        if(caseMimic.getCells().containsKey(theName)) {
+        if(caseMimic.body.has(theName)) {
             Message.setName(when, theName);
 
             for(Object arg : when.getArguments()) {

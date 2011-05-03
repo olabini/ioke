@@ -24,8 +24,8 @@ public class JavaGround {
     public static void init(IokeObject obj) throws ControlFlow {
         final Runtime runtime = obj.runtime;
         obj.setKind("JavaGround");
-        obj.mimicsWithoutCheck(IokeObject.as(runtime.defaultBehavior.getCells().get("BaseBehavior"), null));
-        obj.setCell("mimics?",               ((IokeObject)runtime.defaultBehavior.getCells().get("Reflection")).getCells().get("mimics?"));
+        obj.mimicsWithoutCheck(IokeObject.as(runtime.defaultBehavior.body.get("BaseBehavior", 0), null));
+        obj.setCell("mimics?",               ((IokeObject)runtime.defaultBehavior.body.get("Reflection", 0)).body.get("mimics?", 0));
 
         obj.registerCell("JavaArray", runtime.javaArray);
 

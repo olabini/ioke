@@ -545,7 +545,7 @@ public class Reflector {
 
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
-                    return context.runtime.newText("0x" + Integer.toHexString(System.identityHashCode(IokeObject.getCells(args.get(0), context))).toUpperCase());
+                    return context.runtime.newText("0x" + Integer.toHexString(System.identityHashCode(IokeObject.as(args.get(0), context).body)).toUpperCase());
                 }
             }));
 

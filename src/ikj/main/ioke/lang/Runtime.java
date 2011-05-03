@@ -674,11 +674,12 @@ public class Runtime extends IokeData {
                 obj.singleMimicsWithoutCheck(objWrap);
                 obj.setData(JavaWrapper.wrapWithMethods(clz, obj, this));
 
-                for(Map.Entry<String, Object> me : obj.getCells().entrySet()) {
-                    String name = me.getKey();
-                    if(name.startsWith("class:")) {
-                        objWrap.getCells().put(name, me.getValue());
+                Body.Cell c = obj.body.firstAdded;
+                while(c != null) {
+                    if(c.name.startsWith("class:")) {
+                        objWrap.body.put(c.name, 0, c.value);
                     }
+                    c = c.orderedNext;
                 }
 
                 return obj;
@@ -861,7 +862,7 @@ public class Runtime extends IokeData {
     }
 
     public IokeObject newTuple(Object one, Object two) {
-        IokeObject tp = (IokeObject)this.tuple.getCells().get("Two");
+        IokeObject tp = (IokeObject)this.tuple.body.get("Two", 0);
         IokeObject obj = tp.allocateCopy(null, null);
         obj.singleMimicsWithoutCheck(tp);
         obj.setData(new Tuple(new Object[]{one, two}));
