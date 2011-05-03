@@ -153,7 +153,6 @@ public final class IokeObject implements TypeChecker {
         if(on instanceof IokeObject) {
             as(on,null).setFrozen(true);
         }
-
     }
 
     public static void thaw(Object on) {
@@ -299,7 +298,7 @@ public final class IokeObject implements TypeChecker {
     }
 
     public static Object findCell(Object obj, IokeObject m, IokeObject context, String name) {
-        return as(obj, context).markingFindCell(m, context, name);
+        return markingFindCell(as(obj, context), m, context, name);
     }
 
     public static Object findPlace(Object obj, String name) {
@@ -372,39 +371,39 @@ public final class IokeObject implements TypeChecker {
         }
     }
 
-    protected final Object markingFindCell(IokeObject m, IokeObject context, String name) {
-        if(this.body.marked) {
-            if(isLexical()) {
-                return IokeObject.findCell(((LexicalContext)this.data).surroundingContext, m, context, name);
-            }
-            return runtime.nul;
+    protected static final Object realMarkingFindCell(IokeObject on, IokeObject m, IokeObject context, String name) {
+        Body b = on.body;
+        if(b.marked) {
+            return on.runtime.nul;
         }
 
-        if(body.cells.containsKey(name)) {
-            Object val = body.cells.get(name);
-            if(val == runtime.nul && isLexical()) {
-                return IokeObject.findCell(((LexicalContext)this.data).surroundingContext, m, context, name);
-            }
-            return val;
+        Object cell;
+
+        if((cell = b.cells.get(name)) != null) {
+            return cell;
         } else {
-            this.body.marked = true;
+            b.marked = true;
 
             try {
-                for(int i = 0; i<body.mimicCount; i++) {
-                    Object cell = body.mimics[i].markingFindCell(m, context, name);
-                    if(cell != runtime.nul) {
+                for(int i = 0; i<b.mimicCount; i++) {
+                    if((cell = markingFindCell(b.mimics[i], m, context, name)) != on.runtime.nul) {
                         return cell;
                     }
                 }
 
-                if(isLexical()) {
-                    return IokeObject.findCell(((LexicalContext)this.data).surroundingContext, m, context, name);
-                }
-                return runtime.nul;
+                return on.runtime.nul;
             } finally {
-                this.body.marked = false;
+                b.marked = false;
             }
         }
+    }
+
+    protected static final Object markingFindCell(IokeObject on, IokeObject m, IokeObject context, String name) {
+        Object val = realMarkingFindCell(on, m, context, name);
+        if(val == on.runtime.nul && on.isLexical()) {
+            return IokeObject.findCell(((LexicalContext)on.data).surroundingContext, m, context, name);
+        }
+        return val;
     }
 
     public static IokeObject mimic(Object on, IokeObject message, IokeObject context) throws ControlFlow {
@@ -420,7 +419,7 @@ public final class IokeObject implements TypeChecker {
     }
 
     public Object findCell(IokeObject m, IokeObject context, String name) {
-        return markingFindCell(m, context, name);
+        return markingFindCell(this, m, context, name);
     }
 
     public static boolean isKind(Object on, String kind, IokeObject context) {
