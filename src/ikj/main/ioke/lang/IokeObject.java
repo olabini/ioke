@@ -16,7 +16,7 @@ import ioke.lang.exceptions.ControlFlow;
 /**
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
-public class IokeObject implements TypeChecker {
+public final class IokeObject implements TypeChecker {
     public static class Body {
         String documentation;
         Map<String, Object> cells = new LinkedHashMap<String, Object>();
@@ -246,7 +246,7 @@ public class IokeObject implements TypeChecker {
 
     public final Object getRealContext() {
         if(isLexical()) {
-            return ((LexicalContext)this).ground;
+            return ((LexicalContext)this.data).ground;
         } else {
             return this;
         }
@@ -293,7 +293,7 @@ public class IokeObject implements TypeChecker {
     protected final Object markingFindSuperCell(IokeObject early, IokeObject message, IokeObject context, String name, boolean[] found) {
         Object nn = realMarkingFindSuperCell(early, message, context, name, found);
         if(nn == runtime.nul && isLexical()) {
-            return IokeObject.findSuperCellOn(((LexicalContext)this).surroundingContext, early, message, context, name);
+            return IokeObject.findSuperCellOn(((LexicalContext)this.data).surroundingContext, early, message, context, name);
         }
         return nn;
     }
@@ -339,7 +339,7 @@ public class IokeObject implements TypeChecker {
     protected final Object markingFindPlace(String name) {
         if(this.body.marked) {
             if(isLexical()) {
-                return IokeObject.findPlace(((LexicalContext)this).surroundingContext, name);
+                return IokeObject.findPlace(((LexicalContext)this.data).surroundingContext, name);
             }
             return runtime.nul;
         }
@@ -347,7 +347,7 @@ public class IokeObject implements TypeChecker {
         if(body.cells.containsKey(name)) {
             if(body.cells.get(name) == runtime.nul) {
                 if(isLexical()) {
-                    return IokeObject.findPlace(((LexicalContext)this).surroundingContext, name);
+                    return IokeObject.findPlace(((LexicalContext)this.data).surroundingContext, name);
                 }
                 return runtime.nul;
             }
@@ -363,7 +363,7 @@ public class IokeObject implements TypeChecker {
                 }
                 
                 if(isLexical()) {
-                    return IokeObject.findPlace(((LexicalContext)this).surroundingContext, name);
+                    return IokeObject.findPlace(((LexicalContext)this.data).surroundingContext, name);
                 }
                 return runtime.nul;
             } finally {
@@ -375,7 +375,7 @@ public class IokeObject implements TypeChecker {
     protected final Object markingFindCell(IokeObject m, IokeObject context, String name) {
         if(this.body.marked) {
             if(isLexical()) {
-                return IokeObject.findCell(((LexicalContext)this).surroundingContext, m, context, name);
+                return IokeObject.findCell(((LexicalContext)this.data).surroundingContext, m, context, name);
             }
             return runtime.nul;
         }
@@ -383,7 +383,7 @@ public class IokeObject implements TypeChecker {
         if(body.cells.containsKey(name)) {
             Object val = body.cells.get(name);
             if(val == runtime.nul && isLexical()) {
-                return IokeObject.findCell(((LexicalContext)this).surroundingContext, m, context, name);
+                return IokeObject.findCell(((LexicalContext)this.data).surroundingContext, m, context, name);
             }
             return val;
         } else {
@@ -398,7 +398,7 @@ public class IokeObject implements TypeChecker {
                 }
 
                 if(isLexical()) {
-                    return IokeObject.findCell(((LexicalContext)this).surroundingContext, m, context, name);
+                    return IokeObject.findCell(((LexicalContext)this.data).surroundingContext, m, context, name);
                 }
                 return runtime.nul;
             } finally {
@@ -851,7 +851,7 @@ public class IokeObject implements TypeChecker {
 
     public final Object getSelf() {
         if(isLexical()) {
-            return ((LexicalContext)this).surroundingContext.getSelf();
+            return ((LexicalContext)this.data).surroundingContext.getSelf();
         } else {
             return this.body.cells.get("self");
         }

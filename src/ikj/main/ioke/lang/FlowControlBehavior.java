@@ -175,8 +175,8 @@ public class FlowControlBehavior {
                         value = args.get(0);
                     }
                     IokeObject ctx = context;
-                    while(ctx instanceof LexicalContext) {
-                        ctx = ((LexicalContext)ctx).surroundingContext;
+                    while(ctx.data instanceof LexicalContext) {
+                        ctx = ((LexicalContext)ctx.data).surroundingContext;
                     }
 
                     throw new ControlFlow.Return(value, ctx);

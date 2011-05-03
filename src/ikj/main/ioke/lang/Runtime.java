@@ -85,7 +85,7 @@ public class Runtime extends IokeData {
     public IokeObject pair = new IokeObject(this, "A pair is a collection of two objects of any kind. They are used among other things to represent Dict entries.", new Pair(nil, nil));
     public IokeObject tuple = new IokeObject(this, "A tuple is a collection of objects of any kind. It is immutable and supports destructuring.", new Tuple(new Object[0]));
     public IokeObject call = new IokeObject(this, "A call is the runtime structure that includes the specific information for a call, that is available inside a DefaultMacro.", new Call());
-    public IokeObject lexicalContext = newLexicalContext(ground, "A lexical activation context.", ground);
+    public IokeObject lexicalContext = new IokeObject(this, "A lexical activation context", new LexicalContext(ground, ground));
     public IokeObject dateTime = new IokeObject(this, "A DateTime represents the current date and time in a particular time zone.", new DateTime(0));
 
     public IokeObject locals = new IokeObject(this, "Contains all the locals for a specific invocation.");
@@ -624,7 +624,11 @@ public class Runtime extends IokeData {
     }
 
     public IokeObject newLexicalContext(Object ground, String documentation, IokeObject surroundingContext) {
-        IokeObject obj = new LexicalContext(this, ground, documentation, surroundingContext);
+        IokeObject obj = this.lexicalContext.allocateCopy(null, null);
+        obj.mimicsWithoutCheck(this.lexicalContext);
+        obj.setData(new LexicalContext(ground, surroundingContext));
+        obj.setKind("LexicalContext");
+        obj.body.flags |= IokeObject.LEXICAL_F;
         return obj;
     }
 
