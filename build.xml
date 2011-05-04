@@ -97,7 +97,7 @@
 
   <target name="ci-coverage.instrument" description="">
     <cobertura-instrument todir="${coverage.classes.dir}">
-      <fileset dir="${classes.dir}" excludes="ioke/lang/parser/**/*.class com/google/**/*.class org/jregex/**/*.class gnu/**/*.class ioke/lang/test/**/*.class ioke/lang/performance/**/*.class"/>
+      <fileset dir="${classes.dir}" excludes="ioke/lang/parser/**/*.class,com/google/**/*.class,org/jregex/**/*.class,gnu/**/*.class,ioke/lang/test/**/*.class,ioke/lang/performance/**/*.class"/>
     </cobertura-instrument>
   </target>
 
