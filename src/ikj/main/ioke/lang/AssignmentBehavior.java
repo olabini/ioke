@@ -76,7 +76,7 @@ public class AssignmentBehavior {
                     String name = m1.getName();
 
                     if(m1.getArgumentCount() == 0) {
-                        Object val = IokeObject.findCell(on, message, context, name);
+                        Object val = IokeObject.findCell(IokeObject.as(on, context), name);
                         if(val == context.runtime.nul || !IokeObject.isTrue(val)) {
                             return Interpreter.send(context.runtime.setValue, context, on, m1, Message.getArg2(message));
                         } else {
@@ -113,7 +113,7 @@ public class AssignmentBehavior {
                     String name = m1.getName();
 
                     if(m1.getArgumentCount() == 0) {
-                        Object val = IokeObject.findCell(on, message, context, name);
+                        Object val = IokeObject.findCell(IokeObject.as(on, context), name);
                         if(val == context.runtime.nul || !IokeObject.isTrue(val)) {
                             return val;
                         } else {

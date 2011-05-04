@@ -126,7 +126,7 @@ public abstract class IokeData {
     }
 
     public final boolean isEqualTo(IokeObject self, Object other) throws ControlFlow {
-        Object cell = IokeObject.findCell(self, self.runtime.eqMessage, self.runtime.ground, "==");
+        Object cell = IokeObject.findCell(self, "==");
 
         if(cell == self.runtime.nul) {
             boolean result = (other instanceof IokeObject) && (self.body == IokeObject.as(other, self).body);
@@ -138,7 +138,7 @@ public abstract class IokeData {
     }
 
     public final int hashCode(IokeObject self) throws ControlFlow {
-        Object cell = IokeObject.findCell(self, self.runtime.hashMessage, self.runtime.ground, "hash");
+        Object cell = IokeObject.findCell(self, "hash");
 
         if(cell == self.runtime.nul) {
             return System.identityHashCode(self.body);
@@ -461,7 +461,7 @@ public abstract class IokeData {
     }
 
     public static Object activateFixed(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-        Object cell = IokeObject.findCell(self, message, context, "activate");
+        Object cell = IokeObject.findCell(self, "activate");
         if(cell == context.runtime.nul) {
             report(self, context, message, "activate");
             return context.runtime.nil;

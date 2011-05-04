@@ -16,32 +16,32 @@ public class Locals {
         obj.setKind("Locals");
         obj.body.mimicCount = 0;
 
-        obj.setCell("=",         obj.runtime.base.body.get("=", 0));
-        Body assgn = IokeObject.as(obj.runtime.defaultBehavior.body.get("Assignment", 0), null).body;
-        obj.setCell("++",        assgn.get("++", 0));
-        obj.setCell("--",        assgn.get("--", 0));
-        obj.setCell("+=",        assgn.get("+=", 0));
-        obj.setCell("-=",        assgn.get("-=", 0));
-        obj.setCell("/=",        assgn.get("/=", 0));
-        obj.setCell("*=",        assgn.get("*=", 0));
-        obj.setCell("%=",        assgn.get("%=", 0));
-        obj.setCell("**=",       assgn.get("**=", 0));
-        obj.setCell("&=",        assgn.get("&=", 0));
-        obj.setCell("|=",        assgn.get("|=", 0));
-        obj.setCell("^=",        assgn.get("^=", 0));
-        obj.setCell("<<=",       assgn.get("<<=", 0));
-        obj.setCell(">>=",       assgn.get(">>=", 0));
-        obj.setCell("&&=",       assgn.get("&&=", 0));
-        obj.setCell("||=",       assgn.get("||=", 0));
-        obj.setCell("cell",      obj.runtime.base.body.get("cell", 0));
-        obj.setCell("cell=",     obj.runtime.base.body.get("cell=", 0));
-        obj.setCell("cells",     obj.runtime.base.body.get("cells", 0));
-        obj.setCell("cellNames", obj.runtime.base.body.get("cellNames", 0));
-        obj.setCell("removeCell!", obj.runtime.base.body.get("removeCell!", 0));
-        obj.setCell("undefineCell!", obj.runtime.base.body.get("undefineCell!", 0));
-        obj.setCell("cellOwner?", obj.runtime.base.body.get("cellOwner?", 0));
-        obj.setCell("cellOwner", obj.runtime.base.body.get("cellOwner", 0));
-        obj.setCell("identity",  obj.runtime.base.body.get("identity", 0));
+        obj.setCell("=",         obj.runtime.base.body.get("="));
+        Body assgn = IokeObject.as(obj.runtime.defaultBehavior.body.get("Assignment"), null).body;
+        obj.setCell("++",        assgn.get("++"));
+        obj.setCell("--",        assgn.get("--"));
+        obj.setCell("+=",        assgn.get("+="));
+        obj.setCell("-=",        assgn.get("-="));
+        obj.setCell("/=",        assgn.get("/="));
+        obj.setCell("*=",        assgn.get("*="));
+        obj.setCell("%=",        assgn.get("%="));
+        obj.setCell("**=",       assgn.get("**="));
+        obj.setCell("&=",        assgn.get("&="));
+        obj.setCell("|=",        assgn.get("|="));
+        obj.setCell("^=",        assgn.get("^="));
+        obj.setCell("<<=",       assgn.get("<<="));
+        obj.setCell(">>=",       assgn.get(">>="));
+        obj.setCell("&&=",       assgn.get("&&="));
+        obj.setCell("||=",       assgn.get("||="));
+        obj.setCell("cell",      obj.runtime.base.body.get("cell"));
+        obj.setCell("cell=",     obj.runtime.base.body.get("cell="));
+        obj.setCell("cells",     obj.runtime.base.body.get("cells"));
+        obj.setCell("cellNames", obj.runtime.base.body.get("cellNames"));
+        obj.setCell("removeCell!", obj.runtime.base.body.get("removeCell!"));
+        obj.setCell("undefineCell!", obj.runtime.base.body.get("undefineCell!"));
+        obj.setCell("cellOwner?", obj.runtime.base.body.get("cellOwner?"));
+        obj.setCell("cellOwner", obj.runtime.base.body.get("cellOwner"));
+        obj.setCell("identity",  obj.runtime.base.body.get("identity"));
 
         obj.registerMethod(obj.runtime.newNativeMethod("will pass along the call to the real self object of this context.",
                                                        new NativeMethod("pass") {
@@ -90,10 +90,10 @@ public class Locals {
                                                                        ix--;
                                                                    }
 
-                                                                   sb.append(String.format(" %-48.48s %s\n", (ix == -1 ? s1 : s1.substring(0,ix)),"[" + message.getFile() + ":" + message.getLine() + ":" + message.getPosition()  + getContextMessageName(IokeObject.as(current.body.get("surroundingContext", 0), context)) + "]"));
+                                                                   sb.append(String.format(" %-48.48s %s\n", (ix == -1 ? s1 : s1.substring(0,ix)),"[" + message.getFile() + ":" + message.getLine() + ":" + message.getPosition()  + getContextMessageName(IokeObject.as(current.body.get("surroundingContext"), context)) + "]"));
 
 
-                                                                   current = IokeObject.as(IokeObject.findCell(current, m, context, "surroundingContext"), context);
+                                                                   current = IokeObject.as(IokeObject.findCell(current, "surroundingContext"), context);
                                                                }
 
                                                                return runtime.newText(sb.toString());
@@ -102,7 +102,7 @@ public class Locals {
 
     public static String getContextMessageName(IokeObject ctx) throws ControlFlow {
         if("Locals".equals(ctx.getKind())) {
-            return ":in `" + IokeObject.as(ctx.body.get("currentMessage", 0), ctx).getName() + "'";
+            return ":in `" + IokeObject.as(ctx.body.get("currentMessage"), ctx).getName() + "'";
         } else {
             return "";
         }

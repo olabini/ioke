@@ -23,7 +23,7 @@ public class JavaInvocationHelper {
         IokeObject pr = object.__get_IokeProxy();
         Runtime runtime = object.__get_IokeRuntime();
 
-        Object cell = IokeObject.findCell(pr, null, null, name);
+        Object cell = IokeObject.findCell(pr, name);
         if(cell != null && cell != runtime.nul && cell instanceof IokeObject) {
             return !(IokeObject.data(cell) instanceof NativeImplementedMethod);
         }

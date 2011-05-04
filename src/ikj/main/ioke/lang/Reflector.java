@@ -262,7 +262,7 @@ public class Reflector {
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
 
                     String name = Text.getText(Interpreter.send(context.runtime.asText, context, args.get(1)));
-                    return IokeObject.findCell(args.get(0), message, context, name) != context.runtime.nul ? context.runtime._true : context.runtime._false;
+                    return IokeObject.findCell(args.get(0), context, name) != context.runtime.nul ? context.runtime._true : context.runtime._false;
                 }
             }));
 

@@ -24,21 +24,21 @@ public class DefaultBehavior {
 
         IokeObject baseBehavior = new IokeObject(runtime, "contains behavior copied from Base");
         baseBehavior.setKind("DefaultBehavior BaseBehavior");
-        baseBehavior.setCell("=",         runtime.base.body.get("=", 0));
-        baseBehavior.setCell("==",        runtime.base.body.get("==", 0));
-        baseBehavior.setCell("cell",      runtime.base.body.get("cell", 0));
-        baseBehavior.setCell("cell?",     runtime.base.body.get("cell?", 0));
-        baseBehavior.setCell("cell=",     runtime.base.body.get("cell=", 0));
-        baseBehavior.setCell("cells",     runtime.base.body.get("cells", 0));
-        baseBehavior.setCell("cellNames", runtime.base.body.get("cellNames", 0));
-        baseBehavior.setCell("removeCell!", runtime.base.body.get("removeCell!", 0));
-        baseBehavior.setCell("undefineCell!", runtime.base.body.get("undefineCell!", 0));
-        baseBehavior.setCell("cellOwner?", runtime.base.body.get("cellOwner?", 0));
-        baseBehavior.setCell("cellOwner", runtime.base.body.get("cellOwner", 0));
-        baseBehavior.setCell("documentation", runtime.base.body.get("documentation", 0));
-        baseBehavior.setCell("identity", runtime.base.body.get("identity", 0));
-        baseBehavior.setCell("activatable", runtime.base.body.get("activatable", 0));
-        baseBehavior.setCell("activatable=", runtime.base.body.get("activatable=", 0));
+        baseBehavior.setCell("=",         runtime.base.body.get("="));
+        baseBehavior.setCell("==",        runtime.base.body.get("=="));
+        baseBehavior.setCell("cell",      runtime.base.body.get("cell"));
+        baseBehavior.setCell("cell?",     runtime.base.body.get("cell?"));
+        baseBehavior.setCell("cell=",     runtime.base.body.get("cell="));
+        baseBehavior.setCell("cells",     runtime.base.body.get("cells"));
+        baseBehavior.setCell("cellNames", runtime.base.body.get("cellNames"));
+        baseBehavior.setCell("removeCell!", runtime.base.body.get("removeCell!"));
+        baseBehavior.setCell("undefineCell!", runtime.base.body.get("undefineCell!"));
+        baseBehavior.setCell("cellOwner?", runtime.base.body.get("cellOwner?"));
+        baseBehavior.setCell("cellOwner", runtime.base.body.get("cellOwner"));
+        baseBehavior.setCell("documentation", runtime.base.body.get("documentation"));
+        baseBehavior.setCell("identity", runtime.base.body.get("identity"));
+        baseBehavior.setCell("activatable", runtime.base.body.get("activatable"));
+        baseBehavior.setCell("activatable=", runtime.base.body.get("activatable="));
         obj.mimicsWithoutCheck(baseBehavior);
         obj.registerCell("BaseBehavior", baseBehavior);
 

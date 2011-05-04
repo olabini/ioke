@@ -677,7 +677,7 @@ public class Runtime extends IokeData {
                 Body.Cell c = obj.body.firstAdded;
                 while(c != null) {
                     if(c.name.startsWith("class:")) {
-                        objWrap.body.put(c.name, 0, c.value);
+                        objWrap.body.put(c.name, c.value);
                     }
                     c = c.orderedNext;
                 }
@@ -862,7 +862,7 @@ public class Runtime extends IokeData {
     }
 
     public IokeObject newTuple(Object one, Object two) {
-        IokeObject tp = (IokeObject)this.tuple.body.get("Two", 0);
+        IokeObject tp = (IokeObject)this.tuple.body.get("Two");
         IokeObject obj = tp.allocateCopy(null, null);
         obj.singleMimicsWithoutCheck(tp);
         obj.setData(new Tuple(new Object[]{one, two}));

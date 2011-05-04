@@ -63,7 +63,7 @@ public class Operators {
     }
 
     private final static Map<Object, Object> getOpTable(IokeParser parser, IokeObject opTable, String name, OpTableCreator creator) throws ControlFlow {
-        IokeObject operators = IokeObject.as(IokeObject.findCell(opTable, parser.message, parser.context, name), null);
+        IokeObject operators = IokeObject.as(IokeObject.findCell(opTable, name), null);
         if(operators != parser.runtime.nul && (IokeObject.data(operators) instanceof Dict)) {
             return Dict.getMap(operators);
         } else {
@@ -75,7 +75,7 @@ public class Operators {
 
     public final static void createOrGetOpTables(IokeParser parser) throws ControlFlow {
         final ioke.lang.Runtime runtime = parser.runtime;
-        IokeObject opTable = IokeObject.as(IokeObject.findCell(runtime.message, parser.message, parser.context, "OperatorTable"), null);
+        IokeObject opTable = IokeObject.as(IokeObject.findCell(runtime.message, "OperatorTable"), null);
         if(opTable == runtime.nul) {
             opTable = runtime.newFromOrigin();
             opTable.setKind("Message OperatorTable");

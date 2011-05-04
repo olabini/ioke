@@ -61,7 +61,7 @@ public class DefaultArgumentsDefinitionArgs1 implements ArgumentsDefinition {
                     for(Map.Entry<Object, Object> me : keys.entrySet()) {
                         givenKeywords.put(Text.getText(IokeObject.convertToText(me.getKey(), message, context, true)) + ":", me.getValue());
                     }
-                } else if(IokeObject.findCell(result, message, context, "asTuple") != runtime.nul) {
+                } else if(IokeObject.findCell(IokeObject.as(result, context), "asTuple") != runtime.nul) {
                     Object tupledValue = Interpreter.send(runtime.asTuple, context, result);
                     Object[] values = Tuple.getElements(tupledValue);
                     argumentsWithoutKeywords.addAll(Arrays.asList(values));

@@ -110,9 +110,12 @@ public class DefaultMethod extends Method implements AssociatedCode {
 
                 @Override
                 public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-                    Object superCell = IokeObject.findSuperCellOn(out_on, out_self, out_message, out_context, out_name);
+                    Object superCell = context.runtime.nul;
+                    if(out_name != null) {
+                        superCell = IokeObject.findSuperCellOn(out_on, out_self, out_context, out_name);
+                    }
                     if(superCell == context.runtime.nul) {
-                        superCell = IokeObject.findSuperCellOn(out_on, out_self, out_message, out_context, Message.name(out_message));
+                        superCell = IokeObject.findSuperCellOn(out_on, out_self, out_context, Message.name(out_message));
                     }
 
                     if(superCell != context.runtime.nul) {

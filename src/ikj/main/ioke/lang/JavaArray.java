@@ -21,7 +21,7 @@ public class JavaArray {
     public static void init(IokeObject obj) throws ControlFlow {
         final Runtime runtime = obj.runtime;
         obj.setKind("JavaArray");
-        obj.setCell("=", runtime.base.body.get("=", 0));
+        obj.setCell("=", runtime.base.body.get("="));
         obj.mimics(IokeObject.as(runtime.mixins.getCell(null, null, "Enumerable"), null), runtime.nul, runtime.nul);
 
         obj.registerMethod(runtime.newNativeMethod("returns the length of the array", new NativeMethod.WithNoArguments("length") {

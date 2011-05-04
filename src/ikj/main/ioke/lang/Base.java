@@ -385,7 +385,7 @@ public class Base {
                     getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
 
                     String name = Text.getText(Interpreter.send(context.runtime.asText, context, args.get(0)));
-                    return IokeObject.findCell(on, message, context, name) != context.runtime.nul ? context.runtime._true : context.runtime._false;
+                    return IokeObject.findCell(on, context, name) != context.runtime.nul ? context.runtime._true : context.runtime._false;
                 }
             }));
 

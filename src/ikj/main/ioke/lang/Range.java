@@ -161,7 +161,7 @@ public class Range extends IokeData {
                     Object from = args.get(0);
                     Object to = args.get(1);
 
-                    boolean comparing = IokeObject.isMimic(from, IokeObject.as(context.runtime.mixins.body.get("Comparing", 0), context), context);
+                    boolean comparing = IokeObject.isMimic(from, IokeObject.as(context.runtime.mixins.body.get("Comparing"), context), context);
                     boolean inverted = false;
 
                     if(comparing) {
@@ -195,7 +195,7 @@ public class Range extends IokeData {
                     Object from = args.get(0);
                     Object to = args.get(1);
 
-                    boolean comparing = IokeObject.isMimic(from, IokeObject.as(context.runtime.mixins.body.get("Comparing", 0), context), context);
+                    boolean comparing = IokeObject.isMimic(from, IokeObject.as(context.runtime.mixins.body.get("Comparing"), context), context);
                     boolean inverted = false;
                     if(comparing) {
                         Object result = Interpreter.send(context.runtime.spaceShip, context, from, to);
@@ -366,7 +366,7 @@ public class Range extends IokeData {
 
                     IokeObject from = IokeObject.as(((Range)IokeObject.data(on)).from, context);
                     IokeObject to = IokeObject.as(((Range)IokeObject.data(on)).to, context);
-                    boolean comparing = IokeObject.isMimic(from, IokeObject.as(context.runtime.mixins.body.get("Comparing", 0), context));
+                    boolean comparing = IokeObject.isMimic(from, IokeObject.as(context.runtime.mixins.body.get("Comparing"), context));
                     boolean inclusive = ((Range)IokeObject.data(on)).inclusive;
 
                     if(comparing) {

@@ -28,38 +28,34 @@ public final class Body {
     int flags;
 
 
-    public final void put(String name, int index, Object value) {
-        Cell cell = getCell(name, index, false);
+    public final void put(String name, Object value) {
+        Cell cell = getCell(name, false);
         cell.value = value;
     }
 
     public final boolean has(String name) {
-        return null != getCell(name, 0, true);
+        return null != getCell(name, true);
     }
 
-    public final boolean has(int index) {
-        return null != getCell(null, index, true);
-    }
-
-    public final Object get(String name, int index) {
-        Cell cell = getCell(name, index, true);
+    public final Object get(String name) {
+        Cell cell = getCell(name, true);
         if(cell == null) {
             return cell;
         }
         return cell.value;
     }
 
-    public Object remove(String name, int index) {
-        int indexOrHash = (name != null ? name.hashCode() : index);
+    public Object remove(String name) {
+        int hash = name.hashCode();
 
         Cell[] cellsLocalRef = cells;
         if(count != 0) {
             int tableSize = cells.length;
-            int cellIndex = getCellIndex(tableSize, indexOrHash);
+            int cellIndex = getCellIndex(tableSize, hash);
             Cell prev = cellsLocalRef[cellIndex];
             Cell cell = prev;
             while(cell != null) {
-                if(cell.indexOrHash == indexOrHash && (cell.name == name || (name != null && name.equals(cell.name)))) {
+                if(cell.name == name || name.equals(cell.name)) {
                     break;
                 }
                 prev = cell;
@@ -108,31 +104,31 @@ public final class Body {
 
     public static class Cell {
         String name;
-        int indexOrHash;
+        int hash;
         public Object value;
         Cell next; // next in hash table bucket
         Cell orderedNext; // next in linked list
 
-        Cell(String name, int indexOrHash) {
+        Cell(String name, int hash) {
             this.name = name;
-            this.indexOrHash = indexOrHash;
+            this.hash = hash;
         }
     }
 
-    private Cell getCell(String name, int index, boolean query) {
+    private Cell getCell(String name, boolean query) {
         Cell[] cellsLocalRef = cells;
         if(cellsLocalRef == null && query) {
             return null;
         }
-        int indexOrHash = (name != null ? name.hashCode() : index);
+        int hash = name.hashCode();
         if(cellsLocalRef != null) {
             Cell cell;
-            int cellIndex = getCellIndex(cellsLocalRef.length, indexOrHash);
+            int cellIndex = getCellIndex(cellsLocalRef.length, hash);
             for(cell = cellsLocalRef[cellIndex];
                 cell != null;
                 cell = cell.next) {
                 Object sname = cell.name;
-                if(indexOrHash == cell.indexOrHash && (sname == name || (name != null && name.equals(sname)))) {
+                if(sname == name || name.equals(sname)) {
                     break;
                 }
             }
@@ -141,27 +137,27 @@ public final class Body {
             }
         }
 
-        return createCell(name, indexOrHash, query);
+        return createCell(name, hash, query);
     }
 
-    private static int getCellIndex(int tableSize, int indexOrHash) {
-        return indexOrHash & (tableSize - 1);
+    private static int getCellIndex(int tableSize, int hash) {
+        return hash & (tableSize - 1);
     }
 
-    private Cell createCell(String name, int indexOrHash, boolean query) {
+    private Cell createCell(String name, int hash, boolean query) {
         Cell[] cellsLocalRef = cells;
         int insertPos;
         if(count == 0) {
             cellsLocalRef = new Cell[INITIAL_CELL_SIZE];
             cells = cellsLocalRef;
-            insertPos = getCellIndex(cellsLocalRef.length, indexOrHash);
+            insertPos = getCellIndex(cellsLocalRef.length, hash);
         } else {
             int tableSize = cellsLocalRef.length;
-            insertPos = getCellIndex(tableSize, indexOrHash);
+            insertPos = getCellIndex(tableSize, hash);
             Cell prev = cellsLocalRef[insertPos];
             Cell cell = prev;
             while(cell != null) {
-                if(cell.indexOrHash == indexOrHash && (cell.name == name || (name != null && name.equals(cell.name)))) {
+                if(cell.name == name || name.equals(cell.name)) {
                     break;
                 }
                 prev = cell;
@@ -175,11 +171,11 @@ public final class Body {
                     cellsLocalRef = new Cell[cellsLocalRef.length * 2];
                     copyTable(cells, cellsLocalRef, count);
                     cells = cellsLocalRef;
-                    insertPos = getCellIndex(cellsLocalRef.length, indexOrHash);
+                    insertPos = getCellIndex(cellsLocalRef.length, hash);
                 }
             }
         }
-        Cell newCell = new Cell(name, indexOrHash);
+        Cell newCell = new Cell(name, hash);
         ++count;
         if(lastAdded != null)
             lastAdded.orderedNext = newCell;
@@ -197,7 +193,7 @@ public final class Body {
             --i;
             Cell cell = cells[i];
             while(cell != null) {
-                int insertPos = getCellIndex(tableSize, cell.indexOrHash);
+                int insertPos = getCellIndex(tableSize, cell.hash);
                 Cell next = cell.next;
                 addKnownAbsentCell(newCells, cell, insertPos);
                 cell.next = null;
