@@ -20,10 +20,11 @@ import ioke.lang.exceptions.ControlFlow;
  */
 public class Interpreter {
     public Object evaluate(IokeObject self, IokeObject ctx, Object ground, Object receiver) throws ControlFlow {
+        Runtime runtime = self.runtime;
         Object current = receiver;
         Object tmp = null;
         String name = null;
-        Object lastReal = self.runtime.getNil();
+        Object lastReal = runtime.getNil();
         IokeObject m = self;
         Message msg;
         while(m != null) {
@@ -34,7 +35,7 @@ public class Interpreter {
             } else if((name = msg.name.intern()) == ".") {
                 current = ctx;
             } else if(name.length() > 0 && msg.arguments.size() == 0 && name.charAt(0) == ':') {
-                lastReal = msg.cached = current = self.runtime.getSymbol(name.substring(1));
+                lastReal = msg.cached = current = runtime.getSymbol(name.substring(1));
             } else {
                 if((current instanceof IokeObject) || IokeRegistry.isWrapped(current, ctx)) {
                     IokeObject recv = IokeObject.as(current, ctx);
