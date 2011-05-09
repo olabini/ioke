@@ -25,6 +25,7 @@ public class Message extends IokeData {
     private String file;
     private int line;
     private int pos;
+    private int posEnd;
 
     List<Object> arguments = new ArrayList<Object>();
 
@@ -126,6 +127,7 @@ public class Message extends IokeData {
         Message.setFile(to, Message.file(from));
         Message.setLine(to, Message.line(from));
         Message.setPosition(to, Message.position(from));
+        Message.setPositionEnd(to, Message.positionEnd(from));
     }
 
     public static Object getArg1(IokeObject message) {
@@ -420,6 +422,13 @@ public class Message extends IokeData {
                 @Override
                 public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
                     return method.runtime.newNumber(((Message)IokeObject.data(on)).pos);
+                }
+            }));
+
+        message.registerMethod(message.runtime.newNativeMethod("returns the end position on the line where this message is written", new TypeCheckingNativeMethod.WithNoArguments("positionEnd", message) {
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    return method.runtime.newNumber(((Message)IokeObject.data(on)).posEnd);
                 }
             }));
 
@@ -771,6 +780,10 @@ public class Message extends IokeData {
         ((Message)IokeObject.data(message)).pos = position;
     }
 
+    public static void setPositionEnd(IokeObject message, int position) {
+        ((Message)IokeObject.data(message)).posEnd = position;
+    }
+
     public static boolean isKeyword(Object message) {
         if((message instanceof IokeObject) && (IokeObject.data(message) instanceof Message)) {
             return ((Message)IokeObject.data(message)).isKeyword();
@@ -833,6 +846,10 @@ public class Message extends IokeData {
         return IokeObject.as(message, null).getPosition();
     }
 
+    public static int positionEnd(Object message) throws ControlFlow {
+        return IokeObject.as(message, null).getPositionEnd();
+    }
+
     public static void setFile(Object message, String file) throws ControlFlow {
         ((Message)IokeObject.data(message)).file = file;
     }
@@ -843,6 +860,10 @@ public class Message extends IokeData {
 
     public static void setPosition(Object message, int pos) throws ControlFlow {
         ((Message)IokeObject.data(message)).pos = pos;
+    }
+
+    public static void setPositionEnd(Object message, int pos) throws ControlFlow {
+        ((Message)IokeObject.data(message)).posEnd = pos;
     }
 
     @Override
@@ -860,6 +881,11 @@ public class Message extends IokeData {
         return pos;
     }
 
+    @Override
+    public int getPositionEnd(IokeObject self) {
+        return posEnd;
+    }
+
     public void setFile(String file) {
         this.file = file;
     }
@@ -872,6 +898,10 @@ public class Message extends IokeData {
         this.pos = pos;
     }
 
+    public void setPositionEnd(int pos) {
+        this.posEnd = pos;
+    }
+
     @Override
     public IokeData cloneData(IokeObject obj, IokeObject message, IokeObject context) {
         Message m = new Message(obj.runtime, name);
@@ -880,6 +910,7 @@ public class Message extends IokeData {
         m.file = ((Message)IokeObject.data(obj)).file;
         m.line = ((Message)IokeObject.data(obj)).line;
         m.pos = ((Message)IokeObject.data(obj)).pos;
+        m.posEnd = ((Message)IokeObject.data(obj)).posEnd;
         return m;
     }
 
@@ -901,6 +932,7 @@ public class Message extends IokeData {
                 Message mx = new Message(runtime, ".", null, true);
                 mx.setLine(0);
                 mx.setPosition(0);
+                mx.setPositionEnd(0);
                 m = runtime.createMessage(mx);
             }
 

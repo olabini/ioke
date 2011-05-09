@@ -21,6 +21,7 @@ public class Main {
         " -Cdirectory     execute with directory as CWD\n" +
         " -d              debug, set debug flag\n" +
         " -e script       execute the script. if provided, no program file is necessary.\n" +
+        " -c, --coverage  collects coverage information and gives that to IKover after program run.\n" +
         "                 there can be many of these provided on the same command line.\n" +
         " -h, --help      help, this message\n" +
         " -Idir           add directory to 'System loadPath'. May be used more than once\n" +
@@ -29,80 +30,100 @@ public class Main {
 
 
     public static void main(String[] args) throws Throwable {
-        Runtime r = new Runtime();
-        r.init();
-        final IokeObject context = r.ground;
-        final Message mx = new Message(r, ".", null, true);
-        mx.setLine(0);
-        mx.setPosition(0);
-        final IokeObject message = r.createMessage(mx);
-
         boolean debug = false;
         String cwd = null;
+        boolean coverage = false;
+        String argError = null;
         List<String> scripts = new ArrayList<String>();
         List<String> loadDirs = new ArrayList<String>();
-        try {
-            int start = 0;
-            boolean done = false;
-            boolean readStdin = false;
-            boolean printedSomething = false;
+        int start = 0;
+        boolean done = false;
+        boolean readStdin = false;
+        boolean printedSomething = false;
 
-            for(;!done && start<args.length;start++) {
-                String arg = args[start];
-                if(arg.length() > 0) {
-                    if(arg.charAt(0) != '-') {
+        for(;!done && start<args.length;start++) {
+            String arg = args[start];
+            if(arg.length() > 0) {
+                if(arg.charAt(0) != '-') {
+                    done = true;
+                    break;
+                } else {
+                    if(arg.equals("--")) {
                         done = true;
-                        break;
-                    } else {
-                        if(arg.equals("--")) {
-                            done = true;
-                        } else if(arg.equals("-d")) {
-                            debug = true;
-                            r.debug = true;
-                        } else if(arg.startsWith("-e")) {
-                            if(arg.length() == 2) {
-                                scripts.add(args[++start]);
-                            } else {
-                                scripts.add(arg.substring(2));
-                            }
-                        } else if(arg.startsWith("-I")) {
-                            if(arg.length() == 2) {
-                                loadDirs.add(args[++start]);
-                            } else {
-                                loadDirs.add(arg.substring(2));
-                            }
-                        } else if(arg.equals("-h") || arg.equals("--help")) {
-                            System.err.print(HELP);
-                            return;
-                        } else if(arg.equals("--version")) {
-                            System.err.println(getVersion());
-                            printedSomething = true;
-                        } else if(arg.equals("--copyright")) {
-                            System.err.print(COPYRIGHT);
-                            printedSomething = true;
-                        } else if(arg.equals("-")) {
-                            readStdin = true;
-                        } else if(arg.charAt(1) == 'C') {
-                            if(arg.length() == 2) {
-                                cwd = args[++start];
-                            } else {
-                                cwd = arg.substring(2);
-                            }
+                    } else if(arg.equals("-d")) {
+                        debug = true;
+                    } else if(arg.startsWith("-e")) {
+                        if(arg.length() == 2) {
+                            scripts.add(args[++start]);
                         } else {
-                            final IokeObject condition = IokeObject.as(IokeObject.getCellChain(r.condition,
-                                                                                               message,
-                                                                                               context,
-                                                                                               "Error",
-                                                                                               "CommandLine",
-                                                                                               "DontUnderstandOption"), null).mimic(message, context);
-                            condition.setCell("message", message);
-                            condition.setCell("context", context);
-                            condition.setCell("receiver", context);
-                            condition.setCell("option", r.newText(arg));
-                            r.errorCondition(condition);
+                            scripts.add(arg.substring(2));
                         }
+                    } else if(arg.startsWith("-I")) {
+                        if(arg.length() == 2) {
+                            loadDirs.add(args[++start]);
+                        } else {
+                            loadDirs.add(arg.substring(2));
+                        }
+                    } else if(arg.equals("-h") || arg.equals("--help")) {
+                        System.err.print(HELP);
+                        return;
+                    } else if(arg.equals("-c") || arg.equals("--coverage")) {
+                        coverage = true;
+                    } else if(arg.equals("--version")) {
+                        System.err.println(getVersion());
+                        printedSomething = true;
+                    } else if(arg.equals("--copyright")) {
+                        System.err.print(COPYRIGHT);
+                        printedSomething = true;
+                    } else if(arg.equals("-")) {
+                        readStdin = true;
+                    } else if(arg.charAt(1) == 'C') {
+                        if(arg.length() == 2) {
+                            cwd = args[++start];
+                        } else {
+                            cwd = arg.substring(2);
+                        }
+                    } else {
+                        argError = arg;
                     }
                 }
+            }
+        }
+
+        CoverageInterpreter citer = null;
+        Interpreter iter = null;
+        if(coverage) {
+            citer = new CoverageInterpreter();
+            iter = citer;
+        } else {
+            iter = new Interpreter();
+        }
+        Runtime r = new Runtime(iter);
+        try {
+            r.init();
+            final IokeObject context = r.ground;
+            final Message mx = new Message(r, ".", null, true);
+            mx.setLine(0);
+            mx.setPosition(0);
+            mx.setPositionEnd(0);
+            final IokeObject message = r.createMessage(mx);
+            
+            if(debug) {
+                r.debug = true;
+            }
+
+            if(argError != null) {
+                final IokeObject condition = IokeObject.as(IokeObject.getCellChain(r.condition,
+                                                                                   message,
+                                                                                   context,
+                                                                                   "Error",
+                                                                                   "CommandLine",
+                                                                                   "DontUnderstandOption"), null).mimic(message, context);
+                condition.setCell("message", message);
+                condition.setCell("context", context);
+                condition.setCell("receiver", context);
+                condition.setCell("option", r.newText(argError));
+                r.errorCondition(condition);
             }
 
             if(cwd != null) {
@@ -149,10 +170,29 @@ public class Main {
                     r.evaluateString("use(\"builtin/iik\"). IIk mainLoop", message, context);
                 }
             }
+
+            if(coverage) {
+                citer.stopCovering();
+                r.evaluateString("use(\"ikover\")", r.message, r.ground);
+                IokeObject ikover = (IokeObject)Interpreter.send(r.newMessage("IKover"), r.ground, r.ground);
+                IokeObject iokeCoverageData = citer.iokefiedCoverageData(r);
+                Interpreter.send(r.newMessage("addCoverageData"), r.ground, ikover, iokeCoverageData);
+                Interpreter.send(r.newMessage("processCoverage"), r.ground, ikover);
+            }
+
             r.tearDown();
         } catch(ControlFlow.Exit e) {
             int exitVal = e.getExitValue();
             try {
+                if(coverage) {
+                    citer.stopCovering();
+                    r.evaluateString("use(\"ikover\")", r.message, r.ground);
+                    IokeObject ikover = (IokeObject)Interpreter.send(r.newMessage("IKover"), r.ground, r.ground);
+                    IokeObject iokeCoverageData = citer.iokefiedCoverageData(r);
+                    Interpreter.send(r.newMessage("addCoverageData"), r.ground, ikover, iokeCoverageData);
+                    Interpreter.send(r.newMessage("processCoverage"), r.ground, ikover);
+                }
+
                 r.tearDown();
             } catch(ControlFlow.Exit e2) {
                 exitVal = e2.getExitValue();

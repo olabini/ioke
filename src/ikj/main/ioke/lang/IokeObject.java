@@ -1150,6 +1150,10 @@ public final class IokeObject implements TypeChecker {
         return data.getPosition(this);
     }
 
+    public int getPositionEnd() throws ControlFlow {
+        return data.getPositionEnd(this);
+    }
+
     // TypeChecker
     public Object convertToMimic(Object on, IokeObject message, IokeObject context, boolean signal) throws ControlFlow {
         return convertToThis(on, signal, message, context);

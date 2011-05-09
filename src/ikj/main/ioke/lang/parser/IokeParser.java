@@ -442,6 +442,7 @@ public class IokeParser {
         Message m = new Message(runtime, "");
         m.setLine(l);
         m.setPosition(cc);
+        m.setPositionEnd(cc);
 
         IokeObject mx = runtime.createMessage(m);
         Message.setArguments(mx, args);
@@ -460,12 +461,14 @@ public class IokeParser {
 
         IokeObject mx = runtime.createMessage(m);
         if(rr == end && r2 == '(') {
+            m.setPositionEnd(cc + name.length());
             read();
             read();
             List<Object> args = parseCommaSeparatedMessageChains();
             parseCharacter(')');
             Message.setArguments(mx, args);
         } else {
+            m.setPositionEnd(cc + 1);
             List<Object> args = parseCommaSeparatedMessageChains();
             parseCharacter(end);
             Message.setArguments(mx, args);
@@ -484,6 +487,7 @@ public class IokeParser {
         Message m = new Message(runtime, name);
         m.setLine(l);
         m.setPosition(cc);
+        m.setPositionEnd(cc+2);
 
         IokeObject mx = runtime.createMessage(m);
         Message.setArguments(mx, args);
@@ -539,6 +543,7 @@ public class IokeParser {
         Message m = new Message(runtime, result);
         m.setLine(l);
         m.setPosition(cc);
+        m.setPositionEnd(cc + result.length());
         IokeObject mx = runtime.createMessage(m);
 
         if(rr == '(') {
@@ -584,6 +589,7 @@ public class IokeParser {
         Message m = new Message(runtime, ".", null, true);
         m.setLine(l);
         m.setPosition(cc);
+        m.setPositionEnd(cc);
         top.add(runtime.createMessage(m));
     }
 
@@ -645,6 +651,7 @@ public class IokeParser {
                         default:
                             args.add(sb.toString());
                             top.add(mm);
+                            m.setPositionEnd(currentCharacter);
                             return;
                         }
                     }
@@ -677,6 +684,7 @@ public class IokeParser {
                             break;
                         default:
                             args.add(sb.toString());
+                            m.setPositionEnd(currentCharacter);
                             top.add(mm);
                             return;
                         }
@@ -753,6 +761,7 @@ public class IokeParser {
                     }
                     Message.setArguments(mm, args);
                     top.add(mm);
+                    m.setPositionEnd(currentCharacter);
                     return;
                 } else {
                     sb.append((char)rr);
@@ -781,6 +790,7 @@ public class IokeParser {
                     }
                     Message.setArguments(mm, args);
                     top.add(mm);
+                    m.setPositionEnd(currentCharacter);
                     return;
                 } else {
                     sb.append((char)rr);
@@ -1032,6 +1042,7 @@ public class IokeParser {
                 Message m = new Message(runtime, sb.toString());
                 m.setLine(l);
                 m.setPosition(cc);
+                m.setPositionEnd(cc + sb.length());
                 IokeObject mx = runtime.createMessage(m);
 
                 if(rr == '(') {
@@ -1173,6 +1184,7 @@ public class IokeParser {
         Message m = decimal ? new Message(runtime, "internal:createDecimal", sb.toString()) : new Message(runtime, "internal:createNumber", sb.toString());
         m.setLine(l);
         m.setPosition(cc);
+        m.setPositionEnd(cc + sb.length());
         top.add(runtime.createMessage(m));
     }
 
@@ -1188,6 +1200,7 @@ public class IokeParser {
         Message m = new Message(runtime, sb.toString());
         m.setLine(l);
         m.setPosition(cc);
+                m.setPositionEnd(cc + sb.length());
         IokeObject mx = runtime.createMessage(m);
 
         if(rr == '(') {

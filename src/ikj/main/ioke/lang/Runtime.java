@@ -51,7 +51,7 @@ public class Runtime extends IokeData {
 
     public IokeRegistry registry = new IokeRegistry(this);
     public ClassRegistry classRegistry = new ClassRegistry(this);
-    public final Interpreter interpreter = new Interpreter();
+    public final Interpreter interpreter;
 
     // Core objects and origins
     public IokeObject base = new IokeObject(this, "Base is the top of the inheritance structure. Most of the objects in the system are derived from this instance. Base should keep its cells to the bare minimum needed for the system.");
@@ -187,13 +187,22 @@ public class Runtime extends IokeData {
     public IokeObject kindMessage = newMessage("kind");
 
     public Runtime() throws Exception {
-        this(new PrintWriter(new OutputStreamWriter(java.lang.System.out, "UTF-8")), new InputStreamReader(java.lang.System.in, "UTF-8"), new PrintWriter(new OutputStreamWriter(java.lang.System.err, "UTF-8")));
+        this(new PrintWriter(new OutputStreamWriter(java.lang.System.out, "UTF-8")), new InputStreamReader(java.lang.System.in, "UTF-8"), new PrintWriter(new OutputStreamWriter(java.lang.System.err, "UTF-8")), new Interpreter());
+    }
+
+    public Runtime(Interpreter interpreter) throws Exception {
+        this(new PrintWriter(new OutputStreamWriter(java.lang.System.out, "UTF-8")), new InputStreamReader(java.lang.System.in, "UTF-8"), new PrintWriter(new OutputStreamWriter(java.lang.System.err, "UTF-8")), interpreter);
     }
 
     public Runtime(PrintWriter out, Reader in, PrintWriter err) {
+        this(out, in, err, new Interpreter());
+    }
+
+    public Runtime(PrintWriter out, Reader in, PrintWriter err, Interpreter interpreter) {
         this.out = out;
         this.in = in;
         this.err = err;
+        this.interpreter = interpreter;
     }
 
     public static Runtime getRuntime() throws ControlFlow, Exception {
@@ -803,6 +812,7 @@ public class Runtime extends IokeData {
         mess.setFile(m.getFile());
         mess.setLine(m.getLine());
         mess.setPosition(m.getPosition());
+        mess.setPositionEnd(m.getPositionEnd());
         mess.setArguments(args);
         return createMessage(mess);
     }

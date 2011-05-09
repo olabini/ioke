@@ -45,6 +45,7 @@ public class DefinitionsBehavior {
                         mx.setFile(Message.file(message));
                         mx.setLine(Message.line(message));
                         mx.setPosition(Message.position(message));
+                        mx.setPositionEnd(Message.positionEnd(message));
                         final IokeObject mmx = context.runtime.createMessage(mx);
                         return runtime.newMethod(null, runtime.defaultMethod, new DefaultMethod(context, DefaultArgumentsDefinition.empty(), mmx));
                     }
@@ -88,6 +89,7 @@ public class DefinitionsBehavior {
                         mx.setFile(Message.file(message));
                         mx.setLine(Message.line(message));
                         mx.setPosition(Message.position(message));
+                        mx.setPositionEnd(Message.positionEnd(message));
                         final IokeObject mmx = context.runtime.createMessage(mx);
 
                         return runtime.newMacro(null, runtime.defaultMacro, new DefaultMacro(context, mmx));
@@ -129,6 +131,7 @@ public class DefinitionsBehavior {
                         mx.setFile(Message.file(message));
                         mx.setLine(Message.line(message));
                         mx.setPosition(Message.position(message));
+                        mx.setPositionEnd(Message.positionEnd(message));
                         final IokeObject mmx = context.runtime.createMessage(mx);
 
                         return runtime.newMacro(null, runtime.defaultSyntax, new DefaultSyntax(context, mmx));
@@ -170,6 +173,7 @@ public class DefinitionsBehavior {
                         mx.setFile(Message.file(message));
                         mx.setLine(Message.line(message));
                         mx.setPosition(Message.position(message));
+                        mx.setPositionEnd(Message.positionEnd(message));
                         final IokeObject mmx = context.runtime.createMessage(mx);
 
                         return runtime.newMacro(null, runtime.lexicalMacro, new LexicalMacro(context, mmx));
