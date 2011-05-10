@@ -10,21 +10,21 @@ import ioke.lang.exceptions.ControlFlow;
 /**
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
-final class ChainContext {
+public final class ChainContext {
     final ChainContext parent;
 
     BufferedChain chains = new BufferedChain(null, null, null);;
 
-    IokeObject last = null;
+    public IokeObject last = null;
     IokeObject head = null;
 
-    Level currentLevel = new Level(-1, null, null, Level.Type.REGULAR);
+    public Level currentLevel = new Level(-1, null, null, Level.Type.REGULAR);
 
-    ChainContext(ChainContext parent) {
+    public ChainContext(ChainContext parent) {
         this.parent = parent;
     }
 
-    IokeObject prepareAssignmentMessage() throws ControlFlow {
+    public IokeObject prepareAssignmentMessage() throws ControlFlow {
         if(chains.last != null && chains.last == currentLevel.operatorMessage) {
             if(currentLevel.type == Level.Type.ASSIGNMENT && head == null) {
                 IokeObject assgn = currentLevel.operatorMessage;
@@ -70,7 +70,7 @@ final class ChainContext {
         return l;
     }
 
-    void add(IokeObject msg) throws ControlFlow {
+    public void add(IokeObject msg) throws ControlFlow {
         if(head == null) {
             head = last = msg;
         } else {
@@ -85,13 +85,13 @@ final class ChainContext {
         }
     }
 
-    void push(int precedence, IokeObject op, Level.Type type) {
+    public void push(int precedence, IokeObject op, Level.Type type) {
         currentLevel = new Level(precedence, op, currentLevel, type);
         chains = new BufferedChain(chains, last, head);
         last = head = null;
     }
 
-    IokeObject pop() throws ControlFlow {
+    public IokeObject pop() throws ControlFlow {
         if(head != null) {
             while(Message.isTerminator(head) && Message.next(head) != null) {
                 head = Message.next(head);
@@ -108,7 +108,7 @@ final class ChainContext {
         return headToReturn;
     }
 
-    void popOperatorsTo(int precedence) throws ControlFlow {
+    public void popOperatorsTo(int precedence) throws ControlFlow {
         while((currentLevel.precedence != -1 || currentLevel.type == Level.Type.UNARY) && currentLevel.precedence <= precedence) {
             IokeObject arg = pop();
             if(arg != null && Message.isTerminator(arg) && Message.next(arg) == null) {

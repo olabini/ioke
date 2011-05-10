@@ -505,11 +505,6 @@ public abstract class IokeData {
         return -1;
     }
 
-    public int getPositionEnd(IokeObject self) throws ControlFlow {
-        report(self, self, self, "getPositionEnd");
-        return -1;
-    }
-
     public String toString(IokeObject self) {
         try {
             int h = hashCode(self);

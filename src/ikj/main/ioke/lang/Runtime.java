@@ -812,7 +812,6 @@ public class Runtime extends IokeData {
         mess.setFile(m.getFile());
         mess.setLine(m.getLine());
         mess.setPosition(m.getPosition());
-        mess.setPositionEnd(m.getPositionEnd());
         mess.setArguments(args);
         return createMessage(mess);
     }

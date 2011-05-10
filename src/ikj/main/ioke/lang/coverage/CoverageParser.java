@@ -1,77 +1,339 @@
 /*
  * See LICENSE file in distribution for copyright and licensing information.
  */
-package ioke.lang.parser;
+package ioke.lang.coverage;
+
+import gnu.math.*;
 
 import java.io.Reader;
+import java.io.Writer;
+import java.io.PrintWriter;
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.io.IOException;
 
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.HashSet;
 
-import ioke.lang.IokeObject;
-import ioke.lang.Message;
-import ioke.lang.Runtime;
-import ioke.lang.Dict;
-import ioke.lang.Number;
-import ioke.lang.Symbol;
-import ioke.lang.IokeSystem;
+import ioke.lang.*;
 import ioke.lang.exceptions.ControlFlow;
 
+import ioke.lang.parser.*;
 import static ioke.lang.parser.Operators.OpEntry;
 import static ioke.lang.parser.Operators.OpArity;
 import static ioke.lang.parser.Operators.DEFAULT_UNARY_OPERATORS;
 import static ioke.lang.parser.Operators.DEFAULT_ONLY_UNARY_OPERATORS;
 
+import static ioke.lang.coverage.CoverageInterpreter.CoveragePoint;
+
 /**
+ * Parser and unparser.
+ *
+ * Right now this tightly couples and hard codes the HTML output, but that won't happen in the future
+ * This should really be in Ioke, but since it's basically a copy-paste of the existing parser, that is in Java,
+ * I couldn't be bothered.
  *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
-public class IokeParser {
-    public final Runtime runtime;
-    final Reader reader;
+public class CoverageParser extends IokeParser {
+    private final Map<String, CoveragePoint> coverageInfo;
+    private final PrintWriter realOutput;
+    private final StringWriter soutput;
+    private final PrintWriter output;
+    private final String filename;
 
-    final IokeObject context;
-    final IokeObject message;
-
-    protected ChainContext top = new ChainContext(null);
-
-    protected final Map<String, OpEntry> operatorTable = new HashMap<String, OpEntry>();
-    protected final Map<String, OpArity> trinaryOperatorTable = new HashMap<String, OpArity>();
-    protected final Map<String, OpEntry> invertedOperatorTable = new HashMap<String, OpEntry>();
-    protected final Set<String> unaryOperators = DEFAULT_UNARY_OPERATORS;
-    protected final Set<String> onlyUnaryOperators = DEFAULT_ONLY_UNARY_OPERATORS;
-
-    public IokeParser(Runtime runtime, Reader reader, IokeObject context, IokeObject message) throws ControlFlow {
-        this.runtime = runtime;
-        this.reader = reader;
-        this.context = context;
-        this.message = message;
-
-        Operators.createOrGetOpTables(this);
+    public CoverageParser(ioke.lang.Runtime runtime, Reader reader, IokeObject context, IokeObject message, String filename, Map<String, CoveragePoint> coverageInfo, Writer output) throws ControlFlow {
+        super(runtime, reader, context, message);
+        this.coverageInfo = coverageInfo;
+        this.realOutput = new PrintWriter(output);
+        this.filename = filename;
+        this.soutput = new StringWriter();
+        this.output = new PrintWriter(soutput);
     }
 
-    public IokeObject parseFully() throws IOException, ControlFlow {
-        IokeObject result = parseMessageChain();
-        return result;
+    public int percentageComplete;
+    public int percentagePartial;
+    public int percentageMessages;
+    
+    public IokeObject ratioComplete;
+    public IokeObject ratioPartial;
+    public IokeObject ratioMessages;
+
+    public void unparse() {
+        try {
+            parseFully();
+            endLine();
+
+            realOutput.println("<html>");
+            realOutput.println("  <head>");
+            realOutput.println("    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/>"); 
+            realOutput.println("    <title>Coverage Report</title>");
+            realOutput.println("    <link title=\"Style\" type=\"text/css\" rel=\"stylesheet\" href=\"main.css\"/>");
+            realOutput.println("  </head>");
+            realOutput.println("  <body>");
+            realOutput.println("    <h5>Coverage Report - " + filename + "</h5>");
+            realOutput.println("    <div class=\"separator\">&nbsp;</div>");
+            realOutput.println("    <table class=\"report\">");
+            realOutput.println("      <thead>");
+            realOutput.println("        <tr>");
+            realOutput.println("          <td class=\"heading\">");
+            realOutput.println("            Complete Line Coverage");
+            realOutput.println("          </td>");
+            realOutput.println("          <td class=\"heading\">");
+            realOutput.println("            Partial Line Coverage");
+            realOutput.println("          </td>");
+            realOutput.println("          <td class=\"heading\">");
+            realOutput.println("            Message Coverage");
+            realOutput.println("          </td>");
+            realOutput.println("        </tr>");
+            realOutput.println("      </thead>");
+            realOutput.println("      <tr>");
+
+            percentageComplete = linesCompletelyCovered * 100 / linesWithContent;
+            percentagePartial = linesPartiallyCovered * 100 / linesWithContent;
+            percentageMessages = numberOfCovered * 100 / messages;
+
+            ratioComplete = runtime.newNumber(RatNum.make(IntNum.make(linesCompletelyCovered), IntNum.make(linesWithContent)));
+            ratioPartial = runtime.newNumber(RatNum.make(IntNum.make(linesPartiallyCovered), IntNum.make(linesWithContent)));
+            ratioMessages = runtime.newNumber(RatNum.make(IntNum.make(numberOfCovered), IntNum.make(messages)));
+
+            realOutput.println("        <td>");
+            realOutput.println("          <table cellpadding=\"0px\" cellspacing=\"0px\" class=\"percentgraph\">");
+            realOutput.println("            <tr class=\"percentgraph\">");
+            realOutput.println("              <td align=\"right\" class=\"percentgraph\" width=\"40\">" + percentageComplete + "%</td>");
+            realOutput.println("              <td class=\"percentgraph\">");
+            realOutput.println("                <div class=\"percentgraph\">");
+            realOutput.println("                  <div class=\"greenbar\" style=\"width:" + percentageComplete + " px\">");
+            realOutput.println("                    <span class=\"text\">" + ratioComplete + "</span>");
+            realOutput.println("                  </div>");
+            realOutput.println("                </div>");
+            realOutput.println("              </td>");
+            realOutput.println("            </tr>");
+            realOutput.println("          </table>");
+            realOutput.println("        </td>");
+            realOutput.println("        <td>");
+            realOutput.println("          <table cellpadding=\"0px\" cellspacing=\"0px\" class=\"percentgraph\">");
+            realOutput.println("            <tr class=\"percentgraph\">");
+            realOutput.println("              <td align=\"right\" class=\"percentgraph\" width=\"40\">" + percentagePartial + "%</td>");
+            realOutput.println("              <td class=\"percentgraph\">");
+            realOutput.println("                <div class=\"percentgraph\">");
+            realOutput.println("                  <div class=\"greenbar\" style=\"width:" + percentagePartial + "px\">");
+            realOutput.println("                    <span class=\"text\">" + ratioPartial + "</span>");
+            realOutput.println("                  </div>");
+            realOutput.println("                </div>");
+            realOutput.println("              </td>");
+            realOutput.println("            </tr>");
+            realOutput.println("          </table>");
+            realOutput.println("        </td>");
+            realOutput.println("        <td>");
+            realOutput.println("          <table cellpadding=\"0px\" cellspacing=\"0px\" class=\"percentgraph\">");
+            realOutput.println("            <tr class=\"percentgraph\">");
+            realOutput.println("              <td align=\"right\" class=\"percentgraph\" width=\"40\">" + percentageMessages + "%</td>");
+            realOutput.println("              <td class=\"percentgraph\">");
+            realOutput.println("                <div class=\"percentgraph\">");
+            realOutput.println("                  <div class=\"greenbar\" style=\"width:" + percentageMessages + "px\">");
+            realOutput.println("                    <span class=\"text\">" + ratioMessages + "</span>");
+            realOutput.println("                  </div>");
+            realOutput.println("                </div>");
+            realOutput.println("              </td>");
+            realOutput.println("            </tr>");
+            realOutput.println("          </table>");
+            realOutput.println("        </td>");
+            realOutput.println("      </tr>");
+            realOutput.println("    </table>");
+            realOutput.println("    <div class=\"separator\">&nbsp;</div>");
+            realOutput.println("    <table cellpadding='0' cellspacing='0' class='src'>");
+
+            realOutput.write(soutput.toString());
+
+            realOutput.println("    </table>");
+            realOutput.println("  </body>");
+            realOutput.println("</html>");
+            realOutput.flush();
+        } catch(Throwable e) {
+            System.err.println(e);
+            e.printStackTrace();
+        }
     }
 
-    protected IokeObject parseMessageChain() throws IOException, ControlFlow {
-        top = new ChainContext(top);
-        while(parseMessage());
-        top.popOperatorsTo(999999);
-        IokeObject ret = top.pop();
-        top = top.parent;
-        return ret;
+    public int messages = 0;
+    public int numberOfUncovered = 0;
+    public int numberOfCovered = 0;
+
+    public static class CoverageOutput {
+        public String css;
+        public int coverageCount;
+        public String name;
+
+        public CoverageOutput(String css, int coverageCount, String name) {
+            this.css = css;
+            this.coverageCount = coverageCount;
+            this.name = name;
+        }
     }
 
+    public List<CoverageOutput> currentLine = new LinkedList<CoverageOutput>();
+    public CoverageOutput last = null;
+    public CoverageOutput lastMessage = null;
+
+    public int registerMessage(int line, int pos) {
+        CoveragePoint cp = coverageInfo.get("" + line + ":" + pos);
+        messages++;
+        if(cp == null || cp.count == 0) {
+            numberOfUncovered++;
+            return 0;
+        } else {
+            numberOfCovered++;
+            return cp.count;
+        }
+    }
+
+    public String messageSendClass(int coverage) {
+        if(coverage == 0) {
+            return "srcUncovered";
+        } else {
+            return "green";
+        }
+    }
+
+    private String nothingClass(char cc) {
+        switch(cc) {
+        case ',':
+        case ')':
+        case '(':
+        case ']':
+        case '}':
+            return "nothing";
+        }
+        return null;
+    }
+
+    private static final Set<String> KEYWORDS = new HashSet<String>(Arrays.asList("if", "true", "false", "nil", "method", "unless", "use", "macro", "fn", "fnx"));
+
+    public int linesWithContent = 0;
+    public int linesPartiallyCovered = 0;
+    public int linesCompletelyCovered = 0;
+
+    private void endLine() {
+        int maxCountForLine = 0;
+        boolean someGood = false;
+        boolean someBad = false;
+        boolean someCover = false;
+        for(CoverageOutput co : currentLine) {
+            if(co.css != null && co.coverageCount > -1) {
+                if(co.coverageCount > maxCountForLine) {
+                    maxCountForLine = co.coverageCount;
+                }
+                if(co.coverageCount > 0) {
+                    someGood = true;
+                } else {
+                    someBad = true;
+                }
+                someCover = true;
+            }
+        }
+
+        if(someCover) {
+            linesWithContent++;
+
+            if(someGood && !someBad) {
+                linesCompletelyCovered++;
+                linesPartiallyCovered++;
+            } else if(someGood && someBad) {
+                linesPartiallyCovered++;
+            }
+        }
+
+        String clzz1 = someCover ? "numLineCover" : "numLine";
+        String clzz2 = someGood ? (someBad ? "nbHits" : "nbHitsCovered") : "nbHitsUncovered";
+        String maxCount = "" + maxCountForLine;
+        if(!someCover) {
+            clzz2 = "nbHits";
+            maxCount = "";
+        }
+        output.print("<tr><td class=\"" + clzz1 + "\">&nbsp;" + (lineNumber-1) + "</td><td class=\"" + clzz2 + "\">&nbsp;" + maxCount + "</td><td class=\"src\"><pre class=\"src\">&nbsp;");
+
+        CoverageOutput last = null;
+        boolean lastBad = false;
+
+        for(CoverageOutput co : currentLine) {
+            if(lastBad && co.coverageCount > 0) {
+                output.print("</span>");
+                lastBad = false;
+            }
+
+            if(!lastBad && (co.css != null && !co.css.equals("comment") && co.coverageCount == 0)) {
+                output.print("<span class=\"srcUncovered\">");
+                lastBad = true;
+            }
+
+            if(co.css == null) {
+                output.print(co.name);
+            } else {
+                output.print("<span");
+                if(co.coverageCount > -1) {
+                    output.print(" data-coverage-count=\"" + co.coverageCount + "\"");
+                } 
+                if(KEYWORDS.contains(co.name)) {
+                    output.print(" class=\"keyword\"");
+                }
+                output.print(" class=\"");
+                output.print(co.css);
+                output.print("\">");
+
+
+                output.print(co.name);
+                output.print("</span>");
+            }
+        }
+        if(lastBad) {
+            output.print("</span>");
+        }
+        currentLine = new LinkedList<CoverageOutput>();
+        last = null;
+        lastMessage = null;
+        output.print("</pre></td></tr>\n"); 
+    }
+
+    private void addOutput(String css, int coverage, String output) {
+        CoverageOutput co = new CoverageOutput(css, coverage, output);
+        currentLine.add(co);
+        last = co;
+        if(css != null && !css.equals("comment")) {
+            lastMessage = co;
+        }
+    }
+
+    private void addOutput(String name, int coverage, char output) {
+        addOutput(name, coverage, "" + output);
+    }
+
+    private void addOutput(String name, char output) {
+        addOutput(name, -1, "" + output);
+    }
+
+    private void addOutput(String output) {
+        if(last != null && (last.css == null || last.css.equals("comment"))) {
+            last.name += output;
+        } else {
+            CoverageOutput co = new CoverageOutput(null, -1, output);
+            currentLine.add(co);
+            last = co;
+        }
+    }
+
+    private void addOutput(char output) {
+        addOutput("" + output);
+    }
+
+    @Override
     protected List<Object> parseCommaSeparatedMessageChains() throws IOException, ControlFlow {
         ArrayList<Object> chain = new ArrayList<Object>();
 
@@ -82,6 +344,7 @@ public class IokeParser {
             int rr = peek();
             if(rr == ',') {
                 read();
+                addOutput(nothingClass((char)rr), ',');
                 curr = parseMessageChain();
                 if(curr == null) {
                     fail("Expected expression following comma");
@@ -97,83 +360,7 @@ public class IokeParser {
         return chain;
     }
 
-    protected int lineNumber = 1;
-    protected int currentCharacter = -1;
-    protected boolean skipLF = false;
-
-    protected int saved2 = -2;
-    protected int saved = -2;
-
-    protected int read() throws IOException {
-        if(saved > -2) {
-            int x = saved;
-            saved = saved2;
-            saved2 = -2;
-
-            if(skipLF) {
-                skipLF = false;
-                if(x == '\n') {
-                    return x;
-                }
-            }
-
-            currentCharacter++;
-
-            switch(x) {
-            case '\r':
-                skipLF = true;
-            case '\n':		/* Fall through */
-                lineNumber++;
-                currentCharacter = 0;
-            }
-
-            return x;
-        }
-
-        int xx = reader.read();
-
-        if(skipLF) {
-            skipLF = false;
-            if(xx == '\n') {
-                return xx;
-            }
-        }
-
-        currentCharacter++;
-
-        switch(xx) {
-        case '\r':
-            skipLF = true;
-        case '\n':		/* Fall through */
-            lineNumber++;
-            currentCharacter = 0;
-        }
-
-        return xx;
-    }
-
-    protected int peek() throws IOException {
-        if(saved == -2) {
-            if(saved2 != -2) {
-                saved = saved2;
-                saved2 = -2;
-            } else {
-                saved = reader.read();
-            }
-        }
-        return saved;
-    }
-
-    protected int peek2() throws IOException {
-        if(saved == -2) {
-            saved = reader.read();
-        }
-        if(saved2 == -2) {
-            saved2 = reader.read();
-        }
-        return saved2;
-    }
-
+    @Override
     protected boolean parseMessage() throws IOException, ControlFlow {
         int rr;
         while(true) {
@@ -193,11 +380,11 @@ public class IokeParser {
                 return true;
             case '[':
                 read();
-                parseOpenCloseMessageSend(']', "[]");
+                parseOpenCloseMessageSend(']', "[]", '[');
                 return true;
             case '{':
                 read();
-                parseOpenCloseMessageSend('}', "{}");
+                parseOpenCloseMessageSend('}', "{}", '{');
                 return true;
             case '#':
                 read();
@@ -215,6 +402,7 @@ public class IokeParser {
                     parseRegexpLiteral('r');
                     return true;
                 case '!':
+                    addOutput("comment", -1, "#!");
                     parseComment();
                     break;
                 default:
@@ -249,12 +437,14 @@ public class IokeParser {
                 return true;
             case ';':
                 read();
+                addOutput("comment", -1, ";");
                 parseComment();
                 break;
             case ' ':
             case '\u0009':
             case '\u000b':
             case '\u000c':
+                addOutput((char)rr);
                 read();
                 readWhiteSpace();
                 break;
@@ -269,6 +459,7 @@ public class IokeParser {
             case '\r':
             case '\n':
                 read();
+                endLine();
                 parseTerminator(rr);
                 return true;
             case '+':
@@ -308,86 +499,7 @@ public class IokeParser {
         }
     }
 
-    protected void fail(int l, int c, String message, String expected, String got) throws ControlFlow {
-        String file = ((IokeSystem)IokeObject.data(runtime.system)).currentFile();
-
-        final IokeObject condition = IokeObject.as(IokeObject.getCellChain(runtime.condition,
-                                                                           this.message,
-                                                                           this.context,
-                                                                           "Error",
-                                                                           "Parser",
-                                                                           "Syntax"), this.context).mimic(this.message, this.context);
-        condition.setCell("message", this.message);
-        condition.setCell("context", this.context);
-        condition.setCell("receiver", this.context);
-
-        if(expected != null) {
-            condition.setCell("expected", runtime.newText(expected));
-        }
-
-        if(got != null) {
-            condition.setCell("got", runtime.newText(got));
-        }
-
-        condition.setCell("file", runtime.newText(file));
-        condition.setCell("line", runtime.newNumber(l));
-        condition.setCell("character", runtime.newNumber(c));
-        condition.setCell("text", runtime.newText(file + ":" + l + ":" + c + ": " + message));
-        runtime.errorCondition(condition);
-    }
-
-    protected void fail(String message) throws ControlFlow {
-        fail(lineNumber, currentCharacter, message, null, null);
-    }
-
-    protected void parseCharacter(int c) throws IOException, ControlFlow {
-        int l = lineNumber;
-        int cc = currentCharacter;
-
-        readWhiteSpace();
-        int rr = read();
-        if(rr != c) {
-            fail(l, cc, "Expected: '" + (char)c + "' got: " + charDesc(rr), "" + (char)c, charDesc(rr));
-        }
-    }
-
-
-    protected boolean isUnary(String name) {
-        return unaryOperators.contains(name) && (top.head == null || Message.isTerminator(top.last));
-    }
-
-    protected static int possibleOperatorPrecedence(String name) {
-        if(name.length() > 0) {
-            char first = name.charAt(0);
-            switch(first) {
-            case '|':
-                return 9;
-            case '^':
-                return 8;
-            case '&':
-                return 7;
-            case '<':
-            case '>':
-                return 5;
-            case '=':
-            case '!':
-            case '?':
-            case '~':
-            case '$':
-                return 6;
-            case '+':
-            case '-':
-                return 3;
-            case '*':
-            case '/':
-            case '%':
-                return 2;
-            }
-        }
-        return -1;
-    }
-
-    protected void possibleOperator(IokeObject mx) throws ControlFlow {
+    protected void possibleOperator(IokeObject mx, int coverage) throws ControlFlow {
         String name = Message.name(mx);
 
         if(isUnary(name) || onlyUnaryOperators.contains(name)) {
@@ -404,6 +516,11 @@ public class IokeParser {
         } else {
             OpArity opa = trinaryOperatorTable.get(name);
             if(opa != null) {
+                if(lastMessage != null) {
+                    lastMessage.css = messageSendClass(coverage);
+                    lastMessage.coverageCount = coverage;
+                }
+
                 if(opa.arity == 2) {
                     IokeObject last = top.prepareAssignmentMessage();
                     mx.getArguments().add(last);
@@ -434,21 +551,26 @@ public class IokeParser {
         }
     }
 
+    @Override
     protected void parseEmptyMessageSend() throws IOException, ControlFlow {
         int l = lineNumber; int cc = currentCharacter-1;
+        addOutput(nothingClass('('), '(');
         List<Object> args = parseCommaSeparatedMessageChains();
         parseCharacter(')');
+        addOutput(nothingClass(')'), ')');
 
         Message m = new Message(runtime, "");
         m.setLine(l);
         m.setPosition(cc);
+
+        registerMessage(l, cc);
 
         IokeObject mx = runtime.createMessage(m);
         Message.setArguments(mx, args);
         top.add(mx);
     }
 
-    protected void parseOpenCloseMessageSend(char end, String name) throws IOException, ControlFlow {
+    protected void parseOpenCloseMessageSend(char end, String name, char start) throws IOException, ControlFlow {
         int l = lineNumber; int cc = currentCharacter-1;
 
         int rr = peek();
@@ -458,32 +580,46 @@ public class IokeParser {
         m.setLine(l);
         m.setPosition(cc);
 
+        int coverage = registerMessage(l, cc);
+
         IokeObject mx = runtime.createMessage(m);
         if(rr == end && r2 == '(') {
+            addOutput(messageSendClass(coverage), coverage, "" + start + end);
+            addOutput(nothingClass((char)r2), (char)r2);
             read();
             read();
             List<Object> args = parseCommaSeparatedMessageChains();
             parseCharacter(')');
+            addOutput(nothingClass(')'), ')');
             Message.setArguments(mx, args);
         } else {
+            addOutput(messageSendClass(coverage), coverage, start);
             List<Object> args = parseCommaSeparatedMessageChains();
             parseCharacter(end);
+            addOutput(messageSendClass(coverage), coverage, end);
             Message.setArguments(mx, args);
         }
 
         top.add(mx);
     }
 
+    @Override
     protected void parseSimpleOpenCloseMessageSend(char end, String name) throws IOException, ControlFlow {
         int l = lineNumber; int cc = currentCharacter-1;
 
-        read();
+        int coverage = registerMessage(l, cc);
+
+        addOutput(messageSendClass(coverage), coverage, (char)read());
+
         List<Object> args = parseCommaSeparatedMessageChains();
         parseCharacter(end);
+
+        addOutput(messageSendClass(coverage), coverage, end);
 
         Message m = new Message(runtime, name);
         m.setLine(l);
         m.setPosition(cc);
+
 
         IokeObject mx = runtime.createMessage(m);
         Message.setArguments(mx, args);
@@ -491,30 +627,16 @@ public class IokeParser {
         top.add(mx);
     }
 
+    @Override
     protected void parseComment() throws IOException {
         int rr;
         while((rr = peek()) != '\n' && rr != '\r' && rr != -1) {
+            addOutput((char)rr);
             read();
         }
     }
 
-    protected final static String[] RANGES = {
-        "",
-        ".",
-        "..",
-        "...",
-        "....",
-        ".....",
-        "......",
-        ".......",
-        "........",
-        ".........",
-        "..........",
-        "...........",
-        "............"
-    };
-
-
+    @Override
     protected void parseRange() throws IOException, ControlFlow {
         int l = lineNumber; int cc = currentCharacter-1;
 
@@ -540,18 +662,24 @@ public class IokeParser {
         m.setLine(l);
         m.setPosition(cc);
         IokeObject mx = runtime.createMessage(m);
+        int coverage = registerMessage(l, cc);
 
         if(rr == '(') {
+            addOutput(messageSendClass(coverage), coverage, result);
             read();
+            addOutput(nothingClass((char)rr), (char)rr);
             List<Object> args = parseCommaSeparatedMessageChains();
             parseCharacter(')');
+            addOutput(nothingClass(')'), ')');
             Message.setArguments(mx, args);
             top.add(mx);
         } else {
-            possibleOperator(mx);
+            possibleOperator(mx, coverage);
+            addOutput(messageSendClass(coverage), coverage, result);
         }
     }
 
+    @Override
     protected void parseTerminator(int indicator) throws IOException, ControlFlow  {
         int l = lineNumber; int cc = currentCharacter-1;
 
@@ -560,6 +688,7 @@ public class IokeParser {
         if(indicator == '\r') {
             rr = peek();
             if(rr == '\n') {
+                endLine();
                 read();
             }
         }
@@ -569,8 +698,15 @@ public class IokeParser {
             rr2 = peek2();
             if((rr == '.' && rr2 != '.') ||
                (rr == '\n')) {
+                if(rr == '\n') {
+                    endLine();
+                } else {
+                    addOutput(nothingClass((char)rr), (char)rr);
+                }
+
                 read();
             } else if(rr == '\r' && rr2 == '\n') {
+                endLine();
                 read(); read();
             } else {
                 break;
@@ -587,26 +723,33 @@ public class IokeParser {
         top.add(runtime.createMessage(m));
     }
 
+    @Override
     protected void readWhiteSpace() throws IOException {
         int rr;
         while((rr = peek()) == ' ' ||
               rr == '\u0009' ||
               rr == '\u000b' ||
               rr == '\u000c') {
+            addOutput((char)rr);
             read();
         }
     }
 
+    @Override
     protected void parseRegexpLiteral(int indicator) throws IOException, ControlFlow {
         StringBuilder sb = new StringBuilder();
         boolean slash = indicator == '/';
 
         int l = lineNumber; int cc = currentCharacter-1;
+        int coverage = registerMessage(l, cc);
 
         read();
 
         if(!slash) {
             parseCharacter('[');
+            addOutput(messageSendClass(coverage), coverage, "#r[");
+        } else {
+            addOutput(messageSendClass(coverage), coverage, "#/");
         }
 
         int rr;
@@ -622,6 +765,7 @@ public class IokeParser {
                 read();
                 if(slash) {
                     args.add(sb.toString());
+                    addOutput(messageSendClass(coverage), coverage, sb + "/");
                     Message m = new Message(runtime, "internal:createRegexp");
                     m.setLine(l);
                     m.setPosition(cc);
@@ -645,6 +789,7 @@ public class IokeParser {
                         default:
                             args.add(sb.toString());
                             top.add(mm);
+                            addOutput(messageSendClass(coverage), coverage, sb.toString());
                             return;
                         }
                     }
@@ -656,6 +801,7 @@ public class IokeParser {
                 read();
                 if(!slash) {
                     args.add(sb.toString());
+                    addOutput(messageSendClass(coverage), coverage, sb + "]");
                     Message m = new Message(runtime, "internal:createRegexp");
                     m.setLine(l);
                     m.setPosition(cc);
@@ -678,6 +824,7 @@ public class IokeParser {
                         default:
                             args.add(sb.toString());
                             top.add(mm);
+                            addOutput(messageSendClass(coverage), coverage, sb.toString());
                             return;
                         }
                     }
@@ -689,12 +836,15 @@ public class IokeParser {
                 read();
                 if((rr = peek()) == '{') {
                     read();
-                    args.add(sb.toString());
+                    String contentSoFar = sb.toString();
+                    args.add(contentSoFar);
+                    addOutput(messageSendClass(coverage), coverage, contentSoFar + "#{");
                     sb = new StringBuilder();
                     name = "internal:compositeRegexp";
                     args.add(parseMessageChain());
                     readWhiteSpace();
                     parseCharacter('}');
+                    addOutput(messageSendClass(coverage), coverage, "}");
                 } else {
                     sb.append((char)'#');
                 }
@@ -711,15 +861,21 @@ public class IokeParser {
         }
     }
 
+    @Override
     protected void parseText(int indicator) throws IOException, ControlFlow {
         StringBuilder sb = new StringBuilder();
         boolean dquote = indicator == '"';
 
         int l = lineNumber; int cc = currentCharacter-1;
+        int coverage = registerMessage(l, cc);
 
         if(!dquote) {
             read();
+            addOutput(messageSendClass(coverage), coverage, "#[");
+        } else {
+            addOutput(messageSendClass(coverage), coverage, "\"");
         }
+
 
         int rr;
         String name = "internal:createText";
@@ -756,6 +912,7 @@ public class IokeParser {
                     }
                     Message.setArguments(mm, args);
                     top.add(mm);
+                    addOutput(messageSendClass(coverage), coverage, sb + "\"");
                     return;
                 } else {
                     sb.append((char)rr);
@@ -784,6 +941,7 @@ public class IokeParser {
                     }
                     Message.setArguments(mm, args);
                     top.add(mm);
+                    addOutput(messageSendClass(coverage), coverage, sb + "]");
                     return;
                 } else {
                     sb.append((char)rr);
@@ -793,17 +951,20 @@ public class IokeParser {
                 read();
                 if((rr = peek()) == '{') {
                     read();
-                    args.add(sb.toString());
+                    String contentSoFar = sb.toString();
+                    args.add(contentSoFar);
                     sb = new StringBuilder();
                     lines.add(l);
                     cols.add(cc);
                     lines.add(lineNumber);
                     cols.add(currentCharacter);
                     name = "internal:concatenateText";
+                    addOutput(messageSendClass(coverage), coverage, contentSoFar + "#{");
                     args.add(parseMessageChain());
                     readWhiteSpace();
                     l = lineNumber; cc = currentCharacter;
                     parseCharacter('}');
+                    addOutput(messageSendClass(coverage), coverage, "}");
                 } else {
                     sb.append((char)'#');
                 }
@@ -820,6 +981,7 @@ public class IokeParser {
         }
     }
 
+    @Override
     protected void parseRegexpEscape(StringBuilder sb) throws IOException, ControlFlow {
         sb.append('\\');
         int rr = peek();
@@ -922,6 +1084,7 @@ public class IokeParser {
         }
     }
 
+    @Override
     protected void parseDoubleQuoteEscape(StringBuilder sb) throws IOException, ControlFlow {
         sb.append('\\');
         int rr = peek();
@@ -998,8 +1161,11 @@ public class IokeParser {
         }
     }
 
+    @Override
     protected void parseOperatorChars(int indicator) throws IOException, ControlFlow {
         int l = lineNumber; int cc = currentCharacter-1;
+
+        int coverage = registerMessage(l, cc);
 
         StringBuilder sb = new StringBuilder();
         sb.append((char)indicator);
@@ -1042,20 +1208,26 @@ public class IokeParser {
                 m.setPosition(cc);
                 IokeObject mx = runtime.createMessage(m);
 
+
                 if(rr == '(') {
+                    addOutput(messageSendClass(coverage), coverage, sb.toString());
                     read();
+                    addOutput(nothingClass((char)rr), (char)rr);
                     List<Object> args = parseCommaSeparatedMessageChains();
                     parseCharacter(')');
+                    addOutput(nothingClass(')'), ')');
                     Message.setArguments(mx, args);
                     top.add(mx);
                 } else {
-                    possibleOperator(mx);
+                    possibleOperator(mx, coverage);
+                    addOutput(messageSendClass(coverage), coverage, sb.toString());
                 }
                 return;
             }
         }
     }
 
+    @Override
     protected void parseNumber(int indicator) throws IOException, ControlFlow {
         int l = lineNumber; int cc = currentCharacter-1;
         boolean decimal = false;
@@ -1178,14 +1350,21 @@ public class IokeParser {
 
         // TODO: add unit specifier here
 
+        int coverage = registerMessage(l, cc);
+
+        addOutput(messageSendClass(coverage), coverage, sb.toString());
         Message m = decimal ? new Message(runtime, "internal:createDecimal", sb.toString()) : new Message(runtime, "internal:createNumber", sb.toString());
         m.setLine(l);
         m.setPosition(cc);
         top.add(runtime.createMessage(m));
     }
 
+    @Override
     protected void parseRegularMessageSend(int indicator) throws IOException, ControlFlow {
         int l = lineNumber; int cc = currentCharacter-1;
+
+        int coverage = registerMessage(l, cc);
+
         StringBuilder sb = new StringBuilder();
         sb.append((char)indicator);
         int rr = -1;
@@ -1198,61 +1377,20 @@ public class IokeParser {
         m.setPosition(cc);
         IokeObject mx = runtime.createMessage(m);
 
+
         if(rr == '(') {
+            addOutput(messageSendClass(coverage), coverage, sb.toString());
             read();
+            addOutput(nothingClass((char)rr), (char)rr);
             List<Object> args = parseCommaSeparatedMessageChains();
             parseCharacter(')');
+            addOutput(nothingClass(')'), ')');
             Message.setArguments(mx, args);
             top.add(mx);
         } else {
-            possibleOperator(mx);
+            possibleOperator(mx, coverage);
+            addOutput(messageSendClass(coverage), coverage, sb.toString());
         }
     }
+}// CoverageParser
 
-    protected boolean isLetter(int c) {
-        return ((c>='A' && c<='Z') ||
-                c=='_' ||
-                (c>='a' && c<='z') ||
-                (c>='\u00C0' && c<='\u00D6') ||
-                (c>='\u00D8' && c<='\u00F6') ||
-                (c>='\u00F8' && c<='\u1FFF') ||
-                (c>='\u2200' && c<='\u22FF') ||
-                (c>='\u27C0' && c<='\u27EF') ||
-                (c>='\u2980' && c<='\u2AFF') ||
-                (c>='\u3040' && c<='\u318F') ||
-                (c>='\u3300' && c<='\u337F') ||
-                (c>='\u3400' && c<='\u3D2D') ||
-                (c>='\u4E00' && c<='\u9FFF') ||
-                (c>='\uF900' && c<='\uFAFF'));
-    }
-
-    protected boolean isIDDigit(int c) {
-        return ((c>='0' && c<='9') ||
-                (c>='\u0660' && c<='\u0669') ||
-                (c>='\u06F0' && c<='\u06F9') ||
-                (c>='\u0966' && c<='\u096F') ||
-                (c>='\u09E6' && c<='\u09EF') ||
-                (c>='\u0A66' && c<='\u0A6F') ||
-                (c>='\u0AE6' && c<='\u0AEF') ||
-                (c>='\u0B66' && c<='\u0B6F') ||
-                (c>='\u0BE7' && c<='\u0BEF') ||
-                (c>='\u0C66' && c<='\u0C6F') ||
-                (c>='\u0CE6' && c<='\u0CEF') ||
-                (c>='\u0D66' && c<='\u0D6F') ||
-                (c>='\u0E50' && c<='\u0E59') ||
-                (c>='\u0ED0' && c<='\u0ED9') ||
-                (c>='\u1040' && c<='\u1049'));
-    }
-
-    protected static String charDesc(int c) {
-        if(c == -1) {
-            return "EOF";
-        } else if(c == 9) {
-            return "TAB";
-        } else if(c == 10 || c == 13) {
-            return "EOL";
-        } else {
-            return "'" + (char)c + "'";
-        }
-    }
-}

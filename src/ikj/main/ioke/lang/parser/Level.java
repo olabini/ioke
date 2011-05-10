@@ -8,13 +8,13 @@ import ioke.lang.IokeObject;
 /**
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
-final class Level {
+public final class Level {
     public static enum Type {
         REGULAR, UNARY, ASSIGNMENT, INVERTED
     }
 
     final int precedence;
-    final IokeObject operatorMessage;
+    public final IokeObject operatorMessage;
     final Level parent;
     final Type type;
 

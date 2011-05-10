@@ -18,7 +18,7 @@ import ioke.lang.exceptions.ControlFlow;
  */
 public final class IokeObject implements TypeChecker {
     public Runtime runtime;
-    IokeData data;
+    public IokeData data;
     Body body = new Body();
 
     public static final int FALSY_F = 1 << 0;
@@ -1148,10 +1148,6 @@ public final class IokeObject implements TypeChecker {
 
     public int getPosition() throws ControlFlow {
         return data.getPosition(this);
-    }
-
-    public int getPositionEnd() throws ControlFlow {
-        return data.getPositionEnd(this);
     }
 
     // TypeChecker

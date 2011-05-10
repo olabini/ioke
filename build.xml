@@ -84,7 +84,7 @@
     </javac>
 
     <copy todir="${classes.dir}" filtering="true" overwrite="true">
-      <fileset dir="${src.dir}" includes="**/*.properties"/>
+      <fileset dir="${src.dir}" includes="**/*.properties,**/*.html,**/*.css"/>
     </copy>
 
     <copy todir="${classes.dir}">
@@ -163,6 +163,8 @@
         <include name="**/*.class"/>
         <include name="**/*.ik"/>
         <include name="**/*.properties"/>
+        <include name="**/*.html"/>
+        <include name="**/*.css"/>
       </fileset>
       <zipfileset src="${lib.release.dir}/jline-0.9.93.jar" includes="**/*"/>
       <zipfileset src="${lib.release.dir}/joda-time-1.6.jar" includes="**/*"/>

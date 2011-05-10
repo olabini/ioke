@@ -12,6 +12,9 @@ import java.util.Properties;
 
 import ioke.lang.exceptions.ControlFlow;
 
+import ioke.lang.coverage.Coverage;
+import ioke.lang.coverage.CoverageInterpreter;
+
 /**
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
@@ -105,7 +108,6 @@ public class Main {
             final Message mx = new Message(r, ".", null, true);
             mx.setLine(0);
             mx.setPosition(0);
-            mx.setPositionEnd(0);
             final IokeObject message = r.createMessage(mx);
             
             if(debug) {
@@ -173,11 +175,7 @@ public class Main {
 
             if(coverage) {
                 citer.stopCovering();
-                r.evaluateString("use(\"ikover\")", r.message, r.ground);
-                IokeObject ikover = (IokeObject)Interpreter.send(r.newMessage("IKover"), r.ground, r.ground);
-                IokeObject iokeCoverageData = citer.iokefiedCoverageData(r);
-                Interpreter.send(r.newMessage("addCoverageData"), r.ground, ikover, iokeCoverageData);
-                Interpreter.send(r.newMessage("processCoverage"), r.ground, ikover);
+                Coverage.processCoverage(r, citer);
             }
 
             r.tearDown();
@@ -186,11 +184,7 @@ public class Main {
             try {
                 if(coverage) {
                     citer.stopCovering();
-                    r.evaluateString("use(\"ikover\")", r.message, r.ground);
-                    IokeObject ikover = (IokeObject)Interpreter.send(r.newMessage("IKover"), r.ground, r.ground);
-                    IokeObject iokeCoverageData = citer.iokefiedCoverageData(r);
-                    Interpreter.send(r.newMessage("addCoverageData"), r.ground, ikover, iokeCoverageData);
-                    Interpreter.send(r.newMessage("processCoverage"), r.ground, ikover);
+                    Coverage.processCoverage(r, citer);
                 }
 
                 r.tearDown();

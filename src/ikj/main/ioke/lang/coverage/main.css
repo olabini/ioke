@@ -1,0 +1,226 @@
+dl {
+	float: left;
+	width: 100%;
+}
+
+dt {
+	border-top: 1px solid #808080;
+	float: left;
+	font-weight: bold;
+	margin: 0;
+	padding: 1em;
+	width: 20%;
+}
+
+dd {
+	border-top: 1px solid #808080;
+	float: left;
+	font-style: italic;
+	margin: 0;
+	padding: 1em;
+	width: 60%;
+}
+
+pre.src {
+    background: #ffffff;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+table.src {
+	border: #dcdcdc 1px solid;
+	font-size: 16px;
+}
+
+td.numLine {
+    background: #f0f0f0;
+    border-right: #dcdcdc 1px solid;
+    padding-right: 3px;
+    text-align: right;
+}
+
+td.numLineCover {
+    background: #80ff80;
+    border-right: #dcdcdc 1px solid;
+    padding-right: 3px;
+    text-align: right;
+}
+
+td.nbHits {
+    background: #f0f0f0;
+    border-right: #dcdcdc 1px solid;
+    padding-right: 3px;
+    text-align: right;
+}
+
+td.nbHitsCovered {
+    background: #80ff80;
+    border-right: #dcdcdc 1px solid;
+    padding-right: 3px;
+    text-align: right;
+}
+
+td.nbHitsUncovered {
+    background: #ff9090;
+    border-right: #dcdcdc 1px solid;
+    font-weight: bold;
+    padding-right: 3px;
+    text-align: right;
+}
+
+td.src {
+    width: 100%;
+}
+
+span.comment {
+    color: #b22222;
+    font-style: italic;
+}
+
+span.keyword {
+    color: #2020bf;
+    font-weight: bold;
+}
+
+span.srcUncovered {
+    background: #ff9090;
+}
+
+span.string {
+    color: #2a00ff;
+}
+
+span.text_italic {
+	font-size: 12px;
+    font-style: italic;
+}
+
+
+.hidden {
+	display: none;
+}
+
+a.dfn {
+	border-bottom: 1px dotted #00aa00;
+	cursor: help;
+}
+
+a.dfn:active, a.dfn:link, a.dfn:visited {
+	color: #000000;
+	text-decoration: none;
+}
+
+a.dfn:hover {
+	color: #0000ff;
+	text-decoration: none;
+}
+
+body {
+	font-family: verdana, arial, helvetica;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	margin-bottom: 0.5em;
+}
+
+h5 {
+	margin-top: 0.5em;
+}
+
+div.footer {
+	font-size: 68%;
+	margin-top: 1.5em;
+}
+
+div.percentgraph
+{
+	background-color: #f02020;
+	border: #808080 1px solid;
+	height: 1.3em;
+	margin: 0px;
+	padding: 0px;
+	width: 100px;
+}
+
+div.percentgraph div.greenbar
+{
+	background-color: #00f000;
+	height: 1.3em;
+	margin: 0px;
+	padding: 0px;
+}
+
+div.percentgraph div.na
+{
+	background-color: #eaeaea;
+	height: 1.3em;
+	margin: 0px;
+	padding: 0px;
+}
+
+div.percentgraph span.text
+{
+	display: block;
+	position: absolute;
+	text-align: center;
+	width: 100px;
+}
+
+div.separator {
+	height: 10px;
+}
+
+table tr td, table tr th {
+	font-size: 68%;
+}
+
+td.value table tr td {
+    font-size: 11px;
+}
+
+table.percentgraph {
+	border: 0px;
+	font-size: 130%;
+	margin: 0px;
+	margin-left: auto;
+	margin-right: 0px;
+	padding: 0px;
+}
+
+table.percentgraph tr.percentgraph {
+	border: 0px;
+	margin: 0px;
+	padding: 0px;
+}
+
+table.percentgraph td.percentgraph {
+	border: 0px;
+	margin: 0px;
+	padding: 0px;
+	padding-left: 4px;
+}
+
+table.report {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+table.report td {
+	border: #d0d0d0 1px solid;
+}
+
+table.report td.heading {
+    background: #dcecff;
+	font-weight: bold;
+	text-align: center;
+}
+
+table.report td.heading:hover {
+    background: #c0ffc0;
+	cursor: pointer;
+}
+
+table.report td.value {
+	text-align: right;
+}
+
