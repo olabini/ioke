@@ -10,19 +10,19 @@ namespace Ioke.Lang {
         IokeObject context;
         IokeObject code;
 
-        public LexicalMacro(IokeObject context, IokeObject code) {
+        public LexicalMacro(IokeObject context, IokeObject code) : base(IokeData.TYPE_LEXICAL_MACRO) {
             this.context = context;
             this.code = code;
         }
 
-        public LexicalMacro(string name) {
+        public LexicalMacro(string name) : base(IokeData.TYPE_LEXICAL_MACRO) {
             this.name = name;
         }
 
 
         public override void Init(IokeObject obj) {
             obj.Kind = "LexicalMacro";
-            obj.RegisterCell("activatable", obj.runtime.True);
+            obj.SetActivatable(true);
 
             obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the name of the lecro",
                                                            new NativeMethod.WithNoArguments("name",
@@ -36,7 +36,7 @@ namespace Ioke.Lang {
                                                                             .WithRestUnevaluated("arguments")
                                                                             .Arguments,
                                                                             (method, _context, message, on, outer) => {
-                                                                                return IokeObject.As(on, _context).Activate(_context, message, _context.RealContext);
+                                                                                return Interpreter.Activate(IokeObject.As(on, _context), _context, message, _context.RealContext);
                                                                             })));
 
             obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the message chain for this lecro",
@@ -150,8 +150,9 @@ namespace Ioke.Lang {
             }
         }
 
-        public override object ActivateWithCallAndData(IokeObject self, IokeObject dynamicContext, IokeObject message, object on, object call, IDictionary<string, object> data) {
-            if(code == null) {
+        public static object ActivateWithCallAndDataFixed(IokeObject self, IokeObject dynamicContext, IokeObject message, object on, object call, IDictionary<string, object> data) {
+            LexicalMacro lm = (LexicalMacro)self.data;
+            if(lm.code == null) {
                 IokeObject condition = IokeObject.As(IokeObject.GetCellChain(dynamicContext.runtime.Condition,
                                                                              message,
                                                                              dynamicContext,
@@ -167,20 +168,21 @@ namespace Ioke.Lang {
                 return null;
             }
 
-            LexicalContext c = new LexicalContext(self.runtime, on, "Lexical macro activation context", message, this.context);
+            IokeObject c = self.runtime.NewLexicalContext(on, "Lexical macro activation context", lm.context);
 
-            c.SetCell("outerScope", context);
+            c.SetCell("outerScope", lm.context);
             c.SetCell("call", call);
             foreach(var d in data) {
                 string s = d.Key;
                 c.SetCell(s.Substring(0, s.Length-1), d.Value);
             }
 
-            return ((Message)IokeObject.dataOf(this.code)).EvaluateCompleteWith(this.code, c, on);
+            return self.runtime.interpreter.Evaluate(lm.code, c, on, c);
         }
 
-        public override object ActivateWithCall(IokeObject self, IokeObject dynamicContext, IokeObject message, object on, object call) {
-            if(code == null) {
+        public new static object ActivateFixed(IokeObject self, IokeObject dynamicContext, IokeObject message, object on) {
+            LexicalMacro lm = (LexicalMacro)self.data;
+            if(lm.code == null) {
                 IokeObject condition = IokeObject.As(IokeObject.GetCellChain(dynamicContext.runtime.Condition,
                                                                              message,
                                                                              dynamicContext,
@@ -196,41 +198,17 @@ namespace Ioke.Lang {
                 return null;
             }
 
-            LexicalContext c = new LexicalContext(self.runtime, on, "Lexical macro activation context", message, this.context);
+            IokeObject c = self.runtime.NewLexicalContext(on, "Lexical macro activation context", lm.context);
 
-            c.SetCell("outerScope", context);
-            c.SetCell("call", call);
-
-            return ((Message)IokeObject.dataOf(this.code)).EvaluateCompleteWith(this.code, c, on);
-        }
-
-        public override object Activate(IokeObject self, IokeObject dynamicContext, IokeObject message, object on) {
-            if(code == null) {
-                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(dynamicContext.runtime.Condition,
-                                                                             message,
-                                                                             dynamicContext,
-                                                                             "Error",
-                                                                             "Invocation",
-                                                                             "NotActivatable"), dynamicContext).Mimic(message, dynamicContext);
-                condition.SetCell("message", message);
-                condition.SetCell("context", dynamicContext);
-                condition.SetCell("receiver", on);
-                condition.SetCell("method", self);
-                condition.SetCell("report", dynamicContext.runtime.NewText("You tried to activate a method without any code - did you by any chance activate the LexicalMacro kind by referring to it without wrapping it inside a call to cell?"));
-                dynamicContext.runtime.ErrorCondition(condition);
-                return null;
-            }
-
-            LexicalContext c = new LexicalContext(self.runtime, on, "Lexical macro activation context", message, this.context);
-
-            c.SetCell("outerScope", context);
+            c.SetCell("outerScope", lm.context);
             c.SetCell("call", dynamicContext.runtime.NewCallFrom(c, message, dynamicContext, IokeObject.As(on, dynamicContext)));
 
-            return ((Message)IokeObject.dataOf(this.code)).EvaluateCompleteWith(this.code, c, on);
+            return self.runtime.interpreter.Evaluate(lm.code, c, on, c);
         }
 
-        public override object ActivateWithData(IokeObject self, IokeObject dynamicContext, IokeObject message, object on, IDictionary<string, object> data) {
-            if(code == null) {
+        public static object ActivateWithDataFixed(IokeObject self, IokeObject dynamicContext, IokeObject message, object on, IDictionary<string, object> data) {
+            LexicalMacro lm = (LexicalMacro)self.data;
+            if(lm.code == null) {
                 IokeObject condition = IokeObject.As(IokeObject.GetCellChain(dynamicContext.runtime.Condition,
                                                                              message,
                                                                              dynamicContext,
@@ -246,16 +224,16 @@ namespace Ioke.Lang {
                 return null;
             }
 
-            LexicalContext c = new LexicalContext(self.runtime, on, "Lexical macro activation context", message, this.context);
+            IokeObject c = self.runtime.NewLexicalContext(on, "Lexical macro activation context", lm.context);
 
-            c.SetCell("outerScope", context);
+            c.SetCell("outerScope", lm.context);
             c.SetCell("call", dynamicContext.runtime.NewCallFrom(c, message, dynamicContext, IokeObject.As(on, dynamicContext)));
             foreach(var d in data) {
                 string s = d.Key;
                 c.SetCell(s.Substring(0, s.Length-1), d.Value);
             }
 
-            return ((Message)IokeObject.dataOf(this.code)).EvaluateCompleteWith(this.code, c, on);
+            return self.runtime.interpreter.Evaluate(lm.code, c, on, c);
         }
     }
 }

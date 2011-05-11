@@ -20,7 +20,7 @@ namespace Ioke.Lang {
         public NativeMethod(string name) : this(name, null, ArgumentActivator, NoActivator) {}
         public NativeMethod(string name, DefaultArgumentsDefinition arguments, RawActivate activate) : this(name, arguments, activate, NoActivator) {}
         public NativeMethod(string name, DefaultArgumentsDefinition arguments, ArgsActivate activate) : this(name, arguments, ArgumentActivator, activate) {}
-        public NativeMethod(string name, DefaultArgumentsDefinition arguments, RawActivate activate, ArgsActivate argsActivate) : base(name) {
+        public NativeMethod(string name, DefaultArgumentsDefinition arguments, RawActivate activate, ArgsActivate argsActivate) : base(name, IokeData.TYPE_NATIVE_METHOD) {
             this.arguments = arguments;
             if(activate == null) {
                 this.rawActivator = ArgumentActivator;
@@ -43,8 +43,13 @@ namespace Ioke.Lang {
             obj.Kind = "NativeMethod";
         }
 
-        public override object Activate(IokeObject self, IokeObject context, IokeObject message, object on) {
+        public virtual object Activate(IokeObject self, IokeObject context, IokeObject message, object on) {
             return rawActivator(self, context, message, on, this);
+        }
+
+        public new static object ActivateFixed(IokeObject self, IokeObject context, IokeObject message, object on) {
+            NativeMethod nm = (NativeMethod)self.data;
+            return nm.Activate(self, context, message, on);
         }
 
         private static object ArgumentActivator(IokeObject self, IokeObject context, IokeObject message, object on, NativeMethod outer) {

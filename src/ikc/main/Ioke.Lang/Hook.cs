@@ -14,95 +14,95 @@ namespace Ioke.Lang {
         void Rewire(IokeObject self) {
             foreach(object io in connected) {
                 IokeObject oo = (IokeObject)io;
-                if(oo.hooks == null) {
-                    oo.hooks = new SaneList<IokeObject>();
+                if(oo.body.hooks == null) {
+                    oo.body.hooks = new SaneList<IokeObject>();
                 }
-                if(!oo.hooks.Contains(self)) {
-                    oo.hooks.Add(self);
+                if(!oo.body.hooks.Contains(self)) {
+                    oo.body.hooks.Add(self);
                 }
             }
         }
 
         public static void FireCellAdded(IokeObject on, IokeObject message, IokeObject context, string name) {
-            List<IokeObject> hooks = on.hooks;
+            List<IokeObject> hooks = on.body.hooks;
             if(hooks != null) {
                 IokeObject sym = context.runtime.GetSymbol(name);
                 IokeObject cellAddedMessage = context.runtime.cellAddedMessage;
                 foreach(IokeObject h in hooks) {
-                    ((Message)IokeObject.dataOf(cellAddedMessage)).SendTo(cellAddedMessage, context, h, on, sym);
+                    Interpreter.Send(cellAddedMessage, context, h, on, sym);
                 }
             }
         }
 
         public static void FireCellChanged(IokeObject on, IokeObject message, IokeObject context, string name, object prevValue) {
-            List<IokeObject> hooks = on.hooks;
+            List<IokeObject> hooks = on.body.hooks;
             if(hooks != null) {
                 IokeObject sym = context.runtime.GetSymbol(name);
                 IokeObject cellChangedMessage = context.runtime.cellChangedMessage;
                 foreach(IokeObject h in hooks) {
-                    ((Message)IokeObject.dataOf(cellChangedMessage)).SendTo(cellChangedMessage, context, h, on, sym, prevValue);
+                    Interpreter.Send(cellChangedMessage, context, h, on, sym, prevValue);
                 }
             }
         }
 
         public static void FireCellRemoved(IokeObject on, IokeObject message, IokeObject context, string name, object prevValue) {
-            List<IokeObject> hooks = on.hooks;
+            List<IokeObject> hooks = on.body.hooks;
             if(hooks != null) {
                 IokeObject sym = context.runtime.GetSymbol(name);
                 IokeObject cellRemovedMessage = context.runtime.cellRemovedMessage;
                 foreach(IokeObject h in hooks) {
-                    ((Message)IokeObject.dataOf(cellRemovedMessage)).SendTo(cellRemovedMessage, context, h, on, sym, prevValue);
+                    Interpreter.Send(cellRemovedMessage, context, h, on, sym, prevValue);
                 }
             }
         }
 
         public static void FireCellUndefined(IokeObject on, IokeObject message, IokeObject context, string name, object prevValue) {
-            List<IokeObject> hooks = on.hooks;
+            List<IokeObject> hooks = on.body.hooks;
             if(hooks != null) {
                 IokeObject sym = context.runtime.GetSymbol(name);
                 IokeObject cellUndefinedMessage = context.runtime.cellUndefinedMessage;
                 foreach(IokeObject h in hooks) {
-                    ((Message)IokeObject.dataOf(cellUndefinedMessage)).SendTo(cellUndefinedMessage, context, h, on, sym, prevValue);
+                    Interpreter.Send(cellUndefinedMessage, context, h, on, sym, prevValue);
                 }
             }
         }
 
         public static void FireMimicAdded(IokeObject on, IokeObject message, IokeObject context, IokeObject newMimic) {
-            List<IokeObject> hooks = on.hooks;
+            List<IokeObject> hooks = on.body.hooks;
             if(hooks != null) {
                 IokeObject mimicAddedMessage = context.runtime.mimicAddedMessage;
                 foreach(IokeObject h in hooks) {
-                    ((Message)IokeObject.dataOf(mimicAddedMessage)).SendTo(mimicAddedMessage, context, h, on, newMimic);
+                    Interpreter.Send(mimicAddedMessage, context, h, on, newMimic);
                 }
             }
         }
 
         public static void FireMimicRemoved(IokeObject on, IokeObject message, IokeObject context, object removedMimic) {
-            List<IokeObject> hooks = on.hooks;
+            List<IokeObject> hooks = on.body.hooks;
             if(hooks != null) {
                 IokeObject mimicRemovedMessage = context.runtime.mimicRemovedMessage;
                 foreach(IokeObject h in hooks) {
-                    ((Message)IokeObject.dataOf(mimicRemovedMessage)).SendTo(mimicRemovedMessage, context, h, on, removedMimic);
+                    Interpreter.Send(mimicRemovedMessage, context, h, on, removedMimic);
                 }
             }
         }
 
         public static void FireMimicsChanged(IokeObject on, IokeObject message, IokeObject context, object changedMimic) {
-            List<IokeObject> hooks = on.hooks;
+            List<IokeObject> hooks = on.body.hooks;
             if(hooks != null) {
                 IokeObject mimicsChangedMessage = context.runtime.mimicsChangedMessage;
                 foreach(IokeObject h in hooks) {
-                    ((Message)IokeObject.dataOf(mimicsChangedMessage)).SendTo(mimicsChangedMessage, context, h, on, changedMimic);
+                    Interpreter.Send(mimicsChangedMessage, context, h, on, changedMimic);
                 }
             }
         }
 
         public static void FireMimicked(IokeObject on, IokeObject message, IokeObject context, IokeObject mimickingObject) {
-            List<IokeObject> hooks = on.hooks;
+            List<IokeObject> hooks = on.body.hooks;
             if(hooks != null) {
                 IokeObject mimickedMessage = context.runtime.mimickedMessage;
                 foreach(IokeObject h in hooks) {
-                    ((Message)IokeObject.dataOf(mimickedMessage)).SendTo(mimickedMessage, context, h, on, mimickingObject);
+                    Interpreter.Send(mimickedMessage, context, h, on, mimickingObject);
                 }
             }
         }

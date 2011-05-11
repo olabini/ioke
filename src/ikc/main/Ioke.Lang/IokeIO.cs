@@ -44,7 +44,7 @@ namespace Ioke.Lang {
                                                                                     (self, on, args, keywords, context, message) => {
                                                                                         try {
                                                                                             if(args.Count > 0) {
-                                                                                                IokeIO.GetWriter(on).Write(((Message)IokeObject.dataOf(context.runtime.asText)).SendTo(context.runtime.asText, context, args[0]).ToString());
+                                                                                                IokeIO.GetWriter(on).Write(Interpreter.Send(context.runtime.asText, context, args[0]).ToString());
                                                                                             }
 
                                                                                             IokeIO.GetWriter(on).Write("\n");
@@ -80,7 +80,7 @@ namespace Ioke.Lang {
                                                                                     .Arguments,
                                                                                     (self, on, args, keywords, context, message) => {
                                                                                         try {
-                                                                                            IokeIO.GetWriter(on).Write(((Message)IokeObject.dataOf(context.runtime.asText)).SendTo(context.runtime.asText, context, args[0]).ToString());
+                                                                                            IokeIO.GetWriter(on).Write(Interpreter.Send(context.runtime.asText, context, args[0]).ToString());
                                                                                             IokeIO.GetWriter(on).Flush();
                                                                                         } catch(IOException e) {
                                                                                             IokeObject condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition,

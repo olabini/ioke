@@ -56,7 +56,7 @@ namespace Ioke.Lang {
                                                        new NativeMethod.WithNoArguments("uniqueHexId",
                                                                                         (method, context, message, on, outer) => {
                                                                                             outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, new SaneArrayList(), new SaneDictionary<string, object>());
-                                                                                            return context.runtime.NewText("0x" + System.Convert.ToString(System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(IokeObject.As(on, context).Cells), 16).ToUpper());
+                                                                                            return context.runtime.NewText("0x" + System.Convert.ToString(System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(IokeObject.As(on, context).body), 16).ToUpper());
                                                                                         })));
 
             obj.RegisterMethod(runtime.NewNativeMethod("returns a textual representation of the object called on.",
@@ -84,13 +84,13 @@ namespace Ioke.Lang {
                                                                         .Arguments,
                                                                         (method, context, message, on, outer) => {
                                                                             outer.ArgumentsDefinition.CheckArgumentCount(context, message, on);
-                                                                            object _name = ((Message)IokeObject.dataOf(message)).GetEvaluatedArgument(message, 0, context);
-                                                                            string name = Text.GetText(((Message)IokeObject.dataOf(runtime.asText)).SendTo(runtime.asText, context, _name));
+                                                                            object _name = Interpreter.GetEvaluatedArgument(message, 0, context);
+                                                                            string name = Text.GetText(Interpreter.Send(runtime.asText, context, _name));
 
                                                                             IokeObject newMessage = Message.DeepCopy(message);
                                                                             newMessage.Arguments.RemoveAt(0);
                                                                             Message.SetName(newMessage, name);
-                                                                            return ((Message)IokeObject.dataOf(newMessage)).SendTo(newMessage, context, on);
+                                                                            return Interpreter.Send(newMessage, context, on);
                                                                         })));
 
             obj.RegisterMethod(runtime.NewNativeMethod("returns false if the left hand side is equal to the right hand side. exactly what this means depend on the object. the default behavior of Ioke objects is to only be equal if they are the same instance.",
@@ -100,7 +100,7 @@ namespace Ioke.Lang {
                                                                         (method, context, message, on, outer) => {
                                                                             var args = new SaneArrayList();
                                                                             outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, args, new SaneDictionary<string, object>());
-                                                                            return !IokeObject.Equals(on, ((Message)IokeObject.dataOf(message)).GetEvaluatedArgument(message, 0, context)) ? context.runtime.True : context.runtime.False;
+                                                                            return !IokeObject.Equals(on, Interpreter.GetEvaluatedArgument(message, 0, context)) ? context.runtime.True : context.runtime.False;
                                                                         })));
 
             obj.RegisterMethod(runtime.NewNativeMethod("Takes one evaluated Text argument and returns either true or false if this object or one of it's mimics have the kind of the name specified",
@@ -180,7 +180,7 @@ namespace Ioke.Lang {
                                                        new NativeMethod.WithNoArguments("frozen?",
                                                                                         (method, context, message, on, outer) => {
                                                                                             outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, new SaneArrayList(), new SaneDictionary<string, object>());
-                                                                                            return IokeObject.IsFrozen(on) ? context.runtime.True : context.runtime.False;
+                                                                                            return IokeObject.As(on, context).IsFrozen ? context.runtime.True : context.runtime.False;
                                                                                         })));
 
             obj.RegisterMethod(runtime.NewNativeMethod("ensures that the receiver is frozen",

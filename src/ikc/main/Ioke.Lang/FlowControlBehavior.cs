@@ -19,20 +19,21 @@ namespace Ioke.Lang {
                                                                         (method, context, message, on, outer) => {
                                                                             outer.ArgumentsDefinition.CheckArgumentCount(context, message, on);
 
-                                                                            object test = ((Message)IokeObject.dataOf(message)).GetEvaluatedArgument(message, 0, context);
+                                                                            object test = Interpreter.GetEvaluatedArgument(message, 0, context);
 
-                                                                            LexicalContext itContext = new LexicalContext(context.runtime, context.RealContext, "Lexical activation context", message, context);
+                                                                            
+                                                                            IokeObject itContext = context.runtime.NewLexicalContext(context.RealContext, "Lexical activation context", context);
                                                                             itContext.SetCell("it", test);
 
                                                                             if(IokeObject.IsObjectTrue(test)) {
                                                                                 if(message.Arguments.Count > 1) {
-                                                                                    return ((Message)IokeObject.dataOf(message)).GetEvaluatedArgument(message, 1, itContext);
+                                                                                    return Interpreter.GetEvaluatedArgument(message, 1, itContext);
                                                                                 } else {
                                                                                     return test;
                                                                                 }
                                                                             } else {
                                                                                 if(message.Arguments.Count > 2) {
-                                                                                    return ((Message)IokeObject.dataOf(message)).GetEvaluatedArgument(message, 2, itContext);
+                                                                                    return Interpreter.GetEvaluatedArgument(message, 2, itContext);
                                                                                 } else {
                                                                                     return test;
                                                                                 }
@@ -48,20 +49,20 @@ namespace Ioke.Lang {
                                                                         (method, context, message, on, outer) => {
                                                                             outer.ArgumentsDefinition.CheckArgumentCount(context, message, on);
 
-                                                                            object test = ((Message)IokeObject.dataOf(message)).GetEvaluatedArgument(message, 0, context);
+                                                                            object test = Interpreter.GetEvaluatedArgument(message, 0, context);
 
-                                                                            LexicalContext itContext = new LexicalContext(context.runtime, context.RealContext, "Lexical activation context", message, context);
+                                                                            IokeObject itContext = context.runtime.NewLexicalContext(context.RealContext, "Lexical activation context", context);
                                                                             itContext.SetCell("it", test);
 
                                                                             if(IokeObject.IsObjectTrue(test)) {
                                                                                 if(message.Arguments.Count > 2) {
-                                                                                    return ((Message)IokeObject.dataOf(message)).GetEvaluatedArgument(message, 2, itContext);
+                                                                                    return Interpreter.GetEvaluatedArgument(message, 2, itContext);
                                                                                 } else {
                                                                                     return test;
                                                                                 }
                                                                             } else {
                                                                                 if(message.Arguments.Count > 1) {
-                                                                                    return ((Message)IokeObject.dataOf(message)).GetEvaluatedArgument(message, 1, itContext);
+                                                                                    return Interpreter.GetEvaluatedArgument(message, 1, itContext);
                                                                                 } else {
                                                                                     return test;
                                                                                 }
@@ -77,7 +78,7 @@ namespace Ioke.Lang {
                                                                             outer.ArgumentsDefinition.CheckArgumentCount(context, message, on);
 
                                                                             var args = message.Arguments;
-                                                                            LexicalContext lc = new LexicalContext(context.runtime, context.RealContext, "Let lexical activation context", message, context);
+                                                                            IokeObject lc = context.runtime.NewLexicalContext(context.RealContext, "Let lexical activation context", context);
                                                                             int ix = 0;
                                                                             int end = args.Count-1;
                                                                             var valuesToUnbind = new LinkedList<object[]>();
@@ -86,7 +87,7 @@ namespace Ioke.Lang {
                                                                                     IokeObject place = IokeObject.As(args[ix++], context);
 
                                                                                     if(Message.GetNext(place) == null && place.Arguments.Count == 0) {
-                                                                                        object value = ((Message)IokeObject.dataOf(message)).GetEvaluatedArgument(message, ix++, context);
+                                                                                        object value = Interpreter.GetEvaluatedArgument(message, ix++, context);
                                                                                         lc.SetCell(Message.GetName(place), value);
                                                                                     } else {
                                                                                         place = Message.DeepCopy(place);
@@ -103,26 +104,26 @@ namespace Ioke.Lang {
 
                                                                                         object wherePlace = context.RealContext;
                                                                                         if(place != realPlace) {
-                                                                                            wherePlace = Message.GetEvaluatedArgument(place, context);
+                                                                                            wherePlace = Interpreter.GetEvaluatedArgument(place, context);
                                                                                         }
 
-                                                                                        object originalValue = runtime.WithReturningRescue(context, null, () => {return ((Message)IokeObject.dataOf(realPlace)).SendTo(realPlace, context, wherePlace);});
+                                                                                        object originalValue = runtime.WithReturningRescue(context, null, () => {return Interpreter.Send(realPlace, context, wherePlace);});
                                                                                         if(realPlace.Arguments.Count != 0) {
                                                                                             string newName = realPlace.Name + "=";
                                                                                             var arguments = new SaneArrayList(realPlace.Arguments);
                                                                                             arguments.Add(args[ix++]);
                                                                                             IokeObject msg = context.runtime.NewMessageFrom(realPlace, newName, arguments);
-                                                                                            ((Message)IokeObject.dataOf(msg)).SendTo(msg, context, wherePlace);
+                                                                                            Interpreter.Send(msg, context, wherePlace);
                                                                                             valuesToUnbind.AddFirst(new object[]{wherePlace, originalValue, realPlace});
                                                                                         } else {
-                                                                                            object value = ((Message)IokeObject.dataOf(message)).GetEvaluatedArgument(message, ix++, context);
+                                                                                            object value = Interpreter.GetEvaluatedArgument(message, ix++, context);
                                                                                             IokeObject.Assign(wherePlace, realPlace.Name, value, context, message);
                                                                                             valuesToUnbind.AddFirst(new object[]{wherePlace, originalValue, realPlace});
                                                                                         }
                                                                                     }
                                                                                 }
 
-                                                                                return ((Message)IokeObject.dataOf(message)).GetEvaluatedArgument(message, end, lc);
+                                                                                return Interpreter.GetEvaluatedArgument(message, end, lc);
                                                                             } finally {
                                                                                 while(valuesToUnbind.Count > 0) {
                                                                                     try {
@@ -138,16 +139,16 @@ namespace Ioke.Lang {
 
                                                                                             if(value == null) {
                                                                                                 if(newName.Equals("cell=")) {
-                                                                                                    ((Message)IokeObject.dataOf(context.runtime.removeCellMessage)).SendTo(context.runtime.removeCellMessage, context, wherePlace, new SaneArrayList(realPlace.Arguments));
+                                                                                                    Interpreter.Send(context.runtime.removeCellMessage, context, wherePlace, new SaneArrayList(realPlace.Arguments));
                                                                                                 } else {
                                                                                                     arguments.Add(context.runtime.CreateMessage(Message.Wrap(context.runtime.nil)));
                                                                                                     IokeObject msg = context.runtime.NewMessageFrom(realPlace, newName, arguments);
-                                                                                                    ((Message)IokeObject.dataOf(msg)).SendTo(msg, context, wherePlace);
+                                                                                                    Interpreter.Send(msg, context, wherePlace);
                                                                                                 }
                                                                                             } else {
                                                                                                 arguments.Add(context.runtime.CreateMessage(Message.Wrap(IokeObject.As(value, context))));
                                                                                                 IokeObject msg = context.runtime.NewMessageFrom(realPlace, newName, arguments);
-                                                                                                ((Message)IokeObject.dataOf(msg)).SendTo(msg, context, wherePlace);
+                                                                                                Interpreter.Send(msg, context, wherePlace);
                                                                                             }
                                                                                         } else {
                                                                                             if(value == null) {
@@ -173,7 +174,7 @@ namespace Ioke.Lang {
 
                                                                             object value = runtime.nil;
                                                                             if(message.Arguments.Count > 0) {
-                                                                                value = ((Message)IokeObject.dataOf(message)).GetEvaluatedArgument(message, 0, context);
+                                                                                value = Interpreter.GetEvaluatedArgument(message, 0, context);
                                                                             }
                                                                             throw new ControlFlow.Break(value);
                                                                         })));
@@ -190,8 +191,8 @@ namespace Ioke.Lang {
                                                                                 value = args[0];
                                                                             }
                                                                             IokeObject ctx = context;
-                                                                            while(ctx is LexicalContext) {
-                                                                                ctx = ((LexicalContext)ctx).surroundingContext;
+                                                                            while(ctx.data is LexicalContext) {
+                                                                                ctx = ((LexicalContext)ctx.data).surroundingContext;
                                                                             }
 
                                                                             throw new ControlFlow.Return(value, ctx);
@@ -223,9 +224,9 @@ namespace Ioke.Lang {
                                                                             do {
                                                                                 doAgain = false;
                                                                                 try {
-                                                                                    while(!IokeObject.IsObjectTrue(((Message)IokeObject.dataOf(message)).GetEvaluatedArgument(message, 0, context))) {
+                                                                                    while(!IokeObject.IsObjectTrue(Interpreter.GetEvaluatedArgument(message, 0, context))) {
                                                                                         if(body) {
-                                                                                            ret = ((Message)IokeObject.dataOf(message)).GetEvaluatedArgument(message, 1, context);
+                                                                                            ret = Interpreter.GetEvaluatedArgument(message, 1, context);
                                                                                         }
                                                                                     }
                                                                                 } catch(ControlFlow.Break e) {
@@ -256,9 +257,9 @@ namespace Ioke.Lang {
                                                                             do {
                                                                                 doAgain = false;
                                                                                 try {
-                                                                                    while(IokeObject.IsObjectTrue(((Message)IokeObject.dataOf(message)).GetEvaluatedArgument(message, 0, context))) {
+                                                                                    while(IokeObject.IsObjectTrue(Interpreter.GetEvaluatedArgument(message, 0, context))) {
                                                                                         if(body) {
-                                                                                            ret = ((Message)IokeObject.dataOf(message)).GetEvaluatedArgument(message, 1, context);
+                                                                                            ret = Interpreter.GetEvaluatedArgument(message, 1, context);
                                                                                         }
                                                                                     }
                                                                                 } catch(ControlFlow.Break e) {
@@ -282,7 +283,7 @@ namespace Ioke.Lang {
                                                                                 while(true) {
                                                                                     try {
                                                                                         while(true) {
-                                                                                            ((Message)IokeObject.dataOf(message)).GetEvaluatedArgument(message, 0, context);
+                                                                                            Interpreter.GetEvaluatedArgument(message, 0, context);
                                                                                         }
                                                                                     } catch(ControlFlow.Break e) {
                                                                                         return e.Value;
@@ -308,11 +309,11 @@ namespace Ioke.Lang {
 
                                                                             try {
                                                                                 IokeObject msg = IokeObject.As(args[0], context);
-                                                                                result = ((Message)IokeObject.dataOf(msg)).EvaluateCompleteWithoutExplicitReceiver(msg, context, context.RealContext);
+                                                                                result = context.runtime.interpreter.Evaluate(msg, context, context.RealContext, context);
                                                                             } finally {
                                                                                 foreach(object o in ArrayList.Adapter(args).GetRange(1, argCount-1)) {
                                                                                     IokeObject msg = IokeObject.As(o, context);
-                                                                                    ((Message)IokeObject.dataOf(msg)).EvaluateCompleteWithoutExplicitReceiver(msg, context, context.RealContext);
+                                                                                    context.runtime.interpreter.Evaluate(msg, context, context.RealContext, context);
                                                                                 }
                                                                             }
 

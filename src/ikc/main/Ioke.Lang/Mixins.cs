@@ -23,14 +23,14 @@ namespace Ioke.Lang {
             Runtime runtime = obj.runtime;
             obj.Kind = "Mixins";
 
-            obj.SetCell("=",         runtime.Base.Cells["="]);
-            obj.SetCell("==",        runtime.Base.Cells["=="]);
-            obj.SetCell("cell",      runtime.Base.Cells["cell"]);
-            obj.SetCell("cell=",     runtime.Base.Cells["cell="]);
-            obj.SetCell("cell?",     runtime.Base.Cells["cell?"]);
-            obj.SetCell("cells",     runtime.Base.Cells["cells"]);
-            obj.SetCell("cellNames", runtime.Base.Cells["cellNames"]);
-            obj.SetCell("mimic",     runtime.Base.Cells["mimic"]);
+            obj.SetCell("=",         runtime.Base.body.Get("="));
+            obj.SetCell("==",        runtime.Base.body.Get("=="));
+            obj.SetCell("cell",      runtime.Base.body.Get("cell"));
+            obj.SetCell("cell=",     runtime.Base.body.Get("cell="));
+            obj.SetCell("cell?",     runtime.Base.body.Get("cell?"));
+            obj.SetCell("cells",     runtime.Base.body.Get("cells"));
+            obj.SetCell("cellNames", runtime.Base.body.Get("cellNames"));
+            obj.SetCell("mimic",     runtime.Base.body.Get("mimic"));
 
             IokeObject comparing = new IokeObject(obj.runtime, "allows different objects to be compared, based on the spaceship operator being available");
             comparing.MimicsWithoutCheck(obj);

@@ -68,7 +68,7 @@ namespace Ioke.Lang {
             }
 
             public bool hasNext() {
-                bool sameEndpoints = IokeObject.IsObjectTrue(((Message)IokeObject.dataOf(runtime.eqMessage)).SendTo(runtime.eqMessage, context, start, end));
+                bool sameEndpoints = IokeObject.IsObjectTrue(Interpreter.Send(runtime.eqMessage, context, start, end));
                 bool shouldGoOver = (doLast && inclusive);
                 bool sameStartPoint = sameEndpoints && inclusive && !oneIteration;
                 return !sameEndpoints || shouldGoOver || sameStartPoint;
@@ -76,9 +76,9 @@ namespace Ioke.Lang {
 
             public object next() {
                 IokeObject obj = start;
-                if(!IokeObject.IsObjectTrue(((Message)IokeObject.dataOf(runtime.eqMessage)).SendTo(runtime.eqMessage, context, start, end))) {
+                if(!IokeObject.IsObjectTrue(Interpreter.Send(runtime.eqMessage, context, start, end))) {
                     oneIteration = true;
-                    start = (IokeObject)((Message)IokeObject.dataOf(messageToSend)).SendTo(messageToSend, context, start);
+                    start = (IokeObject)Interpreter.Send(messageToSend, context, start);
                     doLast = true;
                     return obj;
                 } else {
@@ -94,7 +94,7 @@ namespace Ioke.Lang {
         public override void Init(IokeObject obj) {
             Runtime runtime = obj.runtime;
             obj.Kind = "Range";
-            obj.Mimics(IokeObject.As(runtime.Mixins.GetCell(null, null, "Sequenced"), null), runtime.nul, runtime.nul);
+            obj.Mimics(IokeObject.As(IokeObject.FindCell(runtime.Mixins, "Sequenced"), null), runtime.nul, runtime.nul);
 
             obj.RegisterMethod(runtime.NewNativeMethod("returns true if the left hand side range is equal to the right hand side range.",
                                                        new TypeCheckingNativeMethod("==", TypeCheckingArgumentsDefinition.builder()
@@ -124,11 +124,11 @@ namespace Ioke.Lang {
                                                                             object from = args[0];
                                                                             object to = args[1];
 
-                                                                            bool comparing = IokeObject.IsMimic(from, IokeObject.As(context.runtime.Mixins.Cells["Comparing"], context), context);
+                                                                            bool comparing = IokeObject.IsMimic(from, IokeObject.As(context.runtime.Mixins.body.Get("Comparing"), context), context);
                                                                             bool inverted = false;
 
                                                                             if(comparing) {
-                                                                                object result = ((Message)IokeObject.dataOf(context.runtime.spaceShipMessage)).SendTo(context.runtime.spaceShipMessage, context, from, to);
+                                                                                object result = Interpreter.Send(context.runtime.spaceShipMessage, context, from, to);
                                                                                 if(result != context.runtime.nil && Number.ExtractInt(result, message, context) == 1) {
                                                                                     inverted = true;
                                                                                 }
@@ -149,11 +149,11 @@ namespace Ioke.Lang {
                                                                             object from = args[0];
                                                                             object to = args[1];
 
-                                                                            bool comparing = IokeObject.IsMimic(from, IokeObject.As(context.runtime.Mixins.Cells["Comparing"], context), context);
+                                                                            bool comparing = IokeObject.IsMimic(from, IokeObject.As(context.runtime.Mixins.body.Get("Comparing"), context), context);
                                                                             bool inverted = false;
 
                                                                             if(comparing) {
-                                                                                object result = ((Message)IokeObject.dataOf(context.runtime.spaceShipMessage)).SendTo(context.runtime.spaceShipMessage, context, from, to);
+                                                                                object result = Interpreter.Send(context.runtime.spaceShipMessage, context, from, to);
                                                                                 if(result != context.runtime.nil && Number.ExtractInt(result, message, context) == 1) {
                                                                                     inverted = true;
                                                                                 }
@@ -218,44 +218,44 @@ namespace Ioke.Lang {
 
                                                                             switch(message.Arguments.Count) {
                                                                             case 0: {
-                                                                                return ((Message)IokeObject.dataOf(runtime.seqMessage)).SendTo(runtime.seqMessage, context, on);
+                                                                                return Interpreter.Send(runtime.seqMessage, context, on);
                                                                             }
                                                                             case 1: {
                                                                                 IokeObject code = IokeObject.As(message.Arguments[0], context);
 
                                                                                 object current = from;
 
-                                                                                while(!IokeObject.IsObjectTrue(((Message)IokeObject.dataOf(context.runtime.eqMessage)).SendTo(context.runtime.eqMessage, context, current, to))) {
-                                                                                    ((Message)IokeObject.dataOf(code)).EvaluateCompleteWithReceiver(code, context, context.RealContext, current);
-                                                                                    current = ((Message)IokeObject.dataOf(messageToSend)).SendTo(messageToSend, context, current);
+                                                                                while(!IokeObject.IsObjectTrue(Interpreter.Send(context.runtime.eqMessage, context, current, to))) {
+                                                                                    context.runtime.interpreter.Evaluate(code, context, context.RealContext, current);
+                                                                                    current = Interpreter.Send(messageToSend, context, current);
                                                                                 }
                                                                                 if(inclusive) {
-                                                                                    ((Message)IokeObject.dataOf(code)).EvaluateCompleteWithReceiver(code, context, context.RealContext, current);
+                                                                                    context.runtime.interpreter.Evaluate(code, context, context.RealContext, current);
                                                                                 }
 
                                                                                 break;
                                                                             }
                                                                             case 2: {
-                                                                                LexicalContext c = new LexicalContext(context.runtime, context, "Lexical activation context for Range#each", message, context);
+                                                                                IokeObject c = context.runtime.NewLexicalContext(context, "Lexical activation context for Range#each", context);
                                                                                 string name = IokeObject.As(message.Arguments[0], context).Name;
                                                                                 IokeObject code = IokeObject.As(message.Arguments[1], context);
 
                                                                                 object current = from;
 
-                                                                                while(!IokeObject.IsObjectTrue(((Message)IokeObject.dataOf(context.runtime.eqMessage)).SendTo(context.runtime.eqMessage, context, current, to))) {
+                                                                                while(!IokeObject.IsObjectTrue(Interpreter.Send(context.runtime.eqMessage, context, current, to))) {
                                                                                     c.SetCell(name, current);
-                                                                                    ((Message)IokeObject.dataOf(code)).EvaluateCompleteWithoutExplicitReceiver(code, c, c.RealContext);
-                                                                                    current = ((Message)IokeObject.dataOf(messageToSend)).SendTo(messageToSend, context, current);
+                                                                                    context.runtime.interpreter.Evaluate(code, c, c.RealContext, c);
+                                                                                    current = Interpreter.Send(messageToSend, context, current);
                                                                                 }
                                                                                 if(inclusive) {
                                                                                     c.SetCell(name, current);
-                                                                                    ((Message)IokeObject.dataOf(code)).EvaluateCompleteWithoutExplicitReceiver(code, c, c.RealContext);
+                                                                                    context.runtime.interpreter.Evaluate(code, c, c.RealContext, c);
                                                                                 }
 
                                                                                 break;
                                                                             }
                                                                             case 3: {
-                                                                                LexicalContext c = new LexicalContext(context.runtime, context, "Lexical activation context for List#each", message, context);
+                                                                                IokeObject c = context.runtime.NewLexicalContext(context, "Lexical activation context for Range#each", context);
                                                                                 string iname = IokeObject.As(message.Arguments[0], context).Name;
                                                                                 string name = IokeObject.As(message.Arguments[1], context).Name;
                                                                                 IokeObject code = IokeObject.As(message.Arguments[2], context);
@@ -264,16 +264,16 @@ namespace Ioke.Lang {
 
                                                                                 object current = from;
 
-                                                                                while(!IokeObject.IsObjectTrue(((Message)IokeObject.dataOf(context.runtime.eqMessage)).SendTo(context.runtime.eqMessage, context, current, to))) {
+                                                                                while(!IokeObject.IsObjectTrue(Interpreter.Send(context.runtime.eqMessage, context, current, to))) {
                                                                                     c.SetCell(name, current);
                                                                                     c.SetCell(iname, runtime.NewNumber(index++));
-                                                                                    ((Message)IokeObject.dataOf(code)).EvaluateCompleteWithoutExplicitReceiver(code, c, c.RealContext);
-                                                                                    current = ((Message)IokeObject.dataOf(messageToSend)).SendTo(messageToSend, context, current);
+                                                                                    context.runtime.interpreter.Evaluate(code, c, c.RealContext, c);
+                                                                                    current = Interpreter.Send(messageToSend, context, current);
                                                                                 }
                                                                                 if(inclusive) {
                                                                                     c.SetCell(name, current);
                                                                                     c.SetCell(iname, runtime.NewNumber(index++));
-                                                                                    ((Message)IokeObject.dataOf(code)).EvaluateCompleteWithoutExplicitReceiver(code, c, c.RealContext);
+                                                                                    context.runtime.interpreter.Evaluate(code, c, c.RealContext, c);
                                                                                 }
 
                                                                                 break;
@@ -293,7 +293,7 @@ namespace Ioke.Lang {
 
                                                                             IokeObject from = IokeObject.As(((Range)IokeObject.dataOf(on)).from, context);
                                                                             IokeObject to = IokeObject.As(((Range)IokeObject.dataOf(on)).to, context);
-                                                                            bool comparing = IokeObject.IsMimic(from, IokeObject.As(context.runtime.Mixins.Cells["Comparing"], context));
+                                                                            bool comparing = IokeObject.IsMimic(from, IokeObject.As(context.runtime.Mixins.body.Get("Comparing"), context));
                                                                             bool inclusive = ((Range)IokeObject.dataOf(on)).inclusive;
 
                                                                             if(comparing) {
@@ -307,10 +307,10 @@ namespace Ioke.Lang {
                                                                                     secondMessageExclusive = context.runtime.ltMessage;
                                                                                 }
 
-                                                                                if(IokeObject.IsObjectTrue(((Message)IokeObject.dataOf(firstMessage)).SendTo(firstMessage, context, from, other)) &&
+                                                                                if(IokeObject.IsObjectTrue(Interpreter.Send(firstMessage, context, from, other)) &&
                                                                                    ((inclusive &&
-                                                                                     IokeObject.IsObjectTrue(((Message)IokeObject.dataOf(secondMessageInclusive)).SendTo(secondMessageInclusive, context, to, other))) ||
-                                                                                    IokeObject.IsObjectTrue(((Message)IokeObject.dataOf(secondMessageExclusive)).SendTo(secondMessageExclusive, context, to, other)))) {
+                                                                                     IokeObject.IsObjectTrue(Interpreter.Send(secondMessageInclusive, context, to, other))) ||
+                                                                                    IokeObject.IsObjectTrue(Interpreter.Send(secondMessageExclusive, context, to, other)))) {
                                                                                     return context.runtime.True;
                                                                                 } else {
                                                                                     return context.runtime.False;
@@ -323,14 +323,14 @@ namespace Ioke.Lang {
 
                                                                                 object current = from;
 
-                                                                                while(!IokeObject.IsObjectTrue(((Message)IokeObject.dataOf(context.runtime.eqMessage)).SendTo(context.runtime.eqMessage, context, current, to))) {
-                                                                                    if(IokeObject.IsObjectTrue(((Message)IokeObject.dataOf(context.runtime.eqMessage)).SendTo(context.runtime.eqMessage, context, current, other))) {
+                                                                                while(!IokeObject.IsObjectTrue(Interpreter.Send(context.runtime.eqMessage, context, current, to))) {
+                                                                                    if(IokeObject.IsObjectTrue(Interpreter.Send(context.runtime.eqMessage, context, current, other))) {
                                                                                         return context.runtime.True;
                                                                                     }
-                                                                                    current = ((Message)IokeObject.dataOf(messageToSend)).SendTo(messageToSend, context, current);
+                                                                                    current = Interpreter.Send(messageToSend, context, current);
                                                                                 }
 
-                                                                                if(inclusive && IokeObject.IsObjectTrue(((Message)IokeObject.dataOf(context.runtime.eqMessage)).SendTo(context.runtime.eqMessage, context, to, other))) {
+                                                                                if(inclusive && IokeObject.IsObjectTrue(Interpreter.Send(context.runtime.eqMessage, context, to, other))) {
                                                                                     return context.runtime.True;
                                                                                 }
                                                                                 return context.runtime.False;

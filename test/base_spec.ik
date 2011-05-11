@@ -244,7 +244,6 @@ describe("Base",
       x cells should == {f: 13, Why: 1}
     )
 
-    onlyWhen(System feature?(:java),
       it("should take a boolean, when given will make it return all cells in both this and it's parents objects",
         x = Base mimic
         x cells(true) should == {
@@ -296,55 +295,6 @@ describe("Base",
           :"activatable" => Base cell("activatable"),
           :"activatable=" => Base cell("activatable=")
         }
-      )
-    )
-
-    onlyWhen(System feature?(:clr),
-      it("should take a boolean, when given will make it return all cells in both this and it's parents objects",
-        x = Base mimic
-        x cells(true) should == {
-          kind: Base cell(:kind),
-          mimic: Base cell(:mimic),
-          :"=" => Base cell(:"="),
-          :"==" => Base cell(:"=="),
-          hash: Base cell(:hash),
-          documentation: Base cell(:documentation),
-          :"documentation=" => Base cell(:"documentation="),
-          cell: Base cell(:cell),
-          identity: Base cell(:identity),
-          cellNames: Base cell(:cellNames),
-          cells: Base cell(:cells),
-          :"cell=" => Base cell(:"cell="),
-          notice: "Base",
-          inspect: "Base",
-          :"removeCell!" => Base cell(:"removeCell!"),
-          :"undefineCell!" => Base cell(:"undefineCell!"),
-          :"cellOwner?" => Base cell(:"cellOwner?"),
-          :"cellOwner" => Base cell(:"cellOwner"),
-          :"cell?" => Base cell("cell?")}
-
-        x = Base mimic
-        x kind = "blarg"
-        x cells(true) should == {
-          kind: "blarg",
-          mimic: Base cell(:mimic),
-          :"=" => Base cell(:"="),
-          :"==" => Base cell(:"=="),
-          hash: Base cell(:hash),
-          documentation: Base cell(:documentation),
-          :"documentation=" => Base cell(:"documentation="),
-          cell: Base cell(:cell),
-          identity: Base cell(:identity),
-          cellNames: Base cell(:cellNames),
-          cells: Base cell(:cells),
-          :"cell=" => Base cell(:"cell="),
-          notice: "Base",
-          inspect: "Base",
-          :"removeCell!" => Base cell(:"removeCell!"),
-          :"undefineCell!" => Base cell(:"undefineCell!"),
-          :"cellOwner?" => Base cell(:"cellOwner?"),
-          :"cellOwner" => Base cell(:"cellOwner"),
-          :"cell?" => Base cell("cell?")}
       )
     )
   )

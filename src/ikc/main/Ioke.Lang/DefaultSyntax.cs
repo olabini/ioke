@@ -9,7 +9,7 @@ namespace Ioke.Lang {
         IokeObject context;
         IokeObject code;
 
-        public DefaultSyntax(string name) {
+        public DefaultSyntax(string name) : base(IokeData.TYPE_DEFAULT_SYNTAX) {
             this.name = name;
         }
 
@@ -20,7 +20,7 @@ namespace Ioke.Lang {
 
         public override void Init(IokeObject obj) {
             obj.Kind = "DefaultSyntax";
-            obj.RegisterCell("activatable", obj.runtime.True);
+            obj.SetActivatable(true);
 
             obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the name of the syntax",
                                                            new TypeCheckingNativeMethod.WithNoArguments("name", obj,
@@ -34,7 +34,7 @@ namespace Ioke.Lang {
                                                                             .WithRestUnevaluated("arguments")
                                                                             .Arguments,
                                                                             (method, _context, message, on, outer) => {
-                                                                                return IokeObject.As(on, _context).Activate(_context, message, _context.RealContext);
+                                                                                return Interpreter.Activate(IokeObject.As(on, _context), _context, message, _context.RealContext);
                                                                             })));
 
             obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the result of activating this syntax without actually doing the replacement or execution part.",
@@ -175,7 +175,7 @@ namespace Ioke.Lang {
             object result = null;
 
             try {
-                result = ((Message)IokeObject.dataOf(code)).EvaluateCompleteWith(code, c, on);
+                result = context.runtime.interpreter.Evaluate(code, c, on, c);
             } catch(ControlFlow.Return e) {
                 if(e.context == c) {
                     result = e.Value;
@@ -225,7 +225,7 @@ namespace Ioke.Lang {
             object result = null;
 
             try {
-                result = ((Message)IokeObject.dataOf(code)).EvaluateCompleteWith(code, c, on);
+                result = context.runtime.interpreter.Evaluate(code, c, on, c);
             } catch(ControlFlow.Return e) {
                 if(e.context == c) {
                     result = e.Value;
@@ -237,8 +237,9 @@ namespace Ioke.Lang {
             return result;
         }
 
-        public override object ActivateWithCallAndData(IokeObject self, IokeObject context, IokeObject message, object on, object call, IDictionary<string, object> data) {
-            object result = ExpandWithCall(self, context, message, on, call, data);
+        public static object ActivateWithCallAndDataFixed(IokeObject self, IokeObject context, IokeObject message, object on, object call, IDictionary<string, object> data) {
+            DefaultSyntax dm = (DefaultSyntax)self.data;
+            object result = dm.ExpandWithCall(self, context, message, on, call, data);
 
             if(result == context.runtime.nil) {
                 // Remove chain completely
@@ -281,20 +282,17 @@ namespace Ioke.Lang {
 
                 // We need to distinguish explicit calls to self, and calls through a local context.
                 object receiver = (prev == null || Message.IsTerminator(prev)) ? context : on;
-                return ((Message)IokeObject.dataOf(message)).SendTo(message, context, receiver);
+                return Interpreter.Send(message, context, receiver);
             }
         }
 
-        public override object ActivateWithCall(IokeObject self, IokeObject context, IokeObject message, object on, object call) {
-            return ActivateWithCallAndData(self, context, message, on, call, null);
+        public new static object ActivateFixed(IokeObject self, IokeObject context, IokeObject message, object on) {
+            return ActivateWithDataFixed(self, context, message, on, null);
         }
 
-        public override object Activate(IokeObject self, IokeObject context, IokeObject message, object on) {
-            return ActivateWithData(self, context, message, on, null);
-        }
-
-        public override object ActivateWithData(IokeObject self, IokeObject context, IokeObject message, object on, IDictionary<string, object> data) {
-            object result = Expand(self, context, message, on, data);
+        public static object ActivateWithDataFixed(IokeObject self, IokeObject context, IokeObject message, object on, IDictionary<string, object> data) {
+            DefaultSyntax dm = (DefaultSyntax)self.data;
+            object result = dm.Expand(self, context, message, on, data);
 
             if(result == context.runtime.nil) {
                 // Remove chain completely
@@ -337,7 +335,7 @@ namespace Ioke.Lang {
                 
                 // We need to distinguish explicit calls to self, and calls through a local context.
                 object receiver = (prev == null || Message.IsTerminator(prev)) ? context : on;
-                return ((Message)IokeObject.dataOf(message)).SendTo(message, context, receiver);
+                return Interpreter.Send(message, context, receiver);
             }
         }
     }

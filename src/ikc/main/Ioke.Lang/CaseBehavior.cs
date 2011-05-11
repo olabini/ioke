@@ -5,7 +5,7 @@ namespace Ioke.Lang {
         public static IokeObject TransformWhenStatement(object when, IokeObject context, IokeObject message, IokeObject caseMimic) {
             string outerName = Message.GetName(when);
 
-            if(caseMimic.Cells.ContainsKey("case:" + outerName)) {
+            if(caseMimic.body.Has("case:" + outerName)) {
                 IokeObject cp = Message.DeepCopy(when);
                 ReplaceAllCaseNames(cp, context, message, caseMimic);
                 return cp;
@@ -16,7 +16,7 @@ namespace Ioke.Lang {
 
         private static void ReplaceAllCaseNames(IokeObject when, IokeObject context, IokeObject message, IokeObject caseMimic) {
             string theName = "case:" + Message.GetName(when);
-            if(caseMimic.Cells.ContainsKey(theName)) {
+            if(caseMimic.body.Has(theName)) {
                 Message.SetName(when, theName);
 
                 foreach(object arg in when.Arguments) {
@@ -42,15 +42,15 @@ namespace Ioke.Lang {
                                                                                 int argCount = args.Count;
                                                                                 int index = 0;
                                                                                 IokeObject msg = IokeObject.As(args[index++], context);
-                                                                                object value = ((Message)IokeObject.dataOf(msg)).EvaluateCompleteWithoutExplicitReceiver(msg, context, context.RealContext);
+                                                                                object value = runtime.interpreter.Evaluate(msg, context, context.RealContext, context);
                                                                                 argCount--;
 
                                                                                 while(argCount > 1) {
                                                                                     msg = TransformWhenStatement(args[index++], context, message, obj);
-                                                                                    object when = ((Message)IokeObject.dataOf(msg)).EvaluateCompleteWithoutExplicitReceiver(msg, context, context.RealContext);
-                                                                                    if(IokeObject.IsObjectTrue(((Message)IokeObject.dataOf(runtime.eqqMessage)).SendTo(runtime.eqqMessage, context, when, value))) {
+                                                                                    object when = runtime.interpreter.Evaluate(msg, context, context.RealContext, context);
+                                                                                    if(IokeObject.IsObjectTrue(Interpreter.Send(runtime.eqqMessage, context, when, value))) {
                                                                                         msg = IokeObject.As(args[index++], context);
-                                                                                        return ((Message)IokeObject.dataOf(msg)).EvaluateCompleteWithoutExplicitReceiver(msg, context, context.RealContext);
+                                                                                        return runtime.interpreter.Evaluate(msg, context, context.RealContext, context);
                                                                                     } else {
                                                                                         index++;
                                                                                     }
@@ -59,7 +59,7 @@ namespace Ioke.Lang {
 
                                                                                 if(argCount == 1) {
                                                                                     msg = IokeObject.As(args[index++], context);
-                                                                                    return ((Message)IokeObject.dataOf(msg)).EvaluateCompleteWithoutExplicitReceiver(msg, context, context.RealContext);
+                                                                                    return runtime.interpreter.Evaluate(msg, context, context.RealContext, context);
                                                                                 }
 
                                                                                 return runtime.nil;

@@ -4,7 +4,7 @@ namespace Ioke.Lang {
         IokeData realMethod;
         IokeObject realSelf;
 
-        public AliasMethod(string name, IokeData realMethod, IokeObject realSelf) {
+        public AliasMethod(string name, IokeData realMethod, IokeObject realSelf) : base(IokeData.TYPE_ALIAS_METHOD) {
             this.name = name;
             this.realMethod = realMethod;
             this.realSelf = realSelf;
@@ -55,8 +55,30 @@ namespace Ioke.Lang {
             return "";
         }
 
-        public override object Activate(IokeObject self, IokeObject context, IokeObject message, object on) {
-            return realMethod.Activate(realSelf, context, message, on);
+        public new static object ActivateFixed(IokeObject self, IokeObject ctx, IokeObject message, object obj) {
+            AliasMethod am = (AliasMethod)self.data;
+            IokeObject realSelf = am.realSelf;
+            switch(am.realMethod.type) {
+            case IokeData.TYPE_DEFAULT_METHOD:
+                return DefaultMethod.ActivateFixed(realSelf, ctx, message, obj);
+            case IokeData.TYPE_DEFAULT_MACRO:
+                return DefaultMacro.ActivateFixed(realSelf, ctx, message, obj);
+            case IokeData.TYPE_DEFAULT_SYNTAX:
+                return DefaultSyntax.ActivateFixed(realSelf, ctx, message, obj);
+            case IokeData.TYPE_LEXICAL_MACRO:
+                return LexicalMacro.ActivateFixed(realSelf, ctx, message, obj);
+            case IokeData.TYPE_NATIVE_METHOD:
+                return NativeMethod.ActivateFixed(realSelf, ctx, message, obj);
+            case IokeData.TYPE_METHOD_PROTOTYPE:
+                return Method.ActivateFixed(realSelf, ctx, message, obj);
+            case IokeData.TYPE_LEXICAL_BLOCK:
+                return LexicalBlock.ActivateFixed(realSelf, ctx, message, obj);
+            case IokeData.TYPE_ALIAS_METHOD:
+                return AliasMethod.ActivateFixed(realSelf, ctx, message, obj);
+            case IokeData.TYPE_NONE:
+            default:
+                return IokeData.ActivateFixed(realSelf, ctx, message, obj);
+            }
         }
     }
 }

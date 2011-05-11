@@ -205,7 +205,10 @@ public class Interpreter {
         Runtime runtime = ctx.runtime;
         Object cell = IokeObject.findCell(recv, name);
         Object passed = null;
-        while(cell == runtime.nul && ((cell = passed = IokeObject.findCell(recv, "pass")) != runtime.nul) && !isApplicable(passed, message, ctx)) {
+        while(cell == runtime.nul) {
+            if(((cell = passed = IokeObject.findCell(recv, "pass")) != runtime.nul) && isApplicable(passed, message, ctx)) {
+                return cell;
+            } 
             cell = signalNoSuchCell(message, ctx, obj, name, cell, recv);
         }
         return cell;

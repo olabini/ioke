@@ -4,19 +4,31 @@ namespace Ioke.Lang {
     using System.Collections.Generic;
 
     public abstract class IokeData {
+        public readonly int type;
+
+        public const int TYPE_NONE = 0;
+        public const int TYPE_DEFAULT_METHOD = 1;
+        public const int TYPE_DEFAULT_MACRO = 2;
+        public const int TYPE_DEFAULT_SYNTAX = 3;
+        public const int TYPE_LEXICAL_MACRO = 4;
+        public const int TYPE_ALIAS_METHOD = 5;
+        public const int TYPE_NATIVE_METHOD = 6;
+        public const int TYPE_METHOD_PROTOTYPE = 11;
+        public const int TYPE_LEXICAL_BLOCK = 12;
+
+        public IokeData() : this(TYPE_NONE) {
+        }
+
+        public IokeData(int type) {
+            this.type = type;
+        }
+
         private class NoneIokeData : IokeData {}
 
         private class NilIokeData : IokeData {
-            public override bool IsNil {
-                get {return true;}
-            }
-
-            public override bool IsTrue {
-                get {return false;}
-            }
-
             public override void Init(IokeObject obj) {
                 obj.Kind = "nil";
+                obj.body.flags |= IokeObject.NIL_F | IokeObject.FALSY_F;
             }
 
             public override void CheckMimic(IokeObject obj, IokeObject m, IokeObject context) {
@@ -37,12 +49,9 @@ namespace Ioke.Lang {
         }
 
         private class FalseIokeData : IokeData {
-            public override bool IsTrue {
-                get {return false;}
-            }
-
             public override void Init(IokeObject obj) {
                 obj.Kind = "false";
+                obj.body.flags |= IokeObject.FALSY_F;
             }
 
             public override void CheckMimic(IokeObject obj, IokeObject m, IokeObject context) {
@@ -93,13 +102,11 @@ namespace Ioke.Lang {
             return this;
         }
 
-        public virtual bool IsNil {get{return false;}}
-        public virtual bool IsTrue {get{return true;}}
         public virtual bool IsMessage {get{return false;}}
         public virtual bool IsSymbol {get{return false;}}
         public virtual void CheckMimic(IokeObject obj, IokeObject m, IokeObject context) {}
 
-        private void report(object self, IokeObject context, IokeObject message, string name) {
+        private static void report(object self, IokeObject context, IokeObject message, string name) {
             IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition,
                                                                          message,
                                                                          context,
@@ -120,10 +127,12 @@ namespace Ioke.Lang {
             return null;
         }
 
-        public virtual object Activate(IokeObject self, IokeObject context, IokeObject message, object on) {
-            object cell = self.FindCell(message, context, "activate");
+
+
+        public static object ActivateFixed(IokeObject self, IokeObject context, IokeObject message, object on) {
+            object cell = IokeObject.FindCell(self, "activate");
             if(cell == context.runtime.nul) {
-                               report(self, context, message, "activate");
+                report(self, context, message, "activate");
                 return context.runtime.nil;
             } else {
                 IokeObject newMessage = Message.DeepCopy(message);
@@ -131,30 +140,18 @@ namespace Ioke.Lang {
                 newMessage.Arguments.Add(context.runtime.CreateMessage(Message.Wrap(context)));
                 newMessage.Arguments.Add(context.runtime.CreateMessage(Message.Wrap(message)));
                 newMessage.Arguments.Add(context.runtime.CreateMessage(Message.Wrap(IokeObject.As(on, context))));
-                return IokeObject.GetOrActivate(cell, context, newMessage, self);
+                return Interpreter.GetOrActivate(cell, context, newMessage, self);
             }
-        }
-
-        public virtual object ActivateWithData(IokeObject self, IokeObject context, IokeObject message, object on, IDictionary<string, object> c) {
-            return Activate(self, context, message, on);
-        }
-
-        public virtual object ActivateWithCall(IokeObject self, IokeObject context, IokeObject message, object on, object c) {
-            return Activate(self, context, message, on);
-        }
-
-        public virtual object ActivateWithCallAndData(IokeObject self, IokeObject context, IokeObject message, object on, object c, IDictionary<string, object> data) {
-            return Activate(self, context, message, on);
         }
 
         public virtual string ToString(IokeObject self) {
             int h = HashCode(self);
             string hash = System.Convert.ToString(h, 16).ToUpper();
-            if(self is NullObject) {
+            if(self == self.runtime.nul) {
                 return "#<nul:" + hash + ">";
             }
 
-            object obj = self.FindCell(null, null, "kind");
+            object obj = Interpreter.Send(self.runtime.kindMessage, self.runtime.Ground, self);
             string kind = ((Text)IokeObject.dataOf(obj)).GetText();
             return "#<" + kind + ":" + hash + ">";
         }
@@ -377,22 +374,22 @@ namespace Ioke.Lang {
         }
 
         public virtual bool IsEqualTo(IokeObject self, object other) {
-            object cell = self.FindCell(self.runtime.eqMessage, self.runtime.Ground, "==");
+            object cell = IokeObject.FindCell(self, "==");
             if(cell == self.runtime.nul) {
-                bool result = (other is IokeObject) && (self.Cells == IokeObject.As(other, self).Cells);
+                bool result = (other is IokeObject) && (object.ReferenceEquals(self.body, IokeObject.As(other, self).body));
                 return result;
             } else {
-                bool result = IokeObject.IsObjectTrue(((Message)IokeObject.dataOf(self.runtime.eqMessage)).SendTo(self.runtime.eqMessage, self.runtime.Ground, self, self.runtime.CreateMessage(Message.Wrap(IokeObject.As(other, self)))));
+                bool result = IokeObject.IsObjectTrue(Interpreter.Send(self.runtime.eqMessage, self.runtime.Ground, self, self.runtime.CreateMessage(Message.Wrap(IokeObject.As(other, self)))));
                 return result;
             }
         }
 
         public int HashCode(IokeObject self) {
-            object cell = self.FindCell(self.runtime.hashMessage, self.runtime.Ground, "hash");
+            object cell = IokeObject.FindCell(self, "hash");
             if(cell == self.runtime.nul) {
-                return System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(self.Cells);
+                return System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(self.body);
             } else {
-                return Number.ExtractInt(((Message)IokeObject.dataOf(self.runtime.hashMessage)).SendTo(self.runtime.hashMessage, self.runtime.Ground, self), self.runtime.hashMessage, self.runtime.Ground);
+                return Number.ExtractInt(Interpreter.Send(self.runtime.hashMessage, self.runtime.Ground, self), self.runtime.hashMessage, self.runtime.Ground);
             }
         }
     }

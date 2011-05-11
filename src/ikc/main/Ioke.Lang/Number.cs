@@ -106,7 +106,7 @@ namespace Ioke.Lang {
             IokeObject number = obj;
 
             obj.Kind = "Number";
-            obj.Mimics(IokeObject.As(runtime.Mixins.GetCell(null, null, "Comparing"), obj), runtime.nul, runtime.nul);
+            obj.Mimics(IokeObject.As(IokeObject.FindCell(runtime.Mixins, "Comparing"), obj), runtime.nul, runtime.nul);
 
             IokeObject real = new IokeObject(runtime, "A real number can be either a rational number or a decimal number", new Number());
             real.MimicsWithoutCheck(number);
@@ -166,7 +166,7 @@ namespace Ioke.Lang {
                                                                            num = IntNum.valueOf(nums.toBigIntegerExact().ToString());
                                                                            den = IntNum.valueOf(dens.toBigIntegerExact().ToString());
                                                                            return context.runtime.NewNumber(new IntFraction(num, den));
-                                                                       } catch(ArithmeticException e) {
+                                                                       } catch(ArithmeticException) {
                                                                            // Ignore and fall through
                                                                        }
                                                                    }
@@ -282,7 +282,7 @@ namespace Ioke.Lang {
                                                                                              IokeData data = IokeObject.dataOf(arg);
 
                                                                                              if(data is Decimal) {
-                                                                                                 return ((Message)IokeObject.dataOf(context.runtime.minusMessage)).SendTo(context.runtime.minusMessage, context, context.runtime.NewDecimal(((Number)IokeObject.dataOf(on))), arg);
+                                                                                                 return Interpreter.Send(context.runtime.minusMessage, context, context.runtime.NewDecimal(((Number)IokeObject.dataOf(on))), arg);
                                                                                              } else {
                                                                                                  if(!(data is Number)) {
                                                                                                      arg = IokeObject.ConvertToRational(arg, message, context, true);
@@ -335,7 +335,7 @@ namespace Ioke.Lang {
                                                                                              IokeData data = IokeObject.dataOf(arg);
 
                                                                                              if(data is Decimal) {
-                                                                                                 return ((Message)IokeObject.dataOf(context.runtime.plusMessage)).SendTo(context.runtime.plusMessage, context, context.runtime.NewDecimal(((Number)IokeObject.dataOf(on))), arg);
+                                                                                                 return Interpreter.Send(context.runtime.plusMessage, context, context.runtime.NewDecimal(((Number)IokeObject.dataOf(on))), arg);
                                                                                              } else {
                                                                                                  if(!(data is Number)) {
                                                                                                      arg = IokeObject.ConvertToRational(arg, message, context, true);
@@ -355,7 +355,7 @@ namespace Ioke.Lang {
                                                                                              IokeData data = IokeObject.dataOf(arg);
 
                                                                                              if(data is Decimal) {
-                                                                                                 return ((Message)IokeObject.dataOf(context.runtime.multMessage)).SendTo(context.runtime.multMessage, context, context.runtime.NewDecimal(((Number)IokeObject.dataOf(on))), arg);
+                                                                                                 return Interpreter.Send(context.runtime.multMessage, context, context.runtime.NewDecimal(((Number)IokeObject.dataOf(on))), arg);
                                                                                              } else {
                                                                                                  if(!(data is Number)) {
                                                                                                      arg = IokeObject.ConvertToRational(arg, message, context, true);
@@ -375,7 +375,7 @@ namespace Ioke.Lang {
                                                                                              IokeData data = IokeObject.dataOf(arg);
 
                                                                                              if(data is Decimal) {
-                                                                                                 return ((Message)IokeObject.dataOf(context.runtime.divMessage)).SendTo(context.runtime.divMessage, context, context.runtime.NewDecimal(((Number)IokeObject.dataOf(on))), arg);
+                                                                                                 return Interpreter.Send(context.runtime.divMessage, context, context.runtime.NewDecimal(((Number)IokeObject.dataOf(on))), arg);
                                                                                              } else {
                                                                                                  if(!(data is Number)) {
                                                                                                      arg = IokeObject.ConvertToRational(arg, message, context, true);
@@ -444,7 +444,6 @@ namespace Ioke.Lang {
                                                                                                                                                new IokeObject.UseValue("dividend", newCell));
                                                                                                  arg = newCell[0];
                                                                                              }
-                                                                                             IokeData data = IokeObject.dataOf(arg);
                                                                                              return context.runtime.NewNumber(IntNum.quotient(Number.IntValue(on),Number.IntValue(arg), IntNum.TRUNCATE));
                                                                                         })));
 
@@ -473,7 +472,6 @@ namespace Ioke.Lang {
                                                                                                                                                new IokeObject.UseValue("dividend", newCell));
                                                                                                  arg = newCell[0];
                                                                                              }
-                                                                                             IokeData data = IokeObject.dataOf(arg);
                                                                                              IntNum q = new IntNum();
                                                                                              IntNum r = new IntNum();
                                                                                              IntNum.divide(Number.IntValue(on),Number.IntValue(arg), q, r, IntNum.TRUNCATE);
@@ -612,7 +610,7 @@ namespace Ioke.Lang {
                                                                                 } else if(message.Arguments.Count == 1) {
                                                                                     object result = runtime.nil;
                                                                                     while(num > 0) {
-                                                                                        result = ((Message)IokeObject.dataOf(message)).GetEvaluatedArgument(message, 0, context);
+                                                                                        result = Interpreter.GetEvaluatedArgument(message, 0, context);
                                                                                         num--;
                                                                                     }
                                                                                     return result;
@@ -622,7 +620,7 @@ namespace Ioke.Lang {
                                                                                     object result = runtime.nil;
                                                                                     while(ix<num) {
                                                                                         context.SetCell(name, runtime.NewNumber(IntNum.make(ix)));
-                                                                                        result = ((Message)IokeObject.dataOf(message)).GetEvaluatedArgument(message, 1, context);
+                                                                                        result = Interpreter.GetEvaluatedArgument(message, 1, context);
                                                                                         ix++;
                                                                                     }
                                                                                     return result;

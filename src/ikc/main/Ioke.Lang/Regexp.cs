@@ -90,7 +90,7 @@ namespace Ioke.Lang {
                                                                                     .WithRequiredPositional("other")
                                                                                     .Arguments,
                                                                                     (method, on, args, keywords, context, message) => {
-                                                                                        IokeObject target = IokeObject.As(((Message)IokeObject.dataOf(context.runtime.asText)).SendTo(context.runtime.asText, context, args[0]), context);
+                                                                                        IokeObject target = IokeObject.As(Interpreter.Send(context.runtime.asText, context, args[0]), context);
                                                                                         string arg = Text.GetText(target);
                                                                                         Matcher m = ((Regexp)IokeObject.dataOf(on)).regexp.Matcher(arg);
 
@@ -111,7 +111,7 @@ namespace Ioke.Lang {
                                                                         .WithRequiredPositional("text")
                                                                         .Arguments,
                                                                         (method, on, args, keywords, context, message) => {
-                                                                            return context.runtime.NewText(Pattern.Quote(Text.GetText(((Message)IokeObject.dataOf(context.runtime.asText)).SendTo(context.runtime.asText, context, args[0]))));
+                                                                            return context.runtime.NewText(Pattern.Quote(Text.GetText(Interpreter.Send(context.runtime.asText, context, args[0]))));
                                                                         })));
 
             obj.RegisterMethod(runtime.NewNativeMethod("Takes one or two text arguments that describes the regular expression to create. the first text is the pattern and the second is the flags.",
@@ -120,10 +120,10 @@ namespace Ioke.Lang {
                                                                         .WithOptionalPositional("flags", "")
                                                                         .Arguments,
                                                                         (method, on, args, keywords, context, message) => {
-                                                                            string pattern = Text.GetText(((Message)IokeObject.dataOf(context.runtime.asText)).SendTo(context.runtime.asText, context, args[0]));
+                                                                            string pattern = Text.GetText(Interpreter.Send(context.runtime.asText, context, args[0]));
                                                                             string flags = "";
                                                                             if(args.Count > 1) {
-                                                                                flags = Text.GetText(((Message)IokeObject.dataOf(context.runtime.asText)).SendTo(context.runtime.asText, context, args[1]));
+                                                                                flags = Text.GetText(Interpreter.Send(context.runtime.asText, context, args[1]));
                                                                             }
 
                                                                             return context.runtime.NewRegexp(pattern, flags, context, message);
@@ -135,7 +135,7 @@ namespace Ioke.Lang {
                                                                                     .WithRequiredPositional("other")
                                                                                     .Arguments,
                                                                                     (method, on, args, keywords, context, message) => {
-                                                                                        string arg = Text.GetText(((Message)IokeObject.dataOf(context.runtime.asText)).SendTo(context.runtime.asText, context, args[0]));
+                                                                                        string arg = Text.GetText(Interpreter.Send(context.runtime.asText, context, args[0]));
                                                                                         Matcher m = ((Regexp)IokeObject.dataOf(on)).regexp.Matcher(arg);
 
                                                                                         var result = new SaneArrayList();

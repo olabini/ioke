@@ -14,7 +14,7 @@ namespace Ioke.Lang {
 
         public int Compare(object one, object two) {
             Runtime runtime = context.runtime;
-            return Number.ExtractInt(((Message)IokeObject.dataOf(runtime.spaceShipMessage)).SendTo(runtime.spaceShipMessage, context, one, two), message, context);
+            return Number.ExtractInt(Interpreter.Send(runtime.spaceShipMessage, context, one, two), message, context);
         }
     }
 }

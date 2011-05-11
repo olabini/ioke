@@ -3,23 +3,23 @@ namespace Ioke.Lang {
     public class Method : IokeData, Named, Inspectable {
         protected string name;
 
-        public Method(string name) {
+        public Method(string name, int type) : base(type) {
             this.name = name;
         }
 
-        public Method(IokeObject context) : this((string)null) {
+        public Method(IokeObject context, int type) : this((string)null, type) {
         }
 
         public override void Init(IokeObject obj) {
             obj.Kind = "Method";
-            obj.RegisterCell("activatable", obj.runtime.True);
+            obj.SetActivatable(true);
 
             obj.RegisterMethod(obj.runtime.NewNativeMethod("activates this method with the arguments given to call",
                                                            new NativeMethod("call", DefaultArgumentsDefinition.builder()
                                                                             .WithRestUnevaluated("arguments")
                                                                             .Arguments,
                                                                             (method, _context, message, on, outer) => {
-                                                                                return IokeObject.As(on, _context).Activate(_context, message, _context.RealContext);
+                                                                                return Interpreter.Activate(IokeObject.As(on, _context), _context, message, _context.RealContext);
                                                                             })));
 
             obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the name of the method",
@@ -61,7 +61,7 @@ namespace Ioke.Lang {
             set { this.name = value; }
         }
 
-        public override object Activate(IokeObject self, IokeObject context, IokeObject message, object on) {
+        public new static object ActivateFixed(IokeObject self, IokeObject context, IokeObject message, object on) {
             IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition,
                                                                          message,
                                                                          context,
@@ -78,24 +78,24 @@ namespace Ioke.Lang {
             return self.runtime.nil;
         }
 
-    public static string GetInspect(object on) {
-        return ((Inspectable)(IokeObject.dataOf(on))).Inspect(on);
-    }
-
-    public static string GetNotice(object on) {
-        return ((Inspectable)(IokeObject.dataOf(on))).Notice(on);
-    }
-
-    public virtual string Inspect(object self) {
-        return CodeString;
-    }
-
-    public virtual string Notice(object self) {
-        if(name == null) {
-            return "method(...)";
-        } else {
-            return name + ":method(...)";
+        public static string GetInspect(object on) {
+            return ((Inspectable)(IokeObject.dataOf(on))).Inspect(on);
         }
-    }
+        
+        public static string GetNotice(object on) {
+            return ((Inspectable)(IokeObject.dataOf(on))).Notice(on);
+        }
+
+        public virtual string Inspect(object self) {
+            return CodeString;
+        }
+
+        public virtual string Notice(object self) {
+            if(name == null) {
+                return "method(...)";
+            } else {
+                return name + ":method(...)";
+            }
+        }
     }
 }

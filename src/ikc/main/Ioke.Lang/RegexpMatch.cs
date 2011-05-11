@@ -124,7 +124,7 @@ namespace Ioke.Lang {
                                                                                             if(IokeObject.dataOf(arg) is Number) {
                                                                                                 index = Number.ExtractInt(arg, message, context);
                                                                                             } else {
-                                                                                                string namedIndex = Text.GetText(((Message)IokeObject.dataOf(context.runtime.asText)).SendTo(context.runtime.asText, context, arg));
+                                                                                                string namedIndex = Text.GetText(Interpreter.Send(context.runtime.asText, context, arg));
                                                                                                 int ix = -1;
                                                                                                 try {
                                                                                                     ix = Regexp.GetRegexp(GetRegexp(on)).GroupId(namedIndex);
@@ -155,7 +155,7 @@ namespace Ioke.Lang {
                                                                                             if(IokeObject.dataOf(arg) is Number) {
                                                                                                 index = Number.ExtractInt(arg, message, context);
                                                                                             } else {
-                                                                                                string namedIndex = Text.GetText(((Message)IokeObject.dataOf(context.runtime.asText)).SendTo(context.runtime.asText, context, arg));
+                                                                                                string namedIndex = Text.GetText(Interpreter.Send(context.runtime.asText, context, arg));
                                                                                                 int ix = -1;
                                                                                                 try {
                                                                                                     ix = Regexp.GetRegexp(GetRegexp(on)).GroupId(namedIndex);
@@ -186,7 +186,7 @@ namespace Ioke.Lang {
                                                                                             if(IokeObject.dataOf(arg) is Number) {
                                                                                                 index = Number.ExtractInt(arg, message, context);
                                                                                             } else {
-                                                                                                string namedIndex = Text.GetText(((Message)IokeObject.dataOf(context.runtime.asText)).SendTo(context.runtime.asText, context, arg));
+                                                                                                string namedIndex = Text.GetText(Interpreter.Send(context.runtime.asText, context, arg));
                                                                                                 int ix = -1;
                                                                                                 try {
                                                                                                     ix = Regexp.GetRegexp(GetRegexp(on)).GroupId(namedIndex);
@@ -215,7 +215,7 @@ namespace Ioke.Lang {
                                                                                         MatchResult mr = GetMatchResult(on);
 
                                                                                         if((IokeObject.dataOf(arg) is Symbol) || (IokeObject.dataOf(arg) is Text)) {
-                                                                                            string namedIndex = Text.GetText(((Message)IokeObject.dataOf(context.runtime.asText)).SendTo(context.runtime.asText, context, arg));
+                                                                                            string namedIndex = Text.GetText(Interpreter.Send(context.runtime.asText, context, arg));
                                                                                             int ix = -1;
                                                                                             try {
                                                                                                 ix = Regexp.GetRegexp(GetRegexp(on)).GroupId(namedIndex);

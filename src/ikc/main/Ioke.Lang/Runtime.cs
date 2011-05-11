@@ -29,6 +29,7 @@ namespace Ioke.Lang {
         private readonly int id;
 
         public Globber globber = new Ioke.Lang.Util.DefaultGlobber();
+        public readonly Interpreter interpreter = new Interpreter();
 
         public TextWriter Out;
         public TextWriter Error;
@@ -58,7 +59,7 @@ namespace Ioke.Lang {
         public IokeObject Call;
         public IokeObject Locals;
         public IokeObject LexicalBlock;
-        public LexicalContext LexicalContext;
+        public IokeObject LexicalContext;
         public IokeObject DefaultSyntax;
         public IokeObject Range;
         public IokeObject Restart;
@@ -129,6 +130,7 @@ namespace Ioke.Lang {
         public IokeObject asSymbolMessage;
         public IokeObject FileMessage;
         public IokeObject closeMessage;
+        public IokeObject kindMessage;
 
         public IokeObject cellAddedMessage;
         public IokeObject cellChangedMessage;
@@ -141,7 +143,7 @@ namespace Ioke.Lang {
         public IokeObject seqMessage;
         public IokeObject hashMessage;
 
-        public readonly NullObject nul;
+        public readonly IokeObject nul;
 
         public IokeObject Integer = null;
         public IokeObject Decimal = null;
@@ -170,7 +172,7 @@ namespace Ioke.Lang {
             True = new IokeObject(this, "true is an oddball object that always represents itself. It can not be mimicked and represents the a true value.", IokeData.True);
             False = new IokeObject(this, "false is an oddball object that always represents itself. It can not be mimicked and (alongside nil) is one of the two false values.", IokeData.False);
             List = new IokeObject(this, "A list is a collection of objects that can change size", new IokeList());
-            Method = new IokeObject(this, "Method is the origin of all methods in the system, both default and Java..", new Method((string)null));
+            Method = new IokeObject(this, "Method is the origin of all methods in the system, both default and Java..", new Method((string)null, IokeData.TYPE_METHOD_PROTOTYPE));
             NativeMethod = new IokeObject(this, "NativeMethod is a derivation of Method that represents a primitive implemented in Java.", new NativeMethod.WithNoArguments((string)null, null));
             Io = new IokeObject(this, "IO is the base for all input/output in Ioke.", new IokeIO());
             Condition = new IokeObject(this, "The root mimic of all the conditions in the system.");
@@ -181,7 +183,7 @@ namespace Ioke.Lang {
             Call = new IokeObject(this, "A call is the runtime structure that includes the specific information for a call, that is available inside a DefaultMacro.", new Call());
             Locals = new IokeObject(this, "Contains all the locals for a specific invocation.");
             LexicalBlock = new IokeObject(this, "A lexical block allows you to delay a computation in a specific lexical context. See DefaultMethod#fn for detailed documentation.", new LexicalBlock(this.Ground));
-            LexicalContext = new LexicalContext(this, this.Ground, "A lexical activation context.", null, this.Ground);
+            LexicalContext = new IokeObject(this, "A lexical activation context", new LexicalContext(this.Ground, this.Ground));
             DefaultSyntax = new IokeObject(this, "DefaultSyntax is the instance all syntactical macros in the system are derived from.", new DefaultSyntax((string)null));
             Range = new IokeObject(this, "A range is a collection of two objects of the same kind. This Range can be either inclusive or exclusive.", new Range(nil, nil, false, false));
             Restart = new IokeObject(this, "A Restart is the actual object that contains restart information.");
@@ -252,6 +254,7 @@ namespace Ioke.Lang {
             asSymbolMessage = NewMessage("asSymbol");
             FileMessage = NewMessage("File");
             closeMessage = NewMessage("close");
+            kindMessage = NewMessage("kind");
 
             cellAddedMessage = NewMessage("cellAdded");
             cellChangedMessage = NewMessage("cellChanged");
@@ -264,7 +267,7 @@ namespace Ioke.Lang {
             seqMessage = NewMessage("seq");
             hashMessage = NewMessage("hash");
 
-            nul = new NullObject(this);
+            nul = new IokeObject(this, "NOT TO BE EXPOSED TO Ioke - used for internal usage only");
 
             symbolTable = new SaneDictionary<string, IokeObject>();
         }
@@ -288,7 +291,7 @@ namespace Ioke.Lang {
             Pair.Init();
             Tuple.Init();
             DateTime.Init();
-            LexicalContext.Init();
+            this.LexicalContext.Init();
             List.Init();
             Dict.Init();
             this.Set.Init();
@@ -449,6 +452,15 @@ namespace Ioke.Lang {
             return obj;
         }
 
+        public IokeObject NewLexicalContext(object ground, string documentation, IokeObject surroundingContext) {
+            IokeObject obj = this.LexicalContext.AllocateCopy(null, null);
+            obj.SingleMimicsWithoutCheck(this.LexicalContext);
+            obj.Data = new LexicalContext(ground, surroundingContext);
+            obj.Kind = "LexicalContext";
+            obj.body.flags |= IokeObject.LEXICAL_F;
+            return obj;
+        }
+
         public IokeObject NewRegexp(string pattern, string flags, IokeObject context, IokeObject message) {
             IokeObject obj = this.Regexp.AllocateCopy(null, null);
             obj.MimicsWithoutCheck(this.Regexp);
@@ -522,7 +534,9 @@ namespace Ioke.Lang {
         }
 
         public IokeObject NewNativeMethod(String doc, NativeMethod impl) {
-            return NewMethod(doc, this.NativeMethod, impl);
+            IokeObject obj = NewMethod(doc, this.NativeMethod, impl);
+            obj.SetActivatable(true);
+            return obj;
         }
 
         public IokeObject NewMethod(String doc, IokeObject tp, Method impl) {
@@ -553,7 +567,7 @@ namespace Ioke.Lang {
         }
         
         public IokeObject NewTuple(object one, object two) {
-            IokeObject tp = (IokeObject)this.Tuple.Cells["Two"];
+            IokeObject tp = (IokeObject)this.Tuple.body.Get("Two");
             IokeObject obj = tp.AllocateCopy(null, null);
             obj.MimicsWithoutCheck(tp);
             obj.Data = new Tuple(new object[]{one, two});
@@ -561,7 +575,7 @@ namespace Ioke.Lang {
         }
 
         public IokeObject NewFile(IokeObject context, FileInfo eff)  {
-            IokeObject fileMimic = IokeObject.As(((Message)IokeObject.dataOf(FileMessage)).SendTo(FileMessage, context, this.FileSystem), context);
+            IokeObject fileMimic = IokeObject.As(Interpreter.Send(FileMessage, context, this.FileSystem), context);
             IokeObject obj = fileMimic.AllocateCopy(null, null);
             obj.MimicsWithoutCheck(fileMimic);
             obj.Data = new FileSystem.IokeFile(eff);
@@ -659,7 +673,7 @@ namespace Ioke.Lang {
         public object EvaluateString(string str, IokeObject message, IokeObject context) {
             IokeObject msg = ParseStream(new StringReader(str), message, context);
             if(msg != null) {
-                return ((Message)IokeObject.dataOf(msg)).EvaluateComplete(msg);
+                return interpreter.Evaluate(msg, this.Ground, this.Ground, this.Ground);
             } else {
                 return nil;
             }
@@ -668,7 +682,7 @@ namespace Ioke.Lang {
         public object EvaluateStream(TextReader reader, IokeObject message, IokeObject context) {
             IokeObject msg = ParseStream(reader, message, context);
             if(msg != null) {
-                return ((Message)IokeObject.dataOf(msg)).EvaluateComplete(msg);
+                return interpreter.Evaluate(msg, this.Ground, this.Ground, this.Ground);
             } else {
                 return nil;
             }
@@ -767,7 +781,7 @@ namespace Ioke.Lang {
                 IokeSystem.AtExitInfo atExit = atExits[0];
                 atExits.RemoveAt(0);
                 try {
-                    ((Message)IokeObject.dataOf(atExit.message)).EvaluateCompleteWithoutExplicitReceiver(atExit.message, atExit.context, atExit.context.RealContext);
+                    interpreter.Evaluate(atExit.message, atExit.context, atExit.context.RealContext, atExit.context);
                 } catch(ControlFlow.Exit) {
                     status = 1;
                 } catch(ControlFlow e) {
@@ -792,7 +806,7 @@ namespace Ioke.Lang {
             BindIndex index = GetBindIndex();
 
             foreach(Restart.NativeRestart rjr in restarts) {
-                IokeObject rr = IokeObject.As(((Message)IokeObject.dataOf(this.mimicMessage)).SendTo(this.mimicMessage, context, this.Restart), context);
+                IokeObject rr = IokeObject.As(Interpreter.Send(this.mimicMessage, context, this.Restart), context);
                 IokeObject.SetCell(rr, "name", GetSymbol(rjr.Name), context);
 
                 IList args = new SaneArrayList();
@@ -831,7 +845,7 @@ namespace Ioke.Lang {
         }
 
         public void WithReturningRestart(string name, IokeObject context, RunnableWithControlFlow code) {
-            IokeObject rr = IokeObject.As(((Message)IokeObject.dataOf(this.mimicMessage)).SendTo(this.mimicMessage, context, this.Restart), context);
+            IokeObject rr = IokeObject.As(Interpreter.Send(this.mimicMessage, context, this.Restart), context);
             IokeObject.SetCell(rr, "name", GetSymbol(name), context);
             IokeObject.SetCell(rr, "argumentNames", NewList(new SaneArrayList()), context);
 
@@ -856,7 +870,7 @@ namespace Ioke.Lang {
 
         public object WithReturningRescue(IokeObject context, object toReturn, RunnableWithReturnAndControlFlow nativeRescue) {
             IList<RescueInfo> rescues = new SaneList<RescueInfo>();
-            IokeObject rr = IokeObject.As(((Message)IokeObject.dataOf(this.mimicMessage)).SendTo(this.mimicMessage, context, this.Rescue), context);
+            IokeObject rr = IokeObject.As(Interpreter.Send(this.mimicMessage, context, this.Rescue), context);
             IList conds = new SaneArrayList();
             conds.Add(this.Condition);
             rescues.Add(new RescueInfo(rr, conds, rescues, GetBindIndex()));
@@ -1072,9 +1086,8 @@ namespace Ioke.Lang {
         }
 
         public void ErrorCondition(IokeObject cond) {
-            ((Message)IokeObject.dataOf(errorMessage)).SendTo(errorMessage, this.Ground, this.Ground, CreateMessage(Ioke.Lang.Message.Wrap(cond)));
+            Interpreter.Send(errorMessage, this.Ground, this.Ground, CreateMessage(Ioke.Lang.Message.Wrap(cond)));
         }
-
 
 
         public void AfterInitRuntime(IokeObject obj) {
@@ -1104,7 +1117,7 @@ namespace Ioke.Lang {
                         foreach(var s in runtimeVersion.Split(new Char[] {'.', '-'})) {
                             try {
                                 versionParts.Add(NewNumber(s));
-                            } catch(System.Exception e) {
+                            } catch(System.Exception) {
                                 versionParts.Add(NewText(s));
                             }
                         }            

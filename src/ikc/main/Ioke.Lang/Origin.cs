@@ -5,12 +5,12 @@ namespace Ioke.Lang {
             obj.Kind = "Origin";
 
             obj.RegisterMethod(runtime.NewNativeMethod("Prints a text representation and a newline to standard output", new NativeMethod.WithNoArguments("println", (method, context, message, on, outer) => {
-                            ((Message)IokeObject.dataOf(runtime.printlnMessage)).SendTo(runtime.printlnMessage, context, ((Message)IokeObject.dataOf(runtime.outMessage)).SendTo(runtime.outMessage, context, runtime.System), on);
+                            Interpreter.Send(runtime.printlnMessage, context, Interpreter.Send(runtime.outMessage, context, runtime.System), on);
                             return runtime.nil;
                         })));
 
             obj.RegisterMethod(runtime.NewNativeMethod("Prints a text representation to standard output", new NativeMethod.WithNoArguments("print", (method, context, message, on, outer) => {
-                            ((Message)IokeObject.dataOf(runtime.printMessage)).SendTo(runtime.printMessage, context, ((Message)IokeObject.dataOf(runtime.outMessage)).SendTo(runtime.outMessage, context, runtime.System), on);
+                            Interpreter.Send(runtime.printMessage, context, Interpreter.Send(runtime.outMessage, context, runtime.System), on);
                             return runtime.nil;
                         })));
         }

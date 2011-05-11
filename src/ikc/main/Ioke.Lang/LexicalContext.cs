@@ -2,69 +2,18 @@
 namespace Ioke.Lang {
     using System.Collections;
 
-    public class LexicalContext : IokeObject {
-        object ground;
+    public class LexicalContext : IokeData {
+        public object ground;
 
-        public IokeObject message;
         public IokeObject surroundingContext;
 
-        public LexicalContext(Runtime runtime, object ground, string documentation, IokeObject message, IokeObject surroundingContext) : base(runtime, documentation) {
+        public LexicalContext(object ground, IokeObject surroundingContext){
             this.ground = IokeObject.GetRealContext(ground);
-            this.message = message;
             this.surroundingContext = surroundingContext;
-
-            Kind = "LexicalContext";
         }
 
-        public override void Init() {
-        }
-
-        public override object RealContext {
-            get { return ground; }
-        }
-
-        public override object Self {
-            get { return surroundingContext.Self; }
-        }
-
-        public override void Assign(string name, object value, IokeObject context, IokeObject message) {
-            object place = FindPlace(name);
-            if(place == runtime.nul) {
-                place = this;
-            }
-            IokeObject.SetCell(place, name, value, context);
-        }
-
-        protected override object MarkingFindPlace(string name) {
-            object nn = base.MarkingFindPlace(name);
-            if(nn == runtime.nul) {
-                return IokeObject.FindPlace(surroundingContext, name);
-            } else {
-                return nn;
-            }
-        }
-
-        protected override object MarkingFindSuperCell(IokeObject early, IokeObject message, IokeObject context, string name, bool[] found) {
-            object nn = base.MarkingFindSuperCell(early, message, context, name, found);
-            if(nn == runtime.nul) {
-                return IokeObject.FindSuperCellOn(surroundingContext, early, message, context, name);
-            } else {
-                return nn;
-            }
-        }
-
-        protected override object MarkingFindCell(IokeObject m, IokeObject context, string name) {
-            object nn = base.MarkingFindCell(m, context, name);
-
-            if(nn == runtime.nul) {
-                return IokeObject.FindCell(surroundingContext, m, context, name);
-            } else {
-                return nn;
-            }
-        }
-
-        public override string ToString() {
-            return "LexicalContext:" + System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(this);
+        public override string ToString(IokeObject self) {
+            return "LexicalContext:" + System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(self);
         }
     }
 }

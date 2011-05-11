@@ -115,14 +115,14 @@ public class AssignmentBehavior {
                     if(m1.getArgumentCount() == 0) {
                         Object val = IokeObject.findCell(IokeObject.as(on, context), name);
                         if(val == context.runtime.nul || !IokeObject.isTrue(val)) {
-                            return val;
+                            return context.runtime.nil;
                         } else {
                             return Interpreter.send(context.runtime.setValue, context, on, m1, Message.getArg2(message));
                         }
                     } else {
                         Object val = Interpreter.send(m1, context, on);
                         if(val == context.runtime.nul || !IokeObject.isTrue(val)) {
-                            return val;
+                            return context.runtime.;
                         } else {
                             return Interpreter.send(context.runtime.setValue, context, on, m1, Message.getArg2(message));
                         }

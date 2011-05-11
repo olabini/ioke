@@ -30,8 +30,8 @@ namespace Ioke.Lang {
             Runtime runtime = obj.runtime;
 
             obj.Kind = "Pair";
-            obj.Mimics(IokeObject.As(runtime.Mixins.GetCell(null, null, "Enumerable"), null), runtime.nul, runtime.nul);
-            obj.Mimics(IokeObject.As(runtime.Mixins.GetCell(null, null, "Comparing"), null), runtime.nul, runtime.nul);
+            obj.Mimics(IokeObject.As(IokeObject.FindCell(runtime.Mixins, "Enumerable"), null), runtime.nul, runtime.nul);
+            obj.Mimics(IokeObject.As(IokeObject.FindCell(runtime.Mixins, "Comparing"), null), runtime.nul, runtime.nul);
 
             obj.RegisterMethod(obj.runtime.NewNativeMethod("returns a hash for the pair",
                                                            new NativeMethod.WithNoArguments("hash", (method, context, message, on, outer) => {

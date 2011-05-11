@@ -17,7 +17,7 @@ namespace Ioke.Lang {
                                                                             var args = new SaneArrayList();
                                                                             outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, args, new SaneDictionary<string, object>());
 
-                                                                            string sym = Text.GetText(((Message)IokeObject.dataOf(runtime.asText)).SendTo(runtime.asText, context, args[0]));
+                                                                            string sym = Text.GetText(Interpreter.Send(runtime.asText, context, args[0]));
                                                                             return runtime.GetSymbol(sym);
                                                                         })));
 
@@ -45,7 +45,7 @@ namespace Ioke.Lang {
                                                                             if(IokeObject.dataOf(o) is Text) {
                                                                                 name = Text.GetText(o);
                                                                             } else {
-                                                                                name = Text.GetText(((Message)IokeObject.dataOf(context.runtime.asText)).SendTo(context.runtime.asText, context, o));
+                                                                                name = Text.GetText(Interpreter.Send(context.runtime.asText, context, o));
                                                                             }
 
                                                                             Message m = new Message(context.runtime, name);
@@ -83,12 +83,12 @@ namespace Ioke.Lang {
                                                                                     string str = Message.GetName(o);
                                                                                     key = context.runtime.GetSymbol(str.Substring(0, str.Length-1));
                                                                                     if(Message.GetNext(o) != null) {
-                                                                                        value = Message.GetEvaluatedArgument(Message.GetNext(o), context);
+                                                                                        value = Interpreter.GetEvaluatedArgument(Message.GetNext(o), context);
                                                                                     } else {
                                                                                         value = context.runtime.nil;
                                                                                     }
                                                                                 } else {
-                                                                                    object result = Message.GetEvaluatedArgument(o, context);
+                                                                                    object result = Interpreter.GetEvaluatedArgument(o, context);
                                                                                     if((result is IokeObject) && (IokeObject.dataOf(result) is Pair)) {
                                                                                         key = Pair.GetFirst(result);
                                                                                         value = Pair.GetSecond(result);

@@ -43,7 +43,7 @@ namespace Ioke.Lang.Parser {
         }
 
         private static IDictionary GetOpTable(IokeParser parser, IokeObject opTable, string name, OpTableCreator creator) {
-            IokeObject operators = IokeObject.As(opTable.FindCell(parser.message, parser.context, name), null);
+            IokeObject operators = IokeObject.As(IokeObject.FindCell(opTable, name), null);
             if(operators != parser.runtime.nul && (IokeObject.dataOf(operators) is Dict)) {
                 return Dict.GetMap(operators);
             } else {
@@ -87,7 +87,7 @@ namespace Ioke.Lang.Parser {
 
         public static void CreateOrGetOpTables(IokeParser parser) {
             var runtime = parser.runtime;
-            IokeObject opTable = IokeObject.As(runtime.Message.FindCell(parser.message, parser.context, "OperatorTable"), null);
+            IokeObject opTable = IokeObject.As(IokeObject.FindCell(runtime.Message, "OperatorTable"), null);
             if(opTable == runtime.nul) {
                 opTable = runtime.NewFromOrigin();
                 opTable.Kind = "Message OperatorTable";

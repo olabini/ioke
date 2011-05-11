@@ -21,7 +21,7 @@ namespace Ioke.Lang {
                                                                             bool cache = true;
                                                                             if(o is IokeObject) {
                                                                                 cache = false;
-                                                                                o = Message.GetEvaluatedArgument(o, context);
+                                                                                o = Interpreter.GetEvaluatedArgument(o, context);
                                                                             }
                                                                             if(o is string) {
                                                                                 string s = (string)o;
@@ -48,7 +48,7 @@ namespace Ioke.Lang {
 
                                                                             if(o is IokeObject) {
                                                                                 cache = false;
-                                                                                o = Message.GetEvaluatedArgument(o, context);
+                                                                                o = Interpreter.GetEvaluatedArgument(o, context);
                                                                             }
                                                                             object value = null;
                                                                             if(o is string) {
@@ -78,7 +78,8 @@ namespace Ioke.Lang {
                                                                                     if(IokeObject.dataOf(o) is Text) {
                                                                                         sb.Append(Text.GetText(o));
                                                                                     } else {
-                                                                                        sb.Append(Text.GetText(((Message)IokeObject.dataOf(context.runtime.asText)).SendTo(context.runtime.asText, context, o)));
+                                                                                        var aa = Interpreter.Send(context.runtime.asText, context, o);
+                                                                                        sb.Append(Text.GetText(aa));
                                                                                     }
                                                                                 } else {
                                                                                     sb.Append(o);
@@ -131,10 +132,10 @@ namespace Ioke.Lang {
                                                                             object o = Message.GetArguments(message)[0];
                                                                             object o2 = Message.GetArguments(message)[1];
                                                                             if(o is IokeObject) {
-                                                                                o = Message.GetEvaluatedArgument(o, context);
+                                                                                o = Interpreter.GetEvaluatedArgument(o, context);
                                                                             }
                                                                             if(o2 is IokeObject) {
-                                                                                o2 = Message.GetEvaluatedArgument(o2, context);
+                                                                                o2 = Interpreter.GetEvaluatedArgument(o2, context);
                                                                             }
                                                                             if(o is string) {
                                                                                 string s = (string)o;
@@ -154,7 +155,7 @@ namespace Ioke.Lang {
                                                                         bool cache = true;
                                                                         if(o is IokeObject) {
                                                                             cache = false;
-                                                                            o = Message.GetEvaluatedArgument(o, context);
+                                                                            o = Interpreter.GetEvaluatedArgument(o, context);
                                                                         }
                                                                         object value = runtime.NewDecimal((string)o);
                                                                         if(cache) {
@@ -201,7 +202,7 @@ namespace Ioke.Lang {
                 } else if(IokeObject.dataOf(o) is Regexp) {
                     AddRegexp(o, sb);
                 } else {
-                    AddText(((Message)IokeObject.dataOf(context.runtime.asText)).SendTo(context.runtime.asText, context, o), sb);
+                    AddText(Interpreter.Send(context.runtime.asText, context, o), sb);
                 }
             }
         }

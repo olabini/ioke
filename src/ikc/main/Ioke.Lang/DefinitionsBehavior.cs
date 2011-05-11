@@ -175,8 +175,8 @@ namespace Ioke.Lang {
                                                                         (method, context, message, on, outer) => {
                                                                             var args = new SaneArrayList();
                                                                             outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, args, new SaneDictionary<string, object>());
-                                                                            string fromName = Text.GetText(((Message)IokeObject.dataOf(runtime.asText)).SendTo(runtime.asText, context, args[0]));
-                                                                            string toName = Text.GetText(((Message)IokeObject.dataOf(runtime.asText)).SendTo(runtime.asText, context, args[1]));
+                                                                            string fromName = Text.GetText(Interpreter.Send(runtime.asText, context, args[0]));
+                                                                            string toName = Text.GetText(Interpreter.Send(runtime.asText, context, args[1]));
                                                                             IokeObject.As(on, context).AliasMethod(fromName, toName, message, context);
                                                                             return on;
                                                                         })));

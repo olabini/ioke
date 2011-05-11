@@ -9,18 +9,18 @@ namespace Ioke.Lang {
     using Ioke.Lang.Util;
 
     public class Message : IokeData {
-        string name;
+        internal string name;
         string file;
         int line;
         int pos;
         bool isTerminator = false;
 
-        IList arguments;
+        internal IList arguments;
 
         public IokeObject next;
         public IokeObject prev;
 
-        object cached = null;
+        internal object cached = null;
 
         public string Name {
             get { return name; }
@@ -61,19 +61,6 @@ namespace Ioke.Lang {
 
         public static IList GetArguments(object o) {
             return ((Message)IokeObject.dataOf(o)).arguments;
-        }
-
-        public static object GetEvaluatedArgument(object argument, IokeObject context) {
-            if(!(argument is IokeObject)) {
-                return argument;
-            }
-
-            IokeObject o = IokeObject.As(argument, context);
-            if(!o.IsMessage) {
-                return o;
-            }
-
-            return ((Message)IokeObject.dataOf(o)).EvaluateCompleteWithoutExplicitReceiver(o, context, context.RealContext);
         }
 
         public static Message Wrap(object cachedResult, Runtime runtime) {
@@ -460,212 +447,9 @@ namespace Ioke.Lang {
             return Code();
         }
 
-        public IList GetEvaluatedArguments(IokeObject self, IokeObject context) {
-            IList args = new SaneArrayList(arguments.Count);
-            foreach(object o in arguments) {
-                args.Add(GetEvaluatedArgument(o, context));
-            }
-            return args;
-        }
-
-        public object GetEvaluatedArgument(IokeObject message, int index, IokeObject context) {
-            return Message.GetEvaluatedArgument(arguments[index], context);
-        }
-
-        public object SendTo(IokeObject self, IokeObject context, object recv) {
-            if(cached != null) {
-                return cached;
-            }
-
-            return IokeObject.Perform(recv, context, self);
-        }
-
-        public object SendTo(IokeObject self, IokeObject context, object recv, object argument) {
-            if(cached != null) {
-                return cached;
-            }
-
-            IokeObject m = self.AllocateCopy(self, context);
-            m.MimicsWithoutCheck(context.runtime.Message);
-            m.Arguments.Clear();
-            m.Arguments.Add(argument);
-            return IokeObject.Perform(recv, context, m);
-        }
-
-        public object SendTo(IokeObject self, IokeObject context, object recv, object arg1, object arg2) {
-            if(cached != null) {
-                return cached;
-            }
-
-            IokeObject m = self.AllocateCopy(self, context);
-            m.MimicsWithoutCheck(context.runtime.Message);
-            m.Arguments.Clear();
-            m.Arguments.Add(arg1);
-            m.Arguments.Add(arg2);
-            return IokeObject.Perform(recv, context, m);
-        }
-
-        public object SendTo(IokeObject self, IokeObject context, object recv, object arg1, object arg2, object arg3) {
-            if(cached != null) {
-                return cached;
-            }
-
-            IokeObject m = self.AllocateCopy(self, context);
-            m.MimicsWithoutCheck(context.runtime.Message);
-            m.Arguments.Clear();
-            m.Arguments.Add(arg1);
-            m.Arguments.Add(arg2);
-            m.Arguments.Add(arg3);
-            return IokeObject.Perform(recv, context, m);
-        }
-
-        public object SendTo(IokeObject self, IokeObject context, object recv, IList args) {
-            if(cached != null) {
-                return cached;
-            }
-
-            IokeObject m = self.AllocateCopy(self, context);
-            m.MimicsWithoutCheck(context.runtime.Message);
-            m.Arguments.Clear();
-            foreach(object o in args) m.Arguments.Add(o);
-            return IokeObject.Perform(recv, context, m);
-        }
-
-        public object EvaluateComplete(IokeObject self) {
-            IokeObject ctx = self.runtime.Ground;
-            object current = ctx;
-            object tmp = null;
-            object lastReal = self.runtime.nil;
-            IokeObject m = self;
-            while(m != null) {
-                string name = m.Name;
-
-                if(name.Equals(".")) {
-                    current = ctx;
-                } else if(name.Length > 0 && m.Arguments.Count == 0 && name[0] == ':') {
-                    current = self.runtime.GetSymbol(name.Substring(1));
-                    Message.CacheValue(m, current);
-                    lastReal = current;
-                } else {
-                    tmp = ((Message)IokeObject.dataOf(m)).SendTo(m, ctx, current);
-                    if(tmp != null) {
-                        current = tmp;
-                        lastReal = current;
-                    }
-                }
-                m = Message.GetNext(m);
-            }
-            return lastReal;
-        }
-
-        public virtual object EvaluateCompleteWith(IokeObject self, IokeObject ctx, object ground) {
-            object current = ctx;
-            object tmp = null;
-            object lastReal = self.runtime.nil;
-            IokeObject m = self;
-            while(m != null) {
-                string name = m.Name;
-
-                if(name.Equals(".")) {
-                    current = ctx;
-                } else if(name.Length > 0 && m.Arguments.Count == 0 && name[0] == ':') {
-                    current = self.runtime.GetSymbol(name.Substring(1));
-                    Message.CacheValue(m, current);
-                    lastReal = current;
-                } else {
-                    tmp = ((Message)IokeObject.dataOf(m)).SendTo(m, ctx, current);
-                    if(tmp != null) {
-                        current = tmp;
-                        lastReal = current;
-                    }
-                }
-                m = Message.GetNext(m);
-            }
-            return lastReal;
-        }
-
-        public virtual object EvaluateCompleteWithReceiver(IokeObject self, IokeObject ctx, object ground, object receiver) {
-            object current = receiver;
-            object tmp = null;
-            object lastReal = self.runtime.nil;
-            IokeObject m = self;
-            while(m != null) {
-                string name = m.Name;
-
-                if(name.Equals(".")) {
-                    current = ctx;
-                } else if(name.Length > 0 && m.Arguments.Count == 0 && name[0] == ':') {
-                    current = self.runtime.GetSymbol(name.Substring(1));
-                    Message.CacheValue(m, current);
-                    lastReal = current;
-                } else {
-                    tmp = ((Message)IokeObject.dataOf(m)).SendTo(m, ctx, current);
-                    if(tmp != null) {
-                        current = tmp;
-                        lastReal = current;
-                    }
-                }
-                m = Message.GetNext(m);
-            }
-            return lastReal;
-        }
-
-        public object EvaluateCompleteWithoutExplicitReceiver(IokeObject self, IokeObject ctx, object ground) {
-            object current = ctx;
-            object tmp = null;
-            object lastReal = self.runtime.nil;
-            IokeObject m = self;
-            while(m != null) {
-                string name = m.Name;
-
-                if(name.Equals(".")) {
-                    current = ctx;
-                } else if(name.Length > 0 && m.Arguments.Count == 0 && name[0] == ':') {
-                    current = self.runtime.GetSymbol(name.Substring(1));
-                    Message.CacheValue(m, current);
-                    lastReal = current;
-                } else {
-                    tmp = ((Message)IokeObject.dataOf(m)).SendTo(m, ctx, current);
-                    if(tmp != null) {
-                        current = tmp;
-                        lastReal = current;
-                    }
-                }
-                m = Message.GetNext(m);
-            }
-            return lastReal;
-        }
-
-        public object EvaluateCompleteWith(IokeObject self, object ground) {
-            IokeObject ctx = IokeObject.As(ground, self);
-            object current = ctx;
-            object tmp = null;
-            object lastReal = self.runtime.nil;
-            IokeObject m = self;
-            while(m != null) {
-                string name = m.Name;
-
-                if(name.Equals(".")) {
-                    current = ctx;
-                } else if(name.Length > 0 && m.Arguments.Count == 0 && name[0] == ':') {
-                    current = self.runtime.GetSymbol(name.Substring(1));
-                    Message.CacheValue(m, current);
-                    lastReal = current;
-                } else {
-                    tmp = ((Message)IokeObject.dataOf(m)).SendTo(m, ctx, current);
-                    if(tmp != null) {
-                        current = tmp;
-                        lastReal = current;
-                    }
-                }
-                m = Message.GetNext(m);
-            }
-            return lastReal;
-        }
-
         public override void Init(IokeObject obj) {
             obj.Kind = "Message";
-            obj.Mimics(IokeObject.As(obj.runtime.Mixins.GetCell(null, null, "Enumerable"), null), obj.runtime.nul, obj.runtime.nul);
+            obj.Mimics(IokeObject.As(IokeObject.FindCell(obj.runtime.Mixins, "Enumerable"), null), obj.runtime.nul, obj.runtime.nul);
 
             obj.RegisterMethod(obj.runtime.NewNativeMethod("Takes one or more evaluated arguments and sends this message chain to where the first argument is ground, and if there are more arguments, the second is the receiver, and the rest will be the arguments",
                                                                new NativeMethod("evaluateOn", DefaultArgumentsDefinition.builder()
@@ -690,7 +474,7 @@ namespace Ioke.Lang {
                                                                                     }
 
                                                                                     IokeObject msg = IokeObject.As(on, context);
-                                                                                    return ((Message)IokeObject.dataOf(msg)).EvaluateCompleteWithReceiver(msg, messageGround, messageGround, receiver);
+                                                                                    return context.runtime.interpreter.Evaluate(msg, messageGround, messageGround, receiver);
                                                                                 })));
 
             obj.RegisterMethod(obj.runtime.NewNativeMethod("returns a deep clone of this message chain, starting at the current point.",
@@ -862,7 +646,7 @@ namespace Ioke.Lang {
                                                                                     index = Number.ExtractInt(newCell[0], message, context);
                                                                                 }
 
-                                                                                return ((Message)IokeObject.dataOf(_m)).GetEvaluatedArgument(_m, index, newContext);
+                                                                                return Interpreter.GetEvaluatedArgument(_m, index, newContext);
                                                                             })));
 
             obj.RegisterMethod(obj.runtime.NewNativeMethod("Takes one evaluated argument and returns a message that wraps the value of that argument.",
@@ -943,7 +727,7 @@ namespace Ioke.Lang {
                                                                                     break;
                                                                                 }
                                                                                 case 2: {
-                                                                                    LexicalContext c = new LexicalContext(context.runtime, context, "Lexical activation context for Message#walk", message, context);
+                                                                                    IokeObject c = context.runtime.NewLexicalContext(context, "Lexical activation context for Message#walk", context);
                                                                                     string name = IokeObject.As(message.Arguments[0], context).Name;
                                                                                     IokeObject code = IokeObject.As(message.Arguments[1], context);
 
@@ -969,33 +753,33 @@ namespace Ioke.Lang {
                                                                                 Runtime runtime = context.runtime;
                                                                                 switch(message.Arguments.Count) {
                                                                                 case 0: {
-                                                                                    return ((Message)IokeObject.dataOf(runtime.seqMessage)).SendTo(runtime.seqMessage, context, on);
+                                                                                    return Interpreter.Send(runtime.seqMessage, context, on);
                                                                                 }
                                                                                 case 1: {
                                                                                     IokeObject code = IokeObject.As(message.Arguments[0], context);
                                                                                     object o = onAsMessage;
                                                                                     while(o != null) {
-                                                                                        ((Message)IokeObject.dataOf(code)).EvaluateCompleteWithReceiver(code, context, context.RealContext, o);
+                                                                                        runtime.interpreter.Evaluate(code, context, context.RealContext, o);
                                                                                         o = GetNext(o);
                                                                                     }
 
                                                                                     break;
                                                                                 }
                                                                                 case 2: {
-                                                                                    LexicalContext c = new LexicalContext(context.runtime, context, "Lexical activation context for List#each", message, context);
+                                                                                    IokeObject c = runtime.NewLexicalContext(context, "Lexical activation context for Message#each", context);
                                                                                     string name = IokeObject.As(message.Arguments[0], context).Name;
                                                                                     IokeObject code = IokeObject.As(message.Arguments[1], context);
 
                                                                                     object o = onAsMessage;
                                                                                     while(o != null) {
                                                                                         c.SetCell(name, o);
-                                                                                        ((Message)IokeObject.dataOf(code)).EvaluateCompleteWithoutExplicitReceiver(code, c, c.RealContext);
+                                                                                        runtime.interpreter.Evaluate(code, c, c.RealContext, c);
                                                                                         o = GetNext(o);
                                                                                     }
                                                                                     break;
                                                                                 }
                                                                                 case 3: {
-                                                                                    LexicalContext c = new LexicalContext(context.runtime, context, "Lexical activation context for List#each", message, context);
+                                                                                    IokeObject c = runtime.NewLexicalContext(context, "Lexical activation context for Message#each", context);
                                                                                     string iname = IokeObject.As(message.Arguments[0], context).Name;
                                                                                     string name = IokeObject.As(message.Arguments[1], context).Name;
                                                                                     IokeObject code = IokeObject.As(message.Arguments[2], context);
@@ -1005,7 +789,7 @@ namespace Ioke.Lang {
                                                                                     while(o != null) {
                                                                                         c.SetCell(name, o);
                                                                                         c.SetCell(iname, runtime.NewNumber(index++));
-                                                                                        ((Message)IokeObject.dataOf(code)).EvaluateCompleteWithoutExplicitReceiver(code, c, c.RealContext);
+                                                                                        runtime.interpreter.Evaluate(code, c, c.RealContext, c);
                                                                                         o = GetNext(o);
                                                                                     }
                                                                                     break;
@@ -1027,7 +811,7 @@ namespace Ioke.Lang {
                                                                                 }
 
                                                                                 IokeObject msg = IokeObject.As(on, context);
-                                                                                return ((Message)IokeObject.dataOf(msg)).SendTo(msg, realContext, realReceiver);
+                                                                                return Interpreter.Send(msg, realContext, realReceiver);
                                                                             })));
 
             obj.RegisterMethod(obj.runtime.NewNativeMethod("sets the arguments for this message. if given nil the arguments list will be creared, otherwise the list given as arguments will be used. it then returns the receiving message.",
@@ -1089,11 +873,11 @@ namespace Ioke.Lang {
                                  "[" + message.File + ":" + message.Line + ":" + message.Position + "]");
         }
 
-        private static void WalkWithoutExplicitReceiver(object onAsMessage, LexicalContext c, string name, IokeObject code) {
+        private static void WalkWithoutExplicitReceiver(object onAsMessage, IokeObject c, string name, IokeObject code) {
             object o = onAsMessage;
             while(o != null) {
                 c.SetCell(name, o);
-                ((Message)IokeObject.dataOf(code)).EvaluateCompleteWithoutExplicitReceiver(code, c, c.RealContext);
+                code.runtime.interpreter.Evaluate(code, c, c.RealContext, c);
                 foreach(object arg in ((IokeObject)o).Arguments) {
                     WalkWithoutExplicitReceiver(arg, c, name, code);
                 }
@@ -1104,7 +888,7 @@ namespace Ioke.Lang {
         private static void WalkWithReceiver(IokeObject context, object onAsMessage, IokeObject code) {
             object o = onAsMessage;
             while(o != null) {
-                ((Message)IokeObject.dataOf(code)).EvaluateCompleteWithReceiver(code, context, context.RealContext, o);
+                context.runtime.interpreter.Evaluate(code, context, context.RealContext, o);
                 foreach(object arg in ((IokeObject)o).Arguments) {
                     WalkWithReceiver(context, arg, code);
                 }

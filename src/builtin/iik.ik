@@ -1,5 +1,4 @@
 
-
 IIk = Origin mimic do(
   Exit = Condition mimic
 
@@ -93,7 +92,7 @@ IIk = Origin mimic do(
       nestStack length + currentState open
     )
   )
-  
+
   nested? = method(data,
     Nesting with(data: data) anyOpen?
   )
@@ -104,7 +103,6 @@ IIk = Origin mimic do(
 
   mainLoop = method(
     "Runs the main loop of IIk, continously reading input from 'System in' until the interpreter is quitted in some of the standard ways",
-
 
     io = if(IIk cell?(:ReadlineInputMethod),
       ReadlineInputMethod new,

@@ -32,10 +32,10 @@ namespace Ioke.Lang {
                                                                                     .Arguments,
                                                                                     (self, _on, args, keywords, context, _message) => {
                                                                                         Call c = (Call)IokeObject.dataOf(_on);
-                                                                                        string name = Text.GetText(((Message)IokeObject.dataOf(runtime.asText)).SendTo(runtime.asText, context, args[0]));
+                                                                                        string name = Text.GetText(Interpreter.Send(runtime.asText, context, args[0]));
                                                                                         IokeObject m = Message.Copy(c.message);
                                                                                         Message.SetName(m, name);
-                                                                                        return ((Message)IokeObject.dataOf(m)).SendTo(m, c.surroundingContext, c.on);
+                                                                                        return Interpreter.Send(m, c.surroundingContext, c.on);
                                                                                     })));
 
             obj.RegisterMethod(runtime.NewNativeMethod("takes one evaluated object and resends the current message with that object as the new receiver",
@@ -45,7 +45,7 @@ namespace Ioke.Lang {
                                                                                     .Arguments,
                                                                                     (self, _on, args, keywords, context, _message) => {
                                                                                         Call c = (Call)IokeObject.dataOf(_on);
-                                                                                        return ((Message)IokeObject.dataOf(c.message)).SendTo(c.message, c.surroundingContext, args[0]);
+                                                                                        return Interpreter.Send(c.message, c.surroundingContext, args[0]);
                                                                                     })));
 
             obj.RegisterMethod(runtime.NewNativeMethod("returns a list of all the unevaluated arguments",
@@ -88,7 +88,7 @@ namespace Ioke.Lang {
                                                                                                     runtime.Call,
                                                                                                     (method, _on, args, keywords, context, _message) => {
                                                                                                         IokeObject msg = ((Call)IokeObject.dataOf(_on)).message;
-                                                                                                        return context.runtime.NewList(((Message)IokeObject.dataOf(msg)).GetEvaluatedArguments(msg, ((Call)IokeObject.dataOf(_on)).surroundingContext));
+                                                                                                        return context.runtime.NewList(Interpreter.GetEvaluatedArguments(msg, ((Call)IokeObject.dataOf(_on)).surroundingContext));
                                                                                                     })));
 
 
@@ -105,7 +105,7 @@ namespace Ioke.Lang {
                                                                                             self = args[1];
                                                                                         }
 
-                                                                                        return IokeObject.GetOrActivate(args[0], c.surroundingContext, c.message, self);
+                                                                                        return Interpreter.GetOrActivate(args[0], c.surroundingContext, c.message, self);
                                                                                     })));
 
             obj.RegisterMethod(runtime.NewNativeMethod("uhm. this one isn't too bad.",
@@ -122,7 +122,7 @@ namespace Ioke.Lang {
                                                                                             self = args[1];
                                                                                         }
 
-                                                                                        return IokeObject.As(args[0], context).ActivateWithData(c.surroundingContext, c.message, self, keys);
+                                                                                        return Interpreter.ActivateWithData(IokeObject.As(args[0], context), c.surroundingContext, c.message, self, keys);
                                                                                     })));
 
             obj.RegisterMethod(runtime.NewNativeMethod("I really ought to write documentation for these methods, but I don't know how to describe what they do.",
@@ -139,7 +139,7 @@ namespace Ioke.Lang {
                                                                                             self = args[1];
                                                                                         }
 
-                                                                                        return IokeObject.As(args[0], context).ActivateWithCallAndData(c.surroundingContext, c.message, self, _on, keys);
+                                                                                        return Interpreter.ActivateWithCallAndData(IokeObject.As(args[0], context), c.surroundingContext, c.message, self, _on, keys);
                                                                                     })));
         }
 

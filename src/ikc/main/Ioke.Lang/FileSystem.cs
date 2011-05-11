@@ -209,9 +209,9 @@ namespace Ioke.Lang {
                                                                             object result = context.runtime.nil;
 
                                                                             try {
-                                                                                result = ((Message)IokeObject.dataOf(context.runtime.callMessage)).SendTo(context.runtime.callMessage, context, args[1], ff);
+                                                                                result = Interpreter.Send(context.runtime.callMessage, context, args[1], ff);
                                                                             } finally {
-                                                                                ((Message)IokeObject.dataOf(context.runtime.closeMessage)).SendTo(context.runtime.closeMessage, context, ff);
+                                                                                Interpreter.Send(context.runtime.closeMessage, context, ff);
                                                                             }
 
                                                                             return result;

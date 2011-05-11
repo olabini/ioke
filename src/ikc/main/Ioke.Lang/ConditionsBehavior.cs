@@ -28,7 +28,7 @@ namespace Ioke.Lang {
             IList<Runtime.HandlerInfo> handlers = context.runtime.FindActiveHandlersFor(newCondition, (rescue == null) ? new Runtime.BindIndex(-1,-1) : rescue.index);
 
             foreach(Runtime.HandlerInfo rhi in handlers) {
-                ((Message)IokeObject.dataOf(context.runtime.callMessage)).SendTo(context.runtime.callMessage, context, ((Message)IokeObject.dataOf(context.runtime.handlerMessage)).SendTo(context.runtime.handlerMessage, context, rhi.handler), newCondition);
+                Interpreter.Send(context.runtime.callMessage, context, Interpreter.Send(context.runtime.handlerMessage, context, rhi.handler), newCondition);
             }
 
             if(rescue != null) {
@@ -93,9 +93,9 @@ namespace Ioke.Lang {
                                                                                 if(m.IsKeyword()) {
                                                                                     string n = m.Name;
                                                                                     if(n.Equals("report:")) {
-                                                                                        report = IokeObject.As(((Message)IokeObject.dataOf(m.next)).EvaluateCompleteWithoutExplicitReceiver(m.next, context, context.RealContext), context);
+                                                                                        report = IokeObject.As(runtime.interpreter.Evaluate(m.next, context, context.RealContext, context), context);
                                                                                     } else if(n.Equals("test:")) {
-                                                                                        test = IokeObject.As(((Message)IokeObject.dataOf(m.next)).EvaluateCompleteWithoutExplicitReceiver(m.next, context, context.RealContext), context);
+                                                                                        test = IokeObject.As(runtime.interpreter.Evaluate(m.next, context, context.RealContext, context), context);
                                                                                     } else {
                                                                                         IokeObject condition = IokeObject.As(IokeObject.GetCellChain(runtime.Condition,
                                                                                                                                                      message,
@@ -123,8 +123,8 @@ namespace Ioke.Lang {
                                                                                 }
                                                                             }
 
-                                                                            code = IokeObject.As(((Message)IokeObject.dataOf(code)).EvaluateCompleteWithoutExplicitReceiver(code, context, context.RealContext), context);
-                                                                            object restart = ((Message)IokeObject.dataOf(runtime.mimicMessage)).SendTo(runtime.mimicMessage, context, runtime.Restart);
+                                                                            code = IokeObject.As(runtime.interpreter.Evaluate(code, context, context.RealContext, context), context);
+                                                                            object restart = Interpreter.Send(runtime.mimicMessage, context, runtime.Restart);
 
                                                                             IokeObject.SetCell(restart, "code", code, context);
 
@@ -152,15 +152,15 @@ namespace Ioke.Lang {
                                                                             int count = message.Arguments.Count;
                                                                             IList conds = new SaneArrayList();
                                                                             for(int i=0, j=count-1; i<j; i++) {
-                                                                                conds.Add(((Message)IokeObject.dataOf(message)).GetEvaluatedArgument(message, i, context));
+                                                                                conds.Add(Interpreter.GetEvaluatedArgument(message, i, context));
                                                                             }
 
                                                                             if(conds.Count == 0) {
                                                                                 conds.Add(context.runtime.Condition);
                                                                             }
 
-                                                                            object handler = ((Message)IokeObject.dataOf(message)).GetEvaluatedArgument(message, count-1, context);
-                                                                            object rescue = ((Message)IokeObject.dataOf(context.runtime.mimicMessage)).SendTo(context.runtime.mimicMessage, context, context.runtime.Rescue);
+                                                                            object handler = Interpreter.GetEvaluatedArgument(message, count-1, context);
+                                                                            object rescue = Interpreter.Send(context.runtime.mimicMessage, context, context.runtime.Rescue);
 
                                                                             IokeObject.SetCell(rescue, "handler", handler, context);
                                                                             IokeObject.SetCell(rescue, "conditions", context.runtime.NewList(conds), context);
@@ -177,15 +177,15 @@ namespace Ioke.Lang {
                                                                             int count = message.Arguments.Count;
                                                                             IList conds = new SaneArrayList();
                                                                             for(int i=0, j=count-1; i<j; i++) {
-                                                                                conds.Add(((Message)IokeObject.dataOf(message)).GetEvaluatedArgument(message, i, context));
+                                                                                conds.Add(Interpreter.GetEvaluatedArgument(message, i, context));
                                                                             }
 
                                                                             if(conds.Count == 0) {
                                                                                 conds.Add(context.runtime.Condition);
                                                                             }
 
-                                                                            object code = ((Message)IokeObject.dataOf(message)).GetEvaluatedArgument(message, count-1, context);
-                                                                            object handle = ((Message)IokeObject.dataOf(context.runtime.mimicMessage)).SendTo(context.runtime.mimicMessage, context, context.runtime.Handler);
+                                                                            object code = Interpreter.GetEvaluatedArgument(message, count-1, context);
+                                                                            object handle = Interpreter.Send(context.runtime.mimicMessage, context, context.runtime.Handler);
 
                                                                             IokeObject.SetCell(handle, "handler", code, context);
                                                                             IokeObject.SetCell(handle, "conditions", context.runtime.NewList(conds), context);
@@ -218,12 +218,12 @@ namespace Ioke.Lang {
                                                                             try {
                                                                                 foreach(object o in ArrayList.Adapter(args).GetRange(0, argCount-1)) {
                                                                                     IokeObject msg = IokeObject.As(o, context);
-                                                                                    IokeObject bindable = IokeObject.As(((Message)IokeObject.dataOf(msg)).EvaluateCompleteWithoutExplicitReceiver(msg, context, context.RealContext), context);
+                                                                                    IokeObject bindable = IokeObject.As(runtime.interpreter.Evaluate(msg, context, context.RealContext, context), context);
                                                                                     bool loop = false;
                                                                                     do {
                                                                                         loop = false;
                                                                                         if(IokeObject.IsKind(bindable, "Restart")) {
-                                                                                            object ioName = ((Message)IokeObject.dataOf(runtime.nameMessage)).SendTo(runtime.nameMessage, context, bindable);
+                                                                                            object ioName = Interpreter.Send(runtime.nameMessage, context, bindable);
                                                                                             string name = null;
                                                                                             if(ioName != runtime.nil) {
                                                                                                 name = Symbol.GetText(ioName);
@@ -231,12 +231,12 @@ namespace Ioke.Lang {
                                                                                             restarts.Insert(0, new Runtime.RestartInfo(name, bindable, restarts, index, null));
                                                                                             index = index.NextCol();
                                                                                         } else if(IokeObject.IsKind(bindable, "Rescue")) {
-                                                                                            object conditions = ((Message)IokeObject.dataOf(runtime.conditionsMessage)).SendTo(runtime.conditionsMessage, context, bindable);
+                                                                                            object conditions = Interpreter.Send(runtime.conditionsMessage, context, bindable);
                                                                                             var applicable = IokeList.GetList(conditions);
                                                                                             rescues.Insert(0, new Runtime.RescueInfo(bindable, applicable, rescues, index));
                                                                                             index = index.NextCol();
                                                                                         } else if(IokeObject.IsKind(bindable, "Handler")) {
-                                                                                            object conditions = ((Message)IokeObject.dataOf(runtime.conditionsMessage)).SendTo(runtime.conditionsMessage, context, bindable);
+                                                                                            object conditions = Interpreter.Send(runtime.conditionsMessage, context, bindable);
                                                                                             var applicable = IokeList.GetList(conditions);
                                                                                             handlers.Insert(0, new Runtime.HandlerInfo(bindable, applicable, handlers, index));
                                                                                             index = index.NextCol();
@@ -265,7 +265,7 @@ namespace Ioke.Lang {
                                                                                 runtime.RegisterRescues(rescues);
                                                                                 runtime.RegisterHandlers(handlers);
 
-                                                                                return ((Message)IokeObject.dataOf(code)).EvaluateCompleteWithoutExplicitReceiver(code, context, context.RealContext);
+                                                                                return runtime.interpreter.Evaluate(code, context, context.RealContext, context); 
                                                                             } catch(ControlFlow.Restart e) {
                                                                                 Runtime.RestartInfo ri = null;
                                                                                 if((ri = e.GetRestart).token == restarts) {
@@ -273,7 +273,7 @@ namespace Ioke.Lang {
                                                                                     runtime.UnregisterRescues(rescues);
                                                                                     runtime.UnregisterRestarts(restarts);
                                                                                     doUnregister = false;
-                                                                                    return ((Message)IokeObject.dataOf(runtime.callMessage)).SendTo(runtime.callMessage, context, ((Message)IokeObject.dataOf(runtime.codeMessage)).SendTo(runtime.codeMessage, context, ri.restart), e.Arguments);
+                                                                                    return Interpreter.Send(runtime.callMessage, context, Interpreter.Send(runtime.codeMessage, context, ri.restart), e.Arguments);
                                                                                 } else {
                                                                                     throw e;
                                                                                 }
@@ -284,7 +284,7 @@ namespace Ioke.Lang {
                                                                                     runtime.UnregisterRescues(rescues);
                                                                                     runtime.UnregisterRestarts(restarts);
                                                                                     doUnregister = false;
-                                                                                    return ((Message)IokeObject.dataOf(runtime.callMessage)).SendTo(runtime.callMessage, context, ((Message)IokeObject.dataOf(runtime.handlerMessage)).SendTo(runtime.handlerMessage, context, ri.rescue), e.Condition);
+                                                                                    return Interpreter.Send(runtime.callMessage, context, Interpreter.Send(runtime.handlerMessage, context, ri.rescue), e.Condition);
                                                                                 } else {
                                                                                     throw e;
                                                                                 }
@@ -410,7 +410,7 @@ namespace Ioke.Lang {
 
                                                                             foreach(var lri in activeRestarts) {
                                                                                 foreach(var rri in lri) {
-                                                                                    if(IokeObject.IsObjectTrue(((Message)IokeObject.dataOf(runtime.callMessage)).SendTo(runtime.callMessage, context, ((Message)IokeObject.dataOf(runtime.testMessage)).SendTo(runtime.testMessage, context, rri.restart), toLookFor))) {
+                                                                                    if(IokeObject.IsObjectTrue(Interpreter.Send(runtime.callMessage, context, Interpreter.Send(runtime.testMessage, context, rri.restart), toLookFor))) {
                                                                                         result.Add(rri.restart);
                                                                                     }
                                                                                 }
@@ -453,13 +453,13 @@ namespace Ioke.Lang {
                                                                             IokeObject condition = Signal(datum, positionalArgs, keywordArgs, message, context);
                                                                             IokeObject err = IokeObject.As(context.runtime.System.GetCell(message, context, "err"), context);
 
-                                                                            ((Message)IokeObject.dataOf(context.runtime.printMessage)).SendTo(context.runtime.printMessage, context, err, context.runtime.NewText("*** - "));
-                                                                            ((Message)IokeObject.dataOf(context.runtime.printlnMessage)).SendTo(context.runtime.printlnMessage, context, err, ((Message)IokeObject.dataOf(context.runtime.reportMessage)).SendTo(context.runtime.reportMessage, context, condition));
+                                                                            Interpreter.Send(context.runtime.printMessage, context, err, context.runtime.NewText("*** - "));
+                                                                            Interpreter.Send(context.runtime.printlnMessage, context, err, Interpreter.Send(context.runtime.reportMessage, context, condition));
 
-                                                                            IokeObject currentDebugger = IokeObject.As(((Message)IokeObject.dataOf(context.runtime.currentDebuggerMessage)).SendTo(context.runtime.currentDebuggerMessage, context, context.runtime.System), context);
+                                                                            IokeObject currentDebugger = IokeObject.As(Interpreter.Send(context.runtime.currentDebuggerMessage, context, context.runtime.System), context);
 
                                                                             if(!currentDebugger.IsNil) {
-                                                                                ((Message)IokeObject.dataOf(context.runtime.invokeMessage)).SendTo(context.runtime.invokeMessage, context, currentDebugger, condition, context);
+                                                                                Interpreter.Send(context.runtime.invokeMessage, context, currentDebugger, condition, context);
                                                                             }
 
                                                                             throw new ControlFlow.Exit(condition);

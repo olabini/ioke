@@ -230,9 +230,9 @@ namespace Ioke.Lang {
 
             foreach(object o in arguments) {
                 if(Message.IsKeyword(o)) {
-                    givenKeywords[IokeObject.As(o, context).Name] = Message.GetEvaluatedArgument(((Message)IokeObject.dataOf(o)).next, context);
+                    givenKeywords[IokeObject.As(o, context).Name] = Interpreter.GetEvaluatedArgument(((Message)IokeObject.dataOf(o)).next, context);
                 } else if(Message.HasName(o, "*") && IokeObject.As(o, context).Arguments.Count == 1) { // Splat
-                    object result = Message.GetEvaluatedArgument(IokeObject.As(o, context).Arguments[0], context);
+                    object result = Interpreter.GetEvaluatedArgument(IokeObject.As(o, context).Arguments[0], context);
                     if(IokeObject.dataOf(result) is IokeList) {
                         IList elements = IokeList.GetList(result);
                         foreach(object ox in elements) argumentsWithoutKeywords.Add(ox);
@@ -242,8 +242,8 @@ namespace Ioke.Lang {
                         foreach(DictionaryEntry me in keys) {
                             givenKeywords[Text.GetText(IokeObject.ConvertToText(me.Key, message, context, true)) + ":"] = me.Value;
                         }
-                    } else if(IokeObject.FindCell(result, message, context, "asTuple") != runtime.nul) {
-                        object tupledValue = ((Message)IokeObject.dataOf(runtime.asTuple)).SendTo(runtime.asTuple, context, result);
+                    } else if(IokeObject.FindCell((IokeObject)result, "asTuple") != runtime.nul) {
+                        object tupledValue = Interpreter.Send(runtime.asTuple, context, result);
                         object[] values = Tuple.GetElements(tupledValue);
                         foreach(object val in values) argumentsWithoutKeywords.Add(val);
                         argCount += values.Length;
@@ -269,7 +269,8 @@ namespace Ioke.Lang {
                         argCount += outp.Count;
                     }
                 } else {
-                    argumentsWithoutKeywords.Add(Message.GetEvaluatedArgument(o, context));
+                    var xx = Interpreter.GetEvaluatedArgument(o, context);
+                    argumentsWithoutKeywords.Add(xx);
                     argCount++;
                 }
             }
@@ -386,7 +387,7 @@ namespace Ioke.Lang {
                         object defVal = ((KeywordArgument)a).DefaultValue;
                         if(!(defVal is string)) {
                             IokeObject m1 = IokeObject.As(defVal, context);
-                            result = ((Message)IokeObject.dataOf(m1)).EvaluateCompleteWithoutExplicitReceiver(m1, locals, locals.RealContext);
+                            result = runtime.interpreter.Evaluate(m1, locals, locals.RealContext, locals);
                             locals.SetCell(a.Name, result);
                         }
                     }
@@ -394,7 +395,7 @@ namespace Ioke.Lang {
                     object defVal = ((OptionalArgument)a).DefaultValue;
                     if(!(defVal is string)) {
                         IokeObject m2 = IokeObject.As(defVal, context);
-                        locals.SetCell(a.Name, ((Message)IokeObject.dataOf(m2)).EvaluateCompleteWithoutExplicitReceiver(m2, locals, locals.RealContext));
+                        locals.SetCell(a.Name, runtime.interpreter.Evaluate(m2, locals, locals.RealContext, locals));
                     }
                 } else {
                     locals.SetCell(a.Name, argumentsWithoutKeywords[ix++]);

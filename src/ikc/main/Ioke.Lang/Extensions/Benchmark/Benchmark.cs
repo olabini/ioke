@@ -28,10 +28,10 @@ namespace Ioke.Lang.Extensions.Benchmark {
                                                                            long iterations = 1;
                                                                            int index = 0;
                                                                            if(count > 1) {
-                                                                               bmRounds = ((Number)IokeObject.dataOf(IokeObject.ConvertToNumber(((Message)IokeObject.dataOf(message)).GetEvaluatedArgument(message, index, context), message, context))).AsNativeInteger();
+                                                                               bmRounds = ((Number)IokeObject.dataOf(IokeObject.ConvertToNumber(Interpreter.GetEvaluatedArgument(message, index, context), message, context))).AsNativeInteger();
                                                                                index++;
                                                                                if(count > 2) {
-                                                                                   iterations = ((Number)IokeObject.dataOf(IokeObject.ConvertToNumber(((Message)IokeObject.dataOf(message)).GetEvaluatedArgument(message, index, context), message, context))).AsNativeLong();
+                                                                                   iterations = ((Number)IokeObject.dataOf(IokeObject.ConvertToNumber(Interpreter.GetEvaluatedArgument(message, index, context), message, context))).AsNativeLong();
                                                                                    index++;
                                                                                }
                                                                            }
@@ -39,7 +39,7 @@ namespace Ioke.Lang.Extensions.Benchmark {
                                                                            for(int i=0;i<bmRounds;i++) {
                                                                                long before = System.DateTime.Now.Ticks;
                                                                                for(int j=0;j<iterations;j++) {
-                                                                                   ((Message)IokeObject.dataOf(message)).GetEvaluatedArgument(message, index, context);
+                                                                                   Interpreter.GetEvaluatedArgument(message, index, context);
                                                                                }
                                                                                long after = System.DateTime.Now.Ticks;
                                                                                long time = after-before;
@@ -48,7 +48,7 @@ namespace Ioke.Lang.Extensions.Benchmark {
 
                                                                                string theCode = Message.ThisCode(((IokeObject)message.Arguments[index]));
 
-                                                                               ((Message)IokeObject.dataOf(context.runtime.printlnMessage)).SendTo(context.runtime.printlnMessage, context, ((Message)IokeObject.dataOf(context.runtime.outMessage)).SendTo(context.runtime.outMessage, context, context.runtime.System), context.runtime.NewText(string.Format("{0,-32} {1:d6}.{2:d9}", theCode, secs, rest)));
+                                                                               Interpreter.Send(context.runtime.printlnMessage, context, Interpreter.Send(context.runtime.outMessage, context, context.runtime.System), context.runtime.NewText(string.Format("{0,-32} {1:d6}.{2:d9}", theCode, secs, rest)));
                                                                            }
 
                                                                            return context.runtime.nil;

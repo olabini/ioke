@@ -86,7 +86,7 @@ namespace Ioke.Lang {
             Runtime runtime = obj.runtime;
 
             obj.Kind = "Text";
-            obj.Mimics(IokeObject.As(runtime.Mixins.GetCell(null, null, "Comparing"), null), runtime.nul, runtime.nul);
+            obj.Mimics(IokeObject.As(IokeObject.FindCell(runtime.Mixins, "Comparing"), null), runtime.nul, runtime.nul);
 
             obj.RegisterMethod(runtime.NewNativeMethod("returns a hash for the text",
                                                            new NativeMethod.WithNoArguments("hash", (method, context, message, on, outer) => {
@@ -405,22 +405,6 @@ namespace Ioke.Lang {
             FormatString(Text.GetText(on), 0, message, context, positionalArgs, result);
         }
 
-        private delegate object DoEvaluation (IokeObject ctx, object ground, object receiver);
-        private class EvaluatingMessage : Message {
-            private DoEvaluation code;
-            public EvaluatingMessage(Runtime runtime, string name, DoEvaluation code) : base(runtime, name) {
-                this.code = code;
-            }
-
-            public override object EvaluateCompleteWithReceiver(IokeObject self, IokeObject ctx, object ground, object receiver) {
-                return code(ctx, ground, receiver);
-            }
-
-            public override object EvaluateCompleteWith(IokeObject self, IokeObject ctx, object ground) {
-                return code(ctx, ground, ctx);
-            }
-        }
-
         private static int FormatString(string format, int index, IokeObject message, IokeObject context, IList positionalArgs, StringBuilder result) {
             int argIndex = 0;
             int formatIndex = index;
@@ -462,10 +446,10 @@ namespace Ioke.Lang {
                                 arg = positionalArgs[argIndex++];
                                 int endLoop = -1;
 
-                                seq = ((Message)IokeObject.dataOf(context.runtime.seqMessage)).SendTo(context.runtime.seqMessage, context, arg);
+                                seq = Interpreter.Send(context.runtime.seqMessage, context, arg);
 
-                                while(IokeObject.IsObjectTrue(((Message)IokeObject.dataOf(context.runtime.nextPMessage)).SendTo(context.runtime.nextPMessage, context, seq))) {
-                                    object receiver = ((Message)IokeObject.dataOf(context.runtime.nextMessage)).SendTo(context.runtime.nextMessage, context, seq);
+                                while(IokeObject.IsObjectTrue(Interpreter.Send(context.runtime.nextPMessage, context, seq))) {
+                                    object receiver = Interpreter.Send(context.runtime.nextMessage, context, seq);
 
                                     if(splat) {
                                         args = IokeList.GetList(receiver);
@@ -503,7 +487,7 @@ namespace Ioke.Lang {
                                 arg = positionalArgs[argIndex++];
                                 object txt = IokeObject.TryConvertToText(arg, message, context);
                                 if(txt == null) {
-                                    txt = ((Message)IokeObject.dataOf(context.runtime.asText)).SendTo(context.runtime.asText, context, arg);
+                                    txt = Interpreter.Send(context.runtime.asText, context, arg);
                                 }
                                 string outTxt = Text.GetText(txt);
 

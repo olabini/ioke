@@ -11,19 +11,19 @@ namespace Ioke.Lang {
 
             IokeObject baseBehavior = new IokeObject(runtime, "contains behavior copied from Base");
             baseBehavior.Kind = "DefaultBehavior BaseBehavior";
-            baseBehavior.SetCell("=",         runtime.Base.Cells["="]);
-            baseBehavior.SetCell("==",        runtime.Base.Cells["=="]);
-            baseBehavior.SetCell("cell",      runtime.Base.Cells["cell"]);
-            baseBehavior.SetCell("cell?",     runtime.Base.Cells["cell?"]);
-            baseBehavior.SetCell("cell=",     runtime.Base.Cells["cell="]);
-            baseBehavior.SetCell("cells",     runtime.Base.Cells["cells"]);
-            baseBehavior.SetCell("cellNames", runtime.Base.Cells["cellNames"]);
-            baseBehavior.SetCell("removeCell!", runtime.Base.Cells["removeCell!"]);
-            baseBehavior.SetCell("undefineCell!", runtime.Base.Cells["undefineCell!"]);
-            baseBehavior.SetCell("cellOwner?", runtime.Base.Cells["cellOwner?"]);
-            baseBehavior.SetCell("cellOwner", runtime.Base.Cells["cellOwner"]);
-            baseBehavior.SetCell("documentation", runtime.Base.Cells["documentation"]);
-            baseBehavior.SetCell("identity", runtime.Base.Cells["identity"]);
+            baseBehavior.SetCell("=",         runtime.Base.body.Get("="));
+            baseBehavior.SetCell("==",        runtime.Base.body.Get("=="));
+            baseBehavior.SetCell("cell",      runtime.Base.body.Get("cell"));
+            baseBehavior.SetCell("cell?",     runtime.Base.body.Get("cell?"));
+            baseBehavior.SetCell("cell=",     runtime.Base.body.Get("cell="));
+            baseBehavior.SetCell("cells",     runtime.Base.body.Get("cells"));
+            baseBehavior.SetCell("cellNames", runtime.Base.body.Get("cellNames"));
+            baseBehavior.SetCell("removeCell!", runtime.Base.body.Get("removeCell!"));
+            baseBehavior.SetCell("undefineCell!", runtime.Base.body.Get("undefineCell!"));
+            baseBehavior.SetCell("cellOwner?", runtime.Base.body.Get("cellOwner?"));
+            baseBehavior.SetCell("cellOwner", runtime.Base.body.Get("cellOwner"));
+            baseBehavior.SetCell("documentation", runtime.Base.body.Get("documentation"));
+            baseBehavior.SetCell("identity", runtime.Base.body.Get("identity"));
             obj.MimicsWithoutCheck(baseBehavior);
             obj.RegisterCell("BaseBehavior", baseBehavior);
 

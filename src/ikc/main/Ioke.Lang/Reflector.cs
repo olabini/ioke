@@ -59,7 +59,7 @@ namespace Ioke.Lang {
                                                                             (method, context, message, on, outer) => {
                                                                                 var args = new SaneArrayList();
                                                                                 outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, args, new SaneDictionary<string, object>());
-                                                                                string name = Text.GetText(((Message)IokeObject.dataOf(context.runtime.asText)).SendTo(context.runtime.asText, context, args[1]));
+                                                                                string name = Text.GetText(Interpreter.Send(context.runtime.asText, context, args[1]));
                                                                                 return IokeObject.GetCell(args[0], message, context, name);
                                                                             })));
 
@@ -72,8 +72,8 @@ namespace Ioke.Lang {
                                                                                 IList args = new SaneArrayList();
                                                                                 outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, args, new SaneDictionary<string, object>());
 
-                                                                                string name = Text.GetText(((Message)IokeObject.dataOf(context.runtime.asText)).SendTo(context.runtime.asText, context, args[1]));
-                                                                                return IokeObject.FindCell(args[0], message, context, name) != context.runtime.nul ? context.runtime.True : context.runtime.False;
+                                                                                string name = Text.GetText(Interpreter.Send(context.runtime.asText, context, args[1]));
+                                                                                return IokeObject.FindCell((IokeObject)args[0], name) != context.runtime.nul ? context.runtime.True : context.runtime.False;
                                                                             })));
 
             obj.RegisterMethod(obj.runtime.NewNativeMethod("expects one evaluated text or symbol argument and returns a boolean indicating whether this cell is owned by the receiver or not. the assumption is that the cell should exist. if it doesn't exist, a NoSuchCell condition will be signalled.",
@@ -84,7 +84,7 @@ namespace Ioke.Lang {
                                                                             (method, context, message, on, outer) => {
                                                                                 var args = new SaneArrayList();
                                                                                 outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, args, new SaneDictionary<string, object>());
-                                                                                string name = Text.GetText(((Message)IokeObject.dataOf(context.runtime.asText)).SendTo(context.runtime.asText, context, args[1]));
+                                                                                string name = Text.GetText(Interpreter.Send(context.runtime.asText, context, args[1]));
                                                                                 return (IokeObject.FindPlace(args[0], message, context, name) == args[0]) ? context.runtime.True : context.runtime.False;
                                                                             })));
 
@@ -96,7 +96,7 @@ namespace Ioke.Lang {
                                                                             (method, context, message, on, outer) => {
                                                                                 var args = new SaneArrayList();
                                                                                 outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, args, new SaneDictionary<string, object>());
-                                                                                string name = Text.GetText(((Message)IokeObject.dataOf(context.runtime.asText)).SendTo(context.runtime.asText, context, args[1]));
+                                                                                string name = Text.GetText(Interpreter.Send(context.runtime.asText, context, args[1]));
                                                                                 object result = IokeObject.FindPlace(args[0], message, context, name);
                                                                                 if(result == context.runtime.nul) {
                                                                                     return context.runtime.nil;
@@ -112,7 +112,7 @@ namespace Ioke.Lang {
                                                                             (method, context, message, on, outer) => {
                                                                                 var args = new SaneArrayList();
                                                                                 outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, args, new SaneDictionary<string, object>());
-                                                                                string name = Text.GetText(((Message)IokeObject.dataOf(context.runtime.asText)).SendTo(context.runtime.asText, context, args[1]));
+                                                                                string name = Text.GetText(Interpreter.Send(context.runtime.asText, context, args[1]));
                                                                                 IokeObject.RemoveCell(args[0], message, context, name);
                                                                                 return args[0];
                                                                             })));
@@ -125,7 +125,7 @@ namespace Ioke.Lang {
                                                                             (method, context, message, on, outer) => {
                                                                                 var args = new SaneArrayList();
                                                                                 outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, args, new SaneDictionary<string, object>());
-                                                                                string name = Text.GetText(((Message)IokeObject.dataOf(context.runtime.asText)).SendTo(context.runtime.asText, context, args[1]));
+                                                                                string name = Text.GetText(Interpreter.Send(context.runtime.asText, context, args[1]));
                                                                                 IokeObject.UndefineCell(args[0], message, context, name);
                                                                                 return args[0];
                                                                             })));
@@ -203,7 +203,7 @@ namespace Ioke.Lang {
                                                                                     .WithRequiredPositional("other")
                                                                                     .Arguments,
                                                                                     (method, on, args, keywords, context, message) => {
-                                                                                        return context.runtime.NewText("0x" + System.Convert.ToString(System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(IokeObject.As(args[0], context).Cells), 16).ToUpper());
+                                                                                        return context.runtime.NewText("0x" + System.Convert.ToString(System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(IokeObject.As(args[0], context).body), 16).ToUpper());
                                                                                     })));
 
             obj.RegisterMethod(runtime.NewNativeMethod("returns true if the evaluated argument is the same reference as the receiver, false otherwise.",
@@ -226,15 +226,15 @@ namespace Ioke.Lang {
                                                                         .Arguments,
                                                                         (method, context, message, on, outer) => {
                                                                             outer.ArgumentsDefinition.CheckArgumentCount(context, message, on);
-                                                                            object _recv = ((Message)IokeObject.dataOf(message)).GetEvaluatedArgument(message, 0, context);
-                                                                            object _name = ((Message)IokeObject.dataOf(message)).GetEvaluatedArgument(message, 1, context);
-                                                                            string name = Text.GetText(((Message)IokeObject.dataOf(runtime.asText)).SendTo(runtime.asText, context, _name));
+                                                                            object _recv = Interpreter.GetEvaluatedArgument(message, 0, context);
+                                                                            object _name = Interpreter.GetEvaluatedArgument(message, 1, context);
+                                                                            string name = Text.GetText(Interpreter.Send(runtime.asText, context, _name));
 
                                                                             IokeObject newMessage = Message.DeepCopy(message);
                                                                             newMessage.Arguments.RemoveAt(0);
                                                                             newMessage.Arguments.RemoveAt(0);
                                                                             Message.SetName(newMessage, name);
-                                                                            return ((Message)IokeObject.dataOf(newMessage)).SendTo(newMessage, context, _recv);
+                                                                            return Interpreter.Send(newMessage, context, _recv);
                                                                         })));
 
             obj.RegisterMethod(runtime.NewNativeMethod("Takes one evaluated Text argument and returns either true or false if this object or one of it's mimics have the kind of the name specified",
@@ -322,7 +322,7 @@ namespace Ioke.Lang {
                                                                                     .WithRequiredPositional("other")
                                                                                     .Arguments,
                                                                                     (method, on, args, keywords, context, message) => {
-                                                                                        return IokeObject.IsFrozen(args[0]) ? context.runtime.True : context.runtime.False;
+                                                                                        return IokeObject.As(args[0], context).IsFrozen ? context.runtime.True : context.runtime.False;
                                                                                     })));
 
             obj.RegisterMethod(runtime.NewNativeMethod("ensures that the receiver is frozen",

@@ -17,7 +17,7 @@ namespace Ioke.Lang {
             Runtime runtime = obj.runtime;
 
             obj.Kind = "Set";
-            obj.Mimics(IokeObject.As(runtime.Mixins.GetCell(null, null, "Sequenced"), null), runtime.nul, runtime.nul);
+            obj.Mimics(IokeObject.As(IokeObject.FindCell(runtime.Mixins, "Sequenced"), null), runtime.nul, runtime.nul);
 
             obj.RegisterMethod(obj.runtime.NewNativeMethod("returns a hash for the set",
                                                            new NativeMethod.WithNoArguments("hash", (method, context, message, on, outer) => {
@@ -192,29 +192,29 @@ namespace Ioke.Lang {
 
                                                                             switch(message.Arguments.Count) {
                                                                             case 0: {
-                                                                                return ((Message)IokeObject.dataOf(runtime.seqMessage)).SendTo(runtime.seqMessage, context, on);
+                                                                                return Interpreter.Send(runtime.seqMessage, context, on);
                                                                             }
                                                                             case 1: {
                                                                                 IokeObject code = IokeObject.As(message.Arguments[0], context);
 
                                                                                 foreach(object o in _set) {
-                                                                                    ((Message)IokeObject.dataOf(code)).EvaluateCompleteWithReceiver(code, context, context.RealContext, o);
+                                                                                    context.runtime.interpreter.Evaluate(code, context, context.RealContext, o);
                                                                                 }
                                                                                 break;
                                                                             }
                                                                             case 2: {
-                                                                                LexicalContext c = new LexicalContext(context.runtime, context, "Lexical activation context for Set#each", message, context);
+                                                                                IokeObject c = context.runtime.NewLexicalContext(context, "Lexical activation context for Set#each", context);
                                                                                 string name = IokeObject.As(message.Arguments[0], context).Name;
                                                                                 IokeObject code = IokeObject.As(message.Arguments[1], context);
 
                                                                                 foreach(object o in _set) {
                                                                                     c.SetCell(name, o);
-                                                                                    ((Message)IokeObject.dataOf(code)).EvaluateCompleteWithoutExplicitReceiver(code, c, c.RealContext);
+                                                                                    context.runtime.interpreter.Evaluate(code, c, c.RealContext, c);
                                                                                 }
                                                                                 break;
                                                                             }
                                                                             case 3: {
-                                                                                LexicalContext c = new LexicalContext(context.runtime, context, "Lexical activation context for Set#each", message, context);
+                                                                                IokeObject c = context.runtime.NewLexicalContext(context, "Lexical activation context for Set#each", context);
                                                                                 string iname = IokeObject.As(message.Arguments[0], context).Name;
                                                                                 string name = IokeObject.As(message.Arguments[1], context).Name;
                                                                                 IokeObject code = IokeObject.As(message.Arguments[2], context);
@@ -223,7 +223,7 @@ namespace Ioke.Lang {
                                                                                 foreach(object o in _set) {
                                                                                     c.SetCell(name, o);
                                                                                     c.SetCell(iname, runtime.NewNumber(index++));
-                                                                                    ((Message)IokeObject.dataOf(code)).EvaluateCompleteWithoutExplicitReceiver(code, c, c.RealContext);
+                                                                                    context.runtime.interpreter.Evaluate(code, c, c.RealContext, c);
                                                                                 }
                                                                                 break;
                                                                             }

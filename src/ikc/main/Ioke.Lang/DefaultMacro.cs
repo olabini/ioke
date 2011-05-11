@@ -8,7 +8,7 @@ namespace Ioke.Lang {
         string name;
         IokeObject code;
 
-        public DefaultMacro(string name) {
+        public DefaultMacro(string name) : base(IokeData.TYPE_DEFAULT_MACRO) {
             this.name = name;
         }
 
@@ -18,7 +18,7 @@ namespace Ioke.Lang {
 
         public override void Init(IokeObject obj) {
             obj.Kind = "DefaultMacro";
-            obj.RegisterCell("activatable", obj.runtime.True);
+            obj.SetActivatable(true);
 
             obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the name of the macro",
                                                            new TypeCheckingNativeMethod.WithNoArguments("name", obj,
@@ -33,7 +33,7 @@ namespace Ioke.Lang {
                                                                             .WithRestUnevaluated("arguments")
                                                                             .Arguments,
                                                                             (method, _context, message, on, outer) => {
-                                                                                return IokeObject.As(on, _context).Activate(_context, message, _context.RealContext);
+                                                                                return Interpreter.Activate(IokeObject.As(on, _context), _context, message, _context.RealContext);
                                                                             })));
 
 
@@ -125,8 +125,9 @@ namespace Ioke.Lang {
             get { return "..."; }
         }
 
-        public override object ActivateWithCallAndData(IokeObject self, IokeObject context, IokeObject message, object on, object call, IDictionary<string, object> data) {
-            if(code == null) {
+        public static object ActivateWithCallAndDataFixed(IokeObject self, IokeObject context, IokeObject message, object on, object call, IDictionary<string, object> data) {
+            DefaultMacro dm = (DefaultMacro)self.data;
+            if(dm.code == null) {
                 IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition,
                                                                              message,
                                                                              context,
@@ -160,7 +161,7 @@ namespace Ioke.Lang {
             }
 
             try {
-                return ((Message)IokeObject.dataOf(code)).EvaluateCompleteWith(code, c, on);
+                return context.runtime.interpreter.Evaluate(dm.code, c, on, c);
             } catch(ControlFlow.Return e) {
                 if(e.context == c) {
                     return e.Value;
@@ -170,48 +171,9 @@ namespace Ioke.Lang {
             }
         }
 
-        public override object ActivateWithCall(IokeObject self, IokeObject context, IokeObject message, object on, object call) {
-            if(code == null) {
-                IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition,
-                                                                             message,
-                                                                             context,
-                                                                             "Error",
-                                                                             "Invocation",
-                                                                             "NotActivatable"), context).Mimic(message, context);
-                condition.SetCell("message", message);
-                condition.SetCell("context", context);
-                condition.SetCell("receiver", on);
-                condition.SetCell("method", self);
-                condition.SetCell("report", context.runtime.NewText("You tried to activate a method without any code - did you by any chance activate the DefaultMacro kind by referring to it without wrapping it inside a call to cell?"));
-                context.runtime.ErrorCondition(condition);
-                return null;
-            }
-
-            IokeObject c = context.runtime.Locals.Mimic(message, context);
-            c.SetCell("self", on);
-            c.SetCell("@", on);
-            c.RegisterMethod(c.runtime.NewNativeMethod("will return the currently executing macro receiver", new NativeMethod.WithNoArguments("@@",
-                                                                            (method, _context, _message, _on, outer) => {
-                                                                                outer.ArgumentsDefinition.GetEvaluatedArguments(_context, _message, _on, new SaneArrayList(), new SaneDictionary<string, object>());
-                                                                                return self;
-                                                                            })));
-            c.SetCell("currentMessage", message);
-            c.SetCell("surroundingContext", context);
-            c.SetCell("call", call);
-
-            try {
-                return ((Message)IokeObject.dataOf(code)).EvaluateCompleteWith(code, c, on);
-            } catch(ControlFlow.Return e) {
-                if(e.context == c) {
-                    return e.Value;
-                } else {
-                    throw e;
-                }
-            }
-        }
-
-        public override object Activate(IokeObject self, IokeObject context, IokeObject message, object on) {
-            if(code == null) {
+        public new static object ActivateFixed(IokeObject self, IokeObject context, IokeObject message, object on) {
+            DefaultMacro dm = (DefaultMacro)self.data;
+            if(dm.code == null) {
                 IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition,
                                                                              message,
                                                                              context,
@@ -240,7 +202,7 @@ namespace Ioke.Lang {
             c.SetCell("call", context.runtime.NewCallFrom(c, message, context, IokeObject.As(on, context)));
 
             try {
-                return ((Message)IokeObject.dataOf(code)).EvaluateCompleteWith(code, c, on);
+                return context.runtime.interpreter.Evaluate(dm.code, c, on, c);
             } catch(ControlFlow.Return e) {
                 if(e.context == c) {
                     return e.Value;
@@ -250,8 +212,9 @@ namespace Ioke.Lang {
             }
         }
 
-        public override object ActivateWithData(IokeObject self, IokeObject context, IokeObject message, object on, IDictionary<string, object> data) {
-            if(code == null) {
+        public static object ActivateWithDataFixed(IokeObject self, IokeObject context, IokeObject message, object on, IDictionary<string, object> data) {
+            DefaultMacro dm = (DefaultMacro)self.data;
+            if(dm.code == null) {
                 IokeObject condition = IokeObject.As(IokeObject.GetCellChain(context.runtime.Condition,
                                                                              message,
                                                                              context,
@@ -285,7 +248,7 @@ namespace Ioke.Lang {
             }
 
             try {
-                return ((Message)IokeObject.dataOf(code)).EvaluateCompleteWith(code, c, on);
+                return context.runtime.interpreter.Evaluate(dm.code, c, on, c);
             } catch(ControlFlow.Return e) {
                 if(e.context == c) {
                     return e.Value;

@@ -9,7 +9,7 @@ namespace Ioke.Lang {
         IokeObject context;
         IokeObject message;
 
-        public LexicalBlock(IokeObject context, DefaultArgumentsDefinition arguments, IokeObject message) {
+        public LexicalBlock(IokeObject context, DefaultArgumentsDefinition arguments, IokeObject message) : base(IokeData.TYPE_LEXICAL_BLOCK){
             this.context = context;
             this.arguments = arguments;
             this.message = message;
@@ -43,7 +43,7 @@ namespace Ioke.Lang {
                                                                             .WithRestUnevaluated("arguments")
                                                                             .Arguments,
                                                                             (method, _context, _message, on, outer) => {
-                                                                                return IokeObject.As(on, _context).Activate(_context, _message, on);
+                                                                                return Interpreter.Activate(IokeObject.As(on, _context), _context, _message, on);
                                                                             })));
 
             obj.RegisterMethod(obj.runtime.NewNativeMethod("returns the full code of this lexical block, as a Text",
@@ -129,47 +129,40 @@ namespace Ioke.Lang {
             }
         }
 
-        public override object ActivateWithCallAndData(IokeObject self, IokeObject dynamicContext, IokeObject message, object on, object call, IDictionary<string, object> data) {
-            LexicalContext c = new LexicalContext(self.runtime, on, "Lexical activation context", message, this.context);
+        public static object ActivateWithCallAndDataFixed(IokeObject self, IokeObject dynamicContext, IokeObject message, object on, object call, IDictionary<string, object> data) {
+            LexicalBlock lb = (LexicalBlock)self.data;
+            IokeObject c = self.runtime.NewLexicalContext(on, "Lexical activation context", lb.context);
 
             foreach(var d in data) {
                 string s = d.Key;
                 c.SetCell(s.Substring(0, s.Length-1), d.Value);
             }
-            arguments.AssignArgumentValues(c, dynamicContext, message, on, ((Call)IokeObject.dataOf(call)));
+            lb.arguments.AssignArgumentValues(c, dynamicContext, message, on, ((Call)IokeObject.dataOf(call)));
 
-            return ((Message)IokeObject.dataOf(this.message)).EvaluateCompleteWith(this.message, c, on);
+            return self.runtime.interpreter.Evaluate(lb.message, c, on, c);
         }
 
-        public override object ActivateWithCall(IokeObject self, IokeObject dynamicContext, IokeObject message, object on, object call) {
-            LexicalContext c = new LexicalContext(self.runtime, on, "Lexical activation context", message, this.context);
+        public new static object ActivateFixed(IokeObject self, IokeObject dynamicContext, IokeObject message, object on) {
+            LexicalBlock lb = (LexicalBlock)self.data;
+            IokeObject c = self.runtime.NewLexicalContext(on, "Lexical activation context", lb.context);
 
-            arguments.AssignArgumentValues(c, dynamicContext, message, on, ((Call)IokeObject.dataOf(call)));
+            lb.arguments.AssignArgumentValues(c, dynamicContext, message, on);
 
-            return ((Message)IokeObject.dataOf(this.message)).EvaluateCompleteWith(this.message, c, on);
+            return self.runtime.interpreter.Evaluate(lb.message, c, on, c);
         }
 
-        public override object Activate(IokeObject self, IokeObject dynamicContext, IokeObject message, object on) {
-            LexicalContext c = new LexicalContext(self.runtime, on, "Lexical activation context", message, this.context);
-
-            arguments.AssignArgumentValues(c, dynamicContext, message, on);
-
-            object oo = ((Message)IokeObject.dataOf(this.message)).EvaluateCompleteWith(this.message, c, on);
-
-            return oo;
-        }
-
-        public override object ActivateWithData(IokeObject self, IokeObject dynamicContext, IokeObject message, object on, IDictionary<string, object> data) {
-            LexicalContext c = new LexicalContext(self.runtime, on, "Lexical activation context", message, this.context);
+        public static object ActivateWithDataFixed(IokeObject self, IokeObject dynamicContext, IokeObject message, object on, IDictionary<string, object> data) {
+            LexicalBlock lb = (LexicalBlock)self.data;
+            IokeObject c = self.runtime.NewLexicalContext(on, "Lexical activation context", lb.context);
 
             foreach(var d in data) {
                 string s = d.Key;
                 c.SetCell(s.Substring(0, s.Length-1), d.Value);
             }
 
-            arguments.AssignArgumentValues(c, dynamicContext, message, on);
+            lb.arguments.AssignArgumentValues(c, dynamicContext, message, on);
 
-            return ((Message)IokeObject.dataOf(this.message)).EvaluateCompleteWith(this.message, c, on);
+            return self.runtime.interpreter.Evaluate(lb.message, c, on, c);
         }
 
         public static string GetInspect(object on) {

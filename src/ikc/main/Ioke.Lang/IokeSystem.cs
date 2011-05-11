@@ -132,7 +132,7 @@ namespace Ioke.Lang {
                                                                         (method, context, message, on, outer) => {
                                                                             var args = new SaneArrayList();
                                                                             outer.ArgumentsDefinition.GetEvaluatedArguments(context, message, on, args, new SaneDictionary<string, object>());
-                                                                            string name = Text.GetText(((Message)IokeObject.dataOf(runtime.asText)).SendTo(runtime.asText, context, args[0]));
+                                                                            string name = Text.GetText(Interpreter.Send(runtime.asText, context, args[0]));
                                                                             if(FEATURES.Contains(name)) {
                                                                                 return runtime.True;
                                                                             } else {
@@ -233,7 +233,7 @@ namespace Ioke.Lang {
                                                                             outer.ArgumentsDefinition.CheckArgumentCount(context, message, on);
                                                                             if(((IokeSystem)IokeObject.dataOf(on)).CurrentProgram.Equals(message.File)) {
                                                                                 IokeObject msg = ((IokeObject)message.Arguments[0]);
-                                                                                return ((Message)IokeObject.dataOf(msg)).EvaluateCompleteWith(msg, context, context.RealContext);
+                                                                                return context.runtime.interpreter.Evaluate(msg, context, context.RealContext, context);
                                                                             } else {
                                                                                 return runtime.nil;
                                                                             }
@@ -260,7 +260,7 @@ namespace Ioke.Lang {
 
                                                                             bool forceReload = IokeObject.IsObjectTrue(args[1]);
 
-                                                                            string name = Text.GetText(((Message)IokeObject.dataOf(runtime.asText)).SendTo(runtime.asText, context, args[0]));
+                                                                            string name = Text.GetText(Interpreter.Send(runtime.asText, context, args[0]));
                                                                             if(((IokeSystem)IokeObject.dataOf(runtime.System)).Use(IokeObject.As(on, context), context, message, name, forceReload)) {
                                                                                 return runtime.True;
                                                                             } else {
