@@ -105,6 +105,7 @@ public class JavaArgumentsDefinition {
         public int compare(Method a, Method b) {
             Class<?>[] aTypes = a.getParameterTypes();
             Class<?>[] bTypes = b.getParameterTypes();
+
             // Shorter argument lists should be tried first
             if(aTypes.length != bTypes.length) {
                 return aTypes.length - bTypes.length;

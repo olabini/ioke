@@ -122,7 +122,7 @@ public class AssignmentBehavior {
                     } else {
                         Object val = Interpreter.send(m1, context, on);
                         if(val == context.runtime.nul || !IokeObject.isTrue(val)) {
-                            return context.runtime.;
+                            return context.runtime.nil;
                         } else {
                             return Interpreter.send(context.runtime.setValue, context, on, m1, Message.getArg2(message));
                         }
