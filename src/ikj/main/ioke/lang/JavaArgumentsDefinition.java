@@ -144,12 +144,25 @@ public class JavaArgumentsDefinition {
         }
     }
 
+    public static <T> void partialOrderingSort(T[] arr, Comparator<T> c) {
+        int count = arr.length;
+        for(int j = 1; j < count; j++) {
+            T key = arr[j];
+            int i = j - 1;
+            for(; i >= 0 && c.compare(arr[i], key) > 0; i--) {
+                arr[i + 1] = arr[i];
+            }
+            arr[i + 1] = key;
+        }
+    }
+
+
     private static void sortByParameterOrdering(Method[] m) {
 //         System.err.println("Before sort: ");
 //         for(Method mex : m) {
 //             System.err.println(" - " + mex);
 //         }
-        Arrays.sort(m, new MethodComparator());
+        partialOrderingSort(m, new MethodComparator());
 //         System.err.println("After sort: ");
 //         for(Method mex : m) {
 //             System.err.println(" - " + mex);
@@ -161,7 +174,7 @@ public class JavaArgumentsDefinition {
 //         for(Constructor mex : m) {
 //             System.err.println(" - " + mex);
 //         }
-        Arrays.sort(m, new ConstructorComparator());
+        partialOrderingSort(m, new ConstructorComparator());
 //         System.err.println("After sort: ");
 //         for(Constructor mex : m) {
 //             System.err.println(" - " + mex);
