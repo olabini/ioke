@@ -62,8 +62,8 @@ describe("Game",
   )
 
   describe("grid",
-    it("should contain cells",
-      Game grid cells should != nil
+    it("should not contain cells",
+      Game grid cells should = nil
     )
 
     it("should be a 3x3 grid by default",
@@ -87,13 +87,13 @@ describe("Game",
         )
 
         it("should have an eastern neighbour",
-          Game grid cells[0][0] neighbours[:e] should != nil
+          Game grid cells[0][0] neighbours[:e] should = nil
         )
         it("should have an southeastern neighbour",
-          Game grid cells[0][0] neighbours[:se] should != nil
+          Game grid cells[0][0] neighbours[:se] should = nil
         )
         it("should have an southern neighbour",
-          Game grid cells[0][0] neighbours[:s] should != nil
+          Game grid cells[0][0] neighbours[:s] should = nil
         )
       )
 

@@ -1,5 +1,5 @@
 Cell = Origin mimic do(
-  notice = method("Cell #{position[:x], position[:y]}")
+  notice = method("Cell #{position[:x]}, #{position[:y]}")
 )
 
 Grid = Origin mimic do(
